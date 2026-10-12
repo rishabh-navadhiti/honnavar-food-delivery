@@ -8,4 +8,5 @@ project principles in `.specify/memory/constitution.md`.
 
 - Product requirements: `docs/prd/`
 - Delivery phases and scope: `docs/phases.md`
+- What is real vs stand-in in the POC: `docs/fidelity-matrix.md`
 - Prompts used to drive Spec Kit (for reproducibility): `docs/speckit-prompts/`
