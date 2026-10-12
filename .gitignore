@@ -1,0 +1,38 @@
+# dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# next.js
+.next/
+out/
+build/
+dist/
+
+# env
+.env
+.env.*
+!.env.example
+
+# misc
+.DS_Store
+*.pem
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# testing
+coverage/
+playwright-report/
+test-results/
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
