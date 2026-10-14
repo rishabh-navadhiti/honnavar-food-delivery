@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-12
 
-**Status**: Draft
+**Status**: Approved
 
 **Input**: User description: "Platform core: every role can sign in to their own surface, an admin can
 onboard food partners and delivery agents, a partner can manage their kitchen's menu and opening
@@ -85,8 +85,9 @@ screen, open a kitchen and read its menu in both languages without signing in.
 
 Each role has its own entry point and its own sign-in screen: customer, food partner, delivery
 agent and admin. A person enters their 10-digit mobile number, receives a one-time code, enters it
-and lands on their surface. Customers can sign up this way with any valid number; partners, agents
-and admins can sign in only if an admin has registered their number. In this proof of concept the
+and lands on their surface. Customers can sign up this way with any valid number; partners and
+agents can sign in only if an admin has registered their number, and admins come from the demo
+data. In this proof of concept the
 code is not actually sent: it is a fixed demo code, and the sign-in screen says so.
 
 A signed-in delivery agent sees their profile (name, mobile number, vehicle) and an empty
@@ -181,7 +182,7 @@ hours and a photo. They can also edit any kitchen's menu, hours and open/closed 
 same editor partners use, for partners who need help. They record verification (an FSSAI licence for restaurants and cloud
 kitchens, a basic hygiene check for home kitchens) and move the kitchen through pending, active and
 suspended. They also register delivery agents with name, mobile number and vehicle, and switch them
-active or inactive, and they can register another admin by mobile number.
+active or inactive.
 
 **Why this priority**: Partners and agents exist on the platform only because an admin put them
 there; it is the supply side of the demo.
@@ -196,7 +197,7 @@ activate it and see it on the customer home list; create an agent and sign in as
 2. **Given** a pending partner without recorded verification, **When** the admin tries to activate
    it, **Then** activation is blocked with a message that verification must be recorded first.
 3. **Given** a pending partner, **When** the admin records verification (licence or hygiene-check
-   reference, an optional uploaded document, the verifying admin and date) and activates it,
+   reference, the verifying admin and date) and activates it,
    **Then** the kitchen appears on the customer home list.
 4. **Given** an active partner, **When** the admin suspends it with a reason, **Then** it
    disappears from the customer surface and any direct link to it shows a "not found" screen.
@@ -210,8 +211,8 @@ activate it and see it on the customer home list; create an agent and sign in as
 8. **Given** an active agent, **When** the admin marks them inactive, **Then** they can no longer
    sign in and any existing session on the agent surface ends on its next request.
 9. **Given** any kitchen, **When** the admin adds dishes or changes its hours from the admin panel,
-   **Then** customers see the change as if the partner had made it, and the change records which
-   admin made it.
+   **Then** customers see the change as if the partner had made it, and each changed dish,
+   category or hours record shows that admin as its last change, with the time.
 10. **Given** a kitchen's sign-in list, **When** the admin removes a helper's number, **Then** that
     number can no longer sign in to the partner app and its existing partner sessions end on their
     next request.
@@ -306,7 +307,6 @@ gone and the seeded accounts work.
   from the new hours using the same rule, from the moment the kitchen was closed.
 - A partner and an admin editing the same dish at the same time: the later save wins; neither
   sees an error.
-- The admin cannot remove or deactivate their own admin access.
 - On a slow or dropped connection, screens show loading states, keep entered form data, and offer
   a retry rather than a blank screen or endless spinner.
 
@@ -327,9 +327,9 @@ gone and the seeded accounts work.
   delivery later MUST NOT change the sign-in experience beyond the code arriving by SMS.
 - **FR-005**: Any valid mobile number MUST be able to sign in at the customer entry point; a
   customer account is created on first sign-in.
-- **FR-006**: Only numbers registered by an admin for the matching role MUST be able to sign in at
-  the partner, agent and admin entry points; other numbers are refused without creating an
-  account.
+- **FR-006**: Only numbers registered for the matching role MUST be able to sign in at the
+  partner, agent and admin entry points (partners and agents registered by an admin; admins from
+  the demo data only in this feature); other numbers are refused without creating an account.
 - **FR-007**: Inactive agents MUST NOT be able to sign in; deactivating an agent MUST end their
   existing sessions.
 - **FR-008**: Customers MUST be able to browse, search and filter without signing in.
@@ -347,8 +347,8 @@ gone and the seeded accounts work.
   interface text is a defect.
 - **FR-014**: The default language MUST be a deployment setting (English for this POC) changeable
   without code changes.
-- **FR-015**: The user's language choice MUST be remembered on the device, and for signed-in users
-  also on their account, so it applies on their next visit.
+- **FR-015**: The user's language choice MUST be remembered on the device, so it applies on their
+  next visit.
 - **FR-016**: Kitchen names, kitchen descriptions, category names, dish names and dish descriptions
   MUST be stored as a Kannada/English pair; at least one language is required.
 - **FR-017**: When the selected language's version of partner-authored content is missing, the
@@ -365,8 +365,8 @@ gone and the seeded accounts work.
 - **FR-020**: New partners MUST start in status "Pending"; status MAY then move between Pending,
   Active and Suspended, with a reason recorded for each suspension.
 - **FR-021**: Admins MUST be able to record verification for a partner: for restaurants and cloud
-  kitchens an FSSAI licence number, for home kitchens a basic hygiene check reference, each with an
-  optional uploaded document. The system records which admin verified and when. Verification is a
+  kitchens an FSSAI licence number, for home kitchens a basic hygiene-check reference. The system
+  records which admin verified and when. Verification is a
   declared stand-in: nothing is checked against any external registry.
 - **FR-022**: A partner MUST NOT be activated until verification is recorded.
 - **FR-023**: Only Active partners MUST be visible anywhere on the customer surface.
@@ -379,18 +379,16 @@ gone and the seeded accounts work.
   sign-in unless they are also on this list. Removing a number ends its partner sessions.
 - **FR-054**: Admins MUST be able to edit any kitchen's menu, weekly hours and temporary closure
   using the same capabilities partners have (FR-031 to FR-036), in any kitchen status.
-- **FR-055**: Every change to a kitchen's menu, hours or temporary closure MUST record who made it
-  (which admin, or which partner sign-in number) and when; admins can see the last change on each
-  item.
+- **FR-055**: Every dish, category, weekly hours and temporary closure MUST record who last
+  changed it (an admin, or a partner sign-in number) and when. There is no change history, no
+  record of what changed, and no history view.
 
-**Admin: agents and admins**
+**Admin: agents**
 
 - **FR-026**: Admins MUST be able to create and edit delivery agents with name, mobile number,
   vehicle type (bicycle, two-wheeler, other) and optional vehicle registration number, and switch
   them active or inactive.
 - **FR-027**: A mobile number MUST NOT be registered to more than one agent.
-- **FR-028**: Admins MUST be able to register another admin by name and mobile number.
-- **FR-029**: An admin MUST NOT be able to remove or deactivate their own admin access.
 
 **Partner**
 
@@ -501,7 +499,7 @@ Per Constitution Principle III and `docs/fidelity-matrix.md`:
 | Capability | Status in this feature | Notes |
 |---|---|---|
 | Mobile number + one-time code sign-in | **Stand-in** for code delivery; sign-in itself is real | No message sent; fixed demo code; labelled on screen. Customer numbers self-register; partner/agent/admin numbers must be pre-registered. Demo-only account panel per role. |
-| Partner verification (FSSAI / hygiene) | **Stand-in** | Admin records reference and optional document and marks verified; no registry lookup. |
+| Partner verification (FSSAI / hygiene) | **Stand-in** | Admin records the licence or hygiene-check reference and marks verified; the verifying admin and date are kept; no registry lookup. |
 | Admin onboarding of partners and agents | Real | |
 | Partner menu, prices, availability, hours, open/closed | Real | |
 | Browse, search and filter kitchens and dishes | Real | |
@@ -512,26 +510,21 @@ Per Constitution Principle III and `docs/fidelity-matrix.md`:
 | Ratings, voice prompts, payouts, delivery zones and fees, refunds, complaints | Out of scope | Later features or out of POC scope. |
 | Code-entry rate limiting and lockout | Out of scope | Needed with a real code provider. |
 
-The matrix row "Phone + OTP login" currently reads "Any 10-digit number accepted; persona picker
-per role". This spec narrows it: any number works for customers only, and the persona picker is the
-demo-only account panel in FR-011. The matrix row should be updated to match when this spec is
-approved.
-
 ### Key Entities
 
-- **Account**: a person identified by mobile number, with optional display name and preferred
-  language. One account can hold several roles.
+- **Account**: a person identified by mobile number, with optional display name. One account can
+  hold several roles.
 - **Role registration**: links an account to a role (customer, partner, agent, admin); for
   partners, the kitchen whose sign-in list includes the number. Agents carry active/inactive.
 - **Kitchen (food partner)**: bilingual name and description, type, pure-veg flag (declared by
   admin), customer-facing contact numbers (one primary), sign-in list (numbers with person names),
   address, landmark, photo, status (Pending/Active/Suspended) with suspension reason, temporary
   closure (when it started and when it ends), weekly hours.
-- **Change record**: who changed a kitchen's menu, hours or temporary closure (admin or partner
-  sign-in number), what changed, and when.
+- **Last change**: each dish, menu category, weekly hours and temporary closure carries who last
+  changed it (admin or partner sign-in number) and when; no history is kept.
 - **Weekly hours**: per day of week, closed or up to two time ranges.
-- **Verification record**: kitchen, kind (FSSAI licence or hygiene check), reference, optional
-  document, verifying admin, date.
+- **Verification record**: kitchen, kind (FSSAI licence or hygiene check), reference, verifying
+  admin, date.
 - **Menu category**: belongs to a kitchen; bilingual name; display order.
 - **Dish**: belongs to a category; bilingual name and description; price; veg/non-veg; optional
   photo; available flag; display order.
