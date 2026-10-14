@@ -16,7 +16,3 @@ export function resolveKitchenScope(actor: Actor, inputKitchenId?: string | null
   }
   return inputKitchenId ? ok(inputKitchenId) : err('invalid');
 }
-
-export function stamp(actor: Actor, now: Date = new Date()) {
-  return { role: actor.role, phone: actor.phone, at: now } as const;
-}

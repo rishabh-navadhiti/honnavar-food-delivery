@@ -30,7 +30,9 @@ test('one reset step undoes changes and keeps demo accounts working', async ({ p
   const dish = availableDishIn(kitchen.key);
   await signIn(page, '/partner/login', helperPhone);
   await page.goto('/partner/menu');
-  await page.locator(`[data-testid="editor-dish"][data-dish-id="${dish.id}"]`).getByRole('button', { name: 'Mark not available' }).click();
+  const editorRow = page.locator(`[data-testid="editor-dish"][data-dish-id="${dish.id}"]`);
+  await editorRow.getByRole('button', { name: 'Mark not available' }).click();
+  await expect(editorRow.getByRole('button', { name: 'Mark available' })).toBeVisible();
   await page.goto(`/kitchens/${kitchen.id}`);
   await expect(page.locator(`[data-testid="dish-row"][data-dish-id="${dish.id}"]`)).toHaveAttribute('data-available', 'false');
 

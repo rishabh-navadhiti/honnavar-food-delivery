@@ -55,7 +55,7 @@ export default async function SearchPage({ searchParams }: Props) {
               <ul className="flex flex-col gap-2">
                 {results.dishes.map(({ dish, kitchen }) => (
                   <li key={dish.id} data-testid="dish-result" className="rounded-2xl border border-line bg-surface px-3">
-                    <Link href={`/kitchens/${kitchen.id}`} className="block pt-2 text-sm font-semibold text-primary">
+                    <Link href={`/kitchens/${kitchen.id}`} className="flex min-h-touch items-center text-sm font-semibold text-primary">
                       <LocalizedText pair={kitchen.name} />
                     </Link>
                     <ul>

@@ -15,14 +15,14 @@ export function requireAdmin(actor: Actor): Result<{ adminId: string }> {
 }
 
 /** The kitchen that already signs in with one of these numbers, if any (FR-025). */
-export async function signinOwner(phones: string[], exceptKitchenId?: string): Promise<string | null> {
+export async function signinOwner(phones: string[]): Promise<string | null> {
   if (phones.length === 0) return null;
   const [row] = await db
     .select({ kitchenId: kitchenSignins.kitchenId, nameEn: kitchens.nameEn, nameKn: kitchens.nameKn })
     .from(kitchenSignins)
     .innerJoin(kitchens, eq(kitchens.id, kitchenSignins.kitchenId))
     .where(inArray(kitchenSignins.phone, phones));
-  if (!row || row.kitchenId === exceptKitchenId) return null;
+  if (!row) return null;
   return row.nameEn ?? row.nameKn ?? '';
 }
 

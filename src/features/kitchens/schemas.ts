@@ -1,8 +1,5 @@
-import { z } from 'zod';
 import { err, ok, type Result } from '@/shared/result';
 import { emptyWeek, toMinutes, validateWeekHours, WEEKDAYS, type WeekHours } from './domain/hours';
-
-export const kitchenIdInput = z.uuid().nullish();
 
 export type RangeInput = { opens: string; closes: string };
 /** Weekly hours as entered: keys "1" (Monday) to "7" (Sunday), each 0–2 "HH:MM" ranges. */

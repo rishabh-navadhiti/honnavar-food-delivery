@@ -1,6 +1,6 @@
 import 'server-only';
 import { createHash, randomBytes } from 'node:crypto';
-import { and, eq, lt } from 'drizzle-orm';
+import { and, eq } from 'drizzle-orm';
 import { db } from '@/shared/db/client';
 import { admins, agents, customers, kitchenSignins, sessions } from '@/shared/db/schema';
 import type { Surface } from './surfaces';
@@ -96,8 +96,4 @@ export async function deleteSession(token: string): Promise<void> {
 
 export async function deleteSessionsForSubject(surface: Surface, subjectId: string): Promise<void> {
   await db.delete(sessions).where(and(eq(sessions.surface, surface), eq(sessions.subjectId, subjectId)));
-}
-
-export async function deleteExpiredSessions(now: Date = new Date()): Promise<void> {
-  await db.delete(sessions).where(lt(sessions.expiresAt, now));
 }

@@ -17,8 +17,6 @@ export async function loadWeekHours(kitchenIds: string[]): Promise<Map<string, W
   return result;
 }
 
-export type ChangeStamp = { role: 'admin' | 'partner' | null; phone: string | null; at: Date | null };
-
 export async function getKitchenRow(kitchenId: string) {
   const [row] = await db.select().from(kitchens).where(eq(kitchens.id, kitchenId));
   return row ?? null;

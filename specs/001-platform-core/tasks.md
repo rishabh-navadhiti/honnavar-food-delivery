@@ -727,20 +727,20 @@ listing that role's accounts and the fixed code.
 
 **Purpose**: Documentation, parity, cleanup and the full validation gate.
 
-- [ ] T122 [P] Rewrite `README.md`. It covers:
+- [X] T122 [P] Rewrite `README.md`. It covers:
   - prerequisites;
   - environment variables, pointing to `.env.example`;
   - every npm script;
   - how to replace `seed/catalogue.json` and `seed/images/` with the researched catalogue;
   - the "one sanctioned tool per concern" table: framework Next.js; language TypeScript 6; styling Tailwind CSS 4; database PostgreSQL 17; ORM and migrations Drizzle; validation Zod; i18n next-intl; images sharp; unit and integration tests Vitest; end-to-end tests Playwright; lint ESLint; format Prettier; script runner tsx.
-- [ ] T123 [P] Check that the `001` rows in `docs/fidelity-matrix.md` still match the delivered stand-ins (OTP fixed code and demo panel; verification recorded without lookup), and that every stand-in file has its `STAND-IN` header
-- [ ] T124 Run a parity sweep:
+- [X] T123 [P] Check that the `001` rows in `docs/fidelity-matrix.md` still match the delivered stand-ins (OTP fixed code and demo panel; verification recorded without lookup), and that every stand-in file has its `STAND-IN` header
+- [X] T124 Run a parity sweep:
   - `grep` `src/` for hard-coded user-facing text that lint may miss (string literals passed to `aria-label`, `alt`, `placeholder`, `title`);
   - make sure every meaningful image has alt text from a key or the localised name;
   - confirm `machine-drafted.json` lists every agent-drafted Kannada key.
-- [ ] T125 Run a 360 px review of every customer, partner and agent screen in Playwright device mode: no horizontal scroll (`document.documentElement.scrollWidth <= 360`), touch targets ≥ 48px, one primary action per screen. Fix what fails in the relevant component files.
-- [ ] T126 Clean up: remove dead code, commented-out code and debug logging. Confirm every `catch` in `src/features/**/actions*` logs through `src/shared/log.ts` with the action name, surface and subject id.
-- [ ] T127 Run the full gate and record the results in the PR description: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run test:e2e`, then walk through manual scenarios 1–15 in `specs/001-platform-core/quickstart.md`. Note any scenario not run, and why.
+- [X] T125 Run a 360 px review of every customer, partner and agent screen in Playwright device mode: no horizontal scroll (`document.documentElement.scrollWidth <= 360`), touch targets ≥ 48px, one primary action per screen. Fix what fails in the relevant component files.
+- [X] T126 Clean up: remove dead code, commented-out code and debug logging. Confirm every `catch` in `src/features/**/actions*` logs through `src/shared/log.ts` with the action name, surface and subject id.
+- [X] T127 Run the full gate and record the results in the PR description: `npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run test:e2e`, then walk through manual scenarios 1–15 in `specs/001-platform-core/quickstart.md`. Note any scenario not run, and why.
 
 ---
 

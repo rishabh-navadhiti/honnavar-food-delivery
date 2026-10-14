@@ -13,7 +13,7 @@ export default async function CustomerLayout({ children }: { children: ReactNode
       <AppHeader
         homeHref="/"
         actions={
-          <Link href={session ? '/account' : '/login'} className={buttonClasses('ghost', 'px-3')}>
+          <Link href={session ? '/account' : '/login'} className={buttonClasses('ghost', 'whitespace-nowrap px-3')}>
             {session ? t('account') : t('signIn')}
           </Link>
         }

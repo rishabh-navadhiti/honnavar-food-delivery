@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-sans: var(--font-noto-sans-kannada), var(--font-noto-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-noto-sans), var(--font-noto-sans-kannada), ui-sans-serif, system-ui, sans-serif;
 
   /* Colour-coded actions (Principle IV) */
   --color-primary: #c2410c;

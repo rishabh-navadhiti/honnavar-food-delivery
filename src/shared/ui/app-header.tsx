@@ -10,7 +10,7 @@ export function AppHeader({ homeHref, surfaceLabel, actions }: { homeHref: strin
     <header className="sticky top-0 z-10 border-b border-line bg-surface/95 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2">
         <Link href={homeHref} className="flex min-h-touch flex-col justify-center">
-          <span className="text-lg font-bold text-primary">{t('appName')}</span>
+          <span className="whitespace-nowrap text-lg font-bold text-primary">{t('appName')}</span>
           {surfaceLabel ? <span className="text-xs font-medium text-muted">{surfaceLabel}</span> : null}
         </Link>
         <div className="flex items-center gap-2">

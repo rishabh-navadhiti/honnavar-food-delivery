@@ -8,7 +8,7 @@ export function SignOutButton({ surface }: { surface: Surface }) {
   return (
     <form action={signOutAction}>
       <input type="hidden" name="surface" value={surface} />
-      <button type="submit" className={buttonClasses('ghost', 'px-3')}>
+      <button type="submit" className={buttonClasses('ghost', 'whitespace-nowrap px-3')}>
         {t('signOut')}
       </button>
     </form>
