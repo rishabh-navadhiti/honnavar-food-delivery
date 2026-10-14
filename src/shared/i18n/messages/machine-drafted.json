@@ -28,6 +28,7 @@
     "categoryForm",
     "dishForm",
     "lastChanged",
-    "kitchenProfile"
+    "kitchenProfile",
+    "agentAdmin"
   ]
 }

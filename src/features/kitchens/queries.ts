@@ -1,7 +1,7 @@
 import 'server-only';
 import { and, asc, eq, inArray, sql } from 'drizzle-orm';
 import { db } from '@/shared/db/client';
-import { dishes, kitchenContacts, kitchenHours, kitchens, kitchenSignins, menuCategories } from '@/shared/db/schema';
+import { dishes, kitchenContacts, kitchenHours, kitchens, kitchenSignins, menuCategories, verifications } from '@/shared/db/schema';
 import { emptyWeek, type Weekday, type WeekHours } from './domain/hours';
 import { kitchenState } from './domain/state';
 
@@ -78,4 +78,56 @@ export async function getContacts(kitchenId: string) {
 
 export async function getSignins(kitchenId: string) {
   return db.select().from(kitchenSignins).where(eq(kitchenSignins.kitchenId, kitchenId)).orderBy(asc(kitchenSignins.createdAt));
+}
+
+export type AdminKitchenRow = {
+  id: string;
+  nameEn: string | null;
+  nameKn: string | null;
+  type: 'restaurant' | 'home_kitchen' | 'cloud_kitchen';
+  status: 'pending' | 'active' | 'suspended';
+  pureVeg: boolean;
+  landmark: string;
+  primaryPhone: string | null;
+};
+
+/** Partner list for admins (FR-024): filter by status and type; search either name or any phone. */
+export async function listKitchensForAdmin(filters: {
+  status?: 'pending' | 'active' | 'suspended';
+  type?: 'restaurant' | 'home_kitchen' | 'cloud_kitchen';
+  q?: string;
+}): Promise<AdminKitchenRow[]> {
+  const conditions = [];
+  if (filters.status) conditions.push(eq(kitchens.status, filters.status));
+  if (filters.type) conditions.push(eq(kitchens.type, filters.type));
+  const q = filters.q?.normalize('NFC').trim();
+  if (q) {
+    const text = `%${q}%`;
+    const digits = q.replace(/\D/g, '');
+    const phoneMatch = digits.length >= 3
+      ? sql` or exists (select 1 from kitchen_contacts c where c.kitchen_id = ${kitchens.id} and c.phone like ${`%${digits}%`})
+             or exists (select 1 from kitchen_signins s where s.kitchen_id = ${kitchens.id} and s.phone like ${`%${digits}%`})`
+      : sql``;
+    conditions.push(sql`(${kitchens.nameEn} ilike ${text} or ${kitchens.nameKn} ilike ${text}${phoneMatch})`);
+  }
+  const rows = await db
+    .select({
+      id: kitchens.id,
+      nameEn: kitchens.nameEn,
+      nameKn: kitchens.nameKn,
+      type: kitchens.type,
+      status: kitchens.status,
+      pureVeg: kitchens.pureVeg,
+      landmark: kitchens.landmark,
+      primaryPhone: sql<string | null>`(select c.phone from kitchen_contacts c where c.kitchen_id = ${kitchens.id} and c.is_primary limit 1)`,
+    })
+    .from(kitchens)
+    .where(conditions.length > 0 ? and(...conditions) : undefined)
+    .orderBy(asc(kitchens.nameEn), asc(kitchens.nameKn));
+  return rows;
+}
+
+export async function getVerification(kitchenId: string) {
+  const [row] = await db.select().from(verifications).where(eq(verifications.kitchenId, kitchenId));
+  return row ?? null;
 }

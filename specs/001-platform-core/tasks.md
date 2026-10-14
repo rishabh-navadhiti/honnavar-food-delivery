@@ -578,7 +578,7 @@ FR-054).
 
 ### Tests for User Story 4
 
-- [ ] T093 [P] [US4] Write a failing integration test `src/features/kitchens/services/admin.int.test.ts` against the services in `src/features/kitchens/services/` (`admin.ts`, `signins.ts`, `verification.ts`) and the query `listKitchensForAdmin`, using test actors:
+- [X] T093 [P] [US4] Write a failing integration test `src/features/kitchens/services/admin.int.test.ts` against the services in `src/features/kitchens/services/` (`admin.ts`, `signins.ts`, `verification.ts`) and the query `listKitchensForAdmin`, using test actors:
   - `createKitchen` stores a pending kitchen with exactly 1 primary contact and at least 1 sign-in, or gives `signin_phone_taken {kitchenName}`;
   - `updateKitchenProfile` setting `pureVeg=true` with non-veg dishes gives `pure_veg_conflict {nonVegCount}`;
   - `addSignin` gives `signin_phone_taken`;
@@ -589,11 +589,11 @@ FR-054).
   - all actions give `unauthorised` for non-admin sessions;
   - menu, hours and closure actions called by an admin on any kitchen stamp `updated_by_role='admin'` (FR-054, FR-055).
   - `listKitchensForAdmin`: the status filter, the type filter, search by a Kannada name and by an English name, search by a contact phone and by a sign-in phone, and combined filters.
-- [ ] T094 [P] [US4] Write a failing integration test `src/features/agents/services/agents.int.test.ts` against the services in `src/features/agents/services/agents.ts`, using test actors:
+- [X] T094 [P] [US4] Write a failing integration test `src/features/agents/services/agents.int.test.ts` against the services in `src/features/agents/services/agents.ts`, using test actors:
   - `saveAgent` validates name ≤ 60, `vehicleType` enum and `vehicleReg` ≤ 20 (uppercased);
   - a duplicate phone gives `agent_phone_taken {agentName}`;
   - `setAgentActive(false)` deletes the agent's sessions.
-- [ ] T095 [P] [US4] Write the end-to-end test `e2e/us4-admin.spec.ts` (desktop), selecting subjects only through `e2e/catalogue.ts`:
+- [X] T095 [P] [US4] Write the end-to-end test `e2e/us4-admin.spec.ts` (desktop), selecting subjects only through `e2e/catalogue.ts`:
   - sign in as `admin()`, then create a new home kitchen (test-generated name and numbers), which shows status Pending;
   - activating it without verification shows the error;
   - record the hygiene check, then activate; the customer home (new page) lists the kitchen;
@@ -605,35 +605,35 @@ FR-054).
 
 ### Implementation for User Story 4
 
-- [ ] T096 [US4] Create the admin Zod schemas in `src/features/kitchens/admin-schemas.ts`:
+- [X] T096 [US4] Create the admin Zod schemas in `src/features/kitchens/admin-schemas.ts`:
   - kitchen profile: names and descriptions with the limits; `type`; `pureVeg`; `address` ≤ 200; `landmark` ≤ 100; `contacts` with ≥ 1 entry and exactly 1 primary; `signins` with ≥ 1 entry, `personName` ≤ 60 and unique phones within the input;
   - verification: FSSAI `/^\d{14}$/` or hygiene 3–40 characters, with kind matching type;
   - status, plus `reason` ≤ 200 required for suspended.
-- [ ] T097 [US4] Implement the services in `src/features/kitchens/services/admin.ts` and their action wrappers in `src/features/kitchens/actions/admin.ts`: `createKitchen`, `updateKitchenProfile`, `setKitchenPhoto` and `setKitchenStatus`. The status rules are: active needs verification; suspended needs a reason; all other transitions are allowed.
-- [ ] T098 [US4] Implement the services `addSignin` and `removeSignin` in `src/features/kitchens/services/signins.ts`, with wrappers in `src/features/kitchens/actions/signins.ts`. Each uses a transaction and calls `deleteSessionsForSubject` on removal (FR-053).
-- [ ] T099 [US4] Implement the service `recordVerification` in `src/features/kitchens/services/verification.ts`, with its wrapper in `src/features/kitchens/actions/verification.ts`. It calls `verificationProvider.check` (T046, stand-in) and upserts `verifications` with the acting admin and the current time. With T097 and T098 this passes T093.
-- [ ] T100 [P] [US4] Implement the agent schemas and actions:
+- [X] T097 [US4] Implement the services in `src/features/kitchens/services/admin.ts` and their action wrappers in `src/features/kitchens/actions/admin.ts`: `createKitchen`, `updateKitchenProfile`, `setKitchenPhoto` and `setKitchenStatus`. The status rules are: active needs verification; suspended needs a reason; all other transitions are allowed.
+- [X] T098 [US4] Implement the services `addSignin` and `removeSignin` in `src/features/kitchens/services/signins.ts`, with wrappers in `src/features/kitchens/actions/signins.ts`. Each uses a transaction and calls `deleteSessionsForSubject` on removal (FR-053).
+- [X] T099 [US4] Implement the service `recordVerification` in `src/features/kitchens/services/verification.ts`, with its wrapper in `src/features/kitchens/actions/verification.ts`. It calls `verificationProvider.check` (T046, stand-in) and upserts `verifications` with the acting admin and the current time. With T097 and T098 this passes T093.
+- [X] T100 [P] [US4] Implement the agent schemas and actions:
   - `src/features/agents/schemas.ts`; services `saveAgent` and `setAgentActive` in `src/features/agents/services/agents.ts` (`setAgentActive` calls `deleteSessionsForSubject` on deactivation); wrappers in `src/features/agents/actions.ts`;
   - add `listAgents` to `src/features/agents/queries.ts`.
   - This passes T094.
-- [ ] T101 [US4] Implement `listKitchensForAdmin({status?, type?, q?})` in `src/features/kitchens/queries.ts`, where `q` matches either name (ILIKE) or any contact or sign-in phone, and `getKitchenForAdmin(id)` (profile, contacts, sign-ins, hours, verification, status)
-- [ ] T102 [P] [US4] Create the admin kitchen components in `src/features/kitchens/components/admin/`:
+- [X] T101 [US4] Implement `listKitchensForAdmin({status?, type?, q?})` in `src/features/kitchens/queries.ts`, where `q` matches either name (ILIKE) or any contact or sign-in phone, and `getKitchenForAdmin(id)` (profile, contacts, sign-ins, hours, verification, status)
+- [X] T102 [P] [US4] Create the admin kitchen components in `src/features/kitchens/components/admin/`:
   - `partner-table.tsx`: status and type filters, search box, status badges;
   - `kitchen-profile-form.tsx`: bilingual fields, contact repeater with a primary radio, sign-in list repeater on create, photo;
   - `signin-list.tsx`: add and remove, with the last entry protected;
   - `verification-panel.tsx`: kind fixed by type, reference input, and the translated label "Recorded by admin, not checked with FSSAI";
   - `status-panel.tsx`: activate, suspend with reason, move to pending.
   - Every form keeps the values the user entered and shows field-level errors (from translation keys) after a failed save; nothing is cleared until a save succeeds (FR-048).
-- [ ] T103 [P] [US4] Create the agent components `src/features/agents/components/agent-table.tsx` and `agent-form.tsx` (name, phone, translated vehicle type select, registration, active switch)
+- [X] T103 [P] [US4] Create the agent components `src/features/agents/components/agent-table.tsx` and `agent-form.tsx` (name, phone, translated vehicle type select, registration, active switch)
   - Every form keeps the values the user entered and shows field-level errors (from translation keys) after a failed save; nothing is cleared until a save succeeds (FR-048).
-- [ ] T104 [US4] Create the admin partner pages in `src/app/(admin)/admin/(protected)/partners/`:
+- [X] T104 [US4] Create the admin partner pages in `src/app/(admin)/admin/(protected)/partners/`:
   - replace `page.tsx` with the list;
   - `new/page.tsx`;
   - `[id]/page.tsx`: profile, sign-in list, verification and status;
   - `[id]/hours/page.tsx`, `[id]/menu/page.tsx`, `[id]/menu/categories/new/page.tsx`, `[id]/menu/categories/[categoryId]/page.tsx`, `[id]/menu/dishes/new/page.tsx` and `[id]/menu/dishes/[dishId]/page.tsx`, reusing the US3 editors with `kitchenId` and `showLastChanged`.
   - Every page calls `requireSession('admin')` itself.
-- [ ] T105 [P] [US4] Create the admin agent pages: `src/app/(admin)/admin/(protected)/agents/page.tsx`, `agents/new/page.tsx` and `agents/[id]/page.tsx`. Each page calls `requireSession('admin')` itself.
-- [ ] T106 [US4] Add the US4 message keys (`admin.*`, `verification.*`, `agentAdmin.*`, and `errors.signinPhoneTaken`, `errors.lastSignin`, `errors.kindMismatch`, `errors.needsVerification`, `errors.reasonRequired`, `errors.pureVegConflict`, `errors.agentPhoneTaken`) to `en.json` and `kn.json`, and update `machine-drafted.json`
+- [X] T105 [P] [US4] Create the admin agent pages: `src/app/(admin)/admin/(protected)/agents/page.tsx`, `agents/new/page.tsx` and `agents/[id]/page.tsx`. Each page calls `requireSession('admin')` itself.
+- [X] T106 [US4] Add the US4 message keys (`admin.*`, `verification.*`, `agentAdmin.*`, and `errors.signinPhoneTaken`, `errors.lastSignin`, `errors.kindMismatch`, `errors.needsVerification`, `errors.reasonRequired`, `errors.pureVegConflict`, `errors.agentPhoneTaken`) to `en.json` and `kn.json`, and update `machine-drafted.json`
 
 **Checkpoint**: US4 works with US2 and US3. T093–T095 pass.
 
