@@ -7,7 +7,7 @@ means not built in the POC.
 
 | Capability | POC status | Stand-in behaviour | Owning feature |
 |---|---|---|---|
-| Phone + OTP login | Stand-in (code delivery only) | No message sent; code is always 123456 and the screen says so. Customers self-register with any valid number; partner, agent and admin numbers must be pre-registered by an admin. A demo-only panel on each sign-in screen lists that role's demo accounts | 001 |
+| Phone + OTP login | Stand-in (code delivery only) | No message sent; code is always 123456 and the screen says so. Customers self-register with any valid number; partner and agent numbers must be registered by an admin; admins come from demo data. A demo-only panel on each sign-in screen lists that role's demo accounts | 001 |
 | Browse / search / filter kitchens | Real | | 001 |
 | Partner menu, prices, availability, hours | Real | | 001 |
 | Admin onboarding of partners and agents | Real | FSSAI / hygiene verification is a stand-in: admin records a reference and marks it verified; no registry lookup | 001 |

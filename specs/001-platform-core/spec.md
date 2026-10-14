@@ -39,6 +39,13 @@ Ordering is the next feature and is out of scope, so no cart." (full description
 - Q: What can a partner do while their kitchen is Suspended? → A: Sign in and edit menu and hours,
   with a notice showing the suspension reason (same as Pending).
 
+### Session 2026-10-14
+
+- Q: Is the demo data fictional or based on real Honnavar businesses? → A: Based on real Honnavar
+  businesses with researched menus and indicative prices; dishes are fabricated only where a menu
+  could not be obtained. The researched catalogue is supplied separately later; until then the
+  current outline stands in.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Browse kitchens and read a menu in my language (Priority: P1)
@@ -459,9 +466,11 @@ gone and the seeded accounts work.
 **Demo data**
 
 - **FR-049**: A single step MUST reset all data to the same known demo state.
-- **FR-050**: The demo state MUST contain at least eight fictional kitchens in Honnavar covering all
-  three types (at least three restaurants, three home kitchens and two cloud kitchens), a mix of
-  pure-veg and non-veg, with local dishes (for example neer dosa, kori rotti, fish curry meals,
+- **FR-050**: The demo state MUST contain at least eight kitchens based on real Honnavar
+  businesses, with researched menus and indicative prices (dishes fabricated only where a menu could
+  not be obtained), covering all three types (at least three restaurants, three home kitchens and
+  two cloud kitchens), a mix of pure-veg and non-veg, with local dishes (for example neer dosa,
+  kane fry, fish curry meals,
   goli baje, patrode, kotte kadubu, holige) and local landmarks (for example the bus stand, the
   Sharavathi bridge, Kasarkod and the market road).
 - **FR-051**: The demo state MUST include at least: one kitchen with a dish missing its Kannada
@@ -574,7 +583,9 @@ Per Constitution Principle III and `docs/fidelity-matrix.md`:
 - **Sessions** last until sign-out or expiry on that device; sessions are per surface.
 - **Refusing unregistered staff numbers** with a clear message is acceptable; revealing that a
   number is not registered as a partner/agent/admin is a low risk for this POC.
-- **Seed content is fictional**: kitchen names and people in the demo data are invented and do not
-  represent real Honnavar businesses.
+- **Seed content is based on real Honnavar businesses**: menus are researched, prices are
+  indicative, and dishes are fabricated only where a menu could not be obtained. The researched
+  catalogue will be supplied separately later; until then the current outline catalogue stands in,
+  and replacing it must not require changes to the product.
 - **Dependencies**: none on earlier features; this is the first feature. Feature 002 (ordering)
   builds on the accounts, kitchens and menus defined here.
