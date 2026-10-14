@@ -32,6 +32,7 @@
     "agentAdmin",
     "filters",
     "dishFilter",
-    "search"
+    "search",
+    "demo"
   ]
 }

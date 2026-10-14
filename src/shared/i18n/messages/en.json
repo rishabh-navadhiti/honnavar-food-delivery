@@ -389,5 +389,13 @@
     "noResultsTitle": "Nothing found for “{q}”",
     "noResultsBody": "Try a shorter word, the other language, or clear the dish filter.",
     "tooShort": "Type at least 2 letters."
+  },
+  "demo": {
+    "title": "Demo only",
+    "body": "Shown only in demo deployments. No SMS is sent: every account uses the code {code}.",
+    "accounts": "Demo accounts",
+    "customerHint": "Any 10-digit mobile number also works for customers.",
+    "inactive": "inactive",
+    "none": "No accounts for this app yet."
   }
 }

@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { getOptionalSession } from '../session';
 import { safeNext, type Surface } from '../surfaces';
+import { DemoPanel } from '../../demo/components/demo-panel';
 import { SignInForm } from './sign-in-form';
 
 const titles: Record<Surface, string> = {
@@ -21,6 +22,7 @@ export async function LoginScreen({ surface, next, below }: { surface: Surface; 
       <h1 className="text-2xl font-bold">{t(titles[surface])}</h1>
       <p className="text-base text-muted">{surface === 'customer' ? t('customerIntro') : t('staffIntro')}</p>
       <SignInForm surface={surface} next={next} />
+      <DemoPanel surface={surface} />
       {below}
     </div>
   );

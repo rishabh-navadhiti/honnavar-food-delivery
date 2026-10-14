@@ -706,8 +706,8 @@ listing that role's accounts and the fixed code.
 
 ### Tests for User Story 6
 
-- [ ] T117 [P] [US6] Write the integration test `src/features/demo/reset.int.test.ts`. It runs `resetDemo` (T054) against `TEST_DATABASE_URL`, changes a dish and a kitchen status, resets again, and asserts that every table's contents equal the first reset, apart from the temporarily closed kitchen's `closed_at` and `reopens_at`.
-- [ ] T118 [P] [US6] Write the end-to-end test `e2e/us6-demo-reset.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
+- [X] T117 [P] [US6] Write the integration test `src/features/demo/reset.int.test.ts`. It runs `resetDemo` (T054) against `TEST_DATABASE_URL`, changes a dish and a kitchen status, resets again, and asserts that every table's contents equal the first reset, apart from the temporarily closed kitchen's `closed_at` and `reopens_at`.
+- [X] T118 [P] [US6] Write the end-to-end test `e2e/us6-demo-reset.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
   - sign in as `kitchenWithHelper().helperPhone` and mark `availableDishIn(kitchen.key)` unavailable;
   - run `npm run demo:reset` via `child_process.execSync`;
   - check the dish is available again on the customer page, and the helper can sign in again.
@@ -715,9 +715,9 @@ listing that role's accounts and the fixed code.
 
 ### Implementation for User Story 6
 
-- [ ] T119 [US6] Create `getDemoAccounts(surface)` in `src/features/demo/queries.ts`, which reads the current registrations (admins, agents with active flag, kitchen sign-ins with kitchen name, customers), and `src/features/demo/components/demo-panel.tsx`. The panel renders only when `env.DEMO_MODE` is true, is clearly labelled "Demo only", lists name, role detail and number, and shows the fixed code (FR-011).
-- [ ] T120 [US6] Render `demo-panel` below the form in all four login pages: `src/app/(customer)/login/page.tsx`, `src/app/(partner)/partner/login/page.tsx`, `src/app/(agent)/agent/login/page.tsx` and `src/app/(admin)/admin/login/page.tsx`
-- [ ] T121 [US6] Add the US6 message keys (`demo.*`) to `en.json` and `kn.json`, and update `machine-drafted.json`
+- [X] T119 [US6] Create `getDemoAccounts(surface)` in `src/features/demo/queries.ts`, which reads the current registrations (admins, agents with active flag, kitchen sign-ins with kitchen name, customers), and `src/features/demo/components/demo-panel.tsx`. The panel renders only when `env.DEMO_MODE` is true, is clearly labelled "Demo only", lists name, role detail and number, and shows the fixed code (FR-011).
+- [X] T120 [US6] Render `demo-panel` below the form in all four login pages: `src/app/(customer)/login/page.tsx`, `src/app/(partner)/partner/login/page.tsx`, `src/app/(agent)/agent/login/page.tsx` and `src/app/(admin)/admin/login/page.tsx`
+- [X] T121 [US6] Add the US6 message keys (`demo.*`) to `en.json` and `kn.json`, and update `machine-drafted.json`
 
 **Checkpoint**: All stories work on their own. T117 and T118 pass.
 
