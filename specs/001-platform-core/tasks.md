@@ -372,11 +372,11 @@ category, calls it, and switches language with full parity.
 
 ### Tests for User Story 1
 
-- [ ] T061 [P] [US1] Write a failing integration test `src/features/browse/queries.int.test.ts`:
+- [X] T061 [P] [US1] Write a failing integration test `src/features/browse/queries.int.test.ts`:
   - `listKitchensForCustomer({ now, locale })` returns only `active` kitchens (FR-023), each with a computed state, open kitchens first and then by localised name;
   - `getKitchenForCustomer(id)` returns null for pending, suspended or unknown ids;
   - it returns categories and dishes in `position` order, includes unavailable dishes flagged, and includes contacts with the primary first and the weekly hours.
-- [ ] T062 [P] [US1] Write the end-to-end test `e2e/us1-browse.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
+- [X] T062 [P] [US1] Write the end-to-end test `e2e/us1-browse.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
   - the home page lists exactly `activeKitchens().length` cards, and the names of `pendingKitchen()` and `suspendedKitchen()` are absent;
   - `temporarilyClosedKitchen()`'s card shows "Temporarily closed";
   - opening an active kitchen shows its categories, and the call link has `href="tel:<its primary contact>"`;
@@ -387,23 +387,23 @@ category, calls it, and switches language with full parity.
 
 ### Implementation for User Story 1
 
-- [ ] T063 [US1] Implement `src/features/browse/queries.ts` (`server-only`) with `listKitchensForCustomer` and `getKitchenForCustomer`, using `kitchenState` (T026) and returning plain serialisable view models, to pass T061
-- [ ] T064 [P] [US1] Create the kitchen card `src/features/browse/components/kitchen-card.tsx`:
+- [X] T063 [US1] Implement `src/features/browse/queries.ts` (`server-only`) with `listKitchensForCustomer` and `getKitchenForCustomer`, using `kitchenState` (T026) and returning plain serialisable view models, to pass T061
+- [X] T064 [P] [US1] Create the kitchen card `src/features/browse/components/kitchen-card.tsx`:
   - photo through `next/image` with the loader (T043), `loading="lazy"` and `sizes`, falling back to `placeholder-image`;
   - `localized-text` name with fallback marker;
   - kitchen type badge, "Pure veg" badge when declared, and the state label.
-- [ ] T065 [P] [US1] Create `src/features/browse/components/kitchen-state-label.tsx`. It renders Open, "Closed · opens {day} {time}", "Temporarily closed · opens {time}" or "Hours not set" with `formatTime` and `formatWeekday` (T033).
-- [ ] T066 [US1] Create the home page `src/app/(customer)/page.tsx`. It reads the locale and lists kitchens with `kitchen-card`, and shows `empty-state` when there are none.
-- [ ] T067 [P] [US1] Create the menu components in `src/features/browse/components/`:
+- [X] T065 [P] [US1] Create `src/features/browse/components/kitchen-state-label.tsx`. It renders Open, "Closed · opens {day} {time}", "Temporarily closed · opens {time}" or "Hours not set" with `formatTime` and `formatWeekday` (T033).
+- [X] T066 [US1] Create the home page `src/app/(customer)/page.tsx`. It reads the locale and lists kitchens with `kitchen-card`, and shows `empty-state` when there are none.
+- [X] T067 [P] [US1] Create the menu components in `src/features/browse/components/`:
   - `menu-section.tsx`: category heading via `localized-text`;
   - `dish-row.tsx`: photo or placeholder, name and description with fallback marker, `formatPrice`, `veg-mark`, and dimmed with a "Not available" label when unavailable (FR-045);
   - `hours-table.tsx`: the full week from `formatWeekday`, "Closed" days, up to 2 ranges;
   - `call-button.tsx`: a `tel:` link with a large touch target to the primary contact.
-- [ ] T068 [US1] Create the kitchen page `src/app/(customer)/kitchens/[id]/page.tsx`:
+- [X] T068 [US1] Create the kitchen page `src/app/(customer)/kitchens/[id]/page.tsx`:
   - validate `id` as a uuid with Zod, calling `notFound()` on failure or a null result;
   - show the header (photo, name, description, type, pure-veg badge, state, landmark, address), the call button, hours and the menu;
   - show "Menu coming soon" when there are no categories or dishes.
-- [ ] T069 [US1] Add the US1 message keys (`home.*`, `kitchen.*`, `menu.*`, `hours.*`) to `src/shared/i18n/messages/en.json` and `kn.json`, and list the drafted Kannada keys in `machine-drafted.json`
+- [X] T069 [US1] Add the US1 message keys (`home.*`, `kitchen.*`, `menu.*`, `hours.*`) to `src/shared/i18n/messages/en.json` and `kn.json`, and list the drafted Kannada keys in `machine-drafted.json`
 
 **Checkpoint**: US1 works on its own. T061 and T062 pass.
 

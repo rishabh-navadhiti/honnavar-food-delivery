@@ -12,6 +12,10 @@
     "placeholder",
     "errors",
     "surface",
-    "nav"
+    "nav",
+    "home",
+    "kitchen",
+    "menu",
+    "hours"
   ]
 }

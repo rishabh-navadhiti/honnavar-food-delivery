@@ -126,5 +126,27 @@
     "partners": "ಪಾಲುದಾರರು",
     "agents": "ಡೆಲಿವರಿ ಸಿಬ್ಬಂದಿ",
     "mainNavigation": "ಮುಖ್ಯ ಸಂಚಾರ"
+  },
+  "home": {
+    "title": "ಹೊನ್ನಾವರದ ಅಡುಗೆಮನೆಗಳು",
+    "emptyTitle": "ಇನ್ನೂ ಯಾವುದೇ ಅಡುಗೆಮನೆ ಇಲ್ಲ",
+    "emptyBody": "ದಯವಿಟ್ಟು ಸ್ವಲ್ಪ ಸಮಯದ ನಂತರ ನೋಡಿ."
+  },
+  "kitchen": {
+    "call": "ಅಡುಗೆಮನೆಗೆ ಕರೆ ಮಾಡಿ",
+    "callLabel": "{phone} ಸಂಖ್ಯೆಗೆ ಅಡುಗೆಮನೆಗೆ ಕರೆ ಮಾಡಿ",
+    "hoursTitle": "ತೆರೆಯುವ ಸಮಯ",
+    "menuTitle": "ಮೆನು",
+    "addressTitle": "ವಿಳಾಸ",
+    "menuComingSoon": "ಮೆನು ಶೀಘ್ರದಲ್ಲೇ ಬರಲಿದೆ",
+    "allKitchens": "ಎಲ್ಲಾ ಅಡುಗೆಮನೆಗಳು"
+  },
+  "menu": {
+    "notAvailable": "ಲಭ್ಯವಿಲ್ಲ"
+  },
+  "hours": {
+    "closed": "ಮುಚ್ಚಿದೆ",
+    "range": "{opens} – {closes}",
+    "today": "ಇಂದು"
   }
 }

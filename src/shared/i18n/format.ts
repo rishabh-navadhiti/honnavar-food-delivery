@@ -71,3 +71,8 @@ export function formatDayTime(instant: Date, locale: Locale): string {
   }
   return `${f.format(instant)}, ${formatTime(instant, locale)}`;
 }
+
+/** A 10-digit Indian mobile number grouped for reading: "90000 01001". */
+export function formatPhone(phone: string): string {
+  return phone.length === 10 ? `${phone.slice(0, 5)} ${phone.slice(5)}` : phone;
+}

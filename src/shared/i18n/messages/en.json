@@ -126,5 +126,27 @@
     "partners": "Partners",
     "agents": "Delivery agents",
     "mainNavigation": "Main navigation"
+  },
+  "home": {
+    "title": "Kitchens in Honnavar",
+    "emptyTitle": "No kitchens yet",
+    "emptyBody": "Please check back soon."
+  },
+  "kitchen": {
+    "call": "Call kitchen",
+    "callLabel": "Call kitchen on {phone}",
+    "hoursTitle": "Opening hours",
+    "menuTitle": "Menu",
+    "addressTitle": "Address",
+    "menuComingSoon": "Menu coming soon",
+    "allKitchens": "All kitchens"
+  },
+  "menu": {
+    "notAvailable": "Not available"
+  },
+  "hours": {
+    "closed": "Closed",
+    "range": "{opens} – {closes}",
+    "today": "Today"
   }
 }

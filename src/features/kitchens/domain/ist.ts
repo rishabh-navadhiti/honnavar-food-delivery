@@ -26,3 +26,8 @@ export function istInstant(dayStartUtcMs: number, dayOffset: number, minutes: nu
 export function addDays(weekday: Weekday, offset: number): Weekday {
   return ((((weekday - 1 + offset) % 7) + 7) % 7 + 1) as Weekday;
 }
+
+/** Whole IST calendar days from `from` to `to` (0 = same IST day, 1 = next day). */
+export function istDaysBetween(from: Date, to: Date): number {
+  return Math.round((toIst(to).dayStartUtcMs - toIst(from).dayStartUtcMs) / DAY);
+}
