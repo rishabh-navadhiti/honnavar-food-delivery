@@ -16,3 +16,18 @@ export async function currentActor(surface: 'partner' | 'admin'): Promise<Actor 
   return { role: 'admin', phone: session.phone, adminId: session.subjectId };
 }
 
+
+/**
+ * Kitchen operations are shared by the partner and admin surfaces (FR-054). The form says which
+ * surface it was rendered on; that only selects which session cookie to check, never grants access.
+ */
+export async function actorFromForm(formData: FormData): Promise<Actor | null> {
+  const surface = formData.get('surface');
+  if (surface !== 'partner' && surface !== 'admin') return null;
+  return currentActor(surface);
+}
+
+/** Where the kitchen editors live on each surface. */
+export function editorBasePath(actor: Actor, kitchenId: string): string {
+  return actor.role === 'partner' ? '/partner' : `/admin/partners/${kitchenId}`;
+}

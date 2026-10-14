@@ -105,7 +105,8 @@
     "contactRequired": "Add at least one contact number.",
     "signinRequired": "Add at least one sign-in number.",
     "duplicatePhone": "This number is listed twice.",
-    "reorderMismatch": "The list changed. Please reload and try again."
+    "reorderMismatch": "The list changed. Please reload and try again.",
+    "notFound": "This item no longer exists. Please reload."
   },
   "surface": {
     "customer": "Order food in Honnavar",
@@ -184,9 +185,99 @@
     "vehicleReg": "Registration number"
   },
   "partner": {
-    "yourKitchen": "Your kitchen"
+    "yourKitchen": "Your kitchen",
+    "dashboardTitle": "Today",
+    "pendingNotice": "Customers can’t see your kitchen yet. It will appear once the Honnavar Food team verifies it. You can prepare your menu and hours now.",
+    "suspendedNotice": "Customers can’t see your kitchen because it is suspended. Reason: {reason}",
+    "customersSee": "What customers see now",
+    "missingTranslations": "{count, plural, one {# item needs} other {# items need}} a name in both languages.",
+    "fixTranslations": "Open menu",
+    "allTranslated": "Every item has a name in both languages."
   },
   "admin": {
     "partnersTitle": "Partners"
+  },
+  "closure": {
+    "closeNow": "Close for now",
+    "closeHelp": "Use this if you can’t take orders right now. The kitchen opens again automatically at its next opening time.",
+    "reopen": "Reopen",
+    "closedUntil": "Closed for now. Opens again {when}.",
+    "closedIndefinitely": "Closed for now, until you reopen."
+  },
+  "hoursEditor": {
+    "title": "Opening hours",
+    "help": "Up to two time ranges a day, for example lunch and dinner.",
+    "closedAllDay": "Closed all day",
+    "opens": "Opens",
+    "closes": "Closes",
+    "firstRange": "First time range",
+    "secondRange": "Second time range (optional)",
+    "midnightHint": "Use 00:00 as the closing time for midnight.",
+    "save": "Save hours",
+    "saved": "Hours saved"
+  },
+  "menuEditor": {
+    "title": "Menu",
+    "addCategory": "Add category",
+    "addDish": "Add dish",
+    "emptyTitle": "Your menu is empty",
+    "emptyBody": "Start by adding a category, such as Breakfast or Meals.",
+    "emptyCategory": "No dishes in this category yet.",
+    "missingEn": "English name missing",
+    "missingKn": "Kannada name missing",
+    "available": "Available",
+    "makeAvailable": "Mark available",
+    "makeUnavailable": "Mark not available",
+    "editCategory": "Edit category",
+    "editDish": "Edit {name}",
+    "moveUp": "Move {name} up",
+    "moveDown": "Move {name} down",
+    "savedNotice": "Saved.",
+    "missingKnReminder": "The Kannada name is missing. Add it so Kannada readers can read this dish.",
+    "missingEnReminder": "The English name is missing. Add it so English readers can read this dish."
+  },
+  "categoryForm": {
+    "newTitle": "New category",
+    "editTitle": "Edit category",
+    "nameEn": "Name in English",
+    "nameKn": "Name in Kannada",
+    "nameHint": "Fill in both if you can. At least one is needed.",
+    "delete": "Delete category"
+  },
+  "dishForm": {
+    "newTitle": "New dish",
+    "editTitle": "Edit dish",
+    "nameEn": "Dish name in English",
+    "nameKn": "Dish name in Kannada",
+    "descriptionEn": "Description in English",
+    "descriptionKn": "Description in Kannada",
+    "price": "Price in rupees",
+    "category": "Category",
+    "vegQuestion": "Veg or non-veg?",
+    "pureVegLocked": "This is a pure veg kitchen, so every dish is veg.",
+    "available": "Available to order",
+    "photo": "Photo",
+    "photoHint": "JPEG, PNG or WebP, up to 5 MB.",
+    "removePhoto": "Remove the current photo",
+    "save": "Save dish",
+    "delete": "Delete dish"
+  },
+  "lastChanged": {
+    "by": "Last changed by {role} {phone} · {when}",
+    "admin": "admin",
+    "partner": "partner"
+  },
+  "kitchenProfile": {
+    "title": "My kitchen",
+    "managedByTeam": "These details are managed by the Honnavar Food team. Call them to change anything here.",
+    "name": "Name",
+    "description": "Description",
+    "type": "Type",
+    "contacts": "Customer phone numbers",
+    "primary": "Main number",
+    "address": "Address",
+    "landmark": "Landmark",
+    "signins": "Numbers that can sign in",
+    "status": "Status"
   }
 }

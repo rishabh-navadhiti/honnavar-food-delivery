@@ -495,13 +495,13 @@ editors are built to be reused by admins (FR-054).
 
 ### Tests for User Story 3
 
-- [ ] T080 [P] [US3] Write a failing integration test `src/features/kitchens/services/operations.int.test.ts` against the services in `src/features/kitchens/services/operations.ts`, using test actors:
+- [X] T080 [P] [US3] Write a failing integration test `src/features/kitchens/services/operations.int.test.ts` against the services in `src/features/kitchens/services/operations.ts`, using test actors:
   - `closeTemporarily` sets `closed_at` and `reopens_at` via `closureEnd` and gives `already_closed` when repeated;
   - `reopen` clears both, or gives `not_closed`;
   - `saveHours` replaces all rows, rejects `range_order` and `range_overlap` per day, and recalculates `reopens_at` from `closed_at` while closed;
   - every write stamps `closure_*` or `hours_updated_by_role='partner'` with the phone and time;
   - a partner session can't act on another kitchen (`unauthorised`).
-- [ ] T081 [P] [US3] Write a failing integration test `src/features/menu/services/menu.int.test.ts` against the services in `src/features/menu/services/categories.ts` and `dishes.ts`, using test actors:
+- [X] T081 [P] [US3] Write a failing integration test `src/features/menu/services/menu.int.test.ts` against the services in `src/features/menu/services/categories.ts` and `dishes.ts`, using test actors:
   - `saveCategory` requires at least one name;
   - `deleteCategory` with dishes gives `category_not_empty`;
   - `reorderCategories` and `reorderDishes` require the exact id set;
@@ -511,7 +511,7 @@ editors are built to be reused by admins (FR-054).
   - `setDishAvailable` toggles without losing fields;
   - each write stamps `updated_by_*`;
   - a partner can't touch another kitchen's dish.
-- [ ] T082 [P] [US3] Write the end-to-end test `e2e/us3-partner.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`. Sign in as `kitchenWithHelper().helperPhone`, then:
+- [X] T082 [P] [US3] Write the end-to-end test `e2e/us3-partner.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`. Sign in as `kitchenWithHelper().helperPhone`, then:
   - mark `availableDishIn(kitchen.key)` unavailable, then check it is dimmed on `/kitchens/[id]`;
   - add a dish with only an English name, see the reminder, then check it appears on the customer menu;
   - mark the kitchen temporarily closed, then check the customer home shows "Temporarily closed" with a time;
@@ -522,30 +522,30 @@ editors are built to be reused by admins (FR-054).
 
 ### Implementation for User Story 3
 
-- [ ] T083 [US3] Create the Zod schemas in `src/features/kitchens/schemas.ts`:
+- [X] T083 [US3] Create the Zod schemas in `src/features/kitchens/schemas.ts`:
   - `rangeSchema` (`"HH:MM"` with opens < closes ≤ `"24:00"`);
   - `weekHoursSchema` (keys 1–7, 0–2 ranges, no overlap, error codes `range_order` and `range_overlap` per day, using `validateWeekHours`);
   - `kitchenIdInput` (optional uuid).
-- [ ] T084 [US3] Implement the services in `src/features/kitchens/services/operations.ts` and their action wrappers in `src/features/kitchens/actions/operations.ts`: `closeTemporarily({kitchenId?})`, `reopen({kitchenId?})` and `saveHours({kitchenId?, hours})`. They use `resolveKitchenScope` and `currentActor` (T049) and `closureEnd` (T028), revalidate the customer and partner paths, and pass T080.
-- [ ] T085 [US3] Create the menu Zod schemas in `src/features/menu/schemas.ts`:
+- [X] T084 [US3] Implement the services in `src/features/kitchens/services/operations.ts` and their action wrappers in `src/features/kitchens/actions/operations.ts`: `closeTemporarily({kitchenId?})`, `reopen({kitchenId?})` and `saveHours({kitchenId?, hours})`. They use `resolveKitchenScope` and `currentActor` (T049) and `closureEnd` (T028), revalidate the customer and partner paths, and pass T080.
+- [X] T085 [US3] Create the menu Zod schemas in `src/features/menu/schemas.ts`:
   - localised required and optional name fields with the data-model limits (category names 60; dish names 80; descriptions 300);
   - `priceRupees` integer 1–100000;
   - photo `File` optional (JPEG, PNG or WebP, ≤ 5 MB).
-- [ ] T086 [US3] Implement the category services in `src/features/menu/services/categories.ts` and their action wrappers in `src/features/menu/actions/categories.ts`: `saveCategory`, `deleteCategory` and `reorderCategories`. Admins and partners are both scoped through `resolveKitchenScope`.
-- [ ] T087 [US3] Implement the dish services in `src/features/menu/services/dishes.ts` and their action wrappers in `src/features/menu/actions/dishes.ts`: `saveDish`, `setDishAvailable`, `deleteDish` and `reorderDishes`. These enforce the pure-veg rule (FR-035), store photos via `storeImage`, clean up with `deleteImageIfUnused`, and return `missingLanguage`. Together with T086 this passes T081.
-- [ ] T088 [US3] Implement `getPartnerDashboard(kitchenId)` and `getKitchenMenuForEditor(kitchenId)` in `src/features/kitchens/queries.ts`. They return status, suspension reason, verification present, state, missing-language counts for categories and dishes (FR-036), and the full menu with each item's `updated_by_*` and `updated_at`.
-- [ ] T089 [P] [US3] Create the kitchen components in `src/features/kitchens/components/`:
+- [X] T086 [US3] Implement the category services in `src/features/menu/services/categories.ts` and their action wrappers in `src/features/menu/actions/categories.ts`: `saveCategory`, `deleteCategory` and `reorderCategories`. Admins and partners are both scoped through `resolveKitchenScope`.
+- [X] T087 [US3] Implement the dish services in `src/features/menu/services/dishes.ts` and their action wrappers in `src/features/menu/actions/dishes.ts`: `saveDish`, `setDishAvailable`, `deleteDish` and `reorderDishes`. These enforce the pure-veg rule (FR-035), store photos via `storeImage`, clean up with `deleteImageIfUnused`, and return `missingLanguage`. Together with T086 this passes T081.
+- [X] T088 [US3] Implement `getPartnerDashboard(kitchenId)` and `getKitchenMenuForEditor(kitchenId)` in `src/features/kitchens/queries.ts`. They return status, suspension reason, verification present, state, missing-language counts for categories and dishes (FR-036), and the full menu with each item's `updated_by_*` and `updated_at`.
+- [X] T089 [P] [US3] Create the kitchen components in `src/features/kitchens/components/`:
   - `status-notice.tsx`: pending ("customers can't see your kitchen until it is verified") or suspended (shows the admin's reason), per FR-037;
   - `closure-control.tsx`: "Close for now" or "Reopen", showing "opens again at {time}";
   - `hours-editor.tsx`: a client leaf with 7 day rows, a "closed" switch, up to 2 time ranges and per-day errors.
-- [ ] T090 [P] [US3] Create the menu components in `src/features/menu/components/`:
+- [X] T090 [P] [US3] Create the menu components in `src/features/menu/components/`:
   - `menu-editor.tsx`: lists categories and dishes with missing-language badges, available switches, and up/down reorder buttons;
   - `category-form.tsx`;
   - `dish-form.tsx`: en/kn names and descriptions, price, veg switch disabled with an explanation in a pure-veg kitchen, photo input, available switch;
   - `last-changed.tsx`: shows "changed by {role} {phone} · {time}" and is rendered only when the `showLastChanged` prop is true (admin, US4).
   - Every component takes `kitchenId?` and a `basePath` prop so the admin surface can reuse it.
   - Every form keeps the values the user entered and shows field-level errors (from translation keys) after a failed save; nothing is cleared until a save succeeds (FR-048).
-- [ ] T091 [US3] Create the partner pages in `src/app/(partner)/partner/(protected)/`:
+- [X] T091 [US3] Create the partner pages in `src/app/(partner)/partner/(protected)/`:
   - replace `page.tsx` with a dashboard: status notice, closure control, current state, missing translations count;
   - `menu/page.tsx`;
   - `menu/categories/new/page.tsx` and `menu/categories/[id]/page.tsx`;
@@ -554,7 +554,7 @@ editors are built to be reused by admins (FR-054).
   - `kitchen/page.tsx`, the read-only admin-managed profile (FR-038);
   - plus bottom navigation in `(protected)/layout.tsx`.
   - Every page above calls `requireSession('partner')` itself and scopes queries to the session's `kitchen_id`.
-- [ ] T092 [US3] Add the US3 message keys (`partner.*`, `menuEditor.*`, `hoursEditor.*`, `closure.*`, and `errors.rangeOrder`, `errors.rangeOverlap`, `errors.categoryNotEmpty`, `errors.pureVegKitchen`, `errors.invalidImage`) to `en.json` and `kn.json`, and update `machine-drafted.json`
+- [X] T092 [US3] Add the US3 message keys (`partner.*`, `menuEditor.*`, `hoursEditor.*`, `closure.*`, and `errors.rangeOrder`, `errors.rangeOverlap`, `errors.categoryNotEmpty`, `errors.pureVegKitchen`, `errors.invalidImage`) to `en.json` and `kn.json`, and update `machine-drafted.json`
 
 **Checkpoint**: US3 works with US2 sign-in. T080–T082 pass.
 

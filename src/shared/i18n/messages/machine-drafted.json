@@ -21,6 +21,13 @@
     "account",
     "agent",
     "partner",
-    "admin"
+    "admin",
+    "closure",
+    "hoursEditor",
+    "menuEditor",
+    "categoryForm",
+    "dishForm",
+    "lastChanged",
+    "kitchenProfile"
   ]
 }
