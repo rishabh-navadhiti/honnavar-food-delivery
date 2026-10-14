@@ -148,5 +148,45 @@
     "closed": "Closed",
     "range": "{opens} – {closes}",
     "today": "Today"
+  },
+  "auth": {
+    "customerTitle": "Sign in",
+    "customerIntro": "Sign in with your mobile number. You can browse kitchens without signing in.",
+    "partnerTitle": "Partner sign in",
+    "agentTitle": "Delivery agent sign in",
+    "adminTitle": "Admin sign in",
+    "staffIntro": "Only numbers registered by the Honnavar Food team can sign in here.",
+    "phoneLabel": "Mobile number",
+    "phoneHint": "10 digits, for example 98765 43210",
+    "getCode": "Get code",
+    "codeSentTo": "Enter the code for {phone}.",
+    "codeLabel": "6-digit code",
+    "signIn": "Sign in",
+    "changeNumber": "Change number",
+    "demoNotice": "Demo: no SMS is sent. Use the demo code."
+  },
+  "account": {
+    "title": "My account",
+    "phone": "Mobile number",
+    "displayName": "Your name",
+    "displayNameHint": "Optional. Helps the kitchen recognise you.",
+    "saveName": "Save name",
+    "nameSaved": "Name saved"
+  },
+  "agent": {
+    "noDeliveriesTitle": "No deliveries yet",
+    "noDeliveriesBody": "Deliveries assigned to you will appear here.",
+    "greeting": "Hello, {name}",
+    "profileTitle": "My profile",
+    "name": "Name",
+    "phone": "Mobile number",
+    "vehicle": "Vehicle",
+    "vehicleReg": "Registration number"
+  },
+  "partner": {
+    "yourKitchen": "Your kitchen"
+  },
+  "admin": {
+    "partnersTitle": "Partners"
   }
 }

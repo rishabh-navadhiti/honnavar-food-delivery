@@ -16,6 +16,11 @@
     "home",
     "kitchen",
     "menu",
-    "hours"
+    "hours",
+    "auth",
+    "account",
+    "agent",
+    "partner",
+    "admin"
   ]
 }

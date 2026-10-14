@@ -148,5 +148,45 @@
     "closed": "ಮುಚ್ಚಿದೆ",
     "range": "{opens} – {closes}",
     "today": "ಇಂದು"
+  },
+  "auth": {
+    "customerTitle": "ಸೈನ್ ಇನ್",
+    "customerIntro": "ನಿಮ್ಮ ಮೊಬೈಲ್ ಸಂಖ್ಯೆಯಿಂದ ಸೈನ್ ಇನ್ ಮಾಡಿ. ಸೈನ್ ಇನ್ ಮಾಡದೆಯೂ ಅಡುಗೆಮನೆಗಳನ್ನು ನೋಡಬಹುದು.",
+    "partnerTitle": "ಪಾಲುದಾರರ ಸೈನ್ ಇನ್",
+    "agentTitle": "ಡೆಲಿವರಿ ಸಿಬ್ಬಂದಿ ಸೈನ್ ಇನ್",
+    "adminTitle": "ನಿರ್ವಾಹಕರ ಸೈನ್ ಇನ್",
+    "staffIntro": "Honnavar Food ತಂಡ ನೋಂದಾಯಿಸಿದ ಸಂಖ್ಯೆಗಳು ಮಾತ್ರ ಇಲ್ಲಿ ಸೈನ್ ಇನ್ ಮಾಡಬಹುದು.",
+    "phoneLabel": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+    "phoneHint": "10 ಅಂಕಿಗಳು, ಉದಾಹರಣೆಗೆ 98765 43210",
+    "getCode": "ಕೋಡ್ ಪಡೆಯಿರಿ",
+    "codeSentTo": "{phone} ಸಂಖ್ಯೆಯ ಕೋಡ್ ನಮೂದಿಸಿ.",
+    "codeLabel": "6 ಅಂಕಿಯ ಕೋಡ್",
+    "signIn": "ಸೈನ್ ಇನ್",
+    "changeNumber": "ಸಂಖ್ಯೆ ಬದಲಿಸಿ",
+    "demoNotice": "ಡೆಮೊ: ಯಾವುದೇ SMS ಕಳುಹಿಸಲಾಗುವುದಿಲ್ಲ. ಡೆಮೊ ಕೋಡ್ ಬಳಸಿ."
+  },
+  "account": {
+    "title": "ನನ್ನ ಖಾತೆ",
+    "phone": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+    "displayName": "ನಿಮ್ಮ ಹೆಸರು",
+    "displayNameHint": "ಐಚ್ಛಿಕ. ಅಡುಗೆಮನೆಗೆ ನಿಮ್ಮನ್ನು ಗುರುತಿಸಲು ನೆರವಾಗುತ್ತದೆ.",
+    "saveName": "ಹೆಸರು ಉಳಿಸಿ",
+    "nameSaved": "ಹೆಸರು ಉಳಿಸಲಾಗಿದೆ"
+  },
+  "agent": {
+    "noDeliveriesTitle": "ಇನ್ನೂ ಯಾವುದೇ ಡೆಲಿವರಿ ಇಲ್ಲ",
+    "noDeliveriesBody": "ನಿಮಗೆ ನೀಡಲಾದ ಡೆಲಿವರಿಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ.",
+    "greeting": "ನಮಸ್ಕಾರ, {name}",
+    "profileTitle": "ನನ್ನ ಪ್ರೊಫೈಲ್",
+    "name": "ಹೆಸರು",
+    "phone": "ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+    "vehicle": "ವಾಹನ",
+    "vehicleReg": "ನೋಂದಣಿ ಸಂಖ್ಯೆ"
+  },
+  "partner": {
+    "yourKitchen": "ನಿಮ್ಮ ಅಡುಗೆಮನೆ"
+  },
+  "admin": {
+    "partnersTitle": "ಪಾಲುದಾರರು"
   }
 }

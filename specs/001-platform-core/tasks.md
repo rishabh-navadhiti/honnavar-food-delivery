@@ -426,13 +426,13 @@ self-register; partners, agents and admins must be registered. Agents see their 
 
 ### Tests for User Story 2
 
-- [ ] T070 [P] [US2] Write a failing integration test `src/features/auth/services/sign-in.int.test.ts` against the services in `src/features/auth/services/sign-in.ts` (not the action wrappers):
+- [X] T070 [P] [US2] Write a failing integration test `src/features/auth/services/sign-in.int.test.ts` against the services in `src/features/auth/services/sign-in.ts` (not the action wrappers):
   - `requestCode` gives `invalid` for a bad phone; `not_registered` for an unregistered number on partner, agent or admin (and for a kitchen *contact* number that is not on its sign-in list, FR-053); `inactive` for an inactive agent;
   - `verifyCode` returns `{ token }` for the new session; with the right code it creates a `customers` row on first customer sign-in (FR-005) and creates a session for each surface; the wrong code gives `wrong_code`;
   - registration is re-checked in `verifyCode` (an agent deactivated between the two steps gives `inactive`);
   - `signOut` deletes the session;
   - `updateCustomerName` trims and limits to 60 characters.
-- [ ] T071 [P] [US2] Write the end-to-end test `e2e/us2-sign-in.spec.ts` (mobile), selecting accounts only through `e2e/catalogue.ts`:
+- [X] T071 [P] [US2] Write the end-to-end test `e2e/us2-sign-in.spec.ts` (mobile), selecting accounts only through `e2e/catalogue.ts`:
   - customer sign-in with a new number (outside the catalogue) reaches `/account`;
   - partner sign-in with `kitchenWithHelper().helperPhone` reaches `/partner` showing that kitchen's name;
   - `inactiveAgent()` sees the refusal message;
@@ -445,35 +445,35 @@ self-register; partners, agents and admins must be registered. Agents see their 
 
 ### Implementation for User Story 2
 
-- [ ] T072 [US2] Create the Zod schemas in `src/features/auth/schemas.ts`: `surface` enum; `phone` (string transformed by `normalizePhone`, error key `errors.invalidPhone`); `code` (`/^\d{6}$/`); `displayName` (trimmed, ≤ 60, may be empty); `next` (optional string that must start with the surface prefix).
-- [ ] T073 [US2] Implement the services in `src/features/auth/services/sign-in.ts` (no `next/*` imports; `verifyCode` returns `{ token }`) and the action wrappers in `src/features/auth/actions.ts` (`requestCodeAction`, `verifyCodeAction`, `signOutAction`, `updateCustomerNameAction`), which set and clear the surface cookie and redirect:
+- [X] T072 [US2] Create the Zod schemas in `src/features/auth/schemas.ts`: `surface` enum; `phone` (string transformed by `normalizePhone`, error key `errors.invalidPhone`); `code` (`/^\d{6}$/`); `displayName` (trimmed, ≤ 60, may be empty); `next` (optional string that must start with the surface prefix).
+- [X] T073 [US2] Implement the services in `src/features/auth/services/sign-in.ts` (no `next/*` imports; `verifyCode` returns `{ token }`) and the action wrappers in `src/features/auth/actions.ts` (`requestCodeAction`, `verifyCodeAction`, `signOutAction`, `updateCustomerNameAction`), which set and clear the surface cookie and redirect:
   - `requestCode({surface, phone})` and `verifyCode({surface, phone, code, next?})`, with registration lookups: customers always; partner by `kitchen_signins.phone`; agent by `agents.phone` and `active`; admin by `admins.phone`;
   - both call `otpProvider` (T045);
   - on success create the session, set the surface cookie and redirect;
   - `signOut({surface})` and `updateCustomerName`.
   - This passes T070.
-- [ ] T074 [US2] Create `src/features/auth/components/sign-in-form.tsx`, a client leaf using `useActionState`:
+- [X] T074 [US2] Create `src/features/auth/components/sign-in-form.tsx`, a client leaf using `useActionState`:
   - step 1 is a tel input (`inputMode="numeric"`, `autoComplete="tel"`);
   - step 2 is a code input (`inputMode="numeric"`, `autoComplete="one-time-code"`) with a "change number" link;
   - both show translated field and form errors;
   - it shows the notice "Demo: no SMS is sent; use the demo code" (FR-004).
-- [ ] T075 [P] [US2] Create the four login pages:
+- [X] T075 [P] [US2] Create the four login pages:
   - `src/app/(customer)/login/page.tsx`;
   - `src/app/(partner)/partner/login/page.tsx`;
   - `src/app/(agent)/agent/login/page.tsx`;
   - `src/app/(admin)/admin/login/page.tsx`.
   - Each renders `sign-in-form` with its surface and a role-specific heading, and redirects to the surface home if already signed in.
-- [ ] T076 [P] [US2] Create the customer account page `src/app/(customer)/account/page.tsx`. The page calls `requireSession('customer')` itself (redirect to `/login`) and shows the phone, a display-name form (`updateCustomerName`) and sign-out (FR-010).
-- [ ] T077 [P] [US2] Create the agent screens:
+- [X] T076 [P] [US2] Create the customer account page `src/app/(customer)/account/page.tsx`. The page calls `requireSession('customer')` itself (redirect to `/login`) and shows the phone, a display-name form (`updateCustomerName`) and sign-out (FR-010).
+- [X] T077 [P] [US2] Create the agent screens:
   - `src/features/agents/queries.ts` with `getAgentProfile(agentId)`;
   - `src/app/(agent)/agent/(protected)/page.tsx` with the "No deliveries yet" empty state (FR-046);
   - `src/app/(agent)/agent/(protected)/profile/page.tsx` showing name, phone and translated vehicle type plus registration.
   - Each page calls `requireSession('agent')` itself.
-- [ ] T078 [P] [US2] Create the minimal landing pages:
+- [X] T078 [P] [US2] Create the minimal landing pages:
   - `src/app/(partner)/partner/(protected)/page.tsx` shows the signed-in kitchen's localised name and is extended in US3.
   - `src/app/(admin)/admin/(protected)/page.tsx` redirects to `/admin/partners`, with a placeholder `src/app/(admin)/admin/(protected)/partners/page.tsx` that is replaced in US4.
   - Each page calls `requireSession(surface)` itself (`'partner'` or `'admin'`).
-- [ ] T079 [US2] Add the US2 message keys (`auth.*`, `account.*`, `agent.*`, and `errors.notRegistered`, `errors.inactive`, `errors.wrongCode`) to `en.json` and `kn.json`, and update `machine-drafted.json`
+- [X] T079 [US2] Add the US2 message keys (`auth.*`, `account.*`, `agent.*`, and `errors.notRegistered`, `errors.inactive`, `errors.wrongCode`) to `en.json` and `kn.json`, and update `machine-drafted.json`
 
 **Checkpoint**: US1 and US2 work on their own. T070 and T071 pass.
 
