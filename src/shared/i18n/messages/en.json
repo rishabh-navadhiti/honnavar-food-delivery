@@ -1,0 +1,130 @@
+{
+  "common": {
+    "appName": "Honnavar Food",
+    "loading": "Loading…",
+    "retry": "Try again",
+    "genericErrorTitle": "Something went wrong",
+    "genericErrorBody": "Please check your connection and try again.",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "We could not find what you were looking for.",
+    "goHome": "Go to home",
+    "signOut": "Sign out",
+    "back": "Back",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Saved",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "add": "Add",
+    "remove": "Remove",
+    "moveUp": "Move up",
+    "moveDown": "Move down",
+    "yes": "Yes",
+    "no": "No",
+    "optional": "optional",
+    "english": "English",
+    "kannada": "Kannada"
+  },
+  "languageSwitch": {
+    "label": "ಕನ್ನಡ",
+    "ariaLabel": "Switch to Kannada"
+  },
+  "kitchenType": {
+    "restaurant": "Restaurant",
+    "home_kitchen": "Home kitchen",
+    "cloud_kitchen": "Cloud kitchen"
+  },
+  "kitchenState": {
+    "open": "Open now",
+    "closesAt": "Closes {time}",
+    "closedOpens": "Closed · opens {when}",
+    "temporarilyClosed": "Temporarily closed",
+    "temporarilyClosedUntil": "Temporarily closed · opens {when}",
+    "hoursNotSet": "Hours not set",
+    "today": "today {time}",
+    "tomorrow": "tomorrow {time}",
+    "onDay": "{day} {time}"
+  },
+  "veg": {
+    "veg": "Veg",
+    "nonVeg": "Non-veg",
+    "pureVeg": "Pure veg"
+  },
+  "status": {
+    "pending": "Pending verification",
+    "active": "Active",
+    "suspended": "Suspended"
+  },
+  "vehicleType": {
+    "bicycle": "Bicycle",
+    "two_wheeler": "Two-wheeler",
+    "other": "Other"
+  },
+  "fallback": {
+    "en": "English",
+    "kn": "Kannada",
+    "title": "Shown in {language} because this text has not been translated yet"
+  },
+  "placeholder": {
+    "kitchen": "No photo yet",
+    "dish": "No photo yet"
+  },
+  "errors": {
+    "invalid": "Please check the highlighted fields.",
+    "unauthorised": "Please sign in again.",
+    "unexpected": "Something went wrong. Please try again.",
+    "required": "This field is required.",
+    "tooLong": "This is too long.",
+    "nameRequired": "Enter a name in at least one language.",
+    "invalidPhone": "Enter a 10-digit mobile number.",
+    "invalidCode": "Enter the 6-digit code.",
+    "wrongCode": "That code is not right. Please try again.",
+    "notRegistered": "This number is not registered for this app. Please contact the Honnavar Food operations team.",
+    "inactive": "This account is not active. Please contact the Honnavar Food operations team.",
+    "rangeOrder": "Closing time must be after opening time.",
+    "rangeOverlap": "The two time ranges overlap.",
+    "tooManyRanges": "Up to two time ranges per day.",
+    "invalidTime": "Enter a valid time.",
+    "alreadyClosed": "The kitchen is already closed for now.",
+    "notClosed": "The kitchen is not closed.",
+    "categoryNotEmpty": "Move or delete the dishes in this category first.",
+    "pureVegKitchen": "This is a pure veg kitchen, so every dish must be veg.",
+    "invalidImage": "Use a JPEG, PNG or WebP photo up to 5 MB.",
+    "priceRange": "Enter a price between ₹1 and ₹1,00,000.",
+    "signinPhoneTaken": "This number already signs in to {kitchenName}.",
+    "lastSignin": "A kitchen needs at least one sign-in number.",
+    "kindMismatch": "This verification type does not match the kitchen type.",
+    "invalidFssai": "An FSSAI licence number has 14 digits.",
+    "invalidHygieneRef": "Enter a reference of 3 to 40 characters.",
+    "needsVerification": "Record verification before activating this kitchen.",
+    "reasonRequired": "Enter a reason for the suspension.",
+    "pureVegConflict": "This kitchen has {nonVegCount, plural, one {# non-veg dish} other {# non-veg dishes}}. Change or remove them first.",
+    "agentPhoneTaken": "This number is already registered to {agentName}.",
+    "primaryContactRequired": "Mark exactly one contact number as primary.",
+    "contactRequired": "Add at least one contact number.",
+    "signinRequired": "Add at least one sign-in number.",
+    "duplicatePhone": "This number is listed twice.",
+    "reorderMismatch": "The list changed. Please reload and try again."
+  },
+  "surface": {
+    "customer": "Order food in Honnavar",
+    "partner": "Partner app",
+    "agent": "Delivery app",
+    "admin": "Admin panel"
+  },
+  "nav": {
+    "signIn": "Sign in",
+    "account": "My account",
+    "home": "Home",
+    "dashboard": "Today",
+    "menu": "Menu",
+    "hours": "Hours",
+    "kitchen": "My kitchen",
+    "deliveries": "Deliveries",
+    "profile": "Profile",
+    "partners": "Partners",
+    "agents": "Delivery agents",
+    "mainNavigation": "Main navigation"
+  }
+}

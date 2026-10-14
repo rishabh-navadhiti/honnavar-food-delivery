@@ -1,0 +1,323 @@
+{
+  "notes": [
+    "STAND-IN CATALOGUE. Follows the outline in specs/001-platform-core/data-model.md until the researched catalogue of real Honnavar businesses replaces this file (spec FR-050). Every kitchen here is fabricated (menuSource: fabricated); names, people, prices and numbers are invented.",
+    "All Kannada text in this file was drafted by the agent and is pending native-speaker review.",
+    "All phone numbers use the demo block 90000xxxxx: kitchen contacts 90000010NN, admin 9000000001, customer 9000000101, agents 90000002NN, kitchen sign-ins 90000003NN (helper 9000000399).",
+    "Images are optional. Put files in seed/images/ named as in the `image` fields; a missing file falls back to the placeholder illustration."
+  ],
+  "admins": [{ "key": "demo-admin", "name": "Demo Admin", "phone": "9000000001" }],
+  "agents": [
+    { "key": "prakash", "name": "Prakash", "phone": "9000000201", "vehicleType": "two_wheeler", "vehicleReg": "KA47 H 1201", "active": true },
+    { "key": "suresh", "name": "Suresh", "phone": "9000000202", "vehicleType": "bicycle", "active": true },
+    { "key": "mahesh", "name": "Mahesh", "phone": "9000000203", "vehicleType": "two_wheeler", "vehicleReg": "KA47 J 3307", "active": false }
+  ],
+  "customers": [{ "key": "demo-customer", "phone": "9000000101", "displayName": "Demo Customer" }],
+  "kitchens": [
+    {
+      "key": "sharavathi-udupi-bhavana",
+      "name": { "en": "Sharavathi Udupi Bhavana", "kn": "ಶರಾವತಿ ಉಡುಪಿ ಭವನ" },
+      "description": {
+        "en": "Udupi-style vegetarian breakfasts and meals, served hot since morning.",
+        "kn": "ಬೆಳಗ್ಗೆಯಿಂದಲೇ ಬಿಸಿಬಿಸಿ ಉಡುಪಿ ಶೈಲಿಯ ಸಸ್ಯಾಹಾರಿ ತಿಂಡಿ ಮತ್ತು ಊಟ."
+      },
+      "type": "restaurant",
+      "pureVeg": true,
+      "address": "KSRTC Bus Stand Road, Honnavar",
+      "landmark": "Opposite KSRTC bus stand",
+      "contacts": [{ "phone": "9000001001", "isPrimary": true }],
+      "signins": [
+        { "phone": "9000000301", "personName": "Ganesh (owner)" },
+        { "phone": "9000000399", "personName": "Ravi (helper)" }
+      ],
+      "hours": { "everyDay": [{ "opens": "07:00", "closes": "15:00" }, { "opens": "17:00", "closes": "22:00" }] },
+      "status": "active",
+      "verification": { "kind": "fssai_licence", "reference": "21226010000101" },
+      "menuSource": "fabricated",
+      "sourceNote": "Stand-in: invented menu and prices.",
+      "image": "sharavathi-udupi-bhavana.jpg",
+      "categories": [
+        {
+          "key": "breakfast",
+          "name": { "en": "Breakfast", "kn": "ತಿಂಡಿ" },
+          "dishes": [
+            { "key": "neer-dose", "name": { "en": "Neer dose", "kn": "ನೀರ್ ದೋಸೆ" }, "description": { "en": "Soft rice crepes with coconut chutney.", "kn": "ತೆಂಗಿನಕಾಯಿ ಚಟ್ನಿಯೊಂದಿಗೆ ಮೃದುವಾದ ಅಕ್ಕಿ ದೋಸೆ." }, "priceRupees": 60, "isVeg": true, "image": "sharavathi-udupi-bhavana--neer-dose.jpg" },
+            { "key": "masale-dose", "name": { "en": "Masale dose", "kn": "ಮಸಾಲೆ ದೋಸೆ" }, "description": { "en": "Crisp dose with potato palya.", "kn": "ಆಲೂಗಡ್ಡೆ ಪಲ್ಯದೊಂದಿಗೆ ಗರಿಗರಿ ದೋಸೆ." }, "priceRupees": 70, "isVeg": true, "image": "sharavathi-udupi-bhavana--masale-dose.jpg" },
+            { "key": "idli-vade", "name": { "en": "Idli vade", "kn": "ಇಡ್ಲಿ ವಡೆ" }, "priceRupees": 50, "isVeg": true },
+            { "key": "goli-baje", "name": { "en": "Goli baje", "kn": "ಗೋಳಿ ಬಜೆ" }, "description": { "en": "Fluffy fritters, six pieces.", "kn": "ಮೃದುವಾದ ಬಜೆ, ಆರು ತುಂಡು." }, "priceRupees": 40, "isVeg": true }
+          ]
+        },
+        {
+          "key": "meals",
+          "name": { "en": "Meals", "kn": "ಊಟ" },
+          "dishes": [
+            { "key": "south-indian-meals", "name": { "en": "South Indian meals", "kn": "ದಕ್ಷಿಣ ಭಾರತೀಯ ಊಟ" }, "description": { "en": "Rice, saaru, sambar, palya, curd and pickle.", "kn": "ಅನ್ನ, ಸಾರು, ಸಾಂಬಾರ್, ಪಲ್ಯ, ಮೊಸರು ಮತ್ತು ಉಪ್ಪಿನಕಾಯಿ." }, "priceRupees": 120, "isVeg": true }
+          ]
+        },
+        {
+          "key": "drinks",
+          "name": { "en": "Drinks", "kn": "ಪಾನೀಯ" },
+          "dishes": [
+            { "key": "kashaya", "name": { "en": "Kashaya", "kn": "ಕಷಾಯ" }, "priceRupees": 20, "isVeg": true },
+            { "key": "filter-coffee", "name": { "en": "Filter coffee", "kn": "ಫಿಲ್ಟರ್ ಕಾಫಿ" }, "priceRupees": 25, "isVeg": true }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "sagara-fish-meals",
+      "name": { "en": "Sagara Fish Meals", "kn": "ಸಾಗರ ಮೀನೂಟ" },
+      "description": {
+        "en": "Fresh catch from the Honnavar port, coastal style.",
+        "kn": "ಹೊನ್ನಾವರ ಬಂದರಿನ ತಾಜಾ ಮೀನು, ಕರಾವಳಿ ಶೈಲಿಯಲ್ಲಿ."
+      },
+      "type": "restaurant",
+      "pureVeg": false,
+      "address": "Port Road, Honnavar",
+      "landmark": "Near Sharavathi bridge",
+      "contacts": [{ "phone": "9000001002", "isPrimary": true }, { "phone": "9000001012", "isPrimary": false }],
+      "signins": [{ "phone": "9000000302", "personName": "Nagesh (owner)" }],
+      "hours": { "everyDay": [{ "opens": "11:30", "closes": "15:30" }, { "opens": "19:00", "closes": "22:30" }] },
+      "status": "active",
+      "verification": { "kind": "fssai_licence", "reference": "21226010000102" },
+      "menuSource": "fabricated",
+      "sourceNote": "Stand-in: invented menu and prices.",
+      "image": "sagara-fish-meals.jpg",
+      "categories": [
+        {
+          "key": "fish",
+          "name": { "en": "Fish", "kn": "ಮೀನು" },
+          "dishes": [
+            { "key": "fish-thali", "name": { "en": "Fish thali", "kn": "ಮೀನಿನ ಊಟ" }, "description": { "en": "Rice, fish curry, fish fry and sides.", "kn": "ಅನ್ನ, ಮೀನು ಸಾರು, ಮೀನು ಫ್ರೈ ಮತ್ತು ಇತರೆ." }, "priceRupees": 180, "isVeg": false, "image": "sagara-fish-meals--fish-thali.jpg" },
+            { "key": "bangude-fry", "name": { "en": "Bangude fry", "kn": "ಬಂಗುಡೆ ಫ್ರೈ" }, "description": { "en": "Mackerel in rava masala.", "kn": "ರವೆ ಮಸಾಲೆಯಲ್ಲಿ ಬಂಗುಡೆ." }, "priceRupees": 120, "isVeg": false },
+            { "key": "anjal-fry", "name": { "en": "Anjal fry", "kn": "ಅಂಜಲ್ ಫ್ರೈ" }, "priceRupees": 250, "isVeg": false },
+            { "key": "prawn-sukka", "name": { "en": "Prawn sukka", "kn": "ಸಿಗಡಿ ಸುಕ್ಕ" }, "priceRupees": 200, "isVeg": false }
+          ]
+        },
+        {
+          "key": "veg",
+          "name": { "en": "Vegetarian", "kn": "ಸಸ್ಯಾಹಾರ" },
+          "dishes": [
+            { "key": "veg-thali", "name": { "en": "Veg thali", "kn": "ಸಸ್ಯಾಹಾರಿ ಊಟ" }, "priceRupees": 110, "isVeg": true },
+            { "key": "neer-dose", "name": { "en": "Neer dose", "kn": "ನೀರ್ ದೋಸೆ" }, "priceRupees": 50, "isVeg": true }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "market-road-lunch-home",
+      "name": { "en": "Market Road Lunch Home", "kn": "ಮಾರ್ಕೆಟ್ ರೋಡ್ ಲಂಚ್ ಹೋಮ್" },
+      "type": "restaurant",
+      "pureVeg": false,
+      "address": "Market Road, Honnavar",
+      "landmark": "Near the fish market",
+      "contacts": [{ "phone": "9000001003", "isPrimary": true }],
+      "signins": [{ "phone": "9000000303", "personName": "Rafiq (owner)" }],
+      "hours": { "everyDay": [{ "opens": "12:00", "closes": "15:30" }] },
+      "status": "suspended",
+      "suspensionReason": "Hygiene complaint under review",
+      "verification": { "kind": "fssai_licence", "reference": "21226010000103" },
+      "menuSource": "fabricated",
+      "sourceNote": "Stand-in: invented menu and prices.",
+      "categories": [
+        {
+          "key": "lunch",
+          "name": { "en": "Lunch", "kn": "ಮಧ್ಯಾಹ್ನದ ಊಟ" },
+          "dishes": [
+            { "key": "chicken-sukka", "name": { "en": "Chicken sukka", "kn": "ಚಿಕನ್ ಸುಕ್ಕ" }, "priceRupees": 160, "isVeg": false },
+            { "key": "chicken-biryani", "name": { "en": "Chicken biryani", "kn": "ಚಿಕನ್ ಬಿರಿಯಾನಿ" }, "priceRupees": 180, "isVeg": false },
+            { "key": "veg-meals", "name": { "en": "Veg meals", "kn": "ಸಸ್ಯಾಹಾರಿ ಊಟ" }, "priceRupees": 100, "isVeg": true }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "shantas-konkani-kitchen",
+      "name": { "en": "Shanta's Konkani Kitchen", "kn": "ಶಾಂತಾ ಅವರ ಕೊಂಕಣಿ ಅಡುಗೆ" },
+      "description": {
+        "en": "Konkani home cooking from Prabhatnagar, made fresh in small batches.",
+        "kn": "ಪ್ರಭಾತನಗರದ ಕೊಂಕಣಿ ಮನೆ ಅಡುಗೆ, ಸ್ವಲ್ಪ ಸ್ವಲ್ಪವೇ ತಾಜಾ ತಯಾರಿ."
+      },
+      "type": "home_kitchen",
+      "pureVeg": true,
+      "address": "Prabhatnagar, Honnavar",
+      "landmark": "Behind Prabhatnagar Ganapati temple",
+      "contacts": [{ "phone": "9000001004", "isPrimary": true }],
+      "signins": [{ "phone": "9000000304", "personName": "Shanta (owner)" }],
+      "hours": { "everyDay": [{ "opens": "08:00", "closes": "11:00" }, { "opens": "12:00", "closes": "15:00" }] },
+      "status": "active",
+      "verification": { "kind": "hygiene_check", "reference": "HC-2026-004" },
+      "menuSource": "fabricated",
+      "sourceNote": "Stand-in: invented menu and prices.",
+      "image": "shantas-konkani-kitchen.jpg",
+      "categories": [
+        {
+          "key": "specials",
+          "name": { "en": "Konkani specials", "kn": "ಕೊಂಕಣಿ ವಿಶೇಷ" },
+          "dishes": [
+            { "key": "patrode", "name": { "en": "Patrode", "kn": "ಪತ್ರೊಡೆ" }, "description": { "en": "Steamed colocasia leaf rolls.", "kn": "ಕೆಸುವಿನ ಎಲೆಯ ಹಬೆಯಲ್ಲಿ ಬೇಯಿಸಿದ ಸುರುಳಿ." }, "priceRupees": 80, "isVeg": true },
+            { "key": "kotte-kadubu", "name": { "en": "Kotte kadubu", "kn": "ಕೊಟ್ಟೆ ಕಡುಬು" }, "description": { "en": "Idli batter steamed in jackfruit-leaf cups.", "kn": "ಹಲಸಿನ ಎಲೆಯ ಕೊಟ್ಟೆಯಲ್ಲಿ ಬೇಯಿಸಿದ ಇಡ್ಲಿ." }, "priceRupees": 60, "isVeg": true },
+            { "key": "ambade-upkari", "name": { "en": "Ambade upkari" }, "description": { "en": "Hog plum stir-fry, a Konkani speciality." }, "priceRupees": 70, "isVeg": true }
+          ]
+        },
+        {
+          "key": "sweets",
+          "name": { "en": "Sweets", "kn": "ಸಿಹಿ" },
+          "dishes": [
+            { "key": "halasina-gatti", "name": { "en": "Jackfruit gatti", "kn": "ಹಲಸಿನ ಹಣ್ಣಿನ ಗಟ್ಟಿ" }, "priceRupees": 60, "isVeg": true }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "havyaka-oota-mane",
+      "name": { "en": "Havyaka Oota Mane", "kn": "ಹವ್ಯಕ ಊಟದ ಮನೆ" },
+      "type": "home_kitchen",
+      "pureVeg": true,
+      "address": "Kerekon, Honnavar",
+      "landmark": "Near Kerekon school",
+      "contacts": [{ "phone": "9000001005", "isPrimary": true }],
+      "signins": [{ "phone": "9000000305", "personName": "Lakshmi (owner)" }],
+      "hours": { "everyDay": [{ "opens": "12:00", "closes": "14:30" }] },
+      "status": "pending",
+      "menuSource": "fabricated",
+      "sourceNote": "Stand-in: invented menu and prices.",
+      "categories": [
+        {
+          "key": "lunch",
+          "name": { "en": "Lunch", "kn": "ಮಧ್ಯಾಹ್ನದ ಊಟ" },
+          "dishes": [
+            { "key": "holige", "name": { "en": "Holige", "kn": "ಹೋಳಿಗೆ" }, "priceRupees": 40, "isVeg": true },
+            { "key": "tambuli", "name": { "en": "Tambuli", "kn": "ತಂಬುಳಿ" }, "priceRupees": 50, "isVeg": true },
+            { "key": "appe-huli", "name": { "en": "Appe huli", "kn": "ಅಪ್ಪೆಹುಳಿ" }, "priceRupees": 40, "isVeg": true }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "kamalakkas-fish-curry",
+      "name": { "en": "Kamalakka's Fish Curry", "kn": "ಕಮಲಕ್ಕನ ಮೀನು ಸಾರು" },
+      "description": {
+        "en": "Home-style fish curry meals near Kasarkod beach.",
+        "kn": "ಕಾಸರಕೋಡು ಕಡಲತೀರದ ಹತ್ತಿರ ಮನೆ ಶೈಲಿಯ ಮೀನು ಸಾರು ಊಟ."
+      },
+      "type": "home_kitchen",
+      "pureVeg": false,
+      "address": "Kasarkod Road, Honnavar",
+      "landmark": "Near the Kasarkod beach turn",
+      "contacts": [{ "phone": "9000001006", "isPrimary": true }],
+      "signins": [{ "phone": "9000000306", "personName": "Kamala (owner)" }],
+      "hours": { "everyDay": [{ "opens": "11:00", "closes": "15:00" }, { "opens": "18:00", "closes": "21:30" }] },
+      "status": "active",
+      "verification": { "kind": "hygiene_check", "reference": "HC-2026-006" },
+      "temporarilyClosedAtReset": true,
+      "menuSource": "fabricated",
+      "sourceNote": "Stand-in: invented menu and prices.",
+      "categories": [
+        {
+          "key": "meals",
+          "name": { "en": "Meals", "kn": "ಊಟ" },
+          "dishes": [
+            { "key": "fish-curry-meals", "name": { "en": "Fish curry meals", "kn": "ಮೀನು ಸಾರು ಊಟ" }, "priceRupees": 150, "isVeg": false },
+            { "key": "kane-fry", "name": { "en": "Kane fry", "kn": "ಕಾಣೆ ಫ್ರೈ" }, "description": { "en": "Ladyfish fried in spicy masala.", "kn": "ಖಾರ ಮಸಾಲೆಯಲ್ಲಿ ಕರಿದ ಕಾಣೆ ಮೀನು." }, "priceRupees": 180, "isVeg": false },
+            { "key": "bangude-pulimunchi", "name": { "en": "Bangude pulimunchi", "kn": "ಬಂಗುಡೆ ಪುಳಿಮುಂಚಿ" }, "priceRupees": 130, "isVeg": false },
+            { "key": "neer-dose", "name": { "en": "Neer dose", "kn": "ನೀರ್ ದೋಸೆ" }, "priceRupees": 50, "isVeg": true }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "karki-ammas-kitchen",
+      "name": { "en": "Karki Amma's Kitchen", "kn": "ಕರ್ಕಿ ಅಮ್ಮನ ಅಡುಗೆ" },
+      "type": "home_kitchen",
+      "pureVeg": false,
+      "address": "Karki, Honnavar taluk",
+      "landmark": "Near Karki bus stop",
+      "contacts": [{ "phone": "9000001007", "isPrimary": true }],
+      "signins": [{ "phone": "9000000307", "personName": "Savitri (owner)" }],
+      "hours": { "everyDay": [{ "opens": "11:00", "closes": "15:00" }, { "opens": "18:00", "closes": "21:00" }] },
+      "status": "active",
+      "verification": { "kind": "hygiene_check", "reference": "HC-2026-007" },
+      "menuSource": "fabricated",
+      "sourceNote": "Stand-in: invented menu and prices.",
+      "categories": [
+        {
+          "key": "curries",
+          "name": { "en": "Curries", "kn": "ಸಾರು ಮತ್ತು ಕರಿ" },
+          "dishes": [
+            { "key": "chicken-curry", "name": { "en": "Chicken curry", "kn": "ಚಿಕನ್ ಕರಿ" }, "priceRupees": 140, "isVeg": false },
+            { "key": "egg-curry", "name": { "en": "Egg curry", "kn": "ಮೊಟ್ಟೆ ಕರಿ" }, "priceRupees": 90, "isVeg": false },
+            { "key": "chicken-ghee-roast", "name": { "en": "Chicken ghee roast", "kn": "ಚಿಕನ್ ಘೀ ರೋಸ್ಟ್" }, "priceRupees": 200, "isVeg": false, "available": false }
+          ]
+        },
+        {
+          "key": "breads",
+          "name": { "en": "Breads", "kn": "ರೊಟ್ಟಿ" },
+          "dishes": [
+            { "key": "chapati", "name": { "en": "Chapati", "kn": "ಚಪಾತಿ" }, "priceRupees": 15, "isVeg": true }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "honnavar-biryani-box",
+      "name": { "en": "Honnavar Biryani Box", "kn": "ಹೊನ್ನಾವರ ಬಿರಿಯಾನಿ ಬಾಕ್ಸ್" },
+      "description": { "en": "Evening biryanis, packed to travel.", "kn": "ಸಂಜೆಯ ಬಿರಿಯಾನಿ, ಕೊಂಡೊಯ್ಯಲು ಸಿದ್ಧ." },
+      "type": "cloud_kitchen",
+      "pureVeg": false,
+      "address": "Bazaar Road, Honnavar",
+      "landmark": "Behind the Bazaar Road post office",
+      "contacts": [{ "phone": "9000001008", "isPrimary": true }],
+      "signins": [{ "phone": "9000000308", "personName": "Imran (owner)" }],
+      "hours": { "everyDay": [{ "opens": "18:30", "closes": "23:00" }] },
+      "status": "active",
+      "verification": { "kind": "fssai_licence", "reference": "21226010000108" },
+      "menuSource": "fabricated",
+      "sourceNote": "Stand-in: invented menu and prices.",
+      "categories": [
+        {
+          "key": "biryani",
+          "name": { "en": "Biryani", "kn": "ಬಿರಿಯಾನಿ" },
+          "dishes": [
+            { "key": "chicken-biryani", "name": { "en": "Chicken biryani", "kn": "ಚಿಕನ್ ಬಿರಿಯಾನಿ" }, "priceRupees": 180, "isVeg": false },
+            { "key": "mutton-biryani", "name": { "en": "Mutton biryani", "kn": "ಮಟನ್ ಬಿರಿಯಾನಿ" }, "priceRupees": 280, "isVeg": false },
+            { "key": "egg-biryani", "name": { "en": "Egg biryani", "kn": "ಮೊಟ್ಟೆ ಬಿರಿಯಾನಿ" }, "priceRupees": 140, "isVeg": false },
+            { "key": "veg-biryani", "name": { "en": "Veg biryani", "kn": "ವೆಜ್ ಬಿರಿಯಾನಿ" }, "priceRupees": 120, "isVeg": true }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "goli-baje-corner",
+      "name": { "en": "Goli Baje Corner", "kn": "ಗೋಳಿ ಬಜೆ ಕಾರ್ನರ್" },
+      "type": "cloud_kitchen",
+      "pureVeg": true,
+      "address": "Main Road, Honnavar",
+      "landmark": "Near the taluk office",
+      "contacts": [{ "phone": "9000001009", "isPrimary": true }],
+      "signins": [{ "phone": "9000000309", "personName": "Vinay (owner)" }],
+      "hours": { "everyDay": [{ "opens": "10:00", "closes": "20:00" }] },
+      "status": "active",
+      "verification": { "kind": "fssai_licence", "reference": "21226010000109" },
+      "menuSource": "fabricated",
+      "sourceNote": "Stand-in: invented menu and prices.",
+      "categories": [
+        {
+          "key": "snacks",
+          "name": { "en": "Snacks", "kn": "ಕುರುಕಲು" },
+          "dishes": [
+            { "key": "goli-baje", "name": { "en": "Goli baje", "kn": "ಗೋಳಿ ಬಜೆ" }, "priceRupees": 40, "isVeg": true },
+            { "key": "buns", "name": { "en": "Buns", "kn": "ಬನ್ಸ್" }, "description": { "en": "Sweet banana puris, two pieces.", "kn": "ಬಾಳೆಹಣ್ಣಿನ ಸಿಹಿ ಪೂರಿ, ಎರಡು ತುಂಡು." }, "priceRupees": 30, "isVeg": true },
+            { "key": "mirchi-bajji", "name": { "en": "Mirchi bajji", "kn": "ಮೆಣಸಿನಕಾಯಿ ಬಜ್ಜಿ" }, "priceRupees": 35, "isVeg": true }
+          ]
+        },
+        {
+          "key": "drinks",
+          "name": { "en": "Drinks", "kn": "ಪಾನೀಯ" },
+          "dishes": [
+            { "key": "masala-tea", "name": { "en": "Masala tea", "kn": "ಮಸಾಲಾ ಚಹಾ" }, "priceRupees": 15, "isVeg": true }
+          ]
+        }
+      ]
+    }
+  ]
+}

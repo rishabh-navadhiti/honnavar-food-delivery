@@ -199,78 +199,78 @@ the demo catalogue loader and surface shells that every story depends on.
 
 ### Internationalisation
 
-- [ ] T029 Configure next-intl without locale routing:
+- [X] T029 Configure next-intl without locale routing:
   - `src/shared/i18n/config.ts`: `locales = ['en','kn']` and the `Locale` type.
   - `src/shared/i18n/request.ts`: `getRequestConfig` reads the `locale` cookie, falls back to `env.DEFAULT_LOCALE`, and loads `messages/{locale}.json`.
   - Register the plugin in `next.config.ts` with `createNextIntlPlugin('./src/shared/i18n/request.ts')`.
-- [ ] T030 [P] Create `src/shared/i18n/messages/en.json`, `kn.json` and `machine-drafted.json`, with initial namespaces:
+- [X] T030 [P] Create `src/shared/i18n/messages/en.json`, `kn.json` and `machine-drafted.json`, with initial namespaces:
   - `common`: language switch labels "ಕನ್ನಡ" / "English", retry, loading, generic error, not found, sign out, back;
   - `kitchenType`, `kitchenState` (open, closed with `{time}`, opens `{day}` `{time}`, temporarily closed until `{time}`, hours not set);
   - `veg` (veg, non-veg, pure veg), `status`, `vehicleType`, `errors` (every error code in contracts/server-actions.md), `fallback` (the "in English" / "ಕನ್ನಡದಲ್ಲಿ" marker labels).
   - `machine-drafted.json` lists every `kn` key drafted by the agent.
-- [ ] T031 [P] Write the unit test `src/shared/i18n/messages.test.ts`. It asserts that `en.json` and `kn.json` have identical nested key sets, that no value is empty, and that every key in `machine-drafted.json` exists.
-- [ ] T032 [P] Write failing unit tests for formatting in `src/shared/i18n/format.test.ts`:
+- [X] T031 [P] Write the unit test `src/shared/i18n/messages.test.ts`. It asserts that `en.json` and `kn.json` have identical nested key sets, that no value is empty, and that every key in `machine-drafted.json` exists.
+- [X] T032 [P] Write failing unit tests for formatting in `src/shared/i18n/format.test.ts`:
   - `formatPrice(1250, 'en')` and `formatPrice(1250, 'kn')` both give `₹1,250`; `formatPrice(125000, 'en')` gives `₹1,25,000`;
   - `formatTime` at 13:30 IST gives `1:30 pm` in en and `ಮಧ್ಯಾಹ್ನ 1:30` in kn, and 07:00 gives `ಬೆಳಿಗ್ಗೆ 7:00` in kn;
   - `formatWeekday(1, 'kn')` gives `ಸೋಮವಾರ`;
   - no output contains Kannada digits (U+0CE6–U+0CEF).
-- [ ] T033 Implement `src/shared/i18n/format.ts` to pass T032:
+- [X] T033 Implement `src/shared/i18n/format.ts` to pass T032:
   - use `Intl` with `kn-IN` and `en-IN`, `numberingSystem: 'latn'`, `timeZone: 'Asia/Kolkata'`;
   - for Kannada times, use `dayPeriod: 'short'` with `formatToParts`, placing the period first;
   - for English times, lowercase am/pm (research R3).
-- [ ] T034 [P] Write failing unit tests for `pickLocalized` in `src/shared/i18n/localized.test.ts`:
+- [X] T034 [P] Write failing unit tests for `pickLocalized` in `src/shared/i18n/localized.test.ts`:
   - `{en:'Neer dose', kn:'ನೀರ್ ದೋಸೆ'}` in kn gives `{text:'ನೀರ್ ದೋಸೆ', lang:'kn', isFallback:false}`;
   - `{en:'Ambade upkari', kn:null}` in kn gives the English text with `isFallback: true`;
   - empty and whitespace values count as missing.
-- [ ] T035 Implement `pickLocalized(pair, locale)` in `src/shared/i18n/localized.ts` to pass T034
-- [ ] T036 Create the `setLocale` server action in `src/shared/i18n/actions.ts`. It validates `'en'|'kn'` with Zod, sets the `locale` cookie (path `/`, max-age 1 year, `SameSite=Lax`) and revalidates.
+- [X] T035 Implement `pickLocalized(pair, locale)` in `src/shared/i18n/localized.ts` to pass T034
+- [X] T036 Create the `setLocale` server action in `src/shared/i18n/actions.ts`. It validates `'en'|'kn'` with Zod, sets the `locale` cookie (path `/`, max-age 1 year, `SameSite=Lax`) and revalidates.
 
 ### Shared UI primitives
 
-- [ ] T037 Create the root layout `src/app/layout.tsx`:
+- [X] T037 Create the root layout `src/app/layout.tsx`:
   - load Noto Sans and Noto Sans Kannada through `next/font/google`;
   - set `<html lang>` from the active locale;
   - wrap children in `NextIntlClientProvider`;
   - import `globals.css`.
-- [ ] T038 [P] Create the shared UI primitives in `src/shared/ui/`. All use translated props only and no literals:
+- [X] T038 [P] Create the shared UI primitives in `src/shared/ui/`. All use translated props only and no literals:
   - `button.tsx`: variants primary, secondary and danger; min-height 48px.
   - `field.tsx`: label, input or textarea, and a field error from a translation key; every input labelled.
   - `card.tsx`, `badge.tsx`, `empty-state.tsx` (message plus optional action), `error-state.tsx` (retry).
   - `veg-mark.tsx`: the Indian square-and-dot symbol **plus** a text label, so colour is never the only signal.
   - `fallback-marker.tsx`: shows the language of fallback content.
   - `localized-text.tsx`: renders the `pickLocalized` result, with the marker when `isFallback`.
-- [ ] T039 [P] Create `src/shared/ui/language-switch.tsx`: a `<form action={setLocale}>` with two buttons, one showing the name of the other language. It works without client JavaScript.
-- [ ] T040 [P] Create the placeholder SVGs in `src/shared/ui/placeholders/` (`restaurant.svg`, `home-kitchen.svg`, `cloud-kitchen.svg`, `dish-veg.svg`, `dish-nonveg.svg`, each with the veg/non-veg symbol where relevant) and `src/shared/ui/placeholder-image.tsx`, which picks one by kitchen type or veg mark.
+- [X] T039 [P] Create `src/shared/ui/language-switch.tsx`: a `<form action={setLocale}>` with two buttons, one showing the name of the other language. It works without client JavaScript.
+- [X] T040 [P] Create the placeholder SVGs in `src/shared/ui/placeholders/` (`restaurant.svg`, `home-kitchen.svg`, `cloud-kitchen.svg`, `dish-veg.svg`, `dish-nonveg.svg`, each with the veg/non-veg symbol where relevant) and `src/shared/ui/placeholder-image.tsx`, which picks one by kitchen type or veg mark.
 
 ### Images (research R7)
 
-- [ ] T041 [P] Write a failing integration test `src/shared/images/store.int.test.ts`:
+- [X] T041 [P] Write a failing integration test `src/shared/images/store.int.test.ts`:
   - `storeImage(buffer)` for a JPEG produces WebP `small` (320 px wide) and `large` (800 px wide);
   - storing the same bytes twice returns the same id (sha256 dedupe);
   - a 2 MB JPEG is accepted (the size the 6 MB action limit in T001 must let through);
   - more than 5 MB returns `invalid_image`, and non-JPEG/PNG/WebP returns `invalid_image`;
   - `deleteImageIfUnused(id)` removes only unreferenced rows.
-- [ ] T042 Implement `src/shared/images/store.ts` (`server-only`, `sharp`) with `storeImage(buffer): Promise<Result<{ id }>>` and `deleteImageIfUnused(id)` to pass T041
-- [ ] T043 Create `src/app/media/[id]/[variant]/route.ts`. `GET` with variant `s`|`l` returns `image/webp` with `Cache-Control: public, max-age=31536000, immutable`, and 404 for an unknown id or variant. Also create `src/shared/images/loader.ts`, a `next/image` custom loader that maps the requested width to `s` (≤ 320) or `l`.
-- [ ] T044 Write the integration test `src/app/media/[id]/[variant]/route.int.test.ts`. It calls the route's exported `GET` with a `Request` and params:
+- [X] T042 Implement `src/shared/images/store.ts` (`server-only`, `sharp`) with `storeImage(buffer): Promise<Result<{ id }>>` and `deleteImageIfUnused(id)` to pass T041
+- [X] T043 Create `src/app/media/[id]/[variant]/route.ts`. `GET` with variant `s`|`l` returns `image/webp` with `Cache-Control: public, max-age=31536000, immutable`, and 404 for an unknown id or variant. Also create `src/shared/images/loader.ts`, a `next/image` custom loader that maps the requested width to `s` (≤ 320) or `l`.
+- [X] T044 Write the integration test `src/app/media/[id]/[variant]/route.int.test.ts`. It calls the route's exported `GET` with a `Request` and params:
   - for a stored image, variants `s` and `l` return 200, `Content-Type: image/webp`, `Cache-Control: public, max-age=31536000, immutable`, and the stored bytes;
   - an unknown id (valid uuid) returns 404; a non-uuid id returns 404;
   - an unknown variant (e.g. `x`) returns 404.
 
 ### Adapters (research R6, contracts/adapters.md)
 
-- [ ] T045 [P] Create the OTP adapter in `src/shared/adapters/otp/`:
+- [X] T045 [P] Create the OTP adapter in `src/shared/adapters/otp/`:
   - `types.ts`: the `OtpProvider` interface.
   - `stand-in.ts`: a file header comment `STAND-IN: no message is sent; accepts only env.DEMO_OTP_CODE`. `requestCode` always returns ok; `verifyCode` matches the env code.
   - `index.ts`: exports `otpProvider`.
   - Unit test `stand-in.test.ts`: the right code passes, a wrong code gives `wrong_code`, and results are deterministic.
-- [ ] T046 [P] Create the verification adapter in `src/shared/adapters/verification/`:
+- [X] T046 [P] Create the verification adapter in `src/shared/adapters/verification/`:
   - `types.ts`, `stand-in.ts` (header `STAND-IN: no registry lookup; always 'recorded'`) and `index.ts`.
   - Unit test `stand-in.test.ts`.
 
 ### Sessions and authorisation core (research R4)
 
-- [ ] T047 Write a failing integration test `src/features/auth/session.int.test.ts`. It covers:
+- [X] T047 Write a failing integration test `src/features/auth/session.int.test.ts`. It covers:
   - `createSession` stores only the SHA-256 hash and returns the raw token;
   - `loadSession(surface, token)` returns the subject, and extends `expires_at` (30 days) when used;
   - an expired session returns null and the row is deleted;
@@ -279,19 +279,19 @@ the demo catalogue loader and surface shells that every story depends on.
   - an admin session becomes invalid when the admin row is deleted;
   - a token for the `partner` surface is rejected on `agent`;
   - `deleteSessionsForSubject` removes all of a subject's sessions.
-- [ ] T048 Implement `src/features/auth/session.ts` (`server-only`) to pass T047:
+- [X] T048 Implement `src/features/auth/session.ts` (`server-only`) to pass T047:
   - `createSession`, `loadSession` and `deleteSessionsForSubject`;
   - cookie helpers using the names `hfd_session_customer|partner|agent|admin` (`HttpOnly`, `SameSite=Lax`, `Secure` in production, max-age 30 days);
   - `requireSession(surface)`: redirects to that surface's login with a `next` param that must start with the same surface prefix;
   - `getOptionalSession(surface)`;
   - wrap both `requireSession` and `getOptionalSession` in React `cache()`, so repeated calls in one request (layout plus page plus components) load and re-check the session once.
-- [ ] T049 Create `src/features/auth/actor.ts` (`server-only`):
+- [X] T049 Create `src/features/auth/actor.ts` (`server-only`):
   - `currentActor(surface)` returns `{ role: 'admin'|'partner', phone }` for FR-055 stamping;
   - `resolveKitchenScope(surface, inputKitchenId?)` returns the session's `kitchen_id` for partners (and rejects any other id with `unauthorised`) or the input id for admins.
 
 ### Demo catalogue and reset (research R8, R15)
 
-- [ ] T050 Create the Zod schema `src/features/demo/catalogue-schema.ts`:
+- [X] T050 Create the Zod schema `src/features/demo/catalogue-schema.ts`:
   - **Top level**: `{ notes?: string[], admins: [{key, name, phone}], agents: [{key, name, phone, vehicleType, vehicleReg?, active}], customers: [{key, phone, displayName?}], kitchens: [...] }`.
   - **Each kitchen**:
     - `key`, `name {en?, kn?}`, `description {en?, kn?}`, `type`, `pureVeg`;
@@ -302,7 +302,7 @@ the demo catalogue loader and surface shells that every story depends on.
     - `menuSource: 'researched'|'fabricated'`, `sourceNote?`, `image?`;
     - `categories [{key, name, dishes [{key, name, description?, priceRupees, isVeg, available, image?}]}]`.
   - Reuse the length limits from data-model.md.
-- [ ] T051 Create the stand-in catalogue `seed/catalogue.json` from the data-model.md "Seed outline", with all 9 kitchens:
+- [X] T051 Create the stand-in catalogue `seed/catalogue.json` from the data-model.md "Seed outline", with all 9 kitchens:
   - 2–3 categories and 4–8 dishes per kitchen, with indicative prices;
   - English and Kannada names, with Kannada drafted by the agent and listed in `notes`;
   - `menuSource: "fabricated"` for every kitchen, since this is the stand-in;
@@ -314,8 +314,8 @@ the demo catalogue loader and surface shells that every story depends on.
   - Havyaka Oota Mane is `pending` with no verification; Market Road Lunch Home is `suspended` with reason "Hygiene complaint under review";
   - every number is in the `90000xxxxx` block: customer-facing kitchen contacts `90000010NN`, admin `9000000001`, customer `9000000101`, agents `9000000201`/`202` (active) and `203` (inactive), kitchen sign-ins `90000003NN`, and kitchen 1 has a helper `9000000399`;
   - image file names follow `seed/images/<kitchen-key>.jpg` and `<kitchen-key>--<dish-key>.jpg`.
-- [ ] T052 [P] Create `seed/images/README.md`. It explains the file naming from T051, accepted formats (JPEG, PNG, WebP, ≤ 5 MB) and that a missing file falls back to the placeholder. It adds no images yet.
-- [ ] T053 Implement `src/features/demo/load-catalogue.ts` (`server-only`):
+- [X] T052 [P] Create `seed/images/README.md`. It explains the file naming from T051, accepted formats (JPEG, PNG, WebP, ≤ 5 MB) and that a missing file falls back to the placeholder. It adds no images yet.
+- [X] T053 Implement `src/features/demo/load-catalogue.ts` (`server-only`):
   - read `seed/catalogue.json` and validate it with T050, failing closed with the Zod issue path;
   - derive deterministic UUIDs from entry keys with `deterministicId(key)` in `src/features/demo/ids.ts`, a pure module with no `server-only`, so `e2e/catalogue.ts` can import it (name-based SHA-1 via `node:crypto`, version and variant bits set);
   - insert all rows in one transaction;
@@ -323,14 +323,14 @@ the demo catalogue loader and surface shells that every story depends on.
   - for `temporarilyClosedAtReset`, set `closed_at = now` and `reopens_at = closureEnd(hours, now)` (T028);
   - for `verification`, use the first admin as `verified_by_admin_id`;
   - stamp `updated_by_role = 'admin'` with the first admin's phone.
-- [ ] T054 Implement `resetDemo(databaseUrl)` in `src/features/demo/reset-demo.ts` (`server-only`). It drops and recreates schema `public`, runs `migrateDatabase`, runs `loadCatalogue`, and returns counts per table. `src/features/demo/reset.ts` is the thin CLI run by `npm run demo:reset`: it calls `resetDemo(env.DATABASE_URL)` and prints the counts.
-- [ ] T055 Write the integration test `src/features/demo/catalogue.int.test.ts`. It loads `seed/catalogue.json` into the test database and asserts:
+- [X] T054 Implement `resetDemo(databaseUrl)` in `src/features/demo/reset-demo.ts` (`server-only`). It drops and recreates schema `public`, runs `migrateDatabase`, runs `loadCatalogue`, and returns counts per table. `src/features/demo/reset.ts` is the thin CLI run by `npm run demo:reset`: it calls `resetDemo(env.DATABASE_URL)` and prints the counts.
+- [X] T055 Write the integration test `src/features/demo/catalogue.int.test.ts`. It loads `seed/catalogue.json` into the test database and asserts:
   - FR-050: ≥ 8 kitchens, ≥ 3 restaurants, ≥ 3 home kitchens, ≥ 2 cloud kitchens, and both pure-veg and non-veg present;
   - FR-051: a dish missing `name_kn`, a kitchen temporarily closed now, a pending kitchen, a suspended kitchen, an unavailable dish, and a kitchen closed by hours at 13:00 IST;
   - FR-052: ≥ 1 admin, a sign-in for every kitchen, one kitchen with 2 sign-ins, ≥ 2 active agents and 1 inactive agent, and ≥ 1 customer;
   - loading twice gives identical ids;
   - a missing image falls back without error.
-- [ ] T056 [P] Create the end-to-end catalogue helper `e2e/catalogue.ts`. It reads and parses `seed/catalogue.json` with the T050 schema and uses `deterministicId` from `src/features/demo/ids.ts` to compute ids for URLs. It exports selectors that return `{ key, id, name, … }`:
+- [X] T056 [P] Create the end-to-end catalogue helper `e2e/catalogue.ts`. It reads and parses `seed/catalogue.json` with the T050 schema and uses `deterministicId` from `src/features/demo/ids.ts` to compute ids for URLs. It exports selectors that return `{ key, id, name, … }`:
   - `activeKitchens()`, `pendingKitchen()`, `suspendedKitchen()`, `temporarilyClosedKitchen()` (the one with `temporarilyClosedAtReset`);
   - `kitchenWithHelper()`: the kitchen with two sign-ins, returning `{ kitchen, ownerPhone, helperPhone }`;
   - `dishWithoutKannadaName()`, returning `{ kitchen, dish }`;
@@ -346,12 +346,12 @@ the demo catalogue loader and surface shells that every story depends on.
 
 ### Surface shells (contracts/routes.md)
 
-- [ ] T057 [P] Create the customer shell:
+- [X] T057 [P] Create the customer shell:
   - `src/app/(customer)/layout.tsx`: header with app name, language switch and sign-in/account link, mobile-first, max width;
   - `loading.tsx`, `error.tsx` (client component with retry; translated) and `not-found.tsx`, all in `src/app/(customer)/`.
-- [ ] T058 [P] Create the partner shell in `src/app/(partner)/partner/`: `layout.tsx` with language switch; `loading.tsx`, `error.tsx` and `not-found.tsx`. Create `src/app/(partner)/partner/(protected)/layout.tsx`, which calls `requireSession('partner')` only to drive navigation and the sign-out button (pages do their own check; see Conventions).
-- [ ] T059 [P] Create the agent shell in `src/app/(agent)/agent/`, following T058, with `(protected)/layout.tsx` calling `requireSession('agent')`.
-- [ ] T060 [P] Create the admin shell in `src/app/(admin)/admin/`, following T058, desktop-first with side navigation (Partners, Agents). `(protected)/layout.tsx` calls `requireSession('admin')`.
+- [X] T058 [P] Create the partner shell in `src/app/(partner)/partner/`: `layout.tsx` with language switch; `loading.tsx`, `error.tsx` and `not-found.tsx`. Create `src/app/(partner)/partner/(protected)/layout.tsx`, which calls `requireSession('partner')` only to drive navigation and the sign-out button (pages do their own check; see Conventions).
+- [X] T059 [P] Create the agent shell in `src/app/(agent)/agent/`, following T058, with `(protected)/layout.tsx` calling `requireSession('agent')`.
+- [X] T060 [P] Create the admin shell in `src/app/(admin)/admin/`, following T058, desktop-first with side navigation (Partners, Agents). `(protected)/layout.tsx` calls `requireSession('admin')`.
 
 **Checkpoint**: The foundation is ready. `npm run demo:reset` loads the stand-in catalogue, and
 unit and integration tests pass.

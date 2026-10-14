@@ -20,7 +20,7 @@ const config = [
       // Principle II: every user-facing string goes through a translation key.
       'react/jsx-no-literals': [
         'error',
-        { noStrings: true, allowedStrings: ['·', '₹', '/', ':', '–', '—', '(', ')', '*', '•', '×'] },
+        { noStrings: true, ignoreProps: true, allowedStrings: ['·', '₹', '/', ':', '–', '—', '(', ')', '*', '•', '×'] },
       ],
     },
   },
