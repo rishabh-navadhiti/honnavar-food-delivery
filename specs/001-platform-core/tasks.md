@@ -44,11 +44,21 @@ These follow the plan's single Next.js project:
   `Result`, log unexpected errors.
 - **Modules**: every module that touches the database, sessions, env or adapters starts with
   `import 'server-only'`.
+- **Actions are thin wrappers over services**:
+  - A server action is a `'use server'` wrapper. It parses the input, resolves the actor (session,
+    `currentActor`, `resolveKitchenScope`), calls a **service** `(actor, input) => Promise<Result<T>>`,
+    and then revalidates or redirects.
+  - Services live in `src/features/<feature>/services/`. They are `server-only` and **never import
+    `next/headers` or `next/navigation`**, so integration tests call them directly with test actors.
+  - Action wrappers are named `<operation>Action` (for example `saveDishAction`); the operation names
+    in contracts/server-actions.md are the service names.
 - **Page-level session checks**: every page under a `(protected)` route group calls
   `requireSession(surface)` itself. The `(protected)` layout's call only drives navigation and
   sign-out; it is not the access check, because layouts don't re-run on every navigation.
   `requireSession` and `getOptionalSession` are wrapped in React `cache()`, so repeated calls in
   one request hit the database once.
+- **E2E isolation**: every e2e spec file calls `resetDemoData()` from `e2e/reset.ts` (which
+  runs `resetDemo`) in `test.beforeAll`. Playwright keeps `workers: 1`.
 - **Catalogue-independent tests**: end-to-end tests and quickstart scenarios never name seed
   kitchens or dishes. They select subjects from `seed/catalogue.json` by flags and keys through
   `e2e/catalogue.ts`, so they keep passing when the researched catalogue replaces the stand-in.
@@ -62,16 +72,16 @@ These follow the plan's single Next.js project:
 - [ ] T001 Initialise the Next.js 16.4 App Router project in the repository root (no `create-next-app` sample content):
   - `package.json` with `"type": "module"` and `"engines": { "node": ">=24" }`.
   - `tsconfig.json` with `strict: true`, `noUncheckedIndexedAccess: true`, `moduleResolution: "bundler"`, path alias `@/*` → `src/*`.
-  - `next.config.ts`.
+  - `next.config.ts`, with the server actions body size limit set to `'6mb'` (`experimental.serverActions.bodySizeLimit`, or its Next 16 equivalent), so 5 MB photos fit.
   - `src/app/` directory.
   - No `.js` source files.
 - [ ] T002 Install the dependencies from research.md "Dependencies added": `next react react-dom next-intl drizzle-orm postgres zod sharp server-only`, and dev dependencies `typescript@6 @types/node @types/react @types/react-dom tailwindcss @tailwindcss/postcss drizzle-kit vitest @playwright/test eslint eslint-config-next prettier tsx`. Add these npm scripts to `package.json`:
   - `dev`, `build`, `start`
   - `lint` (`eslint .`), `typecheck` (`tsc --noEmit`), `format` (`prettier --write .`)
   - `test` (`vitest run`), `test:unit` (`vitest run --project unit`), `test:int` (`vitest run --project integration`)
-  - `test:e2e` (`playwright test`)
+  - `test:e2e` (`NODE_OPTIONS=--conditions=react-server playwright test`, so `e2e/reset.ts` can import `server-only` modules; the Playwright web server clears `NODE_OPTIONS`)
   - `db:generate` (`drizzle-kit generate`)
-  - `demo:reset` (`tsx --conditions=react-server src/features/demo/reset.ts`)
+  - `demo:reset` (`tsx --env-file-if-exists=.env.local --conditions=react-server src/features/demo/reset.ts`)
 - [ ] T003 Record the one dependency not in the plan's table, `tsx` ("runs TypeScript scripts such as the demo reset with tsconfig path aliases"), as a new row in the "Dependencies added" table in specs/001-platform-core/research.md
 - [ ] T004 [P] Configure Tailwind CSS 4 through `.postcssrc.json` (`{"plugins":{"@tailwindcss/postcss":{}}}`) and create `src/app/globals.css` with `@import "tailwindcss"` and theme tokens:
   - primary action colour, secondary, danger;
@@ -92,7 +102,7 @@ These follow the plan's single Next.js project:
 - [ ] T010 [P] Create `playwright.config.ts`:
   - project `mobile`: Chromium, viewport 360×780, `isMobile: true`, `hasTouch: true`, matching `e2e/us{1,2,3,5,6}-*.spec.ts`;
   - project `desktop`: Chromium, 1280×800, matching `e2e/us4-*.spec.ts`;
-  - `webServer`: `npm run build && npm run demo:reset && npm run start` on port 3000, with `reuseExistingServer: !process.env.CI` and `env: { DEMO_MODE: 'true', DEMO_OTP_CODE: process.env.DEMO_OTP_CODE ?? '123456' }` (in addition to the inherited environment);
+  - `webServer`: `npm run build && npm run demo:reset && npm run start` on port 3000, with `reuseExistingServer: !process.env.CI` and `env: { DEMO_MODE: 'true', DEMO_OTP_CODE: process.env.DEMO_OTP_CODE ?? '123456', NODE_OPTIONS: '' }`; the config loads `.env.local` with `process.loadEnvFile` when it exists (in addition to the inherited environment);
   - `workers: 1`, since tests share the demo database.
   - A header comment in `playwright.config.ts`, and the `test:e2e` entry in `.env.example`, state that **`test:e2e` resets the database named by `DATABASE_URL`**, so it must point at a disposable database.
 
@@ -237,25 +247,30 @@ the demo catalogue loader and surface shells that every story depends on.
 - [ ] T041 [P] Write a failing integration test `src/shared/images/store.int.test.ts`:
   - `storeImage(buffer)` for a JPEG produces WebP `small` (320 px wide) and `large` (800 px wide);
   - storing the same bytes twice returns the same id (sha256 dedupe);
+  - a 2 MB JPEG is accepted (the size the 6 MB action limit in T001 must let through);
   - more than 5 MB returns `invalid_image`, and non-JPEG/PNG/WebP returns `invalid_image`;
   - `deleteImageIfUnused(id)` removes only unreferenced rows.
 - [ ] T042 Implement `src/shared/images/store.ts` (`server-only`, `sharp`) with `storeImage(buffer): Promise<Result<{ id }>>` and `deleteImageIfUnused(id)` to pass T041
 - [ ] T043 Create `src/app/media/[id]/[variant]/route.ts`. `GET` with variant `s`|`l` returns `image/webp` with `Cache-Control: public, max-age=31536000, immutable`, and 404 for an unknown id or variant. Also create `src/shared/images/loader.ts`, a `next/image` custom loader that maps the requested width to `s` (≤ 320) or `l`.
+- [ ] T044 Write the integration test `src/app/media/[id]/[variant]/route.int.test.ts`. It calls the route's exported `GET` with a `Request` and params:
+  - for a stored image, variants `s` and `l` return 200, `Content-Type: image/webp`, `Cache-Control: public, max-age=31536000, immutable`, and the stored bytes;
+  - an unknown id (valid uuid) returns 404; a non-uuid id returns 404;
+  - an unknown variant (e.g. `x`) returns 404.
 
 ### Adapters (research R6, contracts/adapters.md)
 
-- [ ] T044 [P] Create the OTP adapter in `src/shared/adapters/otp/`:
+- [ ] T045 [P] Create the OTP adapter in `src/shared/adapters/otp/`:
   - `types.ts`: the `OtpProvider` interface.
   - `stand-in.ts`: a file header comment `STAND-IN: no message is sent; accepts only env.DEMO_OTP_CODE`. `requestCode` always returns ok; `verifyCode` matches the env code.
   - `index.ts`: exports `otpProvider`.
   - Unit test `stand-in.test.ts`: the right code passes, a wrong code gives `wrong_code`, and results are deterministic.
-- [ ] T045 [P] Create the verification adapter in `src/shared/adapters/verification/`:
+- [ ] T046 [P] Create the verification adapter in `src/shared/adapters/verification/`:
   - `types.ts`, `stand-in.ts` (header `STAND-IN: no registry lookup; always 'recorded'`) and `index.ts`.
   - Unit test `stand-in.test.ts`.
 
 ### Sessions and authorisation core (research R4)
 
-- [ ] T046 Write a failing integration test `src/features/auth/session.int.test.ts`. It covers:
+- [ ] T047 Write a failing integration test `src/features/auth/session.int.test.ts`. It covers:
   - `createSession` stores only the SHA-256 hash and returns the raw token;
   - `loadSession(surface, token)` returns the subject, and extends `expires_at` (30 days) when used;
   - an expired session returns null and the row is deleted;
@@ -264,19 +279,19 @@ the demo catalogue loader and surface shells that every story depends on.
   - an admin session becomes invalid when the admin row is deleted;
   - a token for the `partner` surface is rejected on `agent`;
   - `deleteSessionsForSubject` removes all of a subject's sessions.
-- [ ] T047 Implement `src/features/auth/session.ts` (`server-only`) to pass T046:
+- [ ] T048 Implement `src/features/auth/session.ts` (`server-only`) to pass T047:
   - `createSession`, `loadSession` and `deleteSessionsForSubject`;
   - cookie helpers using the names `hfd_session_customer|partner|agent|admin` (`HttpOnly`, `SameSite=Lax`, `Secure` in production, max-age 30 days);
   - `requireSession(surface)`: redirects to that surface's login with a `next` param that must start with the same surface prefix;
   - `getOptionalSession(surface)`;
   - wrap both `requireSession` and `getOptionalSession` in React `cache()`, so repeated calls in one request (layout plus page plus components) load and re-check the session once.
-- [ ] T048 Create `src/features/auth/actor.ts` (`server-only`):
+- [ ] T049 Create `src/features/auth/actor.ts` (`server-only`):
   - `currentActor(surface)` returns `{ role: 'admin'|'partner', phone }` for FR-055 stamping;
   - `resolveKitchenScope(surface, inputKitchenId?)` returns the session's `kitchen_id` for partners (and rejects any other id with `unauthorised`) or the input id for admins.
 
 ### Demo catalogue and reset (research R8, R15)
 
-- [ ] T049 Create the Zod schema `src/features/demo/catalogue-schema.ts`:
+- [ ] T050 Create the Zod schema `src/features/demo/catalogue-schema.ts`:
   - **Top level**: `{ notes?: string[], admins: [{key, name, phone}], agents: [{key, name, phone, vehicleType, vehicleReg?, active}], customers: [{key, phone, displayName?}], kitchens: [...] }`.
   - **Each kitchen**:
     - `key`, `name {en?, kn?}`, `description {en?, kn?}`, `type`, `pureVeg`;
@@ -287,7 +302,7 @@ the demo catalogue loader and surface shells that every story depends on.
     - `menuSource: 'researched'|'fabricated'`, `sourceNote?`, `image?`;
     - `categories [{key, name, dishes [{key, name, description?, priceRupees, isVeg, available, image?}]}]`.
   - Reuse the length limits from data-model.md.
-- [ ] T050 Create the stand-in catalogue `seed/catalogue.json` from the data-model.md "Seed outline", with all 9 kitchens:
+- [ ] T051 Create the stand-in catalogue `seed/catalogue.json` from the data-model.md "Seed outline", with all 9 kitchens:
   - 2–3 categories and 4–8 dishes per kitchen, with indicative prices;
   - English and Kannada names, with Kannada drafted by the agent and listed in `notes`;
   - `menuSource: "fabricated"` for every kitchen, since this is the stand-in;
@@ -297,25 +312,25 @@ the demo catalogue loader and surface shells that every story depends on.
   - Karki Amma's kitchen has one dish with `available: false`;
   - Honnavar Biryani Box has hours `18:30–23:00` every day;
   - Havyaka Oota Mane is `pending` with no verification; Market Road Lunch Home is `suspended` with reason "Hygiene complaint under review";
-  - every number is in the `90000xxxxx` block: admin `9000000001`, customer `9000000101`, agents `9000000201`/`202` (active) and `203` (inactive), kitchen sign-ins `90000003NN`, and kitchen 1 has a helper `9000000399`;
+  - every number is in the `90000xxxxx` block: customer-facing kitchen contacts `90000010NN`, admin `9000000001`, customer `9000000101`, agents `9000000201`/`202` (active) and `203` (inactive), kitchen sign-ins `90000003NN`, and kitchen 1 has a helper `9000000399`;
   - image file names follow `seed/images/<kitchen-key>.jpg` and `<kitchen-key>--<dish-key>.jpg`.
-- [ ] T051 [P] Create `seed/images/README.md`. It explains the file naming from T050, accepted formats (JPEG, PNG, WebP, ≤ 5 MB) and that a missing file falls back to the placeholder. It adds no images yet.
-- [ ] T052 Implement `src/features/demo/load-catalogue.ts` (`server-only`):
-  - read `seed/catalogue.json` and validate it with T049, failing closed with the Zod issue path;
+- [ ] T052 [P] Create `seed/images/README.md`. It explains the file naming from T051, accepted formats (JPEG, PNG, WebP, ≤ 5 MB) and that a missing file falls back to the placeholder. It adds no images yet.
+- [ ] T053 Implement `src/features/demo/load-catalogue.ts` (`server-only`):
+  - read `seed/catalogue.json` and validate it with T050, failing closed with the Zod issue path;
   - derive deterministic UUIDs from entry keys with `deterministicId(key)` in `src/features/demo/ids.ts`, a pure module with no `server-only`, so `e2e/catalogue.ts` can import it (name-based SHA-1 via `node:crypto`, version and variant bits set);
   - insert all rows in one transaction;
   - load each image file through `storeImage` (T042); a missing file is a `log.warn`, not a failure;
   - for `temporarilyClosedAtReset`, set `closed_at = now` and `reopens_at = closureEnd(hours, now)` (T028);
   - for `verification`, use the first admin as `verified_by_admin_id`;
   - stamp `updated_by_role = 'admin'` with the first admin's phone.
-- [ ] T053 Implement the CLI `src/features/demo/reset.ts`, run by `npm run demo:reset`. It drops and recreates schema `public` on `DATABASE_URL`, runs `migrateDatabase`, runs `loadCatalogue`, and prints a summary of counts per table.
-- [ ] T054 Write the integration test `src/features/demo/catalogue.int.test.ts`. It loads `seed/catalogue.json` into the test database and asserts:
+- [ ] T054 Implement `resetDemo(databaseUrl)` in `src/features/demo/reset-demo.ts` (`server-only`). It drops and recreates schema `public`, runs `migrateDatabase`, runs `loadCatalogue`, and returns counts per table. `src/features/demo/reset.ts` is the thin CLI run by `npm run demo:reset`: it calls `resetDemo(env.DATABASE_URL)` and prints the counts.
+- [ ] T055 Write the integration test `src/features/demo/catalogue.int.test.ts`. It loads `seed/catalogue.json` into the test database and asserts:
   - FR-050: ≥ 8 kitchens, ≥ 3 restaurants, ≥ 3 home kitchens, ≥ 2 cloud kitchens, and both pure-veg and non-veg present;
   - FR-051: a dish missing `name_kn`, a kitchen temporarily closed now, a pending kitchen, a suspended kitchen, an unavailable dish, and a kitchen closed by hours at 13:00 IST;
   - FR-052: ≥ 1 admin, a sign-in for every kitchen, one kitchen with 2 sign-ins, ≥ 2 active agents and 1 inactive agent, and ≥ 1 customer;
   - loading twice gives identical ids;
   - a missing image falls back without error.
-- [ ] T055 [P] Create the end-to-end catalogue helper `e2e/catalogue.ts`. It reads and parses `seed/catalogue.json` with the T049 schema and uses `deterministicId` from `src/features/demo/ids.ts` to compute ids for URLs. It exports selectors that return `{ key, id, name, … }`:
+- [ ] T056 [P] Create the end-to-end catalogue helper `e2e/catalogue.ts`. It reads and parses `seed/catalogue.json` with the T050 schema and uses `deterministicId` from `src/features/demo/ids.ts` to compute ids for URLs. It exports selectors that return `{ key, id, name, … }`:
   - `activeKitchens()`, `pendingKitchen()`, `suspendedKitchen()`, `temporarilyClosedKitchen()` (the one with `temporarilyClosedAtReset`);
   - `kitchenWithHelper()`: the kitchen with two sign-ins, returning `{ kitchen, ownerPhone, helperPhone }`;
   - `dishWithoutKannadaName()`, returning `{ kitchen, dish }`;
@@ -327,15 +342,16 @@ the demo catalogue loader and surface shells that every story depends on.
   - `kitchenTypeCounts()`: counts of active kitchens per type;
   - `admin()`, `activeAgent()`, `inactiveAgent()`, `demoCode()` (`process.env.DEMO_OTP_CODE ?? '123456'`).
   - Each selector throws a clear error if the catalogue has no matching subject.
+  - Also create `e2e/reset.ts` exporting `resetDemoData()`, which calls `resetDemo(process.env.DATABASE_URL)` from `src/features/demo/reset-demo.ts`.
 
 ### Surface shells (contracts/routes.md)
 
-- [ ] T056 [P] Create the customer shell:
+- [ ] T057 [P] Create the customer shell:
   - `src/app/(customer)/layout.tsx`: header with app name, language switch and sign-in/account link, mobile-first, max width;
   - `loading.tsx`, `error.tsx` (client component with retry; translated) and `not-found.tsx`, all in `src/app/(customer)/`.
-- [ ] T057 [P] Create the partner shell in `src/app/(partner)/partner/`: `layout.tsx` with language switch; `loading.tsx`, `error.tsx` and `not-found.tsx`. Create `src/app/(partner)/partner/(protected)/layout.tsx`, which calls `requireSession('partner')` only to drive navigation and the sign-out button (pages do their own check; see Conventions).
-- [ ] T058 [P] Create the agent shell in `src/app/(agent)/agent/`, following T057, with `(protected)/layout.tsx` calling `requireSession('agent')`.
-- [ ] T059 [P] Create the admin shell in `src/app/(admin)/admin/`, following T057, desktop-first with side navigation (Partners, Agents). `(protected)/layout.tsx` calls `requireSession('admin')`.
+- [ ] T058 [P] Create the partner shell in `src/app/(partner)/partner/`: `layout.tsx` with language switch; `loading.tsx`, `error.tsx` and `not-found.tsx`. Create `src/app/(partner)/partner/(protected)/layout.tsx`, which calls `requireSession('partner')` only to drive navigation and the sign-out button (pages do their own check; see Conventions).
+- [ ] T059 [P] Create the agent shell in `src/app/(agent)/agent/`, following T058, with `(protected)/layout.tsx` calling `requireSession('agent')`.
+- [ ] T060 [P] Create the admin shell in `src/app/(admin)/admin/`, following T058, desktop-first with side navigation (Partners, Agents). `(protected)/layout.tsx` calls `requireSession('admin')`.
 
 **Checkpoint**: The foundation is ready. `npm run demo:reset` loads the stand-in catalogue, and
 unit and integration tests pass.
@@ -356,39 +372,40 @@ category, calls it, and switches language with full parity.
 
 ### Tests for User Story 1
 
-- [ ] T060 [P] [US1] Write a failing integration test `src/features/browse/queries.int.test.ts`:
+- [ ] T061 [P] [US1] Write a failing integration test `src/features/browse/queries.int.test.ts`:
   - `listKitchensForCustomer({ now, locale })` returns only `active` kitchens (FR-023), each with a computed state, open kitchens first and then by localised name;
   - `getKitchenForCustomer(id)` returns null for pending, suspended or unknown ids;
   - it returns categories and dishes in `position` order, includes unavailable dishes flagged, and includes contacts with the primary first and the weekly hours.
-- [ ] T061 [P] [US1] Write the end-to-end test `e2e/us1-browse.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
+- [ ] T062 [P] [US1] Write the end-to-end test `e2e/us1-browse.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
   - the home page lists exactly `activeKitchens().length` cards, and the names of `pendingKitchen()` and `suspendedKitchen()` are absent;
   - `temporarilyClosedKitchen()`'s card shows "Temporarily closed";
   - opening an active kitchen shows its categories, and the call link has `href="tel:<its primary contact>"`;
   - switching to Kannada changes the heading, state labels and prices, and still shows Kannada after a reload;
   - on the kitchen of `dishWithoutKannadaName()`, that dish shows the fallback marker;
   - an unknown kitchen id shows the not-found screen.
+  - `test.beforeAll` calls `resetDemoData()` from `e2e/reset.ts`.
 
 ### Implementation for User Story 1
 
-- [ ] T062 [US1] Implement `src/features/browse/queries.ts` (`server-only`) with `listKitchensForCustomer` and `getKitchenForCustomer`, using `kitchenState` (T026) and returning plain serialisable view models, to pass T060
-- [ ] T063 [P] [US1] Create the kitchen card `src/features/browse/components/kitchen-card.tsx`:
+- [ ] T063 [US1] Implement `src/features/browse/queries.ts` (`server-only`) with `listKitchensForCustomer` and `getKitchenForCustomer`, using `kitchenState` (T026) and returning plain serialisable view models, to pass T061
+- [ ] T064 [P] [US1] Create the kitchen card `src/features/browse/components/kitchen-card.tsx`:
   - photo through `next/image` with the loader (T043), `loading="lazy"` and `sizes`, falling back to `placeholder-image`;
   - `localized-text` name with fallback marker;
   - kitchen type badge, "Pure veg" badge when declared, and the state label.
-- [ ] T064 [P] [US1] Create `src/features/browse/components/kitchen-state-label.tsx`. It renders Open, "Closed · opens {day} {time}", "Temporarily closed · opens {time}" or "Hours not set" with `formatTime` and `formatWeekday` (T033).
-- [ ] T065 [US1] Create the home page `src/app/(customer)/page.tsx`. It reads the locale and lists kitchens with `kitchen-card`, and shows `empty-state` when there are none.
-- [ ] T066 [P] [US1] Create the menu components in `src/features/browse/components/`:
+- [ ] T065 [P] [US1] Create `src/features/browse/components/kitchen-state-label.tsx`. It renders Open, "Closed · opens {day} {time}", "Temporarily closed · opens {time}" or "Hours not set" with `formatTime` and `formatWeekday` (T033).
+- [ ] T066 [US1] Create the home page `src/app/(customer)/page.tsx`. It reads the locale and lists kitchens with `kitchen-card`, and shows `empty-state` when there are none.
+- [ ] T067 [P] [US1] Create the menu components in `src/features/browse/components/`:
   - `menu-section.tsx`: category heading via `localized-text`;
   - `dish-row.tsx`: photo or placeholder, name and description with fallback marker, `formatPrice`, `veg-mark`, and dimmed with a "Not available" label when unavailable (FR-045);
   - `hours-table.tsx`: the full week from `formatWeekday`, "Closed" days, up to 2 ranges;
   - `call-button.tsx`: a `tel:` link with a large touch target to the primary contact.
-- [ ] T067 [US1] Create the kitchen page `src/app/(customer)/kitchens/[id]/page.tsx`:
+- [ ] T068 [US1] Create the kitchen page `src/app/(customer)/kitchens/[id]/page.tsx`:
   - validate `id` as a uuid with Zod, calling `notFound()` on failure or a null result;
   - show the header (photo, name, description, type, pure-veg badge, state, landmark, address), the call button, hours and the menu;
   - show "Menu coming soon" when there are no categories or dishes.
-- [ ] T068 [US1] Add the US1 message keys (`home.*`, `kitchen.*`, `menu.*`, `hours.*`) to `src/shared/i18n/messages/en.json` and `kn.json`, and list the drafted Kannada keys in `machine-drafted.json`
+- [ ] T069 [US1] Add the US1 message keys (`home.*`, `kitchen.*`, `menu.*`, `hours.*`) to `src/shared/i18n/messages/en.json` and `kn.json`, and list the drafted Kannada keys in `machine-drafted.json`
 
-**Checkpoint**: US1 works on its own. T060 and T061 pass.
+**Checkpoint**: US1 works on its own. T061 and T062 pass.
 
 ---
 
@@ -409,13 +426,13 @@ self-register; partners, agents and admins must be registered. Agents see their 
 
 ### Tests for User Story 2
 
-- [ ] T069 [P] [US2] Write a failing integration test `src/features/auth/actions.int.test.ts`:
+- [ ] T070 [P] [US2] Write a failing integration test `src/features/auth/services/sign-in.int.test.ts` against the services in `src/features/auth/services/sign-in.ts` (not the action wrappers):
   - `requestCode` gives `invalid` for a bad phone; `not_registered` for an unregistered number on partner, agent or admin (and for a kitchen *contact* number that is not on its sign-in list, FR-053); `inactive` for an inactive agent;
-  - `verifyCode` with the right code creates a `customers` row on first customer sign-in (FR-005) and creates a session for each surface; the wrong code gives `wrong_code`;
+  - `verifyCode` returns `{ token }` for the new session; with the right code it creates a `customers` row on first customer sign-in (FR-005) and creates a session for each surface; the wrong code gives `wrong_code`;
   - registration is re-checked in `verifyCode` (an agent deactivated between the two steps gives `inactive`);
   - `signOut` deletes the session;
   - `updateCustomerName` trims and limits to 60 characters.
-- [ ] T070 [P] [US2] Write the end-to-end test `e2e/us2-sign-in.spec.ts` (mobile), selecting accounts only through `e2e/catalogue.ts`:
+- [ ] T071 [P] [US2] Write the end-to-end test `e2e/us2-sign-in.spec.ts` (mobile), selecting accounts only through `e2e/catalogue.ts`:
   - customer sign-in with a new number (outside the catalogue) reaches `/account`;
   - partner sign-in with `kitchenWithHelper().helperPhone` reaches `/partner` showing that kitchen's name;
   - `inactiveAgent()` sees the refusal message;
@@ -424,40 +441,41 @@ self-register; partners, agents and admins must be registered. Agents see their 
   - after partner sign-in, visiting `/agent` redirects to `/agent/login`;
   - sign-out returns to the login screen;
   - the sign-in screen shows the demo-code notice.
+  - `test.beforeAll` calls `resetDemoData()` from `e2e/reset.ts`.
 
 ### Implementation for User Story 2
 
-- [ ] T071 [US2] Create the Zod schemas in `src/features/auth/schemas.ts`: `surface` enum; `phone` (string transformed by `normalizePhone`, error key `errors.invalidPhone`); `code` (`/^\d{6}$/`); `displayName` (trimmed, ≤ 60, may be empty); `next` (optional string that must start with the surface prefix).
-- [ ] T072 [US2] Implement the server actions in `src/features/auth/actions.ts`:
+- [ ] T072 [US2] Create the Zod schemas in `src/features/auth/schemas.ts`: `surface` enum; `phone` (string transformed by `normalizePhone`, error key `errors.invalidPhone`); `code` (`/^\d{6}$/`); `displayName` (trimmed, ≤ 60, may be empty); `next` (optional string that must start with the surface prefix).
+- [ ] T073 [US2] Implement the services in `src/features/auth/services/sign-in.ts` (no `next/*` imports; `verifyCode` returns `{ token }`) and the action wrappers in `src/features/auth/actions.ts` (`requestCodeAction`, `verifyCodeAction`, `signOutAction`, `updateCustomerNameAction`), which set and clear the surface cookie and redirect:
   - `requestCode({surface, phone})` and `verifyCode({surface, phone, code, next?})`, with registration lookups: customers always; partner by `kitchen_signins.phone`; agent by `agents.phone` and `active`; admin by `admins.phone`;
-  - both call `otpProvider` (T044);
+  - both call `otpProvider` (T045);
   - on success create the session, set the surface cookie and redirect;
   - `signOut({surface})` and `updateCustomerName`.
-  - This passes T069.
-- [ ] T073 [US2] Create `src/features/auth/components/sign-in-form.tsx`, a client leaf using `useActionState`:
+  - This passes T070.
+- [ ] T074 [US2] Create `src/features/auth/components/sign-in-form.tsx`, a client leaf using `useActionState`:
   - step 1 is a tel input (`inputMode="numeric"`, `autoComplete="tel"`);
   - step 2 is a code input (`inputMode="numeric"`, `autoComplete="one-time-code"`) with a "change number" link;
   - both show translated field and form errors;
   - it shows the notice "Demo: no SMS is sent; use the demo code" (FR-004).
-- [ ] T074 [P] [US2] Create the four login pages:
+- [ ] T075 [P] [US2] Create the four login pages:
   - `src/app/(customer)/login/page.tsx`;
   - `src/app/(partner)/partner/login/page.tsx`;
   - `src/app/(agent)/agent/login/page.tsx`;
   - `src/app/(admin)/admin/login/page.tsx`.
   - Each renders `sign-in-form` with its surface and a role-specific heading, and redirects to the surface home if already signed in.
-- [ ] T075 [P] [US2] Create the customer account page `src/app/(customer)/account/page.tsx`. The page calls `requireSession('customer')` itself (redirect to `/login`) and shows the phone, a display-name form (`updateCustomerName`) and sign-out (FR-010).
-- [ ] T076 [P] [US2] Create the agent screens:
+- [ ] T076 [P] [US2] Create the customer account page `src/app/(customer)/account/page.tsx`. The page calls `requireSession('customer')` itself (redirect to `/login`) and shows the phone, a display-name form (`updateCustomerName`) and sign-out (FR-010).
+- [ ] T077 [P] [US2] Create the agent screens:
   - `src/features/agents/queries.ts` with `getAgentProfile(agentId)`;
   - `src/app/(agent)/agent/(protected)/page.tsx` with the "No deliveries yet" empty state (FR-046);
   - `src/app/(agent)/agent/(protected)/profile/page.tsx` showing name, phone and translated vehicle type plus registration.
   - Each page calls `requireSession('agent')` itself.
-- [ ] T077 [P] [US2] Create the minimal landing pages:
+- [ ] T078 [P] [US2] Create the minimal landing pages:
   - `src/app/(partner)/partner/(protected)/page.tsx` shows the signed-in kitchen's localised name and is extended in US3.
   - `src/app/(admin)/admin/(protected)/page.tsx` redirects to `/admin/partners`, with a placeholder `src/app/(admin)/admin/(protected)/partners/page.tsx` that is replaced in US4.
   - Each page calls `requireSession(surface)` itself (`'partner'` or `'admin'`).
-- [ ] T078 [US2] Add the US2 message keys (`auth.*`, `account.*`, `agent.*`, and `errors.notRegistered`, `errors.inactive`, `errors.wrongCode`) to `en.json` and `kn.json`, and update `machine-drafted.json`
+- [ ] T079 [US2] Add the US2 message keys (`auth.*`, `account.*`, `agent.*`, and `errors.notRegistered`, `errors.inactive`, `errors.wrongCode`) to `en.json` and `kn.json`, and update `machine-drafted.json`
 
-**Checkpoint**: US1 and US2 work on their own. T069 and T070 pass.
+**Checkpoint**: US1 and US2 work on their own. T070 and T071 pass.
 
 ---
 
@@ -477,13 +495,13 @@ editors are built to be reused by admins (FR-054).
 
 ### Tests for User Story 3
 
-- [ ] T079 [P] [US3] Write a failing integration test `src/features/kitchens/operations.int.test.ts`:
+- [ ] T080 [P] [US3] Write a failing integration test `src/features/kitchens/services/operations.int.test.ts` against the services in `src/features/kitchens/services/operations.ts`, using test actors:
   - `closeTemporarily` sets `closed_at` and `reopens_at` via `closureEnd` and gives `already_closed` when repeated;
   - `reopen` clears both, or gives `not_closed`;
   - `saveHours` replaces all rows, rejects `range_order` and `range_overlap` per day, and recalculates `reopens_at` from `closed_at` while closed;
   - every write stamps `closure_*` or `hours_updated_by_role='partner'` with the phone and time;
   - a partner session can't act on another kitchen (`unauthorised`).
-- [ ] T080 [P] [US3] Write a failing integration test `src/features/menu/actions.int.test.ts`:
+- [ ] T081 [P] [US3] Write a failing integration test `src/features/menu/services/menu.int.test.ts` against the services in `src/features/menu/services/categories.ts` and `dishes.ts`, using test actors:
   - `saveCategory` requires at least one name;
   - `deleteCategory` with dishes gives `category_not_empty`;
   - `reorderCategories` and `reorderDishes` require the exact id set;
@@ -493,38 +511,41 @@ editors are built to be reused by admins (FR-054).
   - `setDishAvailable` toggles without losing fields;
   - each write stamps `updated_by_*`;
   - a partner can't touch another kitchen's dish.
-- [ ] T081 [P] [US3] Write the end-to-end test `e2e/us3-partner.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`. Sign in as `kitchenWithHelper().helperPhone`, then:
+- [ ] T082 [P] [US3] Write the end-to-end test `e2e/us3-partner.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`. Sign in as `kitchenWithHelper().helperPhone`, then:
   - mark `availableDishIn(kitchen.key)` unavailable, then check it is dimmed on `/kitchens/[id]`;
   - add a dish with only an English name, see the reminder, then check it appears on the customer menu;
   - mark the kitchen temporarily closed, then check the customer home shows "Temporarily closed" with a time;
   - tap Reopen, then check the kitchen is open again;
   - edit hours with an overlapping range, then see a day-specific error.
+  - submit the dish form with a price of 0: the field error shows and the entered names are still in the form (FR-048).
+  - `test.beforeAll` calls `resetDemoData()` from `e2e/reset.ts`.
 
 ### Implementation for User Story 3
 
-- [ ] T082 [US3] Create the Zod schemas in `src/features/kitchens/schemas.ts`:
+- [ ] T083 [US3] Create the Zod schemas in `src/features/kitchens/schemas.ts`:
   - `rangeSchema` (`"HH:MM"` with opens < closes ≤ `"24:00"`);
   - `weekHoursSchema` (keys 1–7, 0–2 ranges, no overlap, error codes `range_order` and `range_overlap` per day, using `validateWeekHours`);
   - `kitchenIdInput` (optional uuid).
-- [ ] T083 [US3] Implement the actions in `src/features/kitchens/actions/operations.ts`: `closeTemporarily({kitchenId?})`, `reopen({kitchenId?})` and `saveHours({kitchenId?, hours})`. They use `resolveKitchenScope` and `currentActor` (T048) and `closureEnd` (T028), revalidate the customer and partner paths, and pass T079.
-- [ ] T084 [US3] Create the menu Zod schemas in `src/features/menu/schemas.ts`:
+- [ ] T084 [US3] Implement the services in `src/features/kitchens/services/operations.ts` and their action wrappers in `src/features/kitchens/actions/operations.ts`: `closeTemporarily({kitchenId?})`, `reopen({kitchenId?})` and `saveHours({kitchenId?, hours})`. They use `resolveKitchenScope` and `currentActor` (T049) and `closureEnd` (T028), revalidate the customer and partner paths, and pass T080.
+- [ ] T085 [US3] Create the menu Zod schemas in `src/features/menu/schemas.ts`:
   - localised required and optional name fields with the data-model limits (category names 60; dish names 80; descriptions 300);
   - `priceRupees` integer 1–100000;
   - photo `File` optional (JPEG, PNG or WebP, ≤ 5 MB).
-- [ ] T085 [US3] Implement the category actions in `src/features/menu/actions/categories.ts`: `saveCategory`, `deleteCategory` and `reorderCategories`. Admins and partners are both scoped through `resolveKitchenScope`.
-- [ ] T086 [US3] Implement the dish actions in `src/features/menu/actions/dishes.ts`: `saveDish`, `setDishAvailable`, `deleteDish` and `reorderDishes`. These enforce the pure-veg rule (FR-035), store photos via `storeImage`, clean up with `deleteImageIfUnused`, and return `missingLanguage`. Together with T085 this passes T080.
-- [ ] T087 [US3] Implement `getPartnerDashboard(kitchenId)` and `getKitchenMenuForEditor(kitchenId)` in `src/features/kitchens/queries.ts`. They return status, suspension reason, verification present, state, missing-language counts for categories and dishes (FR-036), and the full menu with each item's `updated_by_*` and `updated_at`.
-- [ ] T088 [P] [US3] Create the kitchen components in `src/features/kitchens/components/`:
+- [ ] T086 [US3] Implement the category services in `src/features/menu/services/categories.ts` and their action wrappers in `src/features/menu/actions/categories.ts`: `saveCategory`, `deleteCategory` and `reorderCategories`. Admins and partners are both scoped through `resolveKitchenScope`.
+- [ ] T087 [US3] Implement the dish services in `src/features/menu/services/dishes.ts` and their action wrappers in `src/features/menu/actions/dishes.ts`: `saveDish`, `setDishAvailable`, `deleteDish` and `reorderDishes`. These enforce the pure-veg rule (FR-035), store photos via `storeImage`, clean up with `deleteImageIfUnused`, and return `missingLanguage`. Together with T086 this passes T081.
+- [ ] T088 [US3] Implement `getPartnerDashboard(kitchenId)` and `getKitchenMenuForEditor(kitchenId)` in `src/features/kitchens/queries.ts`. They return status, suspension reason, verification present, state, missing-language counts for categories and dishes (FR-036), and the full menu with each item's `updated_by_*` and `updated_at`.
+- [ ] T089 [P] [US3] Create the kitchen components in `src/features/kitchens/components/`:
   - `status-notice.tsx`: pending ("customers can't see your kitchen until it is verified") or suspended (shows the admin's reason), per FR-037;
   - `closure-control.tsx`: "Close for now" or "Reopen", showing "opens again at {time}";
   - `hours-editor.tsx`: a client leaf with 7 day rows, a "closed" switch, up to 2 time ranges and per-day errors.
-- [ ] T089 [P] [US3] Create the menu components in `src/features/menu/components/`:
+- [ ] T090 [P] [US3] Create the menu components in `src/features/menu/components/`:
   - `menu-editor.tsx`: lists categories and dishes with missing-language badges, available switches, and up/down reorder buttons;
   - `category-form.tsx`;
   - `dish-form.tsx`: en/kn names and descriptions, price, veg switch disabled with an explanation in a pure-veg kitchen, photo input, available switch;
   - `last-changed.tsx`: shows "changed by {role} {phone} · {time}" and is rendered only when the `showLastChanged` prop is true (admin, US4).
   - Every component takes `kitchenId?` and a `basePath` prop so the admin surface can reuse it.
-- [ ] T090 [US3] Create the partner pages in `src/app/(partner)/partner/(protected)/`:
+  - Every form keeps the values the user entered and shows field-level errors (from translation keys) after a failed save; nothing is cleared until a save succeeds (FR-048).
+- [ ] T091 [US3] Create the partner pages in `src/app/(partner)/partner/(protected)/`:
   - replace `page.tsx` with a dashboard: status notice, closure control, current state, missing translations count;
   - `menu/page.tsx`;
   - `menu/categories/new/page.tsx` and `menu/categories/[id]/page.tsx`;
@@ -533,9 +554,9 @@ editors are built to be reused by admins (FR-054).
   - `kitchen/page.tsx`, the read-only admin-managed profile (FR-038);
   - plus bottom navigation in `(protected)/layout.tsx`.
   - Every page above calls `requireSession('partner')` itself and scopes queries to the session's `kitchen_id`.
-- [ ] T091 [US3] Add the US3 message keys (`partner.*`, `menuEditor.*`, `hoursEditor.*`, `closure.*`, and `errors.rangeOrder`, `errors.rangeOverlap`, `errors.categoryNotEmpty`, `errors.pureVegKitchen`, `errors.invalidImage`) to `en.json` and `kn.json`, and update `machine-drafted.json`
+- [ ] T092 [US3] Add the US3 message keys (`partner.*`, `menuEditor.*`, `hoursEditor.*`, `closure.*`, and `errors.rangeOrder`, `errors.rangeOverlap`, `errors.categoryNotEmpty`, `errors.pureVegKitchen`, `errors.invalidImage`) to `en.json` and `kn.json`, and update `machine-drafted.json`
 
-**Checkpoint**: US3 works with US2 sign-in. T079–T081 pass.
+**Checkpoint**: US3 works with US2 sign-in. T080–T082 pass.
 
 ---
 
@@ -557,7 +578,7 @@ FR-054).
 
 ### Tests for User Story 4
 
-- [ ] T092 [P] [US4] Write a failing integration test `src/features/kitchens/admin.int.test.ts`:
+- [ ] T093 [P] [US4] Write a failing integration test `src/features/kitchens/services/admin.int.test.ts` against the services in `src/features/kitchens/services/` (`admin.ts`, `signins.ts`, `verification.ts`) and the query `listKitchensForAdmin`, using test actors:
   - `createKitchen` stores a pending kitchen with exactly 1 primary contact and at least 1 sign-in, or gives `signin_phone_taken {kitchenName}`;
   - `updateKitchenProfile` setting `pureVeg=true` with non-veg dishes gives `pure_veg_conflict {nonVegCount}`;
   - `addSignin` gives `signin_phone_taken`;
@@ -567,11 +588,12 @@ FR-054).
   - `setKitchenPhoto` stores, replaces and removes the photo;
   - all actions give `unauthorised` for non-admin sessions;
   - menu, hours and closure actions called by an admin on any kitchen stamp `updated_by_role='admin'` (FR-054, FR-055).
-- [ ] T093 [P] [US4] Write a failing integration test `src/features/agents/actions.int.test.ts`:
+  - `listKitchensForAdmin`: the status filter, the type filter, search by a Kannada name and by an English name, search by a contact phone and by a sign-in phone, and combined filters.
+- [ ] T094 [P] [US4] Write a failing integration test `src/features/agents/services/agents.int.test.ts` against the services in `src/features/agents/services/agents.ts`, using test actors:
   - `saveAgent` validates name ≤ 60, `vehicleType` enum and `vehicleReg` ≤ 20 (uppercased);
   - a duplicate phone gives `agent_phone_taken {agentName}`;
   - `setAgentActive(false)` deletes the agent's sessions.
-- [ ] T094 [P] [US4] Write the end-to-end test `e2e/us4-admin.spec.ts` (desktop), selecting subjects only through `e2e/catalogue.ts`:
+- [ ] T095 [P] [US4] Write the end-to-end test `e2e/us4-admin.spec.ts` (desktop), selecting subjects only through `e2e/catalogue.ts`:
   - sign in as `admin()`, then create a new home kitchen (test-generated name and numbers), which shows status Pending;
   - activating it without verification shows the error;
   - record the hygiene check, then activate; the customer home (new page) lists the kitchen;
@@ -579,38 +601,41 @@ FR-054).
   - add an agent with a new number, then sign in as that agent in a new context;
   - remove `kitchenWithHelper().helperPhone` while the helper is signed in (second context); the helper's next navigation lands on `/partner/login`;
   - edit `availableDishIn(<any active kitchen>)`, then see "last changed by" the admin.
+  - `test.beforeAll` calls `resetDemoData()` from `e2e/reset.ts`.
 
 ### Implementation for User Story 4
 
-- [ ] T095 [US4] Create the admin Zod schemas in `src/features/kitchens/admin-schemas.ts`:
+- [ ] T096 [US4] Create the admin Zod schemas in `src/features/kitchens/admin-schemas.ts`:
   - kitchen profile: names and descriptions with the limits; `type`; `pureVeg`; `address` ≤ 200; `landmark` ≤ 100; `contacts` with ≥ 1 entry and exactly 1 primary; `signins` with ≥ 1 entry, `personName` ≤ 60 and unique phones within the input;
   - verification: FSSAI `/^\d{14}$/` or hygiene 3–40 characters, with kind matching type;
   - status, plus `reason` ≤ 200 required for suspended.
-- [ ] T096 [US4] Implement the actions in `src/features/kitchens/actions/admin.ts`: `createKitchen`, `updateKitchenProfile`, `setKitchenPhoto` and `setKitchenStatus`. The status rules are: active needs verification; suspended needs a reason; all other transitions are allowed.
-- [ ] T097 [US4] Implement `addSignin` and `removeSignin` in `src/features/kitchens/actions/signins.ts`. Each uses a transaction and calls `deleteSessionsForSubject` on removal (FR-053).
-- [ ] T098 [US4] Implement `recordVerification` in `src/features/kitchens/actions/verification.ts`. It calls `verificationProvider.check` (T045, stand-in) and upserts `verifications` with the acting admin and the current time. With T096 and T097 this passes T092.
-- [ ] T099 [P] [US4] Implement the agent schemas and actions:
-  - `src/features/agents/schemas.ts` and `src/features/agents/actions.ts` with `saveAgent` and `setAgentActive`, which calls `deleteSessionsForSubject` on deactivation;
+- [ ] T097 [US4] Implement the services in `src/features/kitchens/services/admin.ts` and their action wrappers in `src/features/kitchens/actions/admin.ts`: `createKitchen`, `updateKitchenProfile`, `setKitchenPhoto` and `setKitchenStatus`. The status rules are: active needs verification; suspended needs a reason; all other transitions are allowed.
+- [ ] T098 [US4] Implement the services `addSignin` and `removeSignin` in `src/features/kitchens/services/signins.ts`, with wrappers in `src/features/kitchens/actions/signins.ts`. Each uses a transaction and calls `deleteSessionsForSubject` on removal (FR-053).
+- [ ] T099 [US4] Implement the service `recordVerification` in `src/features/kitchens/services/verification.ts`, with its wrapper in `src/features/kitchens/actions/verification.ts`. It calls `verificationProvider.check` (T046, stand-in) and upserts `verifications` with the acting admin and the current time. With T097 and T098 this passes T093.
+- [ ] T100 [P] [US4] Implement the agent schemas and actions:
+  - `src/features/agents/schemas.ts`; services `saveAgent` and `setAgentActive` in `src/features/agents/services/agents.ts` (`setAgentActive` calls `deleteSessionsForSubject` on deactivation); wrappers in `src/features/agents/actions.ts`;
   - add `listAgents` to `src/features/agents/queries.ts`.
-  - This passes T093.
-- [ ] T100 [US4] Implement `listKitchensForAdmin({status?, type?, q?})` in `src/features/kitchens/queries.ts`, where `q` matches either name (ILIKE) or any contact or sign-in phone, and `getKitchenForAdmin(id)` (profile, contacts, sign-ins, hours, verification, status)
-- [ ] T101 [P] [US4] Create the admin kitchen components in `src/features/kitchens/components/admin/`:
+  - This passes T094.
+- [ ] T101 [US4] Implement `listKitchensForAdmin({status?, type?, q?})` in `src/features/kitchens/queries.ts`, where `q` matches either name (ILIKE) or any contact or sign-in phone, and `getKitchenForAdmin(id)` (profile, contacts, sign-ins, hours, verification, status)
+- [ ] T102 [P] [US4] Create the admin kitchen components in `src/features/kitchens/components/admin/`:
   - `partner-table.tsx`: status and type filters, search box, status badges;
   - `kitchen-profile-form.tsx`: bilingual fields, contact repeater with a primary radio, sign-in list repeater on create, photo;
   - `signin-list.tsx`: add and remove, with the last entry protected;
   - `verification-panel.tsx`: kind fixed by type, reference input, and the translated label "Recorded by admin, not checked with FSSAI";
   - `status-panel.tsx`: activate, suspend with reason, move to pending.
-- [ ] T102 [P] [US4] Create the agent components `src/features/agents/components/agent-table.tsx` and `agent-form.tsx` (name, phone, translated vehicle type select, registration, active switch)
-- [ ] T103 [US4] Create the admin partner pages in `src/app/(admin)/admin/(protected)/partners/`:
+  - Every form keeps the values the user entered and shows field-level errors (from translation keys) after a failed save; nothing is cleared until a save succeeds (FR-048).
+- [ ] T103 [P] [US4] Create the agent components `src/features/agents/components/agent-table.tsx` and `agent-form.tsx` (name, phone, translated vehicle type select, registration, active switch)
+  - Every form keeps the values the user entered and shows field-level errors (from translation keys) after a failed save; nothing is cleared until a save succeeds (FR-048).
+- [ ] T104 [US4] Create the admin partner pages in `src/app/(admin)/admin/(protected)/partners/`:
   - replace `page.tsx` with the list;
   - `new/page.tsx`;
   - `[id]/page.tsx`: profile, sign-in list, verification and status;
   - `[id]/hours/page.tsx`, `[id]/menu/page.tsx`, `[id]/menu/categories/new/page.tsx`, `[id]/menu/categories/[categoryId]/page.tsx`, `[id]/menu/dishes/new/page.tsx` and `[id]/menu/dishes/[dishId]/page.tsx`, reusing the US3 editors with `kitchenId` and `showLastChanged`.
   - Every page calls `requireSession('admin')` itself.
-- [ ] T104 [P] [US4] Create the admin agent pages: `src/app/(admin)/admin/(protected)/agents/page.tsx`, `agents/new/page.tsx` and `agents/[id]/page.tsx`. Each page calls `requireSession('admin')` itself.
-- [ ] T105 [US4] Add the US4 message keys (`admin.*`, `verification.*`, `agentAdmin.*`, and `errors.signinPhoneTaken`, `errors.lastSignin`, `errors.kindMismatch`, `errors.needsVerification`, `errors.reasonRequired`, `errors.pureVegConflict`, `errors.agentPhoneTaken`) to `en.json` and `kn.json`, and update `machine-drafted.json`
+- [ ] T105 [P] [US4] Create the admin agent pages: `src/app/(admin)/admin/(protected)/agents/page.tsx`, `agents/new/page.tsx` and `agents/[id]/page.tsx`. Each page calls `requireSession('admin')` itself.
+- [ ] T106 [US4] Add the US4 message keys (`admin.*`, `verification.*`, `agentAdmin.*`, and `errors.signinPhoneTaken`, `errors.lastSignin`, `errors.kindMismatch`, `errors.needsVerification`, `errors.reasonRequired`, `errors.pureVegConflict`, `errors.agentPhoneTaken`) to `en.json` and `kn.json`, and update `machine-drafted.json`
 
-**Checkpoint**: US4 works with US2 and US3. T092–T094 pass.
+**Checkpoint**: US4 works with US2 and US3. T093–T095 pass.
 
 ---
 
@@ -630,41 +655,42 @@ script.
 
 ### Tests for User Story 5
 
-- [ ] T106 [P] [US5] Write failing unit tests `src/features/browse/domain/dish-filter.test.ts`:
+- [ ] T107 [P] [US5] Write failing unit tests `src/features/browse/domain/dish-filter.test.ts`:
   - `kitchenMatchesDishFilter(dishes, filter)`: `all` always matches (even with no available dishes); `veg` needs at least one **available** veg dish; `nonveg` needs at least one available non-veg dish;
   - `filterMenu(categories, filter)` keeps only matching dishes (unavailable matching ones stay, flagged) and drops empty categories.
-- [ ] T107 [US5] Implement `src/features/browse/domain/dish-filter.ts` to pass T106
-- [ ] T108 [P] [US5] Write a failing integration test `src/features/browse/filters.int.test.ts`:
+- [ ] T108 [US5] Implement `src/features/browse/domain/dish-filter.ts` to pass T107
+- [ ] T109 [P] [US5] Write a failing integration test `src/features/browse/filters.int.test.ts`:
   - `listKitchensForCustomer` with `type`, `pureVeg` and `openNow` (temporarily closed kitchens excluded) combined with `dishFilter`;
   - `getKitchenForCustomer(id, dishFilter)` hides non-matching dishes and empty categories, and returns `noMatchingDishes: true` when none match;
   - `searchForCustomer(q, dishFilter)` gives no query for fewer than 2 characters, matches `name_en` or `name_kn` substrings case-insensitively after NFC normalisation, returns only active kitchens, and applies the dish filter to dish results and kitchen results.
-- [ ] T109 [P] [US5] Write the end-to-end test `e2e/us5-search-filter.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
+- [ ] T110 [P] [US5] Write the end-to-end test `e2e/us5-search-filter.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
   - searching `searchableDish().knTerm` and then `.enTerm` both list that dish;
   - the type filter for each type in `kitchenTypeCounts()` shows exactly that many cards;
   - "Open now" excludes `temporarilyClosedKitchen()`;
   - "Veg only", then open `nonVegKitchen()`, shows only veg dishes, and the filter still shows "Veg only" after a reload;
   - "Pure veg" plus "Non-veg only" shows the empty state, and "Clear filters" restores the list.
+  - `test.beforeAll` calls `resetDemoData()` from `e2e/reset.ts`.
 
 ### Implementation for User Story 5
 
-- [ ] T110 [US5] Create the `setDishFilter` server action in `src/features/browse/actions.ts`. It accepts `'all'|'veg'|'nonveg'` and sets the `hfd_dish_filter` cookie (path `/`, 1 year, `SameSite=Lax`). Add `readDishFilter()` in `src/features/browse/dish-filter-cookie.ts`, which defaults to `all`.
-- [ ] T111 [US5] Extend `src/features/browse/queries.ts`:
+- [ ] T111 [US5] Create the `setDishFilter` server action in `src/features/browse/actions.ts`. It accepts `'all'|'veg'|'nonveg'` and sets the `hfd_dish_filter` cookie (path `/`, 1 year, `SameSite=Lax`). Add `readDishFilter()` in `src/features/browse/dish-filter-cookie.ts`, which defaults to `all`.
+- [ ] T112 [US5] Extend `src/features/browse/queries.ts`:
   - `listKitchensForCustomer` gains `type?`, `pureVeg?`, `openNow?` and `dishFilter`, with search params parsed by Zod (invalid values ignored);
   - `getKitchenForCustomer` gains `dishFilter`, using `filterMenu`;
   - add `searchForCustomer(q, dishFilter)` with `ILIKE '%' || q || '%'` on both name columns of kitchens and dishes, active kitchens only, q trimmed and NFC-normalised.
-  - This passes T108.
-- [ ] T112 [P] [US5] Create the filter components in `src/features/browse/components/`:
+  - This passes T109.
+- [ ] T113 [P] [US5] Create the filter components in `src/features/browse/components/`:
   - `filter-bar.tsx`: kitchen type chips, a "Pure veg" toggle and an "Open now" toggle as links that update search params, with the active state shown by text as well as colour;
   - `dish-filter-control.tsx`: a 3-option form posting to `setDishFilter`;
   - `search-box.tsx`: a GET form to `/search`.
-- [ ] T113 [US5] Wire the filters in:
+- [ ] T114 [US5] Wire the filters in:
   - update `src/app/(customer)/page.tsx` to read search params and the dish-filter cookie and render the filter bar, dish filter control and search box;
   - show the empty state with "Clear filters", including the specific explanation for pure veg plus non-veg only;
   - update `src/app/(customer)/kitchens/[id]/page.tsx` to apply the dish filter, show the control, and show "This kitchen has no {veg|non-veg} dishes" with a "Show all dishes" action.
-- [ ] T114 [US5] Create the search page `src/app/(customer)/search/page.tsx`. It lists matching kitchens (cards) and matching dishes with their kitchen name linking to the kitchen page, shows unavailable dishes dimmed, and shows an empty state with suggestions.
-- [ ] T115 [US5] Add the US5 message keys (`filters.*`, `dishFilter.*`, `search.*`) to `en.json` and `kn.json`, and update `machine-drafted.json`
+- [ ] T115 [US5] Create the search page `src/app/(customer)/search/page.tsx`. It lists matching kitchens (cards) and matching dishes with their kitchen name linking to the kitchen page, shows unavailable dishes dimmed, and shows an empty state with suggestions.
+- [ ] T116 [US5] Add the US5 message keys (`filters.*`, `dishFilter.*`, `search.*`) to `en.json` and `kn.json`, and update `machine-drafted.json`
 
-**Checkpoint**: US5 works on top of US1. T106–T109 pass.
+**Checkpoint**: US5 works on top of US1. T107–T110 pass.
 
 ---
 
@@ -680,20 +706,20 @@ listing that role's accounts and the fixed code.
 
 ### Tests for User Story 6
 
-- [ ] T116 [P] [US6] Write the integration test `src/features/demo/reset.int.test.ts`. It runs the reset logic against `TEST_DATABASE_URL`, changes a dish and a kitchen status, resets again, and asserts that every table's contents equal the first reset, apart from the temporarily closed kitchen's `closed_at` and `reopens_at`.
-- [ ] T117 [P] [US6] Write the end-to-end test `e2e/us6-demo-reset.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
+- [ ] T117 [P] [US6] Write the integration test `src/features/demo/reset.int.test.ts`. It runs `resetDemo` (T054) against `TEST_DATABASE_URL`, changes a dish and a kitchen status, resets again, and asserts that every table's contents equal the first reset, apart from the temporarily closed kitchen's `closed_at` and `reopens_at`.
+- [ ] T118 [P] [US6] Write the end-to-end test `e2e/us6-demo-reset.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
   - sign in as `kitchenWithHelper().helperPhone` and mark `availableDishIn(kitchen.key)` unavailable;
   - run `npm run demo:reset` via `child_process.execSync`;
   - check the dish is available again on the customer page, and the helper can sign in again.
+  - `test.beforeAll` calls `resetDemoData()` from `e2e/reset.ts`.
 
 ### Implementation for User Story 6
 
-- [ ] T118 [US6] Extract the drop, migrate and load logic from `src/features/demo/reset.ts` into an exported `resetDemo(databaseUrl)` in `src/features/demo/reset-demo.ts`, keeping `reset.ts` as a thin CLI wrapper, so T116 can call it
 - [ ] T119 [US6] Create `getDemoAccounts(surface)` in `src/features/demo/queries.ts`, which reads the current registrations (admins, agents with active flag, kitchen sign-ins with kitchen name, customers), and `src/features/demo/components/demo-panel.tsx`. The panel renders only when `env.DEMO_MODE` is true, is clearly labelled "Demo only", lists name, role detail and number, and shows the fixed code (FR-011).
 - [ ] T120 [US6] Render `demo-panel` below the form in all four login pages: `src/app/(customer)/login/page.tsx`, `src/app/(partner)/partner/login/page.tsx`, `src/app/(agent)/agent/login/page.tsx` and `src/app/(admin)/admin/login/page.tsx`
 - [ ] T121 [US6] Add the US6 message keys (`demo.*`) to `en.json` and `kn.json`, and update `machine-drafted.json`
 
-**Checkpoint**: All stories work on their own. T116 and T117 pass.
+**Checkpoint**: All stories work on their own. T117 and T118 pass.
 
 ---
 
@@ -728,10 +754,10 @@ listing that role's accounts and the fixed code.
   - Domain: each test task precedes its implementation (T021→T022, T023→T024, T025→T026, T027→T028). T026 and T028 need T024.
   - i18n: T029, then T030 to T036. T033 needs T032, and T035 needs T034.
   - UI: T037 needs T029. T038 to T040 run in parallel after T030.
-  - Images: T041→T042→T043.
-  - Sessions: T046→T047→T048; these need T020 and T044.
-  - Demo: T049→T050→T052→T053→T054. T052 needs T028 and T042. T055 needs T049 and T052 (`ids.ts`) and is needed by every e2e task.
-  - Shells: T056–T059 need T039 and T047.
+  - Images: T041→T042→T043→T044.
+  - Sessions: T047→T048→T049; these need T020 and T045.
+  - Demo: T050→T051→T053→T054→T055. T053 needs T028 and T042. T056 needs T050 and T053 (`ids.ts`) and is needed by every e2e task.
+  - Shells: T057–T060 need T039 and T048.
 - **US1 (Phase 3)**: needs Foundational only.
 - **US2 (Phase 4)**: needs Foundational only.
 - **US3 (Phase 5)**: needs US2 (partner session and landing page).
@@ -753,7 +779,7 @@ Setup → Foundational ─┬─ US1 (P1) ── US5 (P3)
 
 - Tests are written first and must fail. Then schemas, then actions or queries, then components,
   then pages, then message keys.
-- Message-key tasks (T068, T078, T091, T105, T115, T121) all edit the same JSON files, so they
+- Message-key tasks (T069, T079, T092, T106, T116, T121) all edit the same JSON files, so they
   never run in parallel with each other.
 
 ### Parallel opportunities
@@ -763,8 +789,8 @@ Setup → Foundational ─┬─ US1 (P1) ── US5 (P3)
   - schema files T014–T017;
   - the test-first domain test tasks T021, T023, T025, T027, T031, T032, T034;
   - UI primitives T038–T040;
-  - adapters T044 and T045, and image test T041;
-  - surface shells T056–T059.
+  - adapters T045 and T046, and image test T041;
+  - surface shells T057–T060.
 - **After Foundational**: US1 and US2 can proceed in parallel. After US2, US3 and US6 can proceed
   in parallel. After US1, US5 can proceed alongside US3 and US4.
 - **Within stories**: the test tasks are marked [P], and so are component tasks in different
@@ -777,61 +803,61 @@ Setup → Foundational ─┬─ US1 (P1) ── US5 (P3)
 ### User Story 1
 
 ```text
-Task: "T060 Integration test for customer queries in src/features/browse/queries.int.test.ts"
-Task: "T061 E2E browse happy path in e2e/us1-browse.spec.ts"
-# after T062:
-Task: "T063 Kitchen card in src/features/browse/components/kitchen-card.tsx"
-Task: "T064 Kitchen state label in src/features/browse/components/kitchen-state-label.tsx"
-Task: "T066 Menu components in src/features/browse/components/"
+Task: "T061 Integration test for customer queries in src/features/browse/queries.int.test.ts"
+Task: "T062 E2E browse happy path in e2e/us1-browse.spec.ts"
+# after T063:
+Task: "T064 Kitchen card in src/features/browse/components/kitchen-card.tsx"
+Task: "T065 Kitchen state label in src/features/browse/components/kitchen-state-label.tsx"
+Task: "T067 Menu components in src/features/browse/components/"
 ```
 
 ### User Story 2
 
 ```text
-Task: "T069 Auth actions integration test in src/features/auth/actions.int.test.ts"
-Task: "T070 Sign-in E2E in e2e/us2-sign-in.spec.ts"
-# after T072–T073:
-Task: "T074 Four login pages"
-Task: "T075 Customer account page"
-Task: "T076 Agent screens"
-Task: "T077 Partner/admin landing pages"
+Task: "T070 Auth actions integration test in src/features/auth/actions.int.test.ts"
+Task: "T071 Sign-in E2E in e2e/us2-sign-in.spec.ts"
+# after T073–T074:
+Task: "T075 Four login pages"
+Task: "T076 Customer account page"
+Task: "T077 Agent screens"
+Task: "T078 Partner/admin landing pages"
 ```
 
 ### User Story 3
 
 ```text
-Task: "T079 Kitchen operations integration test"
-Task: "T080 Menu actions integration test"
-Task: "T081 Partner E2E"
+Task: "T080 Kitchen operations integration test"
+Task: "T081 Menu actions integration test"
+Task: "T082 Partner E2E"
 # after actions:
-Task: "T088 Kitchen components (status notice, closure control, hours editor)"
-Task: "T089 Menu editor components"
+Task: "T089 Kitchen components (status notice, closure control, hours editor)"
+Task: "T090 Menu editor components"
 ```
 
 ### User Story 4
 
 ```text
-Task: "T092 Admin kitchen actions integration test"
-Task: "T093 Agent actions integration test"
-Task: "T094 Admin E2E (desktop)"
-Task: "T099 Agent schemas + actions"   # independent of the kitchen admin actions
-Task: "T101 Admin kitchen components"
-Task: "T102 Agent components"
+Task: "T093 Admin kitchen actions integration test"
+Task: "T094 Agent actions integration test"
+Task: "T095 Admin E2E (desktop)"
+Task: "T100 Agent schemas + actions"   # independent of the kitchen admin actions
+Task: "T102 Admin kitchen components"
+Task: "T103 Agent components"
 ```
 
 ### User Story 5
 
 ```text
-Task: "T106 Dish filter unit tests"
-Task: "T108 Filters/search integration test"
-Task: "T109 Search & filter E2E"
+Task: "T107 Dish filter unit tests"
+Task: "T109 Filters/search integration test"
+Task: "T110 Search & filter E2E"
 ```
 
 ### User Story 6
 
 ```text
-Task: "T116 Reset integration test"
-Task: "T117 Demo reset E2E"
+Task: "T117 Reset integration test"
+Task: "T118 Demo reset E2E"
 ```
 
 ---
@@ -842,7 +868,7 @@ Task: "T117 Demo reset E2E"
 
 1. Complete Phase 1 (Setup) and Phase 2 (Foundational). After this, `npm run demo:reset` works.
 2. Complete Phase 3 (US1): guests browse and read menus in both languages.
-3. **Stop and validate**: T060 and T061, plus quickstart scenarios 1–4.
+3. **Stop and validate**: T061 and T062, plus quickstart scenarios 1–4.
 
 ### Incremental delivery
 
@@ -863,6 +889,6 @@ task id, for example `T042 Store resized images in Postgres`.
 - [P] tasks touch different files and depend on no incomplete task.
 - Constraints quoted in tasks come from data-model.md and contracts/. Do not loosen them during
   implementation without recording a deviation in plan.md.
-- The stand-in catalogue (T050) is replaced later by the researched one. The coverage test (T054)
+- The stand-in catalogue (T051) is replaced later by the researched one. The coverage test (T055)
   is the safety net when that happens.
 - Avoid dependencies between stories beyond those listed above.

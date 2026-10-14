@@ -73,7 +73,7 @@ violations.*
 | VII. Explicit states, honest errors | `loading.tsx`, `error.tsx`, `not-found.tsx` per route group; empty states per list; `Result` types with translated codes; JSON logs with context | ✅ | ✅ |
 | VIII. Simplicity | No auth library, search index, time-zone library, object store or provider-selection settings; each dependency has a one-line reason; shared editors are reused by partner and admin rather than duplicated | ✅ | ✅ |
 | Tech & architecture | Exactly the mandated stack. The i18n library choice is recorded here and goes into README. `src/features/*` plus shared folders; route groups per surface; server-only isolation | ✅ | ✅ |
-| Workflow | Branch `001-platform-core`; README gets the "one sanctioned tool per concern" table during implementation | ✅ | ✅ |
+| Workflow | Branch `001-platform-core`; README gets the "one sanctioned tool per concern" table during implementation. **`/speckit-checklist` was skipped for this feature by decision**: the spec quality checklist and `/speckit-analyze` covered requirement quality for this first feature | ✅ | ✅ |
 
 ### Routine choices made by the agent (for review, per Principle I)
 

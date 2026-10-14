@@ -1,6 +1,10 @@
 # Contract: Server Actions
 
 All mutations are server actions (see [research R12](../research.md#r12-server-actions-validation-and-errors)).
+The operation names below are **service** names. Each service is `(actor, input) => Result`, lives in
+`src/features/<feature>/services/`, and never imports `next/headers` or `next/navigation`. The server
+action is a thin `<operation>Action` wrapper that parses input, resolves the actor from the session,
+calls the service, then revalidates or redirects.
 Every action follows the same steps:
 
 1. Parse the input with its Zod schema. On failure it returns `{ ok: false, error: { code: 'invalid',
