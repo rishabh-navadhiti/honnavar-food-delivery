@@ -279,3 +279,4 @@ was rejected. Versions are the current stable releases checked on 2026-10-14.
 | vitest | Mandated unit and integration tests |
 | @playwright/test | Mandated end-to-end tests |
 | eslint, eslint-config-next, prettier | Lint and formatting (one tool each, recorded in README) |
+| tsx | Runs TypeScript scripts such as the demo reset with tsconfig path aliases (added in T003) |

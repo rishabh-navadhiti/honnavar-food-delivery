@@ -69,37 +69,37 @@ These follow the plan's single Next.js project:
 
 **Purpose**: Project initialisation and tooling
 
-- [ ] T001 Initialise the Next.js 16.4 App Router project in the repository root (no `create-next-app` sample content):
+- [X] T001 Initialise the Next.js 16.4 App Router project in the repository root (no `create-next-app` sample content):
   - `package.json` with `"type": "module"` and `"engines": { "node": ">=24" }`.
   - `tsconfig.json` with `strict: true`, `noUncheckedIndexedAccess: true`, `moduleResolution: "bundler"`, path alias `@/*` → `src/*`.
   - `next.config.ts`, with the server actions body size limit set to `'6mb'` (`experimental.serverActions.bodySizeLimit`, or its Next 16 equivalent), so 5 MB photos fit.
   - `src/app/` directory.
   - No `.js` source files.
-- [ ] T002 Install the dependencies from research.md "Dependencies added": `next react react-dom next-intl drizzle-orm postgres zod sharp server-only`, and dev dependencies `typescript@6 @types/node @types/react @types/react-dom tailwindcss @tailwindcss/postcss drizzle-kit vitest @playwright/test eslint eslint-config-next prettier tsx`. Add these npm scripts to `package.json`:
+- [X] T002 Install the dependencies from research.md "Dependencies added": `next react react-dom next-intl drizzle-orm postgres zod sharp server-only`, and dev dependencies `typescript@6 @types/node @types/react @types/react-dom tailwindcss @tailwindcss/postcss drizzle-kit vitest @playwright/test eslint eslint-config-next prettier tsx`. Add these npm scripts to `package.json`:
   - `dev`, `build`, `start`
   - `lint` (`eslint .`), `typecheck` (`tsc --noEmit`), `format` (`prettier --write .`)
   - `test` (`vitest run`), `test:unit` (`vitest run --project unit`), `test:int` (`vitest run --project integration`)
   - `test:e2e` (`NODE_OPTIONS=--conditions=react-server playwright test`, so `e2e/reset.ts` can import `server-only` modules; the Playwright web server clears `NODE_OPTIONS`)
   - `db:generate` (`drizzle-kit generate`)
   - `demo:reset` (`tsx --env-file-if-exists=.env.local --conditions=react-server src/features/demo/reset.ts`)
-- [ ] T003 Record the one dependency not in the plan's table, `tsx` ("runs TypeScript scripts such as the demo reset with tsconfig path aliases"), as a new row in the "Dependencies added" table in specs/001-platform-core/research.md
-- [ ] T004 [P] Configure Tailwind CSS 4 through `.postcssrc.json` (`{"plugins":{"@tailwindcss/postcss":{}}}`) and create `src/app/globals.css` with `@import "tailwindcss"` and theme tokens:
+- [X] T003 Record the one dependency not in the plan's table, `tsx` ("runs TypeScript scripts such as the demo reset with tsconfig path aliases"), as a new row in the "Dependencies added" table in specs/001-platform-core/research.md
+- [X] T004 [P] Configure Tailwind CSS 4 through `.postcssrc.json` (`{"plugins":{"@tailwindcss/postcss":{}}}`) and create `src/app/globals.css` with `@import "tailwindcss"` and theme tokens:
   - primary action colour, secondary, danger;
   - veg green and non-veg brown-red;
   - a minimum touch-target size of 48px.
-- [ ] T005 [P] Create `eslint.config.ts`:
+- [X] T005 [P] Create `eslint.config.ts`:
   - extend `eslint-config-next`;
   - enable `react/jsx-no-literals` as `error` with `noStrings: true`, `allowedStrings` limited to punctuation such as `·`, `₹`, `/`, `:`;
   - add `no-console: error` except in `src/shared/log.ts`;
   - if ESLint cannot load a TypeScript config without `jiti`, add `jiti` as a dev dependency and record its reason in research.md.
-- [ ] T006 [P] Create `.prettierrc.json` (`{"singleQuote":true,"printWidth":100}`) and `.prettierignore` (`drizzle/`, `.next/`, `playwright-report/`)
-- [ ] T007 [P] Create `docker-compose.yml` with a `db` service. It uses image `postgres:17`, user/password/db `hfd`, port 5432, and a named volume. `docker/init-test-db.sql` runs `CREATE DATABASE hfd_test;` on first start.
-- [ ] T008 [P] Create `.env.example` documenting `DATABASE_URL`, `TEST_DATABASE_URL`, `DEFAULT_LOCALE` (`en`|`kn`, default `en`), `DEMO_MODE` (`true`|`false`) and `DEMO_OTP_CODE` (6 digits, default `123456`), with a one-line comment each. Extend `.gitignore` with `.env.local`, `.next/`, `node_modules/`, `playwright-report/` and `test-results/`.
-- [ ] T009 [P] Create `vitest.config.ts` with two projects:
+- [X] T006 [P] Create `.prettierrc.json` (`{"singleQuote":true,"printWidth":100}`) and `.prettierignore` (`drizzle/`, `.next/`, `playwright-report/`)
+- [X] T007 [P] Create `docker-compose.yml` with a `db` service. It uses image `postgres:17`, user/password/db `hfd`, port 5432, and a named volume. `docker/init-test-db.sql` runs `CREATE DATABASE hfd_test;` on first start.
+- [X] T008 [P] Create `.env.example` documenting `DATABASE_URL`, `TEST_DATABASE_URL`, `DEFAULT_LOCALE` (`en`|`kn`, default `en`), `DEMO_MODE` (`true`|`false`) and `DEMO_OTP_CODE` (6 digits, default `123456`), with a one-line comment each. Extend `.gitignore` with `.env.local`, `.next/`, `node_modules/`, `playwright-report/` and `test-results/`.
+- [X] T009 [P] Create `vitest.config.ts` with two projects:
   - `unit`: `include: ['src/**/*.test.ts']`, excluding `*.int.test.ts`.
   - `integration`: `include: ['src/**/*.int.test.ts']`, `globalSetup: 'src/shared/db/test/global-setup.ts'`, `fileParallelism: false`, and `resolve.conditions: ['react-server']` so `server-only` imports resolve.
   - Path alias `@` → `src` in both.
-- [ ] T010 [P] Create `playwright.config.ts`:
+- [X] T010 [P] Create `playwright.config.ts`:
   - project `mobile`: Chromium, viewport 360×780, `isMobile: true`, `hasTouch: true`, matching `e2e/us{1,2,3,5,6}-*.spec.ts`;
   - project `desktop`: Chromium, 1280×800, matching `e2e/us4-*.spec.ts`;
   - `webServer`: `npm run build && npm run demo:reset && npm run start` on port 3000, with `reuseExistingServer: !process.env.CI` and `env: { DEMO_MODE: 'true', DEMO_OTP_CODE: process.env.DEMO_OTP_CODE ?? '123456', NODE_OPTIONS: '' }`; the config loads `.env.local` with `process.loadEnvFile` when it exists (in addition to the inherited environment);
@@ -117,25 +117,25 @@ the demo catalogue loader and surface shells that every story depends on.
 
 ### Core utilities
 
-- [ ] T011 Create `src/shared/env.ts` (`server-only`). It parses `process.env` with Zod, fails closed with a message naming the bad variable, and exports a typed `env`:
+- [X] T011 Create `src/shared/env.ts` (`server-only`). It parses `process.env` with Zod, fails closed with a message naming the bad variable, and exports a typed `env`:
   - `DATABASE_URL` (url, required);
   - `TEST_DATABASE_URL` (url, optional);
   - `DEFAULT_LOCALE` (`'en'|'kn'`, default `'en'`);
   - `DEMO_MODE` (`'true'|'false'`, converted to boolean, default false);
   - `DEMO_OTP_CODE` (`/^\d{6}$/`, default `'123456'`).
-- [ ] T012 [P] Create `src/shared/result.ts` exporting `Result<T> = { ok: true; data: T } | { ok: false; error: { code: string; fieldErrors?: Record<string, string> } }` and helpers `ok(data)` and `err(code, fieldErrors?)`
-- [ ] T013 [P] Create `src/shared/log.ts`. It exports `log.info`, `log.warn` and `log.error(message, context)`, writing one JSON line to stdout or stderr with an ISO timestamp, level, message and context. It is the only file allowed to use `console`.
+- [X] T012 [P] Create `src/shared/result.ts` exporting `Result<T> = { ok: true; data: T } | { ok: false; error: { code: string; fieldErrors?: Record<string, string> } }` and helpers `ok(data)` and `err(code, fieldErrors?)`
+- [X] T013 [P] Create `src/shared/log.ts`. It exports `log.info`, `log.warn` and `log.error(message, context)`, writing one JSON line to stdout or stderr with an ISO timestamp, level, message and context. It is the only file allowed to use `console`.
 
 ### Database schema and migrations
 
-- [ ] T014 [P] Create `src/shared/db/schema/identity.ts` with Drizzle tables and enums:
+- [X] T014 [P] Create `src/shared/db/schema/identity.ts` with Drizzle tables and enums:
   - **`customers`**: `id` uuid PK default random; `phone` varchar(10) unique not null; `display_name` varchar(60) nullable; `created_at` timestamptz default now.
   - **`admins`**: `id`; `phone` varchar(10) unique not null; `name` varchar(60) not null.
   - **enum `vehicle_type`**: `bicycle`, `two_wheeler`, `other`.
   - **`agents`**: `id`; `phone` varchar(10) unique; `name` varchar(60) not null; `vehicle_type` not null; `vehicle_reg` varchar(20) nullable; `active` boolean default true; `created_at`, `updated_at`.
   - **enum `surface`**: `customer`, `partner`, `agent`, `admin`.
   - **`sessions`**: `token_hash` char(64) PK; `surface`; `phone` varchar(10); `subject_id` uuid; `kitchen_id` uuid nullable; `created_at`, `last_seen_at`, `expires_at` timestamptz; index on (`surface`, `subject_id`).
-- [ ] T015 [P] Create `src/shared/db/schema/kitchens.ts`:
+- [X] T015 [P] Create `src/shared/db/schema/kitchens.ts`:
   - **Enums**: `kitchen_type` (`restaurant`, `home_kitchen`, `cloud_kitchen`); `kitchen_status` (`pending`, `active`, `suspended`); `actor_role` (`admin`, `partner`); `verification_kind` (`fssai_licence`, `hygiene_check`).
   - **`kitchens`**:
     - `id` uuid PK;
@@ -153,7 +153,7 @@ the demo catalogue loader and surface shells that every story depends on.
   - **`kitchen_signins`**: `id`; `kitchen_id` FK cascade; `phone` varchar(10) **unique across all kitchens**; `person_name` varchar(60) not null; `created_at`.
   - **`kitchen_hours`**: `kitchen_id` FK cascade; `weekday` smallint (1 = Monday … 7 = Sunday); `slot` smallint (1 or 2); `opens_min` smallint 0–1439; `closes_min` smallint 1–1440; CHECK `opens_min < closes_min`; PK (`kitchen_id`, `weekday`, `slot`).
   - **`verifications`**: `kitchen_id` uuid PK FK; `kind`; `reference` varchar(40); `verified_by_admin_id` FK → admins; `verified_at`.
-- [ ] T016 [P] Create `src/shared/db/schema/menu.ts`:
+- [X] T016 [P] Create `src/shared/db/schema/menu.ts`:
   - **`menu_categories`**: `id`; `kitchen_id` FK cascade; `name_en` and `name_kn` varchar(60), with CHECK at least one; `position` integer; `updated_by_role`, `updated_by_phone`, `updated_at`.
   - **`dishes`**:
     - `id`; `kitchen_id` FK cascade;
@@ -163,39 +163,39 @@ the demo catalogue loader and surface shells that every story depends on.
     - `price_rupees` integer, with CHECK 1–100000;
     - `is_veg` boolean; `photo_image_id` FK → images nullable; `available` boolean default true;
     - `position` integer; `updated_by_role`, `updated_by_phone`, `updated_at`.
-- [ ] T017 [P] Create `src/shared/db/schema/images.ts` with `images`: `id` uuid PK; `sha256` char(64) unique; `small` bytea (WebP 320 px); `large` bytea (WebP 800 px); `created_at`.
-- [ ] T018 Create `src/shared/db/schema/index.ts` re-exporting all schema modules, and `drizzle.config.ts` (schema path, `out: 'drizzle'`, dialect postgresql, `DATABASE_URL`). Run `npm run db:generate` to produce the first migration in `drizzle/`, and check that the generated SQL contains every CHECK and the partial unique index from T014–T017.
-- [ ] T019 Create `src/shared/db/client.ts` (`server-only`) exporting a `db` Drizzle instance over postgres.js using `env.DATABASE_URL`, and `migrateDatabase(url)` using `drizzle-orm/postgres-js/migrator` with `migrationsFolder: 'drizzle'`.
-- [ ] T020 Create the integration test harness:
+- [X] T017 [P] Create `src/shared/db/schema/images.ts` with `images`: `id` uuid PK; `sha256` char(64) unique; `small` bytea (WebP 320 px); `large` bytea (WebP 800 px); `created_at`.
+- [X] T018 Create `src/shared/db/schema/index.ts` re-exporting all schema modules, and `drizzle.config.ts` (schema path, `out: 'drizzle'`, dialect postgresql, `DATABASE_URL`). Run `npm run db:generate` to produce the first migration in `drizzle/`, and check that the generated SQL contains every CHECK and the partial unique index from T014–T017.
+- [X] T019 Create `src/shared/db/client.ts` (`server-only`) exporting a `db` Drizzle instance over postgres.js using `env.DATABASE_URL`, and `migrateDatabase(url)` using `drizzle-orm/postgres-js/migrator` with `migrationsFolder: 'drizzle'`.
+- [X] T020 Create the integration test harness:
   - `src/shared/db/test/global-setup.ts`: requires `TEST_DATABASE_URL`, drops and recreates schema `public`, and runs `migrateDatabase`.
   - `src/shared/db/test/helpers.ts`: `testDb`, `truncateAll()`, and factory helpers `makeKitchen()`, `makeSignin()`, `makeAgent()`, `makeAdmin()`, `makeCategory()` and `makeDish()` with valid defaults.
 
 ### Domain functions (test-first)
 
-- [ ] T021 [P] Write failing unit tests for phone normalisation in `src/features/auth/domain/phone.test.ts`:
+- [X] T021 [P] Write failing unit tests for phone normalisation in `src/features/auth/domain/phone.test.ts`:
   - accepts `9876543210`, `+91 98765 43210`, `09876543210` and `98765-43210`, all normalising to `9876543210`;
   - rejects 9 or 11 digits, numbers starting 0–5, and letters.
-- [ ] T022 Implement `normalizePhone(input): string | null` in `src/features/auth/domain/phone.ts` to pass T021
-- [ ] T023 [P] Write failing unit tests for opening hours in `src/features/kitchens/domain/hours.test.ts`:
+- [X] T022 Implement `normalizePhone(input): string | null` in `src/features/auth/domain/phone.ts` to pass T021
+- [X] T023 [P] Write failing unit tests for opening hours in `src/features/kitchens/domain/hours.test.ts`:
   - `"HH:MM"` ↔ minutes conversion, including `"24:00"` = 1440;
   - `validateWeekHours` rejects opens ≥ closes with code `range_order`, rejects overlapping slot 1 and 2 with `range_overlap` (keyed by day), rejects more than 2 ranges, and accepts an empty day.
-- [ ] T024 Implement `src/features/kitchens/domain/hours.ts` (`toMinutes`, `toHHMM`, `validateWeekHours`, `WeekHours` type) to pass T023
-- [ ] T025 [P] Write failing unit tests for kitchen state in `src/features/kitchens/domain/state.test.ts`. They use a fixed IST offset of +05:30 with UTC `now` values and cover:
+- [X] T024 Implement `src/features/kitchens/domain/hours.ts` (`toMinutes`, `toHHMM`, `validateWeekHours`, `WeekHours` type) to pass T023
+- [X] T025 [P] Write failing unit tests for kitchen state in `src/features/kitchens/domain/state.test.ts`. They use a fixed IST offset of +05:30 with UTC `now` values and cover:
   - `open` inside a range;
   - `closed { nextOpening }` before the first range, between ranges, after the last range (next day), and across Sunday → Monday;
   - exact boundaries: open at `opens`, closed at `closes`;
   - `closed { hoursNotSet }` with no ranges at all;
   - `temporarilyClosed { reopensAt }` while `closed_at` is set and `reopens_at` is in the future or null;
   - normal state again once `now ≥ reopens_at`.
-- [ ] T026 Implement `kitchenState(kitchen: { closedAt, reopensAt }, hours: WeekHours, now: Date)` in `src/features/kitchens/domain/state.ts` to pass T025. Use the IST offset constant `330` minutes and no time-zone library.
-- [ ] T027 [P] Write failing unit tests for closure end in `src/features/kitchens/domain/closure.test.ts`:
+- [X] T026 Implement `kitchenState(kitchen: { closedAt, reopensAt }, hours: WeekHours, now: Date)` in `src/features/kitchens/domain/state.ts` to pass T025. Use the IST offset constant `330` minutes and no time-zone library.
+- [X] T027 [P] Write failing unit tests for closure end in `src/features/kitchens/domain/closure.test.ts`:
   - closing during lunch (12:00, ranges 11:00–15:00 and 18:00–22:00) reopens at 18:00 the same day;
   - closing at 08:00 before an 11:00 range cancels that range, so it reopens at 18:00;
   - closing during the last range reopens at the next day's first range;
   - closing between ranges (16:00) cancels the 18:00 range, so it reopens at the next day's first range;
   - no future range returns `null`;
   - recalculating with edited hours from the original `closedAt` uses the new hours.
-- [ ] T028 Implement `closureEnd(hours: WeekHours, closedAt: Date): Date | null` in `src/features/kitchens/domain/closure.ts` to pass T027 (spec FR-031)
+- [X] T028 Implement `closureEnd(hours: WeekHours, closedAt: Date): Date | null` in `src/features/kitchens/domain/closure.ts` to pass T027 (spec FR-031)
 
 ### Internationalisation
 
@@ -814,7 +814,7 @@ Task: "T067 Menu components in src/features/browse/components/"
 ### User Story 2
 
 ```text
-Task: "T070 Auth actions integration test in src/features/auth/actions.int.test.ts"
+Task: "T070 Auth services integration test in src/features/auth/services/sign-in.int.test.ts"
 Task: "T071 Sign-in E2E in e2e/us2-sign-in.spec.ts"
 # after T073–T074:
 Task: "T075 Four login pages"
