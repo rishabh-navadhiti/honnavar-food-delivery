@@ -655,15 +655,15 @@ script.
 
 ### Tests for User Story 5
 
-- [ ] T107 [P] [US5] Write failing unit tests `src/features/browse/domain/dish-filter.test.ts`:
+- [X] T107 [P] [US5] Write failing unit tests `src/features/browse/domain/dish-filter.test.ts`:
   - `kitchenMatchesDishFilter(dishes, filter)`: `all` always matches (even with no available dishes); `veg` needs at least one **available** veg dish; `nonveg` needs at least one available non-veg dish;
   - `filterMenu(categories, filter)` keeps only matching dishes (unavailable matching ones stay, flagged) and drops empty categories.
-- [ ] T108 [US5] Implement `src/features/browse/domain/dish-filter.ts` to pass T107
-- [ ] T109 [P] [US5] Write a failing integration test `src/features/browse/filters.int.test.ts`:
+- [X] T108 [US5] Implement `src/features/browse/domain/dish-filter.ts` to pass T107
+- [X] T109 [P] [US5] Write a failing integration test `src/features/browse/filters.int.test.ts`:
   - `listKitchensForCustomer` with `type`, `pureVeg` and `openNow` (temporarily closed kitchens excluded) combined with `dishFilter`;
   - `getKitchenForCustomer(id, dishFilter)` hides non-matching dishes and empty categories, and returns `noMatchingDishes: true` when none match;
   - `searchForCustomer(q, dishFilter)` gives no query for fewer than 2 characters, matches `name_en` or `name_kn` substrings case-insensitively after NFC normalisation, returns only active kitchens, and applies the dish filter to dish results and kitchen results.
-- [ ] T110 [P] [US5] Write the end-to-end test `e2e/us5-search-filter.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
+- [X] T110 [P] [US5] Write the end-to-end test `e2e/us5-search-filter.spec.ts` (mobile), selecting subjects only through `e2e/catalogue.ts`:
   - searching `searchableDish().knTerm` and then `.enTerm` both list that dish;
   - the type filter for each type in `kitchenTypeCounts()` shows exactly that many cards;
   - "Open now" excludes `temporarilyClosedKitchen()`;
@@ -673,22 +673,22 @@ script.
 
 ### Implementation for User Story 5
 
-- [ ] T111 [US5] Create the `setDishFilter` server action in `src/features/browse/actions.ts`. It accepts `'all'|'veg'|'nonveg'` and sets the `hfd_dish_filter` cookie (path `/`, 1 year, `SameSite=Lax`). Add `readDishFilter()` in `src/features/browse/dish-filter-cookie.ts`, which defaults to `all`.
-- [ ] T112 [US5] Extend `src/features/browse/queries.ts`:
+- [X] T111 [US5] Create the `setDishFilter` server action in `src/features/browse/actions.ts`. It accepts `'all'|'veg'|'nonveg'` and sets the `hfd_dish_filter` cookie (path `/`, 1 year, `SameSite=Lax`). Add `readDishFilter()` in `src/features/browse/dish-filter-cookie.ts`, which defaults to `all`.
+- [X] T112 [US5] Extend `src/features/browse/queries.ts`:
   - `listKitchensForCustomer` gains `type?`, `pureVeg?`, `openNow?` and `dishFilter`, with search params parsed by Zod (invalid values ignored);
   - `getKitchenForCustomer` gains `dishFilter`, using `filterMenu`;
   - add `searchForCustomer(q, dishFilter)` with `ILIKE '%' || q || '%'` on both name columns of kitchens and dishes, active kitchens only, q trimmed and NFC-normalised.
   - This passes T109.
-- [ ] T113 [P] [US5] Create the filter components in `src/features/browse/components/`:
+- [X] T113 [P] [US5] Create the filter components in `src/features/browse/components/`:
   - `filter-bar.tsx`: kitchen type chips, a "Pure veg" toggle and an "Open now" toggle as links that update search params, with the active state shown by text as well as colour;
   - `dish-filter-control.tsx`: a 3-option form posting to `setDishFilter`;
   - `search-box.tsx`: a GET form to `/search`.
-- [ ] T114 [US5] Wire the filters in:
+- [X] T114 [US5] Wire the filters in:
   - update `src/app/(customer)/page.tsx` to read search params and the dish-filter cookie and render the filter bar, dish filter control and search box;
   - show the empty state with "Clear filters", including the specific explanation for pure veg plus non-veg only;
   - update `src/app/(customer)/kitchens/[id]/page.tsx` to apply the dish filter, show the control, and show "This kitchen has no {veg|non-veg} dishes" with a "Show all dishes" action.
-- [ ] T115 [US5] Create the search page `src/app/(customer)/search/page.tsx`. It lists matching kitchens (cards) and matching dishes with their kitchen name linking to the kitchen page, shows unavailable dishes dimmed, and shows an empty state with suggestions.
-- [ ] T116 [US5] Add the US5 message keys (`filters.*`, `dishFilter.*`, `search.*`) to `en.json` and `kn.json`, and update `machine-drafted.json`
+- [X] T115 [US5] Create the search page `src/app/(customer)/search/page.tsx`. It lists matching kitchens (cards) and matching dishes with their kitchen name linking to the kitchen page, shows unavailable dishes dimmed, and shows an empty state with suggestions.
+- [X] T116 [US5] Add the US5 message keys (`filters.*`, `dishFilter.*`, `search.*`) to `en.json` and `kn.json`, and update `machine-drafted.json`
 
 **Checkpoint**: US5 works on top of US1. T107–T110 pass.
 

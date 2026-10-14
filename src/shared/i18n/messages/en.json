@@ -358,5 +358,36 @@
     "save": "Save agent",
     "empty": "No agents yet.",
     "edit": "Edit {name}"
+  },
+  "filters": {
+    "label": "Filter kitchens",
+    "pureVeg": "Pure veg",
+    "openNow": "Open now",
+    "selected": "selected",
+    "clear": "Clear filters",
+    "noResultsTitle": "No kitchens match these filters",
+    "noResultsBody": "Try removing a filter.",
+    "pureVegNonVeg": "Pure veg kitchens have no non-veg dishes. Change one of the filters."
+  },
+  "dishFilter": {
+    "label": "Show dishes",
+    "all": "All",
+    "veg": "Veg only",
+    "nonveg": "Non-veg only",
+    "noVegHere": "This kitchen has no veg dishes.",
+    "noNonvegHere": "This kitchen has no non-veg dishes.",
+    "showAll": "Show all dishes"
+  },
+  "search": {
+    "label": "Search kitchens and dishes",
+    "placeholder": "For example: neer dose",
+    "submit": "Search",
+    "title": "Search",
+    "resultsFor": "Results for “{q}”",
+    "kitchens": "Kitchens",
+    "dishes": "Dishes",
+    "noResultsTitle": "Nothing found for “{q}”",
+    "noResultsBody": "Try a shorter word, the other language, or clear the dish filter.",
+    "tooShort": "Type at least 2 letters."
   }
 }

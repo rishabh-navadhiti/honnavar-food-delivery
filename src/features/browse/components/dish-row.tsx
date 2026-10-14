@@ -18,6 +18,7 @@ export function DishRow({ dish }: { dish: DishView }) {
       data-testid="dish-row"
       data-dish-id={dish.id}
       data-available={dish.available}
+      data-veg={dish.isVeg}
       className={`flex gap-3 py-3 ${dish.available ? '' : 'opacity-60'}`}
     >
       <Photo

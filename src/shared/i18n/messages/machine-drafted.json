@@ -29,6 +29,9 @@
     "dishForm",
     "lastChanged",
     "kitchenProfile",
-    "agentAdmin"
+    "agentAdmin",
+    "filters",
+    "dishFilter",
+    "search"
   ]
 }
