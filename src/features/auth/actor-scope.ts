@@ -5,6 +5,9 @@ export type Actor =
   | { role: 'partner'; phone: string; signinId: string; kitchenId: string }
   | { role: 'admin'; phone: string; adminId: string };
 
+export type PartnerActor = Extract<Actor, { role: 'partner' }>;
+export type AdminActor = Extract<Actor, { role: 'admin' }>;
+
 /** A signed-in customer (002): orders, addresses and cancellation of their own Placed orders. */
 export type CustomerActor = { role: 'customer'; customerId: string; phone: string };
 /** A signed-in delivery agent (002): pickup and delivery of orders assigned to them now. */

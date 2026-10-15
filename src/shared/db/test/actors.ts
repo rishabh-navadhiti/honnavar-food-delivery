@@ -1,15 +1,15 @@
 import { eq } from 'drizzle-orm';
-import type { Actor, AgentActor, CustomerActor } from '@/features/auth/actor-scope';
+import type { AdminActor, AgentActor, CustomerActor, PartnerActor } from '@/features/auth/actor-scope';
 import { db } from '../client';
 import { agents, customers } from '../schema';
 import { makeAdmin, makeAgent, makeCustomer, makeSignin } from './helpers';
 
-export async function partnerActor(kitchenId: string): Promise<Actor> {
+export async function partnerActor(kitchenId: string): Promise<PartnerActor> {
   const signin = await makeSignin(kitchenId);
   return { role: 'partner', phone: signin.phone, signinId: signin.id, kitchenId };
 }
 
-export async function adminActor(): Promise<Actor> {
+export async function adminActor(): Promise<AdminActor> {
   const admin = await makeAdmin();
   return { role: 'admin', phone: admin.phone, adminId: admin.id };
 }

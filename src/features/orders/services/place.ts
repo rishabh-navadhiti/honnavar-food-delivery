@@ -34,7 +34,8 @@ const placeSchema = z.object({
   placeKey: fields.id(),
   addressId: fields.id(),
   paymentMethod: z.enum(['cod', 'upi_demo'], { error: 'required' }),
-  upiConfirmed: z.union([z.literal('true'), z.literal(true)]).optional(),
+  /** Set by the UPI demo sheet; an empty form field means not confirmed. */
+  upiConfirmed: z.preprocess((v) => (v === '' || v === null ? undefined : v), z.union([z.literal('true'), z.literal(true)]).optional()),
   /** The prices the customer saw on the cart page, so a price change is never charged silently. */
   seenPrices: json,
 });

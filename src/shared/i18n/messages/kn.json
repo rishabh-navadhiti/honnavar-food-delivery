@@ -148,7 +148,8 @@
     "mainNavigation": "ಮುಖ್ಯ ಮೆನು",
     "customerNavigation": "ಆರ್ಡರ್ ಮತ್ತು ಕಾರ್ಟ್",
     "orders": "ನನ್ನ ಆರ್ಡರ್‌ಗಳು",
-    "cart": "ಕಾರ್ಟ್"
+    "cart": "ಕಾರ್ಟ್",
+    "kitchenOrders": "ಆರ್ಡರ್‌ಗಳು"
   },
   "home": {
     "title": "ಹೊನ್ನಾವರದ ಊಟ-ತಿಂಡಿ",
@@ -605,5 +606,40 @@
     "expectedBy": "{time} ಒಳಗೆ ತಲುಪುವ ನಿರೀಕ್ಷೆ",
     "items": "ಐಟಂಗಳು",
     "deliverTo": "ಡೆಲಿವರಿ ವಿಳಾಸ"
+  },
+  "partnerOrders": {
+    "title": "ಆರ್ಡರ್‌ಗಳು",
+    "empty": "ಈಗ ಯಾವ ಆರ್ಡರ್ ಕೂಡ ಇಲ್ಲ",
+    "dayLink": "ಇಂದಿನ ಆರ್ಡರ್‌ಗಳು ಮತ್ತು ಒಟ್ಟು",
+    "allOrders": "ಎಲ್ಲಾ ಆರ್ಡರ್‌ಗಳು",
+    "timeLeft": "{time} ಒಳಗೆ ಒಪ್ಪಿ ಅಥವಾ ಬೇಡ ಎನ್ನಿ",
+    "accept": "ಆರ್ಡರ್ ಒಪ್ಪಿಕೊಳ್ಳಿ",
+    "reject": "ಬೇಡ ಎನ್ನಿ",
+    "startPreparing": "ತಯಾರಿಸಲು ಶುರು ಮಾಡಿ",
+    "markReady": "ಪಿಕಪ್‌ಗೆ ರೆಡಿ",
+    "waitingPickup": "ಡೆಲಿವರಿಯವರಿಗಾಗಿ ಕಾಯುತ್ತಿದೆ",
+    "rejectReason": "ಈ ಆರ್ಡರ್ ಯಾಕೆ ತೆಗೆದುಕೊಳ್ಳಲು ಆಗುವುದಿಲ್ಲ?",
+    "rejectNote": "ಗ್ರಾಹಕರಿಗೆ ಚಿಕ್ಕ ಸೂಚನೆ",
+    "confirmReject": "ಆರ್ಡರ್ ಬೇಡ ಎನ್ನಿ",
+    "placedAt": "{time} ಕ್ಕೆ ಆರ್ಡರ್",
+    "quantity": "× {quantity}",
+    "customer": "ಗ್ರಾಹಕರು",
+    "cancelledBy": {
+      "customer": "ಗ್ರಾಹಕರು ರದ್ದು ಮಾಡಿದ್ದಾರೆ",
+      "admin": "ಆಪರೇಷನ್ಸ್ ತಂಡ ರದ್ದು ಮಾಡಿದೆ"
+    }
+  },
+  "alert": {
+    "turnOnSound": "ಆರ್ಡರ್ ಸದ್ದು ಆನ್ ಮಾಡಲು ಒತ್ತಿ",
+    "newOrder": "ಹೊಸ ಆರ್ಡರ್ #{orderNo}{count, plural, one {} other { (ಇನ್ನೂ # ಕಾಯುತ್ತಿವೆ)}}. ತೆರೆಯಲು ಒತ್ತಿ."
+  },
+  "dayView": {
+    "title": "ಇಂದು",
+    "received": "ಬಂದ ಆರ್ಡರ್‌ಗಳು",
+    "accepted": "ಒಪ್ಪಿಕೊಂಡವು",
+    "rejectedOrCancelled": "ಬೇಡವಾದವು ಅಥವಾ ರದ್ದಾದವು",
+    "delivered": "ಡೆಲಿವರಿ ಆದವು",
+    "deliveredValue": "ಡೆಲಿವರಿ ಆದ ಊಟದ ಮೊತ್ತ",
+    "empty": "ಇಂದು ಇನ್ನೂ ಆರ್ಡರ್ ಬಂದಿಲ್ಲ"
   }
 }

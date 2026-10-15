@@ -360,18 +360,18 @@ reason; the day view counts both.
 
 ### Tests for User Story 2
 
-- [ ] T061 [P] [US2] Write failing integration tests `src/features/orders/services/partner.int.test.ts`:
+- [X] T061 [P] [US2] Write failing integration tests `src/features/orders/services/partner.int.test.ts`:
   - `acceptOrder`, `rejectOrder` (reasons `kitchen_busy | item_unavailable | kitchen_closing | other`; `other` without a note is `invalid`; the note is at most 200 characters), `markPreparing` and `markReady`, each writing its event and messages;
   - an order of another kitchen gives `not_found`;
   - a wrong status gives `order_moved_on`;
   - accepting after `ACCEPT_WINDOW_MINUTES` gives `order_moved_on { status: 'rejected' }`, with the system event recorded.
-- [ ] T062 [P] [US2] Write failing integration tests `src/features/orders/partner-queries.int.test.ts`:
+- [X] T062 [P] [US2] Write failing integration tests `src/features/orders/partner-queries.int.test.ts`:
   - `listPartnerOrders` returns open orders with time left for Placed, newest first;
   - `getPartnerOrder` exposes the display name (or null), landmark and rider note but **no** customer phone, house or street (FR-032);
   - `getPartnerDay` counts received, accepted, rejected-or-cancelled and delivered within `istDayBounds`, plus the item-total sum of delivered orders (FR-031);
   - `getNewOrderFeed` returns only Placed orders after expiry.
   Also test `GET /partner/orders/new` in `src/app/(partner)/partner/orders/new/route.int.test.ts`: 401 without a partner session, `Cache-Control: no-store`, and the session kitchen's orders only.
-- [ ] T063 [P] [US2] Write the end-to-end test `e2e/ordering-us2-partner.spec.ts` (mobile), after `resetDemoData()` and `openAllDay(placedOrder().kitchen.id)`:
+- [X] T063 [P] [US2] Write the end-to-end test `e2e/ordering-us2-partner.spec.ts` (mobile), after `resetDemoData()` and `openAllDay(placedOrder().kitchen.id)`:
   - the partner of `placedOrder()` sees "Tap to turn on order sounds", taps it, and sees the order highlighted with its number and a time left;
   - Accept, Preparing and Ready each update the status;
   - in a second context the demo customer places an order at the same kitchen; within 15 s, on the partner's menu page (not the orders page), the new-order banner appears;
@@ -379,23 +379,23 @@ reason; the day view counts both.
 
 ### Implementation for User Story 2
 
-- [ ] T064 [US2] Implement `src/features/orders/services/partner.ts` (`acceptOrder`, `rejectOrder`, `markPreparing`, `markReady` over `applyTransition`, scoped to `actor.kitchenId`) to pass T061, plus `src/features/orders/actions/partner.ts`
-- [ ] T065 [US2] Implement `listPartnerOrders`, `getPartnerOrder`, `getPartnerDay` and `getNewOrderFeed` in `src/features/orders/partner-queries.ts` (`server-only`) to pass T062
-- [ ] T066 [P] [US2] Create the partner order components in `src/features/orders/components/`:
+- [X] T064 [US2] Implement `src/features/orders/services/partner.ts` (`acceptOrder`, `rejectOrder`, `markPreparing`, `markReady` over `applyTransition`, scoped to `actor.kitchenId`) to pass T061, plus `src/features/orders/actions/partner.ts`
+- [X] T065 [US2] Implement `listPartnerOrders`, `getPartnerOrder`, `getPartnerDay` and `getNewOrderFeed` in `src/features/orders/partner-queries.ts` (`server-only`) to pass T062
+- [X] T066 [P] [US2] Create the partner order components in `src/features/orders/components/`:
   - `partner-order-card.tsx` (number, time placed, status badge with the time of the current status, dishes and quantities, item total, payment label, display name or "Customer", rider note; Placed highlighted; a cancelled order shows who cancelled it, customer or admin, with the reason);
   - `time-left.tsx` (`'use client'`; counts down from the server's deadline, and never shows a negative);
   - `reject-form.tsx` (the 4 reasons as large choices; a note field required for "other");
   - `partner-actions.tsx` (Accept / Reject / Preparing / Ready per status, with `order_moved_on` shown alongside the current status).
-- [ ] T067 [US2] Create `src/app/(partner)/partner/(protected)/orders/page.tsx` (polls with `<UpdatedAt />`; empty state "No orders right now") and `src/app/(partner)/partner/(protected)/orders/[id]/page.tsx` (polls with `<UpdatedAt />`; a cancelled order shows who cancelled it and no actions; not found for another kitchen's order; marks the order acknowledged for the alert)
-- [ ] T068 [US2] Implement `src/app/(partner)/partner/orders/new/route.ts` to pass its part of T062, and `src/features/orders/components/new-order-alert.tsx` (`'use client'`; research R10):
+- [X] T067 [US2] Create `src/app/(partner)/partner/(protected)/orders/page.tsx` (polls with `<UpdatedAt />`; empty state "No orders right now") and `src/app/(partner)/partner/(protected)/orders/[id]/page.tsx` (polls with `<UpdatedAt />`; a cancelled order shows who cancelled it and no actions; not found for another kitchen's order; marks the order acknowledged for the alert)
+- [X] T068 [US2] Implement `src/app/(partner)/partner/orders/new/route.ts` to pass its part of T062, and `src/features/orders/components/new-order-alert.tsx` (`'use client'`; research R10):
   - it polls the feed with `usePolling` every 10 s;
   - it shows the "Tap to turn on order sounds" button until unlocked (unlock remembered in `sessionStorage` inside try/catch);
   - it plays `/sounds/new-order.wav` every 5 s while any feed order is unacknowledged;
   - it shows a highlighted banner linking to the oldest unacknowledged order;
   - acknowledged ids live in `sessionStorage`.
   Mount it in `src/app/(partner)/partner/(protected)/layout.tsx` and make "Orders" the first navigation item.
-- [ ] T069 [US2] Create `src/app/(partner)/partner/(protected)/day/page.tsx`: today's orders newest first (number, time, status badge, amount) and the five totals
-- [ ] T070 [US2] Add the US2 message keys (`partnerOrders.*`, `alert.*`, `dayView.*`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
+- [X] T069 [US2] Create `src/app/(partner)/partner/(protected)/day/page.tsx`: today's orders newest first (number, time, status badge, amount) and the five totals
+- [X] T070 [US2] Add the US2 message keys (`partnerOrders.*`, `alert.*`, `dayView.*`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
 
 **Checkpoint**: US2 works on its own. T061–T063 pass. Commit with task ids.
 

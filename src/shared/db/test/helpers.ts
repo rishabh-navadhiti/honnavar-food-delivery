@@ -247,7 +247,8 @@ export async function makeOrder(
     await db.insert(orderEvents).values({ orderId: order!.id, kind: 'assigned', actor: 'admin', agentId, at: placedAt });
   }
   if (status !== 'placed') {
-    await db.insert(orderEvents).values({ orderId: order!.id, kind: status, actor: 'partner', at: placedAt });
+    const actor = status === 'cancelled' ? 'admin' : status === 'picked_up' || status === 'delivered' ? 'agent' : 'partner';
+    await db.insert(orderEvents).values({ orderId: order!.id, kind: status, actor, at: placedAt });
   }
   return order!;
 }

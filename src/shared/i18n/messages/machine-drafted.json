@@ -49,6 +49,9 @@
     "pinPicker",
     "voiceNote",
     "addresses",
-    "orderPage"
+    "orderPage",
+    "partnerOrders",
+    "alert",
+    "dayView"
   ]
 }

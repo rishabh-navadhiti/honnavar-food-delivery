@@ -68,6 +68,11 @@ describe('placeOrder (US1, FR-007 to FR-015)', () => {
     ]);
   });
 
+  it('treats the empty confirmation field of a cash order as not set', async () => {
+    const { customer, cart, input } = await setup();
+    expect((await placeOrder(customer, input({ upiConfirmed: '' }), cart, now)).ok).toBe(true);
+  });
+
   it('needs the UPI confirmation, then records the stand-in reference', async () => {
     const { customer, cart, input } = await setup();
     expect(await placeOrder(customer, input({ paymentMethod: 'upi_demo' }), cart, now)).toMatchObject({

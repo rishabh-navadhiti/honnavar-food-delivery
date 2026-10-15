@@ -109,7 +109,7 @@ export function CheckoutForm({
           </ul>
         </div>
       ) : null}
-      <FormError message={errors.form ?? errors.field('addressId', 'paymentMethod')} />
+      <FormError message={errors.form ?? errors.field('addressId', 'paymentMethod', 'placeKey', 'seenPrices', 'upiConfirmed')} />
 
       <button type="submit" disabled={pending} className={buttonClasses('primary', 'w-full text-lg')}>
         {pending ? t('checkout.placing') : t('checkout.placeOrder', { amount: price(grandTotal) })}

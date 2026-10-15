@@ -148,7 +148,8 @@
     "mainNavigation": "Main navigation",
     "customerNavigation": "Orders and cart",
     "orders": "My orders",
-    "cart": "Cart"
+    "cart": "Cart",
+    "kitchenOrders": "Orders"
   },
   "home": {
     "title": "Kitchens in Honnavar",
@@ -605,5 +606,40 @@
     "expectedBy": "Expected by {time}",
     "items": "Items",
     "deliverTo": "Delivery address"
+  },
+  "partnerOrders": {
+    "title": "Orders",
+    "empty": "No orders right now",
+    "dayLink": "Today's orders and totals",
+    "allOrders": "All orders",
+    "timeLeft": "Accept or reject within {time}",
+    "accept": "Accept order",
+    "reject": "Reject",
+    "startPreparing": "Start preparing",
+    "markReady": "Ready for pickup",
+    "waitingPickup": "Waiting for the delivery agent",
+    "rejectReason": "Why can't you take this order?",
+    "rejectNote": "Short note for the customer",
+    "confirmReject": "Reject order",
+    "placedAt": "Ordered at {time}",
+    "quantity": "× {quantity}",
+    "customer": "Customer",
+    "cancelledBy": {
+      "customer": "Cancelled by the customer",
+      "admin": "Cancelled by the operations team"
+    }
+  },
+  "alert": {
+    "turnOnSound": "Tap to turn on order sounds",
+    "newOrder": "New order #{orderNo}{count, plural, one {} other { (+# more waiting)}}. Tap to open."
+  },
+  "dayView": {
+    "title": "Today",
+    "received": "Orders received",
+    "accepted": "Accepted",
+    "rejectedOrCancelled": "Rejected or cancelled",
+    "delivered": "Delivered",
+    "deliveredValue": "Food value delivered",
+    "empty": "No orders today yet"
   }
 }
