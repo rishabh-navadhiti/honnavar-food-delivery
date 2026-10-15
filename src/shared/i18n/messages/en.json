@@ -106,7 +106,26 @@
     "signinRequired": "Add at least one sign-in number.",
     "duplicatePhone": "This number is listed twice.",
     "reorderMismatch": "The list changed. Please reload and try again.",
-    "notFound": "This item no longer exists. Please reload."
+    "notFound": "This item no longer exists. Please reload.",
+    "dishUnavailable": "This item is not available now.",
+    "kitchenClosed": "This kitchen is closed now.",
+    "cartFull": "Your cart is full. Remove an item to add another.",
+    "quantityLimit": "You can order up to 20 of one item.",
+    "otherKitchen": "Your cart has items from another kitchen.",
+    "cartEmpty": "Your cart is empty.",
+    "cartChanged": "Your cart changed. Please check it again.",
+    "kitchenUnavailable": "This kitchen is not taking orders any more.",
+    "upiNotConfirmed": "Please confirm the UPI payment.",
+    "addressLimit": "You can save up to 10 addresses. Delete one to add another.",
+    "invalidAudio": "This voice note could not be saved. Please record it again.",
+    "orderMovedOn": "This order has already moved on. Its current status is shown.",
+    "notAssignable": "A delivery agent can be assigned only after the kitchen accepts and before pickup.",
+    "agentInactive": "This delivery agent is not active.",
+    "sameAgent": "This agent already has the order.",
+    "notReady": "The kitchen is still preparing this order.",
+    "cashNotConfirmed": "Please confirm the cash you collected.",
+    "agentHasOrders": "This agent still has orders to deliver: {orderNos}. Reassign or finish them first.",
+    "noteRequired": "Please write a short note."
   },
   "surface": {
     "customer": "Order food in Honnavar",
@@ -126,7 +145,10 @@
     "profile": "Profile",
     "partners": "Partners",
     "agents": "Delivery agents",
-    "mainNavigation": "Main navigation"
+    "mainNavigation": "Main navigation",
+    "customerNavigation": "Orders and cart",
+    "orders": "My orders",
+    "cart": "Cart"
   },
   "home": {
     "title": "Kitchens in Honnavar",
@@ -140,7 +162,8 @@
     "menuTitle": "Menu",
     "addressTitle": "Address",
     "menuComingSoon": "Menu coming soon",
-    "allKitchens": "All kitchens"
+    "allKitchens": "All kitchens",
+    "etaRange": "Delivery in about {from}–{to} min"
   },
   "menu": {
     "notAvailable": "Not available"
@@ -172,7 +195,13 @@
     "displayName": "Your name",
     "displayNameHint": "Optional. Helps the kitchen recognise you.",
     "saveName": "Save name",
-    "nameSaved": "Name saved"
+    "nameSaved": "Name saved",
+    "linksTitle": "More",
+    "links": {
+      "addresses": "My addresses",
+      "orders": "My orders",
+      "messages": "Messages"
+    }
   },
   "agent": {
     "noDeliveriesTitle": "No deliveries yet",
@@ -466,9 +495,115 @@
     "demoLabel": "Demo: not sent by SMS or WhatsApp"
   },
   "orders": {
-    "number": "#{orderNo}"
+    "number": "#{orderNo}",
+    "title": "My orders",
+    "empty": "You have not ordered yet",
+    "ongoing": "Ongoing",
+    "noOngoing": "No ongoing orders",
+    "past": "Past orders"
   },
   "polling": {
     "updatedAt": "Updated {time}"
+  },
+  "cart": {
+    "add": "Add",
+    "oneLess": "One less",
+    "oneMore": "One more",
+    "quantity": "Quantity",
+    "maxReached": "You can order up to {max} of one item.",
+    "replaceQuestion": "Your cart has items from another kitchen. Start a new cart with this item?",
+    "replaceConfirm": "Start a new cart",
+    "replaceKeep": "Keep my cart",
+    "itemCount": "{count, plural, one {# item} other {# items}}",
+    "viewCart": "View cart",
+    "orderWhenOpen": "This kitchen is closed now. You can order when it opens.",
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "browse": "Find food",
+    "removedLines": "{count, plural, one {# item is no longer on the menu and was removed.} other {# items are no longer on the menu and were removed.}}",
+    "clear": "Empty the cart",
+    "signInToCheckOut": "Sign in to check out",
+    "itemTotal": "Item total",
+    "deliveryFee": "Delivery fee",
+    "grandTotal": "Grand total",
+    "lineUnavailable": "Not available now. It will not be ordered."
+  },
+  "checkout": {
+    "deliverTo": "Deliver to",
+    "addAddress": "Add a new address",
+    "payment": "Payment",
+    "cartChanged": "Your cart changed. Please check it and place the order again.",
+    "changedPrice": "{name}: price changed from {from} to {to}",
+    "changedUnavailable": "{name} is not available now and was removed",
+    "changedRemoved": "An item is no longer on the menu and was removed",
+    "placing": "Placing your order…",
+    "placeOrder": "Place order · {amount}",
+    "needAddress": "Add a delivery address to place your order.",
+    "addFirstAddress": "Add delivery address"
+  },
+  "upiSheet": {
+    "title": "Pay with UPI (demo)",
+    "demoNotice": "This is a demo. Nothing will be charged.",
+    "confirm": "Confirm payment",
+    "close": "Close"
+  },
+  "pinPicker": {
+    "locationUnavailable": "This phone cannot share its location. Move the map or search instead.",
+    "locationRefused": "Location is off. Move the map or search for a place.",
+    "searchLabel": "Search for a place",
+    "searchPlaceholder": "Search for a place, e.g. bus stand",
+    "searching": "Searching…",
+    "search": "Search",
+    "searchFailed": "Search is not working right now. Move the map by hand instead.",
+    "noPlaces": "No places found. Try another name.",
+    "results": "Places found",
+    "useCurrentLocation": "Use my current location",
+    "mapLabel": "Map. Move it so the pin is on your door.",
+    "addressHere": "Address at the pin",
+    "lookingUp": "Finding the address…",
+    "lookupFailed": "The address could not be looked up. You can still use this pin.",
+    "noAddress": "No address found here. You can still use this pin.",
+    "continue": "Continue",
+    "pinPlaced": "Pin placed on the map"
+  },
+  "voiceNote": {
+    "title": "Voice note for the landmark (optional)",
+    "hint": "Say how to find your home, up to {seconds} seconds.",
+    "playSaved": "Play the saved voice note",
+    "delete": "Delete voice note",
+    "unavailable": "Voice notes are not available on this phone.",
+    "recording": "Recording… {seconds} s left",
+    "stop": "Stop",
+    "playRecording": "Play your recording",
+    "reRecord": "Record again",
+    "recordNew": "Record a new voice note",
+    "record": "Record a voice note",
+    "landmarkNote": "Landmark voice note",
+    "notTranscribed": "Demo: voice notes are not turned into text."
+  },
+  "addresses": {
+    "changeLocation": "Change pin",
+    "house": "House or door number, or house name",
+    "street": "Street or area (optional)",
+    "landmark": "Landmark",
+    "landmarkHint": "For example: behind the temple, near the bus stand",
+    "riderNote": "Note for the delivery agent (optional)",
+    "labelTitle": "Save as",
+    "save": "Save address",
+    "mapStepTitle": "Where should we deliver?",
+    "mapStepHint": "Move the map so the pin is on your door, then continue.",
+    "detailsStepTitle": "Address details",
+    "newTitle": "Add a delivery address",
+    "editTitle": "Edit address",
+    "delete": "Delete this address",
+    "title": "My addresses",
+    "empty": "No saved addresses yet",
+    "add": "Add a new address"
+  },
+  "orderPage": {
+    "title": "Order",
+    "expectedBy": "Expected by {time}",
+    "items": "Items",
+    "deliverTo": "Delivery address"
   }
 }

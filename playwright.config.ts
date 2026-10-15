@@ -11,9 +11,6 @@ import { defineConfig, devices } from '@playwright/test';
 
 if (existsSync('.env.local')) loadEnvFile('.env.local');
 
-// Chromium's fake microphone, so the voice-note recorder records without a prompt (research R9).
-const FAKE_MEDIA = ['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream'];
-
 export default defineConfig({
   testDir: 'e2e',
   workers: 1,
@@ -31,7 +28,6 @@ export default defineConfig({
       use: {
         ...devices['Pixel 5'],
         browserName: 'chromium',
-        launchOptions: { args: FAKE_MEDIA },
         viewport: { width: 360, height: 780 },
         isMobile: true,
         hasTouch: true,
@@ -40,7 +36,7 @@ export default defineConfig({
     {
       name: 'desktop',
       testMatch: [/\/us4-.*\.spec\.ts/, /ordering-us3-.*\.spec\.ts/],
-      use: { browserName: 'chromium', viewport: { width: 1280, height: 800 }, launchOptions: { args: FAKE_MEDIA } },
+      use: { browserName: 'chromium', viewport: { width: 1280, height: 800 } },
     },
   ],
   webServer: {

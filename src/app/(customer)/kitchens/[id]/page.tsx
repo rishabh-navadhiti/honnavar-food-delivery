@@ -11,6 +11,12 @@ import { KitchenStateLabel } from '@/features/browse/components/kitchen-state-la
 import { MenuSection } from '@/features/browse/components/menu-section';
 import { readDishFilter } from '@/features/browse/dish-filter-cookie';
 import { getKitchenForCustomer } from '@/features/browse/queries';
+import { AddToCart } from '@/features/cart/components/add-to-cart';
+import { CartBar } from '@/features/cart/components/cart-bar';
+import { readCart } from '@/features/cart/cookie';
+import { getCartView } from '@/features/orders/queries';
+import { etaRange } from '@/features/orders/domain/eta';
+import { env } from '@/shared/env';
 import { isLocale } from '@/shared/i18n/config';
 import { pickLocalized } from '@/shared/i18n/localized';
 import { Badge } from '@/shared/ui/badge';
@@ -48,6 +54,11 @@ export default async function KitchenPage({ params }: Props) {
   const hasMenu = kitchen.categories.some((c) => c.dishes.length > 0);
   const dishFilter = await readDishFilter();
   const returnTo = `/kitchens/${kitchen.id}`;
+  const cart = await readCart();
+  const cartView = await getCartView(cart, null, now);
+  const qtyOf = (dishId: string) => (cart?.kitchenId === kitchen.id ? (cart.lines.find((l) => l.dishId === dishId)?.qty ?? 0) : 0);
+  const open = kitchen.state.kind === 'open';
+  const eta = etaRange(kitchen.prepMinutes, env.DELIVERY_MINUTES);
 
   return (
     <article className="flex flex-col gap-5">
@@ -72,6 +83,9 @@ export default async function KitchenPage({ params }: Props) {
           {kitchen.pureVeg ? <Badge tone="veg">{t('veg.pureVeg')}</Badge> : null}
         </div>
         <KitchenStateLabel state={kitchen.state} now={now} />
+        <p className="text-base font-medium" data-testid="eta-range">
+          {t('kitchen.etaRange', { from: eta.from, to: eta.to })}
+        </p>
         <LocalizedText pair={kitchen.description} className="text-base text-muted" />
       </header>
 
@@ -97,6 +111,11 @@ export default async function KitchenPage({ params }: Props) {
           {t('kitchen.menuTitle')}
         </h2>
         <DishFilterControl current={dishFilter} returnTo={returnTo} />
+        {open ? null : (
+          <p className="rounded-xl border border-line bg-secondary p-3 text-base font-medium" data-testid="ordering-closed">
+            {t('cart.orderWhenOpen')}
+          </p>
+        )}
         {kitchen.noMatchingDishes ? (
           <div className="flex flex-col items-start gap-3 rounded-2xl border border-dashed border-line bg-surface p-4" data-testid="no-matching-dishes">
             <p className="text-base font-semibold">{dishFilter === 'veg' ? t('dishFilter.noVegHere') : t('dishFilter.noNonvegHere')}</p>
@@ -111,11 +130,18 @@ export default async function KitchenPage({ params }: Props) {
         ) : hasMenu ? (
           kitchen.categories
             .filter((c) => c.dishes.length > 0)
-            .map((category) => <MenuSection key={category.id} category={category} />)
+            .map((category) => (
+              <MenuSection
+                key={category.id}
+                category={category}
+                dishAction={open ? (dish) => <AddToCart dishId={dish.id} qty={qtyOf(dish.id)} /> : undefined}
+              />
+            ))
         ) : (
           <EmptyState title={t('kitchen.menuComingSoon')} />
         )}
       </section>
+      {cartView ? <CartBar count={cartView.lines.reduce((n, l) => n + l.qty, 0)} itemTotal={cartView.bill.itemTotal} /> : null}
     </article>
   );
 }

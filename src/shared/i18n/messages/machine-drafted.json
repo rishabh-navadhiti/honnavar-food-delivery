@@ -42,6 +42,13 @@
     "dispatchGroup",
     "notifications",
     "orders",
-    "polling"
+    "polling",
+    "cart",
+    "checkout",
+    "upiSheet",
+    "pinPicker",
+    "voiceNote",
+    "addresses",
+    "orderPage"
   ]
 }

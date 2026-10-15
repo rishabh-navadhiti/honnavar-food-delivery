@@ -31,7 +31,8 @@ export default defineConfig({
           globalSetup: ['src/shared/db/test/global-setup.ts'],
           fileParallelism: false,
           // Integration tests run against TEST_DATABASE_URL, never the app database.
-          env: { DATABASE_URL: process.env.TEST_DATABASE_URL ?? '' },
+          // Never call the public geocoder from tests (research R7).
+          env: { DATABASE_URL: process.env.TEST_DATABASE_URL ?? '', GEOCODING_PROVIDER: 'stand-in' },
         },
       },
     ],

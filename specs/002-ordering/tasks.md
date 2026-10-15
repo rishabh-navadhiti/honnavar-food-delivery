@@ -243,25 +243,25 @@ preselected address, pay by UPI, confirm the demo sheet, and see the order page 
 
 ### Tests for User Story 1
 
-- [ ] T038 [P] [US1] Write failing unit tests `src/features/cart/domain/cart.test.ts`:
+- [X] T038 [P] [US1] Write failing unit tests `src/features/cart/domain/cart.test.ts`:
   - `addLine` adds at quantity 1 or increments, refusing above 20 (`quantity_limit`) and beyond 30 distinct dishes (`cart_full`);
   - adding from another kitchen returns `other_kitchen` unless `replace`;
   - `setQuantity(0)` removes the line, and an empty cart clears;
   - `parseCartCookie` returns an empty cart for any value that fails the schema `{ v: 1, kitchenId: uuid, lines: [{ dishId: uuid, qty: 1–20 }] (≤ 30, unique dishId) }`;
   - the worst-case serialised cookie is under 4096 bytes.
-- [ ] T039 [P] [US1] Write failing integration tests `src/features/cart/services/cart.int.test.ts` for `addToCart` against the database: `dish_unavailable` for an unavailable dish, `kitchen_closed` for a closed or temporarily closed kitchen, and success for an open kitchen.
-- [ ] T040 [P] [US1] Write failing integration tests `src/shared/audio/store.int.test.ts` with a committed fixture `src/shared/audio/test-audio.ts` (a valid WebM byte array of a few hundred bytes):
+- [X] T039 [P] [US1] Write failing integration tests `src/features/cart/services/cart.int.test.ts` for `addToCart` against the database: `dish_unavailable` for an unavailable dish, `kitchen_closed` for a closed or temporarily closed kitchen, and success for an open kitchen.
+- [X] T040 [P] [US1] Write failing integration tests `src/shared/audio/store.int.test.ts` with a committed fixture `src/shared/audio/test-audio.ts` (a valid WebM byte array of a few hundred bytes):
   - `storeAudio` accepts `audio/webm`, `audio/ogg` and `audio/mp4` whose magic bytes match (EBML `1A45DFA3`, `OggS`, `ftyp` at offset 4);
   - it rejects more than 600 KB, other types, or mismatched bytes with `invalid_audio`;
   - identical bytes reuse the row;
   - `deleteAudioIfUnused` keeps a clip referenced by an address or an order.
-- [ ] T041 [P] [US1] Write failing integration tests `src/features/addresses/services/addresses.int.test.ts` for `saveAddress` and `deleteAddress`:
+- [X] T041 [P] [US1] Write failing integration tests `src/features/addresses/services/addresses.int.test.ts` for `saveAddress` and `deleteAddress`:
   - limits verbatim: house 1–100, street ≤150, landmark 1–100, rider note ≤200, geocoded text ≤300, label `home|work|other`, location within lat 6–37 and lng 68–98;
   - at most 10 per customer (`address_limit`);
   - another customer's id gives `not_found`;
   - an attached voice note is stored, `removeVoiceNote` detaches it, and deleting the address deletes an unused clip;
   - editing and then deleting an address used by an order leaves that order's address snapshot (and its voice-note clip) unchanged.
-- [ ] T042 [P] [US1] Write failing unit tests `src/shared/adapters/geocoding/nominatim.test.ts` with an injected `fetch` and fake timers:
+- [X] T042 [P] [US1] Write failing unit tests `src/shared/adapters/geocoding/nominatim.test.ts` with an injected `fetch` and fake timers:
   - search URL params `format=jsonv2`, `countrycodes=in`, the Honnavar `viewbox`, `limit=5`, `accept-language`;
   - reverse URL with `zoom=18`;
   - the `User-Agent` `honnavar-food-delivery-poc/<version> (+<GEOCODING_CONTACT>)`;
@@ -269,16 +269,16 @@ preselected address, pay by UPI, confirm the demo sheet, and see the order page 
   - a 4 s timeout returns `unavailable`;
   - the cache key rounds coordinates to 4 decimals plus locale, and a cache hit makes no request.
   Add `src/shared/adapters/geocoding/stand-in.test.ts`: substring search in both languages, at most 5, and `reverse` returning "Near <closest place>".
-- [ ] T043 [P] [US1] Write failing integration tests `src/app/api/geo/routes.int.test.ts` and `src/app/voice-notes/[id]/route.int.test.ts`:
+- [X] T043 [P] [US1] Write failing integration tests `src/app/api/geo/routes.int.test.ts` and `src/app/voice-notes/[id]/route.int.test.ts`:
   - geo: 401 without a customer or admin session; 400 for `q` outside 3–100 characters or coordinates outside India; stand-in results otherwise;
   - voice notes: the owner customer gets 200 with the stored mime and `Cache-Control: private, max-age=3600`; another customer, a signed-out request, and an agent not assigned to an unfinished order using it get 404; the assigned agent and any admin get 200.
-- [ ] T044 [P] [US1] Write failing integration tests `src/features/orders/services/place.int.test.ts` for `placeOrder` and `getCartView`:
+- [X] T044 [P] [US1] Write failing integration tests `src/features/orders/services/place.int.test.ts` for `placeOrder` and `getCartView`:
   - COD happy path: status `placed`; snapshots of dish names (both languages), veg marks and prices; the address snapshot fields; `delivery_fee = DELIVERY_FEE_RUPEES`; `expected_at = placed + prep_minutes + DELIVERY_MINUTES`; messages `order_placed` and `kitchen_new_order`; the cart is cleared.
   - UPI without `upiConfirmed` gives `upi_not_confirmed`; with it, `payment_reference` is `DEMO-UPI-…`.
   - `cart_changed` lists `unavailable`, `removed` and `price` changes and returns the corrected cart; `kitchen_closed`; `kitchen_unavailable` for a suspended kitchen; `cart_empty`; `not_found` for another customer's address.
   - The same `placeKey` twice gives one order, and both calls return its id.
   - `getCartView` preselects the last order's address and payment method, defaulting to `cod` and the only address (FR-009, FR-010).
-- [ ] T045 [P] [US1] Write the end-to-end test `e2e/ordering-us1-cart-checkout.spec.ts` (mobile). `beforeAll`: `resetDemoData()`, then `openAllDay` for `orderableKitchen()` and `secondOrderableKitchen()`; call `blockMapTiles`. As a guest:
+- [X] T045 [P] [US1] Write the end-to-end test `e2e/ordering-us1-cart-checkout.spec.ts` (mobile). `beforeAll`: `resetDemoData()`, then `openAllDay` for `orderableKitchen()` and `secondOrderableKitchen()`; call `blockMapTiles`. As a guest:
   - add two dishes and check that the cart bar shows the count and item total;
   - add a dish from the second kitchen: the replace prompt appears; cancel keeps the cart;
   - `/cart` shows the bill equal to the sum of lines plus ₹30;
@@ -292,20 +292,20 @@ preselected address, pay by UPI, confirm the demo sheet, and see the order page 
 
 ### Implementation for User Story 1
 
-- [ ] T046 [US1] Implement `src/features/cart/domain/cart.ts` (pure) to pass T038, `src/features/cart/cookie.ts` (`server-only`; reads and writes `hfd_cart`, `HttpOnly`, `SameSite=Lax`, 30 days, cleared when empty), `src/features/cart/services/cart.ts` to pass T039, and `src/features/cart/actions.ts` (`addToCartAction`, `setCartQuantityAction`, `clearCartAction` behind plain forms)
-- [ ] T047 [P] [US1] Create `src/features/cart/components/add-to-cart.tsx` (an Add button that becomes a −/qty/+ stepper with 48 px targets, disabled with a reason for unavailable dishes or a closed kitchen), `cart-bar.tsx` (sticky; count, item total, link to `/cart`) and `replace-cart-prompt.tsx` (rendered from `?replace=<dishId>`; confirm resubmits with `replace=true`)
-- [ ] T048 [US1] Update `src/app/(customer)/kitchens/[id]/page.tsx` and `src/features/browse/queries.ts`:
+- [X] T046 [US1] Implement `src/features/cart/domain/cart.ts` (pure) to pass T038, `src/features/cart/cookie.ts` (`server-only`; reads and writes `hfd_cart`, `HttpOnly`, `SameSite=Lax`, 30 days, cleared when empty), `src/features/cart/services/cart.ts` to pass T039, and `src/features/cart/actions.ts` (`addToCartAction`, `setCartQuantityAction`, `clearCartAction` behind plain forms)
+- [X] T047 [P] [US1] Create `src/features/cart/components/add-to-cart.tsx` (an Add button that becomes a −/qty/+ stepper with 48 px targets, disabled with a reason for unavailable dishes or a closed kitchen), `cart-bar.tsx` (sticky; count, item total, link to `/cart`) and `replace-cart-prompt.tsx` (rendered from `?replace=<dishId>`; confirm resubmits with `replace=true`)
+- [X] T048 [US1] Update `src/app/(customer)/kitchens/[id]/page.tsx` and `src/features/browse/queries.ts`:
   - each dish row gets `add-to-cart`, and the page gets `cart-bar` and the replace prompt;
   - show the delivery range from `etaRange(prep_minutes, DELIVERY_MINUTES)` as "{from}–{to} min" (FR-059);
   - `getKitchenForCustomer` returns `prepMinutes`.
-- [ ] T049 [US1] Update the customer header in `src/app/(customer)/layout.tsx`: an "Orders" link (FR-024) and a cart badge with the item count from the cart cookie, on every customer screen
-- [ ] T050 [US1] Implement `src/shared/audio/store.ts` (`server-only`; `storeAudio`, `readAudio`, `deleteAudioIfUnused`) to pass T040, and `src/app/voice-notes/[id]/route.ts` with the authorisation rules of contracts/routes.md to pass its part of T043
-- [ ] T051 [US1] Implement `src/shared/adapters/geocoding/{types.ts,nominatim.ts,stand-in.ts,index.ts}` to pass T042:
+- [X] T049 [US1] Update the customer header in `src/app/(customer)/layout.tsx`: an "Orders" link (FR-024) and a cart badge with the item count from the cart cookie, on every customer screen
+- [X] T050 [US1] Implement `src/shared/audio/store.ts` (`server-only`; `storeAudio`, `readAudio`, `deleteAudioIfUnused`) to pass T040, and `src/app/voice-notes/[id]/route.ts` with the authorisation rules of contracts/routes.md to pass its part of T043
+- [X] T051 [US1] Implement `src/shared/adapters/geocoding/{types.ts,nominatim.ts,stand-in.ts,index.ts}` to pass T042:
   - `nominatim.ts` is `server-only`, with the queue, the 500-entry LRU and the 4 s timeout;
   - `stand-in.ts` has a `STAND-IN` header and a fixed table of about 10 Honnavar places with English and Kannada labels;
   - `index.ts` selects by `GEOCODING_PROVIDER`.
   Then implement `src/app/api/geo/search/route.ts` and `src/app/api/geo/reverse/route.ts` (Zod-validated query, customer or admin session, 503 `{ error }` on `unavailable` or `busy`) to pass the geo part of T043.
-- [ ] T052 [P] [US1] Create the map pin picker `src/shared/maps/pin-picker.tsx` (`'use client'`, loaded with `next/dynamic` and `ssr: false` from a thin wrapper `pin-picker-loader.tsx`):
+- [X] T052 [P] [US1] Create the map pin picker `src/shared/maps/pin-picker.tsx` (`'use client'`, loaded with `next/dynamic` and `ssr: false` from a thin wrapper `pin-picker-loader.tsx`):
   - Leaflet with the tile URL and attribution passed as props from the server, and the Leaflet CSS imported here only;
   - a centre pin as an inline-SVG `divIcon` with a translated `aria-label`;
   - it starts at the device location when permission is already granted, else Honnavar centre `14.2798, 74.4439`;
@@ -313,36 +313,36 @@ preselected address, pay by UPI, confirm the demo sheet, and see the order page 
   - a search form submitting to `/api/geo/search` (minimum 3 characters, the button disabled while a search is in flight; no search-as-you-type);
   - reverse lookup via `/api/geo/reverse` 1 s after the pin settles, only if it moved more than about 11 m, showing the text or "Address could not be looked up";
   - Continue returns `{ lat, lng, geocodedText | null }`.
-- [ ] T053 [P] [US1] Create `src/features/addresses/components/voice-recorder.tsx` (`'use client'`; research R9):
+- [X] T053 [P] [US1] Create `src/features/addresses/components/voice-recorder.tsx` (`'use client'`; research R9):
   - `MediaRecorder` preferring `audio/webm;codecs=opus`, else `audio/mp4`;
   - auto-stop at 30 s with a visible countdown; play back, re-record and delete;
   - put the blob into the form's file input through `DataTransfer`;
   - "Voice notes are not available on this phone" when permission is refused or the API is missing.
-- [ ] T054 [US1] Implement `src/features/addresses/schemas.ts` and `src/features/addresses/services/addresses.ts` (`saveAddress`, `deleteAddress`) to pass T041, plus `src/features/addresses/actions.ts`
-- [ ] T055 [US1] Create the address screens:
+- [X] T054 [US1] Implement `src/features/addresses/schemas.ts` and `src/features/addresses/services/addresses.ts` (`saveAddress`, `deleteAddress`) to pass T041, plus `src/features/addresses/actions.ts`
+- [X] T055 [US1] Create the address screens:
   - `src/features/addresses/components/address-details-form.tsx`, with fields and limits from T041: label as three large choices Home, Work, Other; the voice recorder; field-level errors; entered data kept on failure;
   - `src/app/(customer)/addresses/new/page.tsx`: step 1 the pin picker, step 2 the details form, then redirect to `next` (customer-surface paths only);
   - `src/shared/audio/voice-note-player.tsx` (an `<audio controls preload="none">` pointing at `/voice-notes/[id]`, with a translated label; reused by US3 and US4);
   - `src/app/(customer)/addresses/page.tsx` (list, edit and delete links) and `src/app/(customer)/addresses/[id]/page.tsx` (edit; shows `voice-note-player` for a saved note so the customer can play it, alongside re-record and delete; not found unless owned);
   - links from `src/app/(customer)/account/page.tsx` to addresses, orders and messages.
-- [ ] T056 [US1] Implement `src/features/orders/services/place.ts` (`placeOrder`, using `bill`, `expectedAt`, `PaymentProvider.confirmUpi` and `Notifier` in one transaction, with `place_key` idempotency) and `getCartView` in `src/features/orders/queries.ts` to pass T044, plus `placeOrderAction` (it rewrites the cart cookie on `cart_changed`, clears it on success, and redirects to `/orders/[id]`)
-- [ ] T057 [P] [US1] Create the cart components in `src/features/cart/components/`:
+- [X] T056 [US1] Implement `src/features/orders/services/place.ts` (`placeOrder`, using `bill`, `expectedAt`, `PaymentProvider.confirmUpi` and `Notifier` in one transaction, with `place_key` idempotency) and `getCartView` in `src/features/orders/queries.ts` to pass T044, plus `placeOrderAction` (it rewrites the cart cookie on `cart_changed`, clears it on success, and redirects to `/orders/[id]`)
+- [X] T057 [P] [US1] Create the cart components in `src/features/cart/components/`:
   - `cart-lines.tsx` (steppers; dish names with the fallback marker; veg mark);
   - `bill-summary.tsx` (item total, delivery fee, grand total in rupees);
   - `address-choice.tsx` (saved addresses as large radio cards with label, house and landmark, plus "Add a new address" → `/addresses/new?next=/cart`);
   - `payment-choice.tsx` (Cash on delivery / UPI);
   - `upi-demo-sheet.tsx` (`'use client'` dialog: amount; "This is a demo. Nothing will be charged."; Confirm submits with `upiConfirmed`; Close returns);
   - `cart-changed-notice.tsx` (lists each change).
-- [ ] T058 [US1] Create `src/app/(customer)/cart/page.tsx`:
+- [X] T058 [US1] Create `src/app/(customer)/cart/page.tsx`:
   - a guest sees the lines, the bill and "Sign in to check out" → `/login?next=/cart`;
   - a signed-in customer also sees the address choice (guided to add one when none), the payment choice and "Place order" with a hidden fresh `placeKey`;
   - the empty cart state links home;
   - errors are shown through translated codes.
-- [ ] T059 [US1] Create the basic order screens:
+- [X] T059 [US1] Create the basic order screens:
   - `getCustomerOrder` and `listCustomerOrders` in `src/features/orders/queries.ts` (with lazy expiry for the customer's scope);
   - `src/app/(customer)/orders/page.tsx`: ongoing orders, each with its number, kitchen, status badge and amount; empty state;
   - `src/app/(customer)/orders/[id]/page.tsx`: number, kitchen with call button, items, bill, payment label, address, "Expected by {time}", current status; not found unless the customer's.
-- [ ] T060 [US1] Add the US1 message keys (`cart.*`, `checkout.*`, `addresses.*`, `pinPicker.*`, `voiceNote.*`, `orders.*`, `kitchen.etaRange`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
+- [X] T060 [US1] Add the US1 message keys (`cart.*`, `checkout.*`, `addresses.*`, `pinPicker.*`, `voiceNote.*`, `orders.*`, `kitchen.etaRange`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
 
 **Checkpoint**: US1 works on its own. T038–T045 pass. Commit with task ids.
 

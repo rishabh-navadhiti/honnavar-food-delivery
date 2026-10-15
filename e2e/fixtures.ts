@@ -36,3 +36,21 @@ export async function blockMapTiles(page: Page): Promise<void> {
   const host = new URL(template.replace(/\{[a-z]\}/g, '0')).host;
   await page.route((url) => url.host === host, (route) => route.abort());
 }
+
+/**
+ * A synthetic microphone for the voice-note recorder: getUserMedia returns a tone from an
+ * AudioContext, so the app's real MediaRecorder code records a real WebM clip. Chromium's
+ * fake-media flags hang or report "not supported" in headless runs here (research R9 deviation).
+ */
+export async function syntheticMicrophone(page: Page): Promise<void> {
+  await page.addInitScript(() => {
+    navigator.mediaDevices.getUserMedia = async () => {
+      const context = new AudioContext();
+      const tone = context.createOscillator();
+      const destination = context.createMediaStreamDestination();
+      tone.connect(destination);
+      tone.start();
+      return destination.stream;
+    };
+  });
+}

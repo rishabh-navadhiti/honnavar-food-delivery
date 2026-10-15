@@ -41,6 +41,8 @@ export type KitchenDetail = KitchenSummary & {
   categories: CategoryView[];
   /** The dish filter hid every dish of a kitchen that has dishes. */
   noMatchingDishes: boolean;
+  /** Preparation minutes, for the delivery-time range (002 FR-059). */
+  prepMinutes: number;
 };
 
 export type CustomerListOptions = {
@@ -163,6 +165,7 @@ export async function getKitchenForCustomer(
       .map(({ phone, isPrimary }) => ({ phone, isPrimary })),
     categories: shown,
     noMatchingDishes: shown.length === 0 && dishRows.length > 0,
+    prepMinutes: k.prepMinutes,
   };
 }
 
