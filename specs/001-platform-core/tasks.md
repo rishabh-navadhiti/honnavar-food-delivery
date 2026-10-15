@@ -892,3 +892,17 @@ task id, for example `T042 Store resized images in Postgres`.
 - The stand-in catalogue (T051) is replaced later by the researched one. The coverage test (T055)
   is the safety net when that happens.
 - Avoid dependencies between stories beyond those listed above.
+
+---
+
+## Phase 10: Convergence
+
+- [ ] T128 CRITICAL: Validate every remaining service input with a Zod schema that fails closed, so malformed input returns `invalid` instead of reaching Postgres as `unexpected`. Cover `kitchenId` in `closeTemporarily`, `reopen` and `saveHours` (`src/features/kitchens/services/operations.ts`); `id` and `ids` (uuid) in `deleteCategory` and `reorderCategories` (`src/features/menu/services/categories.ts`) and in `setDishAvailable`, `deleteDish` and `reorderDishes` (`src/features/menu/services/dishes.ts`); `kitchenId` in `updateKitchenProfile` and `setKitchenPhoto` (`src/features/kitchens/services/admin.ts`); `kitchenId`/`signinId` in `removeSignin` (`signins.ts`); `kitchenId`, `kind` (enum) and `reference` in `recordVerification` (`verification.ts`, keeping the `invalidFssai`/`invalidHygieneRef` field errors); `id` in `setAgentActive` (`src/features/agents/services/agents.ts`); and `q` on `src/app/(customer)/search/page.tsx` (trimmed string, ≤ 80). Add integration cases asserting that a malformed id returns `{ ok: false, error: { code: 'invalid' } }` per Constitution V (contradicts)
+- [ ] T129 CRITICAL: Replace the browser's own `<input type="time">` in `src/features/kitchens/components/hours-editor.tsx` and `src/features/kitchens/components/admin/kitchen-profile-form.tsx` with a shared `src/shared/ui/time-select.tsx`. It has translated hour (1–12), minute (00/15/30/45) and day-period selects, with day-period labels from `formatTime`'s Kannada and English periods via message keys, plus a "midnight" option for closing times. It still submits the existing `h<day>_<slot>_opens|closes`, `opens<n>`/`closes<n>` fields as "HH:MM", keeps values after a failed save, and labels every select. Update the hours step of `e2e/us3-partner.spec.ts` and the hours fields of `e2e/us4-admin.spec.ts` to use the selects, so no Latin AM/PM appears on Kannada screens, per Constitution II / FR-013 (contradicts)
+- [ ] T130 Record the implementation choices made during build in the "Routine choices" list of `specs/001-platform-core/plan.md`:
+  - `react/jsx-no-literals` uses `ignoreProps`, with text props covered by the T124 sweep;
+  - the placeholder component is `src/shared/ui/photo.tsx`;
+  - the new-kitchen form sets the same hours every day, with per-day editing afterwards;
+  - `npm run typecheck` runs `next typegen` first;
+  - Noto Sans is ordered before Noto Sans Kannada so Latin text renders in Noto Sans.
+  - Per Constitution I / plan routine choices (partial).
