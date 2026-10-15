@@ -397,5 +397,78 @@
     "customerHint": "ಗ್ರಾಹಕರಿಗೆ ಯಾವುದೇ 10 ಅಂಕಿಯ ಮೊಬೈಲ್ ನಂಬರ್ ಬಳಸಬಹುದು.",
     "inactive": "ಚಾಲ್ತಿಯಲ್ಲಿಲ್ಲ",
     "none": "ಈ ಆ್ಯಪ್‌ಗೆ ಇನ್ನೂ ಯಾವುದೇ ಖಾತೆ ಇಲ್ಲ."
+  },
+  "orderStatus": {
+    "placed": "ಆರ್ಡರ್ ಆಗಿದೆ",
+    "accepted": "ಒಪ್ಪಿಕೊಂಡಿದೆ",
+    "rejected": "ಒಪ್ಪಿಕೊಂಡಿಲ್ಲ",
+    "preparing": "ತಯಾರಾಗುತ್ತಿದೆ",
+    "ready": "ರೆಡಿ ಆಗಿದೆ",
+    "picked_up": "ಪಿಕಪ್ ಆಗಿದೆ",
+    "delivered": "ಡೆಲಿವರಿ ಆಗಿದೆ",
+    "cancelled": "ರದ್ದಾಗಿದೆ"
+  },
+  "orderEvent": {
+    "placed": "ಆರ್ಡರ್ ಮಾಡಲಾಗಿದೆ",
+    "accepted": "ಕಿಚನ್ ಒಪ್ಪಿಕೊಂಡಿದೆ",
+    "rejected": "ಒಪ್ಪಿಕೊಂಡಿಲ್ಲ",
+    "preparing": "ತಯಾರಾಗುತ್ತಿದೆ",
+    "ready": "ಪಿಕಪ್‌ಗೆ ರೆಡಿ",
+    "assigned": "ಡೆಲಿವರಿಯವರನ್ನು ನೇಮಿಸಲಾಗಿದೆ",
+    "reassigned": "ಡೆಲಿವರಿಯವರನ್ನು ಬದಲಿಸಲಾಗಿದೆ",
+    "picked_up": "ಪಿಕಪ್ ಆಗಿದೆ",
+    "delivered": "ಡೆಲಿವರಿ ಆಗಿದೆ",
+    "cancelled": "ರದ್ದಾಗಿದೆ"
+  },
+  "orderReason": {
+    "kitchen_busy": "ಕಿಚನ್ ತುಂಬಾ ಬ್ಯುಸಿ ಇದೆ",
+    "item_unavailable": "ಐಟಂ ಸಿಗುವುದಿಲ್ಲ",
+    "kitchen_closing": "ಕಿಚನ್ ಮುಚ್ಚುವ ಸಮಯ",
+    "kitchen_no_response": "ಕಿಚನ್ ಉತ್ತರಿಸಲಿಲ್ಲ",
+    "customer_request": "ಗ್ರಾಹಕರು ರದ್ದು ಮಾಡಲು ಹೇಳಿದರು",
+    "kitchen_issue": "ಕಿಚನ್‌ನಲ್ಲಿ ಸಮಸ್ಯೆ",
+    "no_agent": "ಡೆಲಿವರಿಯವರು ಸಿಗಲಿಲ್ಲ",
+    "delivery_problem": "ಡೆಲಿವರಿ ಸಮಸ್ಯೆ",
+    "other": "ಬೇರೆ"
+  },
+  "paymentMethod": {
+    "cod": "ಡೆಲಿವರಿ ಆದಾಗ ಕ್ಯಾಶ್",
+    "upi_demo": "UPI ಮೂಲಕ ಪಾವತಿ (ಡೆಮೊ)",
+    "upiChoice": "UPI"
+  },
+  "addressLabel": {
+    "home": "ಮನೆ",
+    "work": "ಕೆಲಸದ ಜಾಗ",
+    "other": "ಬೇರೆ"
+  },
+  "dispatchGroup": {
+    "waiting_kitchen": "ಕಿಚನ್‌ಗಾಗಿ ಕಾಯುತ್ತಿದೆ",
+    "needs_agent": "ಡೆಲಿವರಿಯವರು ಬೇಕು",
+    "assigned": "ನೇಮಿಸಲಾಗಿದೆ",
+    "out_for_delivery": "ದಾರಿಯಲ್ಲಿದೆ",
+    "finished": "ಮುಗಿದಿದೆ"
+  },
+  "notifications": {
+    "order_placed": "ಆರ್ಡರ್ #{orderNo} ಮಾಡಲಾಗಿದೆ. ಒಟ್ಟು {amount}.",
+    "order_accepted": "ಕಿಚನ್ ಆರ್ಡರ್ #{orderNo} ಒಪ್ಪಿಕೊಂಡಿದೆ.",
+    "order_rejected": "ಕ್ಷಮಿಸಿ, ಕಿಚನ್ ಆರ್ಡರ್ #{orderNo} ತೆಗೆದುಕೊಳ್ಳಲು ಆಗಲಿಲ್ಲ.",
+    "order_preparing": "ಆರ್ಡರ್ #{orderNo} ತಯಾರಾಗುತ್ತಿದೆ.",
+    "order_picked_up": "ಆರ್ಡರ್ #{orderNo} ದಾರಿಯಲ್ಲಿದೆ.",
+    "order_delivered": "ಆರ್ಡರ್ #{orderNo} ತಲುಪಿದೆ. ಒಟ್ಟು {amount}.",
+    "order_cancelled": "ಆರ್ಡರ್ #{orderNo} ರದ್ದಾಗಿದೆ.",
+    "kitchen_new_order": "ಹೊಸ ಆರ್ಡರ್ #{orderNo}: {amount}.",
+    "kitchen_agent_assigned": "ಆರ್ಡರ್ #{orderNo} ತೆಗೆದುಕೊಂಡು ಹೋಗಲು {agentName} ಬರುತ್ತಾರೆ.",
+    "kitchen_order_cancelled": "ಆರ್ಡರ್ #{orderNo} ರದ್ದಾಗಿದೆ.",
+    "agent_assigned": "ಹೊಸ ಡೆಲಿವರಿ: ಆರ್ಡರ್ #{orderNo}, {amount}.",
+    "agent_unassigned": "ಆರ್ಡರ್ #{orderNo} ಬೇರೆ ಡೆಲಿವರಿಯವರಿಗೆ ಕೊಡಲಾಗಿದೆ.",
+    "agent_order_cancelled": "ಆರ್ಡರ್ #{orderNo} ರದ್ದಾಗಿದೆ.",
+    "reasonLine": "ಕಾರಣ: {reason}",
+    "demoLabel": "ಡೆಮೊ: SMS ಅಥವಾ WhatsApp ಮೂಲಕ ಕಳಿಸಿಲ್ಲ"
+  },
+  "orders": {
+    "number": "#{orderNo}"
+  },
+  "polling": {
+    "updatedAt": "ಅಪ್‌ಡೇಟ್: {time}"
   }
 }

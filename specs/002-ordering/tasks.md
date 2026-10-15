@@ -102,7 +102,7 @@ complete.
 
 ### Database schema and migration (data-model.md)
 
-- [ ] T006 [P] Create `src/shared/db/schema/orders.ts` with enums `order_status`, `payment_method`, `order_reason`, `order_event_kind`, `order_actor` (values verbatim from data-model.md "New enums"), the sequence `order_number_seq` (`START WITH 1001`), and these tables with every rule from data-model.md:
+- [X] T006 [P] Create `src/shared/db/schema/orders.ts` with enums `order_status`, `payment_method`, `order_reason`, `order_event_kind`, `order_actor` (values verbatim from data-model.md "New enums"), the sequence `order_number_seq` (`START WITH 1001`), and these tables with every rule from data-model.md:
   - `orders`:
     - `order_no` integer unique, defaulting to `nextval('order_number_seq')`;
     - `place_key` unique with `customer_id`;
@@ -117,80 +117,80 @@ complete.
     - indexes (`kitchen_id`, `placed_at`), (`customer_id`, `placed_at`), (`agent_id`), (`status`), and a partial index on `placed_at` where `status = 'placed'`.
   - `order_items`: PK (`order_id`, `position`); `dish_id` FK set null; `name_en`/`name_kn` varchar(80) with CHECK at least one; `price_rupees` 1–100000; `quantity` smallint 1–20; CHECK `line_total = price_rupees * quantity`.
   - `order_events`: `kind`, `actor`, `actor_phone` varchar(10) nullable, `agent_id`, `previous_agent_id`, `reason`, `reason_note`, `at`; index (`order_id`, `at`).
-- [ ] T007 [P] Create `src/shared/db/schema/addresses.ts` with:
+- [X] T007 [P] Create `src/shared/db/schema/addresses.ts` with:
   - enum `address_label` (`home`, `work`, `other`);
   - `audio_clips`: `sha256` char(64) unique, `mime` varchar(40), `bytes` bytea, `byte_size` integer, `created_at`;
   - `customer_addresses`: `customer_id` FK cascade; `label`; `house` varchar(100) not null; `street` varchar(150) null; `landmark` varchar(100) not null; `rider_note` varchar(200) null; `voice_note_id` FK set null; `lat`/`lng` numeric(9,6) not null, CHECK lat 6–37 and lng 68–98; `geocoded_text` varchar(300) null; timestamps; index on `customer_id`.
-- [ ] T008 [P] Create `src/shared/db/schema/messages.ts`:
+- [X] T008 [P] Create `src/shared/db/schema/messages.ts`:
   - enums `message_recipient` and `message_kind` (values verbatim from data-model.md);
   - table `messages` with `customer_id`, `kitchen_id` and `agent_id` (FK cascade, CHECK exactly one set and matching `recipient`), `order_id` FK cascade, `kind`, `params` jsonb, `created_at`;
   - indexes (`customer_id`, `created_at`), (`kitchen_id`, `created_at`), (`agent_id`, `created_at`).
-- [ ] T009 [P] Add to `kitchens` in `src/shared/db/schema/kitchens.ts`: `location_lat` and `location_lng` numeric(9,6), nullable together (CHECK both null or both set; lat 6–37, lng 68–98), and `prep_minutes` smallint not null default 25 with CHECK 5–120.
-- [ ] T010 Export the new tables from `src/shared/db/schema/index.ts` and run `npm run db:generate`. Check the generated SQL in `drizzle/` contains every CHECK, the partial index and the sequence starting at 1001. Update `truncateAll` in `src/shared/db/test/helpers.ts` to include `messages, order_events, order_items, orders, customer_addresses, audio_clips` and to restart `order_number_seq`.
-- [ ] T011 Add test factories to `src/shared/db/test/helpers.ts` and `src/shared/db/test/actors.ts`:
+- [X] T009 [P] Add to `kitchens` in `src/shared/db/schema/kitchens.ts`: `location_lat` and `location_lng` numeric(9,6), nullable together (CHECK both null or both set; lat 6–37, lng 68–98), and `prep_minutes` smallint not null default 25 with CHECK 5–120.
+- [X] T010 Export the new tables from `src/shared/db/schema/index.ts` and run `npm run db:generate`. Check the generated SQL in `drizzle/` contains every CHECK, the partial index and the sequence starting at 1001. Update `truncateAll` in `src/shared/db/test/helpers.ts` to include `messages, order_events, order_items, orders, customer_addresses, audio_clips` and to restart `order_number_seq`.
+- [X] T011 Add test factories to `src/shared/db/test/helpers.ts` and `src/shared/db/test/actors.ts`:
   - `makeCustomer()`, `makeAddress(customerId, overrides)`, `makeKitchenWithMenu({ open?: boolean })` (an active kitchen with hours covering now, a location, two available dishes);
   - `makeOrder({ status, agentId?, placedAt? … })`, which inserts an order with items, the matching events and a valid snapshot;
   - `customerActor()`, `agentActor()`.
-- [ ] T012 Extend the actor types in `src/features/auth/actor-scope.ts` with `{ role: 'customer', customerId, phone }` and `{ role: 'agent', agentId, phone }`, and add `currentCustomer()` and `currentAgent()` to `src/features/auth/actor.ts` (null when there is no valid session), keeping the partner and admin behaviour unchanged.
+- [X] T012 Extend the actor types in `src/features/auth/actor-scope.ts` with `{ role: 'customer', customerId, phone }` and `{ role: 'agent', agentId, phone }`, and add `currentCustomer()` and `currentAgent()` to `src/features/auth/actor.ts` (null when there is no valid session), keeping the partner and admin behaviour unchanged.
 
 ### Domain functions (test-first; research R4, R5, R13, R14)
 
-- [ ] T013 [P] Write failing unit tests `src/features/orders/domain/lifecycle.test.ts` for `canTransition(order, action, actor)`:
+- [X] T013 [P] Write failing unit tests `src/features/orders/domain/lifecycle.test.ts` for `canTransition(order, action, actor)`:
   - every allowed arrow of data-model.md "Order lifecycle", with its actor;
   - every other action is refused with a code (for example a customer cancelling an accepted order, accepting a cancelled order, `ready` from `accepted`);
   - assign and reassign are allowed only in `accepted`, `preparing` or `ready`, and only to an active agent different from the current one (`same_agent`);
   - pickup needs `ready` and `agent_id` equal to the acting agent (`not_ready`, `not_found`);
   - deliver of `cod` needs the cash confirmation (`cash_not_confirmed`);
   - admin cancel is allowed from any non-final status; final statuses refuse everything.
-- [ ] T014 Implement `src/features/orders/domain/lifecycle.ts` to pass T013
-- [ ] T015 [P] Write failing unit tests `src/features/orders/domain/bill.test.ts`: `bill(lines, deliveryFee)` returns line totals, item total, delivery fee and grand total; the grand total always equals item total plus fee; quantities outside 1–20 throw.
-- [ ] T016 Implement `src/features/orders/domain/bill.ts` to pass T015
-- [ ] T017 [P] Write failing unit tests `src/features/orders/domain/eta.test.ts` and `expiry.test.ts`:
+- [X] T014 Implement `src/features/orders/domain/lifecycle.ts` to pass T013
+- [X] T015 [P] Write failing unit tests `src/features/orders/domain/bill.test.ts`: `bill(lines, deliveryFee)` returns line totals, item total, delivery fee and grand total; the grand total always equals item total plus fee; quantities outside 1–20 throw.
+- [X] T016 Implement `src/features/orders/domain/bill.ts` to pass T015
+- [X] T017 [P] Write failing unit tests `src/features/orders/domain/eta.test.ts` and `expiry.test.ts`:
   - `expectedAt(placedAt, prep, delivery)`, and `etaRange(25, 15)` → `{ from: 40, to: 50 }`;
   - `isOverdue(placedAt, now, 10)` is false at exactly 10:00 and true at 10:00.001 after placing;
   - `timeLeft` is never negative.
-- [ ] T018 Implement `src/features/orders/domain/eta.ts` and `expiry.ts` to pass T017
-- [ ] T019 [P] Write failing unit tests `src/features/orders/domain/dispatch-group.test.ts` and `today.test.ts`:
+- [X] T018 Implement `src/features/orders/domain/eta.ts` and `expiry.ts` to pass T017
+- [X] T019 [P] Write failing unit tests `src/features/orders/domain/dispatch-group.test.ts` and `today.test.ts`:
   - `dispatchGroup` maps every status and agent combination to `waiting_kitchen`, `needs_agent`, `assigned`, `out_for_delivery` or `finished` (FR-033);
   - `istDayBounds(now)` gives the IST midnight-to-midnight UTC instants, including just before and just after IST midnight.
-- [ ] T020 Implement `src/features/orders/domain/dispatch-group.ts` and `today.ts` (built on `src/features/kitchens/domain/ist.ts`) to pass T019
-- [ ] T021 [P] Write failing unit tests `src/features/notifications/domain/messages-for.test.ts`: `messagesFor(event, order)` returns exactly the recipients and kinds in data-model.md "Messages per change", including reassignment (new agent `agent_assigned`, previous agent `agent_unassigned`, kitchen `kitchen_agent_assigned`), cancellation with and without an agent, and nothing for `ready`. Params carry `orderNo`, and `amount`, `reason` and `reasonNote` where relevant.
-- [ ] T022 Implement `src/features/notifications/domain/messages-for.ts` to pass T021
+- [X] T020 Implement `src/features/orders/domain/dispatch-group.ts` and `today.ts` (built on `src/features/kitchens/domain/ist.ts`) to pass T019
+- [X] T021 [P] Write failing unit tests `src/features/notifications/domain/messages-for.test.ts`: `messagesFor(event, order)` returns exactly the recipients and kinds in data-model.md "Messages per change", including reassignment (new agent `agent_assigned`, previous agent `agent_unassigned`, kitchen `kitchen_agent_assigned`), cancellation with and without an agent, and nothing for `ready`. Params carry `orderNo`, and `amount`, `reason` and `reasonNote` where relevant.
+- [X] T022 Implement `src/features/notifications/domain/messages-for.ts` to pass T021
 
 ### Adapters (research R11, contracts/adapters.md)
 
-- [ ] T023 [P] Create the payment adapter `src/shared/adapters/payment/{types.ts,stand-in.ts,index.ts}` with a `STAND-IN` header and `stand-in.test.ts`: `confirmUpi` always returns `{ status: 'succeeded', reference: 'DEMO-UPI-<orderRef>' }`.
-- [ ] T024 [P] Create the notifications adapter `src/shared/adapters/notifications/{types.ts,stand-in.ts,index.ts}` with a `STAND-IN` header. `notify(executor, notification)` inserts one `messages` row and sends nothing. Add `stand-in.int.test.ts`: the row is written inside the caller's transaction and disappears when that transaction rolls back.
+- [X] T023 [P] Create the payment adapter `src/shared/adapters/payment/{types.ts,stand-in.ts,index.ts}` with a `STAND-IN` header and `stand-in.test.ts`: `confirmUpi` always returns `{ status: 'succeeded', reference: 'DEMO-UPI-<orderRef>' }`.
+- [X] T024 [P] Create the notifications adapter `src/shared/adapters/notifications/{types.ts,stand-in.ts,index.ts}` with a `STAND-IN` header. `notify(executor, notification)` inserts one `messages` row and sends nothing. Add `stand-in.int.test.ts`: the row is written inside the caller's transaction and disappears when that transaction rolls back.
 
 ### Order write path (research R4, R5)
 
-- [ ] T025 Write failing integration tests `src/features/orders/services/transition.int.test.ts`:
+- [X] T025 Write failing integration tests `src/features/orders/services/transition.int.test.ts`:
   - `applyTransition` updates the status with compare-and-set, sets `status_changed_at` (and `finished_at` on final states), writes one `order_events` row with actor, phone, reason and agent ids, and writes the `messagesFor` messages, all in one transaction;
   - two concurrent transitions on the same order (`Promise.all`): exactly one succeeds and the other returns `order_moved_on` with the current status;
   - `expireOverdueOrders(executor, now, scope)` rejects only Placed orders older than `ACCEPT_WINDOW_MINUTES` within the given scope (order, kitchen, customer or all), with reason `kitchen_no_response`, actor `system`, event time `now`, and an `order_rejected` customer message;
   - running it twice changes nothing more;
   - expiry racing an accept leaves exactly one of the two outcomes.
-- [ ] T026 Implement `src/features/orders/services/expire.ts` (`expireOverdueOrders`) to pass its part of T025
-- [ ] T027 Implement `src/features/orders/services/transition.ts` (`applyTransition(executor, { orderId, action, actor, now, reason?, note?, agentId?, cashCollected? })`) using `canTransition` (T014), `messagesFor` (T022) and `Notifier` (T024), to pass T025
+- [X] T026 Implement `src/features/orders/services/expire.ts` (`expireOverdueOrders`) to pass its part of T025
+- [X] T027 Implement `src/features/orders/services/transition.ts` (`applyTransition(executor, { orderId, action, actor, now, reason?, note?, agentId?, cashCollected? })`) using `canTransition` (T014), `messagesFor` (T022) and `Notifier` (T024), to pass T025
 
 ### Polling (research R3)
 
-- [ ] T028 [P] Write failing unit tests `src/shared/polling/poller.test.ts` with fake timers for a pure `createPoller({ run, intervalMs, isVisible })`: it runs every interval while visible, skips while hidden, runs once immediately on becoming visible, and never starts a run while one is in flight.
-- [ ] T029 Implement `src/shared/polling/poller.ts` to pass T028, and the client hook `src/shared/polling/use-polling.ts` that wires it to `document.visibilityState`
-- [ ] T030 [P] Create `src/shared/polling/live-refresh.tsx` (`'use client'`; `usePolling(() => router.refresh(), { intervalMs: 10_000 })`, with an `enabled` prop) and `src/shared/polling/updated-at.tsx` ("Updated {time}", using the server render time passed as a prop and `formatTime`)
+- [X] T028 [P] Write failing unit tests `src/shared/polling/poller.test.ts` with fake timers for a pure `createPoller({ run, intervalMs, isVisible })`: it runs every interval while visible, skips while hidden, runs once immediately on becoming visible, and never starts a run while one is in flight.
+- [X] T029 Implement `src/shared/polling/poller.ts` to pass T028, and the client hook `src/shared/polling/use-polling.ts` that wires it to `document.visibilityState`
+- [X] T030 [P] Create `src/shared/polling/live-refresh.tsx` (`'use client'`; `usePolling(() => router.refresh(), { intervalMs: 10_000 })`, with an `enabled` prop) and `src/shared/polling/updated-at.tsx` ("Updated {time}", using the server render time passed as a prop and `formatTime`)
 
 ### Shared order copy and components
 
-- [ ] T031 Add the shared keys to `src/shared/i18n/messages/en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`:
+- [X] T031 Add the shared keys to `src/shared/i18n/messages/en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`:
   - `orderStatus.*` (8 values), `orderEvent.*` (10 kinds), `orderReason.*` (9 values), `paymentMethod.*` (`cod`, `upi_demo` "Paid by UPI (demo)"), `addressLabel.*`, `dispatchGroup.*`;
   - `notifications.<kind>` ICU templates for all 13 message kinds, using `{orderNo}`, `{amount}`, `{reason}`, `{reasonNote}`, `{agentName}`, `{kitchenName}`;
   - `notifications.demoLabel` ("Demo: not sent by SMS or WhatsApp");
   - `orders.number` (`#{orderNo}`).
-- [ ] T032 [P] Create `src/features/orders/components/status-badge.tsx` (colour plus text, never colour alone), `reason-text.tsx` (reason key plus the "other" note as entered), `payment-label.tsx` and `order-number.tsx`
+- [X] T032 [P] Create `src/features/orders/components/status-badge.tsx` (colour plus text, never colour alone), `reason-text.tsx` (reason key plus the "other" note as entered), `payment-label.tsx` and `order-number.tsx`
 
 ### Demo seed (research R15; supplied data, no geocoding)
 
-- [ ] T033 Write failing integration tests by adding a `describe('002 ordering seed (FR-050, FR-051)')` block to `src/features/demo/catalogue.int.test.ts`, with the load time fixed at `NOW` and expecting:
+- [X] T033 Write failing integration tests by adding a `describe('002 ordering seed (FR-050, FR-051)')` block to `src/features/demo/catalogue.int.test.ts`, with the load time fixed at `NOW` and expecting:
   - every kitchen has `location_lat`/`location_lng` and `prep_minutes`;
   - the demo customer has 2 addresses, one with a rider note;
   - at least one order in each state: `placed`, accepted with no agent, `ready` with an agent, `picked_up`, `delivered` `cod` with `cash_collected = grand_total`, `rejected` with a reason, and `cancelled`;
@@ -200,27 +200,27 @@ complete.
   - order numbers are 1001 onwards in catalogue order;
   - reloading gives identical order ids and numbers;
   - every seeded order with status `placed` or `rejected` is at a kitchen with `menuSource: fabricated` (a real business is never shown with an unflattering reason, including an automatic "Kitchen did not respond").
-- [ ] T034 Extend `src/features/demo/catalogue-schema.ts`, keeping it pure (no `server-only`):
+- [X] T034 Extend `src/features/demo/catalogue-schema.ts`, keeping it pure (no `server-only`):
   - kitchens: required `location: { lat (6–37), lng (68–98) }` and optional `prepMinutes` (int 5–120, default 25);
   - customers: `addresses: [{ key, label: 'home'|'work'|'other', house (1–100), street? (≤150), landmark (1–100), riderNote? (≤200), location }]`;
   - top-level `orders: [{ key, customer, address, kitchen, items: [{ dish, quantity 1–20 }] (≥1), payment: 'cod'|'upi_demo', status, agent?, reason?, reasonNote?, cancelledBy?: 'customer'|'admin', placedMinutesBeforeReset: int 0–90 }]`.
   - `superRefine` checks: the referenced customer, address, kitchen, dishes (in that kitchen) and agent keys exist; the agent is active; `picked_up` and `delivered` need an agent; `rejected` needs a partner reason; `cancelled` needs `cancelledBy` (and an admin reason when the admin cancelled); `placedMinutesBeforeReset` ≥ 4 × the number of steps after Placed.
   - Add `demoIds.address(customerKey, key)` and `demoIds.order(key)` to `src/features/demo/ids.ts`.
-- [ ] T035 Update `seed/catalogue.json` from `/Users/rish/Development/Honnavar Food Delivery/planning/seed-research/kitchen-locations.json`. **Copy the values; do not geocode.**
+- [X] T035 Update `seed/catalogue.json` from `/Users/rish/Development/Honnavar Food Delivery/planning/seed-research/kitchen-locations.json`. **Copy the values; do not geocode.**
   - For each kitchen key, copy `location` and `prepMinutes`.
   - Copy `demoCustomerAddresses` into the `demo-customer` entry's `addresses`.
   - Append the file's `note` to the catalogue `notes`, and add the rule "Never show a real business (menuSource: researched) as suspended or pending, or with an unflattering reason; seeded Placed and Rejected orders use fabricated kitchens." to the catalogue `notes`.
   - Then author the seven orders of data-model.md "Seed outline additions" (`demo-placed` with `placedMinutesBeforeReset: 0` and `cod`; `demo-needs-agent` UPI; `demo-ready` `cod` on the first active agent `agent-ravi`; `demo-out` UPI on `agent-suresh`; `demo-delivered` `cod` on `agent-ravi`; `demo-rejected` `kitchen_busy`; `demo-cancelled` admin `customer_request`).
   - Use active kitchens other than the `temporarilyClosedAtReset` one, available dishes, and the demo customer's addresses.
   - Place both `demo-placed` and `demo-rejected` (reason `kitchen_busy`) at **fabricated** active kitchens, `karavali-mane-oota` or `samrat-sea-food`, never at a `menuSource: researched` kitchen: a real business is never shown with an unflattering reason, and `demo-placed` is rejected automatically as "Kitchen did not respond" if nobody accepts it within the window.
-- [ ] T036 Extend `src/features/demo/load-catalogue.ts` to pass T033:
+- [X] T036 Extend `src/features/demo/load-catalogue.ts` to pass T033:
   - write kitchen location and `prep_minutes`, and the addresses;
   - for each order, in catalogue order:
     - insert it as Placed at `now − placedMinutesBeforeReset` with item and address snapshots, `expected_at` from `expectedAt`, and `delivery_fee` from `env.DELIVERY_FEE_RUPEES`;
     - then walk the normal path to its status with one step every 4 minutes through `applyTransition` (T027), so events and messages are produced exactly as live.
   - Restart `order_number_seq` at 1001 in the reset (`src/features/demo/reset-demo.ts`).
   - Do not call any geocoder.
-- [ ] T037 Add selectors to `e2e/catalogue.ts`:
+- [X] T037 Add selectors to `e2e/catalogue.ts`:
   - `demoCustomer()`;
   - `placedOrder()`, `needsAgentOrder()`, `readyOrder()`, `outOrder()`, `deliveredOrder()`, `rejectedOrder()`, `cancelledOrder()`, each selected by `status` (and agent and reason) flags, never by key text in assertions, and each returning `{ id, orderNo, kitchen: KitchenRef, agent?, … }` with the order number computed from catalogue position (1001 + index);
   - `orderableKitchen()`: active, not `temporarilyClosedAtReset`, at least 2 available dishes;

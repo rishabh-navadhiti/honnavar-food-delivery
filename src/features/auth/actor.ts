@@ -1,5 +1,5 @@
 import 'server-only';
-import type { Actor } from './actor-scope';
+import type { Actor, AgentActor, CustomerActor } from './actor-scope';
 import { getOptionalSession } from './session';
 
 /**
@@ -16,6 +16,17 @@ export async function currentActor(surface: 'partner' | 'admin'): Promise<Actor 
   return { role: 'admin', phone: session.phone, adminId: session.subjectId };
 }
 
+/** The signed-in customer, or null (002). */
+export async function currentCustomer(): Promise<CustomerActor | null> {
+  const session = await getOptionalSession('customer');
+  return session ? { role: 'customer', customerId: session.subjectId, phone: session.phone } : null;
+}
+
+/** The signed-in delivery agent, or null (002). */
+export async function currentAgent(): Promise<AgentActor | null> {
+  const session = await getOptionalSession('agent');
+  return session ? { role: 'agent', agentId: session.subjectId, phone: session.phone } : null;
+}
 
 /**
  * Kitchen operations are shared by the partner and admin surfaces (FR-054). The form says which

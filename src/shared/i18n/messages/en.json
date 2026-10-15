@@ -397,5 +397,78 @@
     "customerHint": "Any 10-digit mobile number also works for customers.",
     "inactive": "inactive",
     "none": "No accounts for this app yet."
+  },
+  "orderStatus": {
+    "placed": "Placed",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "preparing": "Preparing",
+    "ready": "Ready",
+    "picked_up": "Picked up",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
+  },
+  "orderEvent": {
+    "placed": "Order placed",
+    "accepted": "Accepted by the kitchen",
+    "rejected": "Not accepted",
+    "preparing": "Preparing",
+    "ready": "Ready for pickup",
+    "assigned": "Delivery agent assigned",
+    "reassigned": "Delivery agent changed",
+    "picked_up": "Picked up",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
+  },
+  "orderReason": {
+    "kitchen_busy": "Kitchen too busy",
+    "item_unavailable": "Item not available",
+    "kitchen_closing": "Kitchen closing",
+    "kitchen_no_response": "Kitchen did not respond",
+    "customer_request": "Customer asked to cancel",
+    "kitchen_issue": "Problem at the kitchen",
+    "no_agent": "No delivery agent available",
+    "delivery_problem": "Delivery problem",
+    "other": "Other"
+  },
+  "paymentMethod": {
+    "cod": "Cash on delivery",
+    "upi_demo": "Paid by UPI (demo)",
+    "upiChoice": "UPI"
+  },
+  "addressLabel": {
+    "home": "Home",
+    "work": "Work",
+    "other": "Other"
+  },
+  "dispatchGroup": {
+    "waiting_kitchen": "Waiting for kitchen",
+    "needs_agent": "Needs agent",
+    "assigned": "Assigned",
+    "out_for_delivery": "Out for delivery",
+    "finished": "Finished"
+  },
+  "notifications": {
+    "order_placed": "Order #{orderNo} placed. Total {amount}.",
+    "order_accepted": "The kitchen accepted order #{orderNo}.",
+    "order_rejected": "Sorry, the kitchen could not take order #{orderNo}.",
+    "order_preparing": "Order #{orderNo} is being prepared.",
+    "order_picked_up": "Order #{orderNo} is on the way.",
+    "order_delivered": "Order #{orderNo} delivered. Total {amount}.",
+    "order_cancelled": "Order #{orderNo} was cancelled.",
+    "kitchen_new_order": "New order #{orderNo}: {amount}.",
+    "kitchen_agent_assigned": "{agentName} will pick up order #{orderNo}.",
+    "kitchen_order_cancelled": "Order #{orderNo} was cancelled.",
+    "agent_assigned": "New delivery: order #{orderNo}, {amount}.",
+    "agent_unassigned": "Order #{orderNo} was given to another agent.",
+    "agent_order_cancelled": "Order #{orderNo} was cancelled.",
+    "reasonLine": "Reason: {reason}",
+    "demoLabel": "Demo: not sent by SMS or WhatsApp"
+  },
+  "orders": {
+    "number": "#{orderNo}"
+  },
+  "polling": {
+    "updatedAt": "Updated {time}"
   }
 }

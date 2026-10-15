@@ -33,6 +33,15 @@
     "filters",
     "dishFilter",
     "search",
-    "demo"
+    "demo",
+    "orderStatus",
+    "orderEvent",
+    "orderReason",
+    "paymentMethod",
+    "addressLabel",
+    "dispatchGroup",
+    "notifications",
+    "orders",
+    "polling"
   ]
 }

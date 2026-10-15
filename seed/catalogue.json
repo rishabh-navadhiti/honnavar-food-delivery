@@ -5,7 +5,9 @@
     "FSSAI references and hygiene-check references are fictional.",
     "Prices are as printed in Oct 2026 where researched; seasonal seafood and unprinted items are indicative.",
     "Images are AI-generated illustrations of the dishes, not photographs from the businesses.",
-    "All Kannada text was machine-drafted, then revised on 2026-10-15 by comparing three model translations against a glossary (planning/translation/GLOSSARY.md); still pending native-speaker review. 'ಉಡುಪಿಯವರ ಪಿಂಗಾರ ಢಾಬಾ' is printed on the restaurant's own menu."
+    "All Kannada text was machine-drafted, then revised on 2026-10-15 by comparing three model translations against a glossary (planning/translation/GLOSSARY.md); still pending native-speaker review. 'ಉಡುಪಿಯವರ ಪಿಂಗಾರ ಢಾಬಾ' is printed on the restaurant's own menu.",
+    "Approximate map locations for the seeded kitchens, looked up once on 2026-10-15 from Nominatim anchors (town 14.2811,74.4447; bus stand 14.2795,74.4438; Kasarkod beach 14.2613,74.4322; Karki 14.3150,74.4269) and the kitchens' stated landmarks. Good enough for demo pins; not verified on the ground. Default pin / town centre: 14.2798,74.4439.",
+    "Never show a real business (menuSource: researched) as suspended or pending, or with an unflattering reason; seeded Placed and Rejected orders use fabricated kitchens."
   ],
   "admins": [
     {
@@ -43,7 +45,32 @@
     {
       "key": "demo-customer",
       "phone": "9000000101",
-      "displayName": "Demo Customer"
+      "displayName": "Demo Customer",
+      "addresses": [
+        {
+          "key": "home",
+          "label": "home",
+          "house": "Door 2-114, Nayak House",
+          "street": "Prabhatnagar 2nd cross",
+          "landmark": "Behind Prabhatnagar temple",
+          "riderNote": "Blue gate, ring the bell twice",
+          "location": {
+            "lat": 14.2845,
+            "lng": 74.451
+          }
+        },
+        {
+          "key": "work",
+          "label": "work",
+          "house": "Shop 7, Sagar Complex",
+          "street": "Hospital Road",
+          "landmark": "Opposite KSRTC bus stand",
+          "location": {
+            "lat": 14.2798,
+            "lng": 74.4442
+          }
+        }
+      ]
     }
   ],
   "kitchens": [
@@ -61,6 +88,11 @@
       "pureVeg": false,
       "address": "Kasarkod, Honnavar 581334",
       "landmark": "Near Sharavathi bridge",
+      "location": {
+        "lat": 14.2745,
+        "lng": 74.438
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001001",
@@ -293,6 +325,11 @@
       "pureVeg": false,
       "address": "NH-66, Honnavar 581334",
       "landmark": "Near Bangalore Circle",
+      "location": {
+        "lat": 14.276,
+        "lng": 74.447
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001002",
@@ -493,6 +530,11 @@
       "pureVeg": false,
       "address": "Karkinaka, NH-66, Honnavar 581334",
       "landmark": "Karkinaka junction",
+      "location": {
+        "lat": 14.31,
+        "lng": 74.43
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001003",
@@ -684,6 +726,11 @@
       "pureVeg": false,
       "address": "NH-66, Honnavar 581334",
       "landmark": "Sharavati Circle",
+      "location": {
+        "lat": 14.288,
+        "lng": 74.449
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001004",
@@ -880,6 +927,11 @@
       "pureVeg": true,
       "address": "NH-66, Honnavar 581334",
       "landmark": "Near KSRTC bus stand",
+      "location": {
+        "lat": 14.28,
+        "lng": 74.4445
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001005",
@@ -1080,6 +1132,11 @@
       "pureVeg": false,
       "address": "Phayde Complex, NH-66, Honnavar 581334",
       "landmark": "Opposite Ratna Lodge",
+      "location": {
+        "lat": 14.283,
+        "lng": 74.446
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001006",
@@ -1275,6 +1332,11 @@
       "pureVeg": false,
       "address": "Gandhada Oni, Honnavar 581334",
       "landmark": "Gandhada Oni",
+      "location": {
+        "lat": 14.279,
+        "lng": 74.4425
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001007",
@@ -1450,6 +1512,11 @@
       "pureVeg": true,
       "address": "Prabhatnagar, Honnavar 581334",
       "landmark": "Near Prabhatnagar temple",
+      "location": {
+        "lat": 14.284,
+        "lng": 74.45
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001008",
@@ -1663,6 +1730,11 @@
       "pureVeg": true,
       "address": "Near KSRTC bus stand, Honnavar 581334",
       "landmark": "Near KSRTC bus stand",
+      "location": {
+        "lat": 14.279,
+        "lng": 74.445
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001009",
@@ -1824,6 +1896,11 @@
       "pureVeg": false,
       "address": "Honnavar 581334",
       "landmark": "Near the port road",
+      "location": {
+        "lat": 14.2835,
+        "lng": 74.44
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001010",
@@ -2000,6 +2077,11 @@
       "pureVeg": false,
       "address": "Market Road, Honnavar 581334",
       "landmark": "Market Road",
+      "location": {
+        "lat": 14.2815,
+        "lng": 74.4435
+      },
+      "prepMinutes": 25,
       "contacts": [
         {
           "phone": "9000001011",
@@ -2151,6 +2233,135 @@
         "reference": "11225012000111"
       },
       "suspensionReason": "FSSAI licence renewal pending"
+    }
+  ],
+  "orders": [
+    {
+      "key": "demo-placed",
+      "customer": "demo-customer",
+      "address": "home",
+      "kitchen": "karavali-mane-oota",
+      "items": [
+        {
+          "dish": "fish-meals",
+          "quantity": 1
+        },
+        {
+          "dish": "veg-meals",
+          "quantity": 1
+        }
+      ],
+      "payment": "cod",
+      "status": "placed",
+      "placedMinutesBeforeReset": 0
+    },
+    {
+      "key": "demo-needs-agent",
+      "customer": "demo-customer",
+      "address": "work",
+      "kitchen": "new-rameshwaram",
+      "items": [
+        {
+          "dish": "idli-vada",
+          "quantity": 2
+        },
+        {
+          "dish": "kashaya",
+          "quantity": 2
+        }
+      ],
+      "payment": "upi_demo",
+      "status": "accepted",
+      "placedMinutesBeforeReset": 8
+    },
+    {
+      "key": "demo-ready",
+      "customer": "demo-customer",
+      "address": "home",
+      "kitchen": "prameela",
+      "items": [
+        {
+          "dish": "fish-thali",
+          "quantity": 1
+        },
+        {
+          "dish": "chicken-ghee-roast",
+          "quantity": 1
+        }
+      ],
+      "payment": "cod",
+      "status": "ready",
+      "agent": "agent-ravi",
+      "placedMinutesBeforeReset": 25
+    },
+    {
+      "key": "demo-out",
+      "customer": "demo-customer",
+      "address": "work",
+      "kitchen": "romansiah",
+      "items": [
+        {
+          "dish": "chicken-arabian-mandi",
+          "quantity": 1
+        }
+      ],
+      "payment": "upi_demo",
+      "status": "picked_up",
+      "agent": "agent-suresh",
+      "placedMinutesBeforeReset": 35
+    },
+    {
+      "key": "demo-delivered",
+      "customer": "demo-customer",
+      "address": "home",
+      "kitchen": "babas-cafe",
+      "items": [
+        {
+          "dish": "chilli-chicken",
+          "quantity": 1
+        },
+        {
+          "dish": "chicken-lollipop",
+          "quantity": 1
+        }
+      ],
+      "payment": "cod",
+      "status": "delivered",
+      "agent": "agent-ravi",
+      "placedMinutesBeforeReset": 70
+    },
+    {
+      "key": "demo-rejected",
+      "customer": "demo-customer",
+      "address": "home",
+      "kitchen": "samrat-sea-food",
+      "items": [
+        {
+          "dish": "fish-curry-rice-box",
+          "quantity": 2
+        }
+      ],
+      "payment": "upi_demo",
+      "status": "rejected",
+      "reason": "kitchen_busy",
+      "placedMinutesBeforeReset": 50
+    },
+    {
+      "key": "demo-cancelled",
+      "customer": "demo-customer",
+      "address": "work",
+      "kitchen": "pingar-dhaba",
+      "items": [
+        {
+          "dish": "chicken-pingara-special",
+          "quantity": 1
+        }
+      ],
+      "payment": "cod",
+      "status": "cancelled",
+      "cancelledBy": "admin",
+      "reason": "customer_request",
+      "placedMinutesBeforeReset": 45
     }
   ]
 }

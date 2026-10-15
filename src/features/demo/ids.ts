@@ -25,4 +25,6 @@ export const demoIds = {
   dish: (kitchenKey: string, key: string) => deterministicId(`dish:${kitchenKey}/${key}`),
   signin: (kitchenKey: string, phone: string) => deterministicId(`signin:${kitchenKey}/${phone}`),
   contact: (kitchenKey: string, phone: string) => deterministicId(`contact:${kitchenKey}/${phone}`),
+  address: (customerKey: string, key: string) => deterministicId(`address:${customerKey}/${key}`),
+  order: (key: string) => deterministicId(`order:${key}`),
 };

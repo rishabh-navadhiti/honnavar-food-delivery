@@ -19,6 +19,9 @@ const localized = (max: number) =>
 const localizedOptional = (max: number) => z.object({ en: text(max).optional(), kn: text(max).optional() });
 
 const range = z.object({ opens: z.string(), closes: z.string() });
+
+/** A map location within India (002 data-model.md). */
+const location = z.object({ lat: z.number().min(6).max(37), lng: z.number().min(68).max(98) });
 const dayKeys = ['everyDay', '1', '2', '3', '4', '5', '6', '7'] as const;
 const hoursInput = z.partialRecord(z.enum(dayKeys), z.array(range));
 
@@ -71,6 +74,8 @@ const kitchen = z
     sourceNote: z.string().optional(),
     image: z.string().optional(),
     categories: z.array(category),
+    location,
+    prepMinutes: z.number().int().min(5).max(120).default(25),
   })
   .superRefine((k, ctx) => {
     if (k.status === 'active' && !k.verification) {
@@ -93,6 +98,37 @@ const kitchen = z
     }
   });
 
+const PARTNER_REASONS = ['kitchen_busy', 'item_unavailable', 'kitchen_closing', 'other'];
+const ADMIN_REASONS = ['customer_request', 'kitchen_issue', 'no_agent', 'delivery_problem', 'other'];
+
+const address = z.object({
+  key,
+  label: z.enum(['home', 'work', 'other']),
+  house: text(100).min(1),
+  street: text(150).optional(),
+  landmark: text(100).min(1),
+  riderNote: text(200).optional(),
+  location,
+});
+
+const order = z.object({
+  key,
+  customer: key,
+  address: key,
+  kitchen: key,
+  items: z.array(z.object({ dish: key, quantity: z.number().int().min(1).max(20) })).min(1),
+  payment: z.enum(['cod', 'upi_demo']),
+  status: z.enum(['placed', 'accepted', 'rejected', 'preparing', 'ready', 'picked_up', 'delivered', 'cancelled']),
+  agent: key.optional(),
+  reason: z
+    .enum(['kitchen_busy', 'item_unavailable', 'kitchen_closing', 'customer_request', 'kitchen_issue', 'no_agent', 'delivery_problem', 'other'])
+    .optional(),
+  reasonNote: text(200).optional(),
+  cancelledBy: z.enum(['customer', 'admin']).optional(),
+  placedMinutesBeforeReset: z.number().int().min(0).max(90),
+});
+export type CatalogueOrder = z.infer<typeof order>;
+
 export const catalogueSchema = z
   .object({
     notes: z.array(z.string()).optional(),
@@ -107,8 +143,11 @@ export const catalogueSchema = z
         active: z.boolean().default(true),
       }),
     ),
-    customers: z.array(z.object({ key, phone, displayName: text(60).optional() })),
+    customers: z.array(
+      z.object({ key, phone, displayName: text(60).optional(), addresses: z.array(address).max(10).default([]) }),
+    ),
     kitchens: z.array(kitchen).min(1),
+    orders: z.array(order).default([]),
   })
   .superRefine((c, ctx) => {
     const signinPhones = c.kitchens.flatMap((k) => k.signins.map((s) => s.phone));
@@ -119,8 +158,75 @@ export const catalogueSchema = z
     if (new Set(kitchenKeys).size !== kitchenKeys.length) {
       ctx.addIssue({ code: 'custom', message: 'kitchen keys must be unique' });
     }
+    checkOrders(c, ctx);
   });
 
+/** Orders reference real customers, addresses, kitchens, dishes and active agents (research R15). */
+function checkOrders(c: { customers: CatalogueCustomer[]; kitchens: { key: string; categories: { dishes: { key: string }[] }[] }[]; agents: { key: string; active: boolean }[]; orders: CatalogueOrder[] }, ctx: z.RefinementCtx) {
+  const orderKeys = new Set<string>();
+  c.orders.forEach((o, i) => {
+    const at = (field: string) => ['orders', i, field];
+    const issue = (message: string, field = 'key') => ctx.addIssue({ code: 'custom', message, path: at(field) });
+    if (orderKeys.has(o.key)) issue('order keys must be unique');
+    orderKeys.add(o.key);
+    const customer = c.customers.find((x) => x.key === o.customer);
+    if (!customer) issue(`unknown customer ${o.customer}`, 'customer');
+    else if (!customer.addresses.some((a) => a.key === o.address)) issue(`unknown address ${o.address}`, 'address');
+    const kitchen = c.kitchens.find((k) => k.key === o.kitchen);
+    if (!kitchen) issue(`unknown kitchen ${o.kitchen}`, 'kitchen');
+    else {
+      const dishKeys = new Set(kitchen.categories.flatMap((cat) => cat.dishes.map((d) => d.key)));
+      for (const item of o.items) if (!dishKeys.has(item.dish)) issue(`dish ${item.dish} is not in ${o.kitchen}`, 'items');
+    }
+    if (o.agent) {
+      const agent = c.agents.find((a) => a.key === o.agent);
+      if (!agent) issue(`unknown agent ${o.agent}`, 'agent');
+      else if (!agent.active) issue('an order agent must be active', 'agent');
+    }
+    if ((o.status === 'picked_up' || o.status === 'delivered') && !o.agent) issue(`a ${o.status} order needs an agent`, 'agent');
+    if (o.status === 'rejected' && !(o.reason && PARTNER_REASONS.includes(o.reason))) issue('a rejected order needs a partner reason', 'reason');
+    if (o.status === 'cancelled') {
+      if (!o.cancelledBy) issue('a cancelled order needs cancelledBy', 'cancelledBy');
+      if (o.cancelledBy === 'admin' && !(o.reason && ADMIN_REASONS.includes(o.reason))) issue('an admin cancellation needs an admin reason', 'reason');
+    }
+    if (o.reason === 'other' && !o.reasonNote) issue('reason "other" needs a reasonNote', 'reasonNote');
+    if (o.placedMinutesBeforeReset < 4 * seedSteps(o).length) {
+      issue(`placedMinutesBeforeReset must be at least ${4 * seedSteps(o).length} for this status`, 'placedMinutesBeforeReset');
+    }
+  });
+}
+
+export type SeedStep = 'accept' | 'reject' | 'assign' | 'preparing' | 'ready' | 'pickup' | 'deliver' | 'cancel';
+
+/**
+ * The normal path from Placed to a seeded order's status, one step every 4 minutes (research R15).
+ * An agent, when given, is assigned straight after acceptance. Admin cancellations happen after
+ * acceptance; customer cancellations straight from Placed.
+ */
+export function seedSteps(o: Pick<CatalogueOrder, 'status' | 'agent' | 'cancelledBy'>): SeedStep[] {
+  const assign: SeedStep[] = o.agent ? ['assign'] : [];
+  switch (o.status) {
+    case 'placed':
+      return [];
+    case 'accepted':
+      return ['accept', ...assign];
+    case 'rejected':
+      return ['reject'];
+    case 'preparing':
+      return ['accept', ...assign, 'preparing'];
+    case 'ready':
+      return ['accept', ...assign, 'preparing', 'ready'];
+    case 'picked_up':
+      return ['accept', ...assign, 'preparing', 'ready', 'pickup'];
+    case 'delivered':
+      return ['accept', ...assign, 'preparing', 'ready', 'pickup', 'deliver'];
+    case 'cancelled':
+      return o.cancelledBy === 'admin' ? ['accept', ...assign, 'cancel'] : ['cancel'];
+  }
+}
+
 export type Catalogue = z.infer<typeof catalogueSchema>;
+export type CatalogueCustomer = Catalogue['customers'][number];
+export type CatalogueAddress = CatalogueCustomer['addresses'][number];
 export type CatalogueKitchen = Catalogue['kitchens'][number];
 export type CatalogueDish = CatalogueKitchen['categories'][number]['dishes'][number];
