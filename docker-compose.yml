@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: hfd
+      POSTGRES_PASSWORD: hfd
+      POSTGRES_DB: hfd
+    ports:
+      - '5432:5432'
+    volumes:
+      - hfd-db:/var/lib/postgresql/data
+      - ./docker/init-test-db.sql:/docker-entrypoint-initdb.d/init-test-db.sql:ro
+
+volumes:
+  hfd-db:

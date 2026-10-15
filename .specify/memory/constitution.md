@@ -1,33 +1,3 @@
-<!--
-Sync Impact Report
-- Version change: 1.0.0 (uncommitted draft) → 1.0.0 (full rewrite, replaces the draft; first
-  committed version, so the number is kept as requested)
-- Principles in this version:
-  - I. Spec First (new)
-  - II. Both Languages, Equal (was I. Fully Bilingual, Both Languages Equal)
-  - III. Honest Integrations (was II)
-  - IV. Built for First-Time Smartphone Users (was IV; now absorbs mobile-first and 360px from
-    old III and adds accessibility rules)
-  - V. Typed and Validated at the Edges (new)
-  - VI. Tested Where It Matters (was V. Tested and Demonstrable; test-first scoped to domain
-    logic and services)
-  - VII. Explicit States, Honest Errors (new)
-  - VIII. Simplicity (was VI; expanded)
-- Removed from the draft: III. One Codebase, Four Surfaces as a principle (its rules moved to
-  Technology and Architecture and Principle IV); "Development Workflow & Quality Gates" section
-  (replaced by "Development Workflow")
-- Added sections: Technology and Architecture (stack, structure), Development Workflow
-- Intentional bracket token: "[NEEDS CLARIFICATION]" in Principle I is the Spec Kit marker,
-  not a template placeholder.
-- Templates reviewed, not modified (they read the constitution at runtime):
-  - .specify/templates/plan-template.md: its Constitution Check gates should map to I–VIII
-  - .specify/templates/spec-template.md: already uses [NEEDS CLARIFICATION]
-  - .specify/templates/tasks-template.md: commits reference task ids (Development Workflow)
-- Follow-up TODOs:
-  - README.md does not yet list the sanctioned tool per concern; the first plan records it,
-    including the chosen i18n library.
--->
-
 # Honnavar Food Delivery Constitution
 
 Honnavar Food Delivery is a bilingual (Kannada and English) food delivery platform for Honnavar

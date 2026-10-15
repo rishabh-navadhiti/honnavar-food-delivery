@@ -1,0 +1,39 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: var(--font-noto-sans), var(--font-noto-sans-kannada), ui-sans-serif, system-ui, sans-serif;
+
+  /* Colour-coded actions (Principle IV) */
+  --color-primary: #c2410c;
+  --color-primary-strong: #9a3412;
+  --color-on-primary: #ffffff;
+  --color-secondary: #f5f5f4;
+  --color-on-secondary: #1c1917;
+  --color-danger: #b91c1c;
+  --color-on-danger: #ffffff;
+
+  /* Food marks: Indian veg (green) and non-veg (brown-red) symbols */
+  --color-veg: #15803d;
+  --color-nonveg: #8b2b1a;
+
+  --color-surface: #ffffff;
+  --color-page: #fafaf9;
+  --color-ink: #1c1917;
+  --color-muted: #57534e;
+  --color-line: #e7e5e4;
+  --color-open: #15803d;
+  --color-closed: #b91c1c;
+  --color-warn: #a16207;
+
+  /* Minimum touch target */
+  --spacing-touch: 3rem;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-page);
+  color: var(--color-ink);
+}
