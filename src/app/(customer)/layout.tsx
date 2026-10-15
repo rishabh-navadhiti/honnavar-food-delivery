@@ -28,6 +28,9 @@ export default async function CustomerLayout({ children }: { children: ReactNode
           <Link href="/orders" className={navLink}>
             {t('nav.orders')}
           </Link>
+          <Link href="/messages" className={navLink}>
+            {t('nav.messages')}
+          </Link>
           <Link href="/cart" className={navLink} data-testid="header-cart">
             {t('nav.cart')}
             {count > 0 ? (

@@ -541,8 +541,8 @@ newest first, with the demo label; switching to Kannada changes the entry text.
 
 ### Tests for User Story 6
 
-- [ ] T101 [P] [US6] Write failing integration tests `src/features/notifications/queries.int.test.ts`: `listMessages` returns only the recipient's rows (the customer's own; the kitchen's for any of its sign-ins; the agent's own), newest first, at most 100, joining kitchen and agent names.
-- [ ] T102 [P] [US6] Write the end-to-end test `e2e/ordering-us6-messages.spec.ts` (mobile), after `resetDemoData()`:
+- [X] T101 [P] [US6] Write failing integration tests `src/features/notifications/queries.int.test.ts`: `listMessages` returns only the recipient's rows (the customer's own; the kitchen's for any of its sign-ins; the agent's own), newest first, at most 100, joining kitchen and agent names.
+- [X] T102 [P] [US6] Write the end-to-end test `e2e/ordering-us6-messages.spec.ts` (mobile), after `resetDemoData()`:
   - the demo customer's Messages contains an entry with `deliveredOrder()`'s number and the "Demo: not sent by SMS or WhatsApp" label;
   - the partner of `placedOrder().kitchen` sees its new-order entry;
   - `readyOrder().agent` sees an assigned entry;
@@ -550,10 +550,10 @@ newest first, with the demo label; switching to Kannada changes the entry text.
 
 ### Implementation for User Story 6
 
-- [ ] T103 [US6] Implement `listMessages(recipient)` in `src/features/notifications/queries.ts` (`server-only`) to pass T101
-- [ ] T104 [P] [US6] Create `src/features/notifications/components/message-list.tsx`: each entry renders `notifications.<kind>` with its params (amount through `formatPrice`, reason through `orderReason.*`, the note as entered, kitchen name through `pickLocalized`), the time through `formatTime`, a link to the order on the viewer's surface, the demo label, and an empty state
-- [ ] T105 [US6] Create `src/app/(customer)/messages/page.tsx`, `src/app/(partner)/partner/(protected)/messages/page.tsx` and `src/app/(agent)/agent/(protected)/messages/page.tsx`, and add "Messages" to each surface's navigation
-- [ ] T106 [US6] Add the US6 message keys (`messageLog.*` page copy) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
+- [X] T103 [US6] Implement `listMessages(recipient)` in `src/features/notifications/queries.ts` (`server-only`) to pass T101
+- [X] T104 [P] [US6] Create `src/features/notifications/components/message-list.tsx`: each entry renders `notifications.<kind>` with its params (amount through `formatPrice`, reason through `orderReason.*`, the note as entered, kitchen name through `pickLocalized`), the time through `formatTime`, a link to the order on the viewer's surface, the demo label, and an empty state
+- [X] T105 [US6] Create `src/app/(customer)/messages/page.tsx`, `src/app/(partner)/partner/(protected)/messages/page.tsx` and `src/app/(agent)/agent/(protected)/messages/page.tsx`, and add "Messages" to each surface's navigation
+- [X] T106 [US6] Add the US6 message keys (`messageLog.*` page copy) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
 
 **Checkpoint**: US6 works on its own. T101–T102 pass. Commit with task ids.
 

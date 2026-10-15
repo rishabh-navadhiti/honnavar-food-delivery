@@ -150,7 +150,8 @@
     "customerNavigation": "Orders and cart",
     "orders": "My orders",
     "cart": "Cart",
-    "kitchenOrders": "Orders"
+    "kitchenOrders": "Orders",
+    "messages": "Messages"
   },
   "home": {
     "title": "Kitchens in Honnavar",
@@ -625,7 +626,8 @@
     "cancelledBy": {
       "customer": "Cancelled by the customer",
       "admin": "Cancelled by the operations team"
-    }
+    },
+    "messagesLink": "Messages"
   },
   "alert": {
     "turnOnSound": "Tap to turn on order sounds",
@@ -724,5 +726,10 @@
     "kitchen": "Kitchen: {name}",
     "delivery": "Your delivery location",
     "noKitchenLocation": "The kitchen's location is not on the map yet."
+  },
+  "messageLog": {
+    "title": "Messages",
+    "intro": "Updates that would come by SMS or WhatsApp. In this demo they are only shown here.",
+    "empty": "No messages yet"
   }
 }

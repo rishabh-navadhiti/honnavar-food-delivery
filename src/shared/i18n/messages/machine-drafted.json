@@ -61,6 +61,7 @@
     "openInMaps",
     "timeline",
     "customerCancel",
-    "orderMap"
+    "orderMap",
+    "messageLog"
   ]
 }

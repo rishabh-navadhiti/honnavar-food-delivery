@@ -20,9 +20,14 @@ export default async function PartnerOrdersPage() {
         <h1 className="text-2xl font-bold">{t('title')}</h1>
         <UpdatedAt at={now} />
       </div>
-      <Link href="/partner/day" className="min-h-touch self-start py-2 text-base font-semibold text-primary">
-        {t('dayLink')}
-      </Link>
+      <div className="flex flex-wrap gap-x-6">
+        <Link href="/partner/day" className="min-h-touch py-2 text-base font-semibold text-primary">
+          {t('dayLink')}
+        </Link>
+        <Link href="/partner/messages" className="min-h-touch py-2 text-base font-semibold text-primary">
+          {t('messagesLink')}
+        </Link>
+      </div>
       {orders.length === 0 ? (
         <EmptyState title={t('empty')} />
       ) : (
