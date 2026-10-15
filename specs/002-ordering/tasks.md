@@ -210,6 +210,7 @@ complete.
   - Append the file's `note` to the catalogue `notes`.
   - Then author the seven orders of data-model.md "Seed outline additions" (`demo-placed` with `placedMinutesBeforeReset: 0` and `cod`; `demo-needs-agent` UPI; `demo-ready` `cod` on the first active agent `agent-ravi`; `demo-out` UPI on `agent-suresh`; `demo-delivered` `cod` on `agent-ravi`; `demo-rejected` `kitchen_busy`; `demo-cancelled` admin `customer_request`).
   - Use active kitchens other than the `temporarilyClosedAtReset` one, available dishes, and the demo customer's addresses.
+  - Place `demo-rejected` (reason `kitchen_busy`) at a **fabricated** active kitchen, `karavali-mane-oota` or `samrat-sea-food`, never at a `menuSource: researched` kitchen: a real business is never shown with an unflattering reason.
 - [ ] T036 Extend `src/features/demo/load-catalogue.ts` to pass T033:
   - write kitchen location and `prep_minutes`, and the addresses;
   - for each order, in catalogue order:
