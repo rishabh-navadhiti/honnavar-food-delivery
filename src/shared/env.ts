@@ -13,6 +13,18 @@ const envSchema = z.object({
     .string()
     .regex(/^\d{6}$/, 'must be exactly 6 digits')
     .default('123456'),
+  // Ordering settings (002 research R12). Each order copies the fee and expected time when placed.
+  DELIVERY_FEE_RUPEES: z.coerce.number().int().min(0).max(500).default(30),
+  DELIVERY_MINUTES: z.coerce.number().int().min(1).max(180).default(15),
+  ACCEPT_WINDOW_MINUTES: z.coerce.number().int().min(1).max(120).default(10),
+  GEOCODING_PROVIDER: z.enum(['nominatim', 'stand-in']).default('nominatim'),
+  NOMINATIM_BASE_URL: z.url().default('https://nominatim.openstreetmap.org'),
+  GEOCODING_CONTACT: z.string().min(1).default('https://github.com/rishabh-navadhiti/honnavar-food-delivery'),
+  MAP_TILE_URL: z
+    .string()
+    .refine((v) => ['{z}', '{x}', '{y}'].every((p) => v.includes(p)), 'must contain {z}, {x} and {y}')
+    .default('https://tile.openstreetmap.org/{z}/{x}/{y}.png'),
+  MAP_TILE_ATTRIBUTION: z.string().min(1).default('© OpenStreetMap contributors'),
 });
 
 export type Env = z.infer<typeof envSchema>;

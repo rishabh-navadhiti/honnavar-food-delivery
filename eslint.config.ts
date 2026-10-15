@@ -30,7 +30,7 @@ const config = [
     },
   },
   {
-    files: ['src/shared/log.ts', 'src/features/demo/reset.ts'],
+    files: ['src/shared/log.ts', 'src/features/demo/reset.ts', 'scripts/**/*.ts'],
     rules: { 'no-console': 'off' },
   },
 ];

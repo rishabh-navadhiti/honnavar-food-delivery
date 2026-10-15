@@ -72,8 +72,8 @@ task"). In short, and with what 002 adds:
 
 **Purpose**: Dependencies, settings, test tooling and the alert sound.
 
-- [ ] T001 Install `leaflet@1.9.4` and dev dependency `@types/leaflet` (research "Dependencies added"); confirm `npm run build` still passes in `package.json`
-- [ ] T002 Extend `src/shared/env.ts` with the research R12 settings, Zod-validated and failing closed:
+- [X] T001 Install `leaflet@1.9.4` and dev dependency `@types/leaflet` (research "Dependencies added"); confirm `npm run build` still passes in `package.json`
+- [X] T002 Extend `src/shared/env.ts` with the research R12 settings, Zod-validated and failing closed:
   - `DELIVERY_FEE_RUPEES` integer 0–500, default 30;
   - `DELIVERY_MINUTES` integer 1–180, default 15;
   - `ACCEPT_WINDOW_MINUTES` integer 1–120, default 10;
@@ -83,12 +83,12 @@ task"). In short, and with what 002 adds:
   - `MAP_TILE_URL` string containing `{z}`, `{x}` and `{y}`, default `https://tile.openstreetmap.org/{z}/{x}/{y}.png`;
   - `MAP_TILE_ATTRIBUTION` string, default `© OpenStreetMap contributors`.
   Document each with a comment in `.env.example`, matching the quickstart table.
-- [ ] T003 [P] Create `scripts/make-alert-sound.ts`, which writes `public/sounds/new-order.wav`: a two-tone beep of about 1 s, 8 kHz, 16-bit mono PCM, using only Node built-ins. Run it once with `npx tsx scripts/make-alert-sound.ts` and commit both files (research R10).
-- [ ] T004 [P] Update `playwright.config.ts`:
+- [X] T003 [P] Create `scripts/make-alert-sound.ts`, which writes `public/sounds/new-order.wav`: a two-tone beep of about 1 s, 8 kHz, 16-bit mono PCM, using only Node built-ins. Run it once with `npx tsx scripts/make-alert-sound.ts` and commit both files (research R10).
+- [X] T004 [P] Update `playwright.config.ts`:
   - the mobile project's `testMatch` also matches `ordering-us[1245678]-.*\.spec\.ts` and `ordering-milestone\.spec\.ts`; the desktop project also matches `ordering-us3-.*\.spec\.ts`;
   - Chromium `launchOptions.args` `['--use-fake-ui-for-media-stream', '--use-fake-device-for-media-stream']` for both projects;
   - `webServer.env` adds `GEOCODING_PROVIDER: 'stand-in'`.
-- [ ] T005 [P] Create `e2e/fixtures.ts` with:
+- [X] T005 [P] Create `e2e/fixtures.ts` with:
   - `openAllDay(kitchenId)`: writes 00:00–24:00 hours for all 7 days and clears any temporary closure for that kitchen in the `DATABASE_URL` database, server-side like `e2e/reset.ts` (research R15);
   - `blockMapTiles(page)`: `page.route` aborts every request to the `MAP_TILE_URL` host.
 
