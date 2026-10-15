@@ -5,13 +5,13 @@ import { formatPrice } from '@/shared/i18n/format';
 import { getCartView } from '@/features/orders/queries';
 import { readCart } from '../cookie';
 
-/** Sticky summary at the bottom of the kitchen page: item count and item total, one tap to the cart. */
+/** Summary of the cart (item count and item total), one tap to the cart; placed by CustomerDock. */
 export async function CartBar({ count, itemTotal }: { count: number; itemTotal: number }) {
   if (count === 0) return null;
   const t = await getTranslations('cart');
   const locale = await getLocale();
   return (
-    <div className="sticky bottom-3 z-10">
+    <div>
       <Link
         href="/cart"
         data-testid="cart-bar"

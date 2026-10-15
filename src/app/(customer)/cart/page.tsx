@@ -12,6 +12,7 @@ import { pickLocalized } from '@/shared/i18n/localized';
 import { ButtonLink, buttonClasses } from '@/shared/ui/button';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { LocalizedText } from '@/shared/ui/localized-text';
+import { CustomerDock } from '@/features/cart/components/customer-dock';
 
 /**
  * Cart and checkout in one page (research R2): from home, open kitchen, Add, cart bar, Place order
@@ -33,6 +34,7 @@ export default async function CartPage({ searchParams }: Props) {
       <div className="flex flex-col gap-4">
         <h1 className="text-2xl font-bold">{t('cart.title')}</h1>
         <EmptyState title={t('cart.empty')} action={<ButtonLink href="/">{t('cart.browse')}</ButtonLink>} />
+        <CustomerDock />
       </div>
     );
   }
@@ -89,6 +91,7 @@ export default async function CartPage({ searchParams }: Props) {
           dishNames={Object.fromEntries(view.lines.map((l) => [l.dishId, pickLocalized(l.name, locale)?.text ?? '']))}
         />
       )}
+      <CustomerDock />
     </div>
   );
 }

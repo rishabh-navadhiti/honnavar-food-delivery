@@ -7,6 +7,7 @@ import { getAddress } from '@/features/addresses/queries';
 import { requireSession } from '@/features/auth/session';
 import { mapTiles } from '@/shared/maps/tiles';
 import { buttonClasses } from '@/shared/ui/button';
+import { CustomerDock } from '@/features/cart/components/customer-dock';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -41,6 +42,7 @@ export default async function EditAddressPage({ params }: Props) {
           {t('delete')}
         </button>
       </form>
+      <CustomerDock />
     </div>
   );
 }

@@ -45,3 +45,31 @@ describe('getCustomerOrder for the timeline and map (FR-025, FR-026)', () => {
     expect(await getCustomerOrder(crypto.randomUUID(), order.id, now)).toBeNull();
   });
 });
+
+describe('getOngoingOrder for the strip (FR-024)', () => {
+  it('gives the most recent unfinished order with its number, kitchen and status', async () => {
+    const { getOngoingOrder } = await import('./queries');
+    const { makeCustomer } = await import('@/shared/db/test/helpers');
+    const customer = await makeCustomer();
+    await makeOrder({ customerId: customer.id, status: 'preparing', placedAt: minutesAgo(30) });
+    const latest = await makeOrder({ customerId: customer.id, status: 'accepted', placedAt: minutesAgo(5) });
+    await makeOrder({ customerId: customer.id, status: 'delivered', placedAt: minutesAgo(1) });
+    expect(await getOngoingOrder(customer.id, now)).toEqual({
+      id: latest.id,
+      orderNo: latest.orderNo,
+      status: 'accepted',
+      kitchenName: { en: 'Test Kitchen', kn: 'ಪರೀಕ್ಷಾ ಅಡುಗೆಮನೆ' },
+    });
+  });
+
+  it('is null when every order is finished, and after an overdue order expires', async () => {
+    const { getOngoingOrder } = await import('./queries');
+    const { makeCustomer } = await import('@/shared/db/test/helpers');
+    const { env } = await import('@/shared/env');
+    const customer = await makeCustomer();
+    expect(await getOngoingOrder(customer.id, now)).toBeNull();
+    await makeOrder({ customerId: customer.id, status: 'delivered', placedAt: minutesAgo(40) });
+    await makeOrder({ customerId: customer.id, placedAt: minutesAgo(env.ACCEPT_WINDOW_MINUTES + 1) });
+    expect(await getOngoingOrder(customer.id, now)).toBeNull();
+  });
+});

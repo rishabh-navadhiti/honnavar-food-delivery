@@ -10,6 +10,7 @@ import { formatDayTime, formatPrice } from '@/shared/i18n/format';
 import { ButtonLink } from '@/shared/ui/button';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { LocalizedText } from '@/shared/ui/localized-text';
+import { CustomerDock } from '@/features/cart/components/customer-dock';
 
 export default async function OrdersPage() {
   const session = await requireSession('customer');
@@ -67,6 +68,7 @@ export default async function OrdersPage() {
           ) : null}
         </>
       )}
+      <CustomerDock />
     </div>
   );
 }

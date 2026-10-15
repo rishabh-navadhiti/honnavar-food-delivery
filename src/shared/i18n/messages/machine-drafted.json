@@ -63,6 +63,7 @@
     "customerCancel",
     "orderMap",
     "messageLog",
-    "reorder"
+    "reorder",
+    "ongoing"
   ]
 }

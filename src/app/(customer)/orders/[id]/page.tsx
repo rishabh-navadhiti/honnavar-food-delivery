@@ -19,6 +19,7 @@ import { UpdatedAt } from '@/shared/polling/updated-at';
 import { LocalizedText } from '@/shared/ui/localized-text';
 import { PhoneLink } from '@/shared/ui/phone-link';
 import { VegMark } from '@/shared/ui/veg-mark';
+import { CustomerDock } from '@/features/cart/components/customer-dock';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -122,6 +123,7 @@ export default async function OrderPage({ params }: Props) {
         <p className="text-base text-muted">{order.address.landmark}</p>
         {order.address.riderNote ? <p className="text-sm text-muted">{order.address.riderNote}</p> : null}
       </section>
+      <CustomerDock excludeOrderId={order.id} />
     </article>
   );
 }

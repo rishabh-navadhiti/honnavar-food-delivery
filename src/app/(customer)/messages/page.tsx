@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { requireSession } from '@/features/auth/session';
 import { MessageList } from '@/features/notifications/components/message-list';
 import { listMessages } from '@/features/notifications/queries';
+import { CustomerDock } from '@/features/cart/components/customer-dock';
 
 export default async function CustomerMessagesPage() {
   const session = await requireSession('customer');
@@ -12,6 +13,7 @@ export default async function CustomerMessagesPage() {
       <h1 className="text-2xl font-bold">{t('title')}</h1>
       <p className="text-sm text-muted">{t('intro')}</p>
       <MessageList messages={messages} orderHref={(id) => `/orders/${id}`} />
+      <CustomerDock />
     </div>
   );
 }

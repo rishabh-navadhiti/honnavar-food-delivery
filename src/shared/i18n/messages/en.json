@@ -738,5 +738,8 @@
     "replaceQuestion": "Your cart has items from another kitchen. Replace them with this order?",
     "replaceConfirm": "Replace and order again",
     "leftOut": "{count, plural, one {# item from that order is not available now and was left out.} other {# items from that order are not available now and were left out.}}"
+  },
+  "ongoing": {
+    "label": "Your current order:"
   }
 }

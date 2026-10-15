@@ -12,7 +12,6 @@ import { MenuSection } from '@/features/browse/components/menu-section';
 import { readDishFilter } from '@/features/browse/dish-filter-cookie';
 import { getKitchenForCustomer } from '@/features/browse/queries';
 import { AddToCart } from '@/features/cart/components/add-to-cart';
-import { CurrentCartBar } from '@/features/cart/components/cart-bar';
 import { readCart } from '@/features/cart/cookie';
 import { etaRange } from '@/features/orders/domain/eta';
 import { env } from '@/shared/env';
@@ -23,6 +22,7 @@ import { buttonClasses } from '@/shared/ui/button';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { LocalizedText } from '@/shared/ui/localized-text';
 import { Photo } from '@/shared/ui/photo';
+import { CustomerDock } from '@/features/cart/components/customer-dock';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -139,7 +139,7 @@ export default async function KitchenPage({ params }: Props) {
           <EmptyState title={t('kitchen.menuComingSoon')} />
         )}
       </section>
-      <CurrentCartBar />
+      <CustomerDock showCart />
     </article>
   );
 }

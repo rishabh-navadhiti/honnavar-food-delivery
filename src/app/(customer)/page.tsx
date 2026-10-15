@@ -8,9 +8,9 @@ import { SearchBox } from '@/features/browse/components/search-box';
 import { SearchResults } from '@/features/browse/components/search-results';
 import { readDishFilter } from '@/features/browse/dish-filter-cookie';
 import { listKitchensForCustomer, searchForCustomer } from '@/features/browse/queries';
-import { CurrentCartBar } from '@/features/cart/components/cart-bar';
 import { isLocale } from '@/shared/i18n/config';
 import { EmptyState } from '@/shared/ui/empty-state';
+import { CustomerDock } from '@/features/cart/components/customer-dock';
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
@@ -72,7 +72,7 @@ export default async function HomePage({ searchParams }: Props) {
           ))}
         </ul>
       )}
-      <CurrentCartBar />
+      <CustomerDock showCart />
     </div>
   );
 }

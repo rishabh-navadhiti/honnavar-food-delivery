@@ -5,6 +5,7 @@ import { requireSession } from '@/features/auth/session';
 import { ButtonLink } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
 import { EmptyState } from '@/shared/ui/empty-state';
+import { CustomerDock } from '@/features/cart/components/customer-dock';
 
 export default async function AddressesPage() {
   const session = await requireSession('customer');
@@ -34,6 +35,7 @@ export default async function AddressesPage() {
         </ul>
       )}
       <ButtonLink href="/addresses/new">{t('addresses.add')}</ButtonLink>
+      <CustomerDock />
     </div>
   );
 }

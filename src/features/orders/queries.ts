@@ -1,5 +1,5 @@
 import 'server-only';
-import { and, asc, desc, eq, inArray } from 'drizzle-orm';
+import { and, asc, desc, eq, inArray, notInArray } from 'drizzle-orm';
 import type { Cart } from '@/features/cart/domain/cart';
 import { kitchenState, type KitchenState } from '@/features/kitchens/domain/state';
 import { loadWeekHours } from '@/features/kitchens/queries';
@@ -222,4 +222,19 @@ export async function listCustomerOrders(customerId: string, now: Date): Promise
     kitchen: { id: kitchen.id, name: { en: kitchen.nameEn, kn: kitchen.nameKn } },
   }));
   return [...list.filter((o) => !o.finished), ...list.filter((o) => o.finished)];
+}
+
+export type OngoingOrder = { id: string; orderNo: number; status: OrderStatus; kitchenName: LocalizedPair };
+
+/** The customer's most recent unfinished order, for the strip on customer screens (FR-024). */
+export async function getOngoingOrder(customerId: string, now: Date): Promise<OngoingOrder | null> {
+  await expireOverdueOrders(db, now, { customerId });
+  const [row] = await db
+    .select({ id: orders.id, orderNo: orders.orderNo, status: orders.status, nameEn: kitchens.nameEn, nameKn: kitchens.nameKn })
+    .from(orders)
+    .innerJoin(kitchens, eq(kitchens.id, orders.kitchenId))
+    .where(and(eq(orders.customerId, customerId), notInArray(orders.status, ['delivered', 'rejected', 'cancelled'])))
+    .orderBy(desc(orders.placedAt))
+    .limit(1);
+  return row ? { id: row.id, orderNo: row.orderNo, status: row.status, kitchenName: { en: row.nameEn, kn: row.nameKn } } : null;
 }
