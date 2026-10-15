@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { z } from 'zod';
@@ -23,6 +22,7 @@ import { EmptyState } from '@/shared/ui/empty-state';
 import { LocalizedText } from '@/shared/ui/localized-text';
 import { Photo } from '@/shared/ui/photo';
 import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { BackLink } from '@/shared/ui/back-link';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -60,10 +60,7 @@ export default async function KitchenPage({ params }: Props) {
 
   return (
     <article className="flex flex-col gap-5">
-      <Link href="/" className="min-h-touch self-start py-3 text-base font-medium text-primary">
-        <span aria-hidden="true">← </span>
-        {t('kitchen.allKitchens')}
-      </Link>
+      <BackLink href="/" label={t('kitchen.allKitchens')} />
       <Photo
         imageId={kitchen.photoImageId}
         alt={name}

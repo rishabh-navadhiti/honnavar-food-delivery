@@ -599,7 +599,8 @@
     "empty": "No saved addresses yet",
     "add": "Add a new address",
     "labelText": "Name for this place (optional)",
-    "labelTextHint": "Up to 30 letters, for example: Amma's house"
+    "labelTextHint": "Up to 30 letters, for example: Amma's house",
+    "backLabel": "My addresses"
   },
   "orderPage": {
     "title": "Order",
@@ -743,5 +744,12 @@
   },
   "ongoing": {
     "label": "Your current order:"
+  },
+  "backLinks": {
+    "home": "Home",
+    "kitchen": "Back to the kitchen",
+    "account": "My account",
+    "orders": "My orders",
+    "back": "Back"
   }
 }

@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { getOptionalSession } from '@/features/auth/session';
 import { clearCartAction } from '@/features/cart/actions';
@@ -13,6 +12,7 @@ import { ButtonLink, buttonClasses } from '@/shared/ui/button';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { LocalizedText } from '@/shared/ui/localized-text';
 import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { BackLink } from '@/shared/ui/back-link';
 
 /**
  * Cart and checkout in one page (research R2): from home, open kitchen, Add, cart bar, Place order
@@ -32,6 +32,7 @@ export default async function CartPage({ searchParams }: Props) {
   if (!view || view.lines.length === 0) {
     return (
       <div className="flex flex-col gap-4">
+        <BackLink href="/" label={t('backLinks.home')} />
         <h1 className="text-2xl font-bold">{t('cart.title')}</h1>
         <EmptyState title={t('cart.empty')} action={<ButtonLink href="/">{t('cart.browse')}</ButtonLink>} />
         <CustomerDock />
@@ -44,10 +45,11 @@ export default async function CartPage({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
+      <BackLink href={`/kitchens/${view.kitchen.id}`} label={t('backLinks.kitchen')} />
       <h1 className="text-2xl font-bold">{t('cart.title')}</h1>
-      <Link href={`/kitchens/${view.kitchen.id}`} className="min-h-touch self-start py-2 text-base font-semibold text-primary">
+      <p className="text-base font-semibold">
         <LocalizedText pair={view.kitchen.name} />
-      </Link>
+      </p>
 
       {leftOutCount > 0 ? (
         <p role="status" className="rounded-xl border border-warn bg-amber-50 p-3 text-base font-medium" data-testid="reorder-left-out">

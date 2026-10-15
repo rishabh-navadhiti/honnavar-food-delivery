@@ -11,6 +11,7 @@ import { ButtonLink } from '@/shared/ui/button';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { LocalizedText } from '@/shared/ui/localized-text';
 import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { BackLink } from '@/shared/ui/back-link';
 
 export default async function OrdersPage() {
   const session = await requireSession('customer');
@@ -47,6 +48,7 @@ export default async function OrdersPage() {
 
   return (
     <div className="flex flex-col gap-5">
+      <BackLink href="/" label={t('backLinks.home')} />
       <h1 className="text-2xl font-bold">{t('orders.title')}</h1>
       {orders.length === 0 ? (
         <EmptyState title={t('orders.empty')} action={<ButtonLink href="/">{t('cart.browse')}</ButtonLink>} />

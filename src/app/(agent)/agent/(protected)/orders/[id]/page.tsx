@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { z } from 'zod';
@@ -9,6 +8,7 @@ import { OrderNumber } from '@/features/orders/components/order-number';
 import { ReasonText } from '@/features/orders/components/reason-text';
 import { LiveRefresh } from '@/shared/polling/live-refresh';
 import { UpdatedAt } from '@/shared/polling/updated-at';
+import { BackLink } from '@/shared/ui/back-link';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -24,10 +24,7 @@ export default async function AgentOrderPage({ params }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <LiveRefresh enabled={live} />
-      <Link href="/agent" className="min-h-touch self-start py-3 text-base font-medium text-primary">
-        <span aria-hidden="true">← </span>
-        {t('back')}
-      </Link>
+      <BackLink href="/agent" label={t('back')} />
       <UpdatedAt at={now} />
       {view.state === 'mine' ? (
         <AgentOrderDetail order={view.order} />

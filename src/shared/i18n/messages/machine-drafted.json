@@ -64,6 +64,7 @@
     "orderMap",
     "messageLog",
     "reorder",
-    "ongoing"
+    "ongoing",
+    "backLinks"
   ]
 }

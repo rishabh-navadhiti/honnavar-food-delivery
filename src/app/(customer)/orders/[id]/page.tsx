@@ -21,6 +21,7 @@ import { LocalizedText } from '@/shared/ui/localized-text';
 import { PhoneLink } from '@/shared/ui/phone-link';
 import { VegMark } from '@/shared/ui/veg-mark';
 import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { BackLink } from '@/shared/ui/back-link';
 
 type Props = { params: Promise<{ id: string }> };
 
@@ -42,6 +43,7 @@ export default async function OrderPage({ params }: Props) {
   return (
     <article className="flex flex-col gap-5">
       <LiveRefresh enabled={!order.finished} />
+      <BackLink href="/orders" label={t('backLinks.orders')} />
       <header className="flex flex-col gap-2">
         <h1 className="flex flex-wrap items-center gap-2 text-2xl font-bold">
           {t('orderPage.title')} <OrderNumber orderNo={order.orderNo} />

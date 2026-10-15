@@ -28,8 +28,15 @@ test('signed-in customers see their current order in a strip on every screen but
   const bar = await page.getByTestId('cart-bar').boundingBox();
   expect(strip!.y + strip!.height).toBeLessThanOrEqual(bar!.y);
 
+  // Back links go to fixed parents, never history: the cart back to its kitchen.
+  await page.getByTestId('cart-bar').click();
+  await expect(page.getByTestId('back-link')).toHaveAttribute('href', `/kitchens/${kitchen.id}`);
+  await page.getByTestId('back-link').click();
+  await expect(page).toHaveURL(`/kitchens/${kitchen.id}`);
+
   // It opens the order, and is not shown on that order's own page.
   await page.getByTestId('ongoing-strip').click();
   await expect(page).toHaveURL(`/orders/${latest.id}`);
   await expect(page.getByTestId('ongoing-strip')).toHaveCount(0);
+  await expect(page.getByTestId('back-link')).toHaveAttribute('href', '/orders');
 });

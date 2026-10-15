@@ -7,6 +7,7 @@ import { ButtonLink } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { BackLink } from '@/shared/ui/back-link';
 
 export default async function AddressesPage() {
   const session = await requireSession('customer');
@@ -14,6 +15,7 @@ export default async function AddressesPage() {
   const addresses = await listAddresses(session.subjectId);
   return (
     <div className="flex flex-col gap-4">
+      <BackLink href="/account" label={t('backLinks.account')} />
       <h1 className="text-2xl font-bold">{t('addresses.title')}</h1>
       {addresses.length === 0 ? (
         <EmptyState title={t('addresses.empty')} />
