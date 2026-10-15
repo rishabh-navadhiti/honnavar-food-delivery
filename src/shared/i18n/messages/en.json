@@ -414,13 +414,13 @@
     "label": "Search kitchens and dishes",
     "placeholder": "For example: neer dose",
     "submit": "Search",
-    "title": "Search",
     "resultsFor": "Results for “{q}”",
     "kitchens": "Kitchens",
     "dishes": "Dishes",
     "noResultsTitle": "Nothing found for “{q}”",
     "noResultsBody": "Try a shorter word, the other language, or clear the dish filter.",
-    "tooShort": "Type at least 2 letters."
+    "tooShort": "Type at least 2 letters.",
+    "clear": "Clear search"
   },
   "demo": {
     "title": "Demo only",

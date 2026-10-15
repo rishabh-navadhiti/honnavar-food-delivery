@@ -27,7 +27,7 @@ export default defineConfig({
   projects: [
     {
       name: 'mobile',
-      testMatch: [/\/us[12356]-.*\.spec\.ts/, /ordering-us[1245678]-.*\.spec\.ts/, /ordering-milestone\.spec\.ts/],
+      testMatch: [/\/us[12356]-.*\.spec\.ts/, /\/ordering-(?!us3-).*\.spec\.ts/],
       use: {
         ...devices['Pixel 5'],
         browserName: 'chromium',

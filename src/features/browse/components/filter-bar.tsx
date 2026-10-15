@@ -2,13 +2,15 @@ import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import type { KitchenType } from '../queries';
 
-export type KitchenFilters = { type?: KitchenType; pureVeg?: boolean; openNow?: boolean };
+/** Kitchen filters and the search query, all kept in the home URL (FR-042, FR-044). */
+export type KitchenFilters = { type?: KitchenType; pureVeg?: boolean; openNow?: boolean; q?: string };
 
 export function filtersToQuery(filters: KitchenFilters): string {
   const params = new URLSearchParams();
   if (filters.type) params.set('type', filters.type);
   if (filters.pureVeg) params.set('pureVeg', '1');
   if (filters.openNow) params.set('open', '1');
+  if (filters.q) params.set('q', filters.q);
   const query = params.toString();
   return query ? `/?${query}` : '/';
 }
