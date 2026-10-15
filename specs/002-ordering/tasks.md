@@ -503,9 +503,9 @@ kitchen marker and a delivery marker.
 
 ### Tests for User Story 5
 
-- [ ] T093 [P] [US5] Write failing integration tests `src/features/orders/services/customer.int.test.ts`: `cancelOrderByCustomer` cancels only the customer's own Placed order (with no reason), writes messages to the customer and the kitchen, gives `order_moved_on` once accepted, and `not_found` for another customer's order.
-- [ ] T094 [P] [US5] Extend `src/features/orders/services/place.int.test.ts` (or a new `customer-queries.int.test.ts`): `getCustomerOrder` returns events in time order for the timeline, the agent's name and phone once assigned, the kitchen location (or null) and the delivery location, and the reason and note for rejected or cancelled orders.
-- [ ] T095 [P] [US5] Write the end-to-end test `e2e/ordering-us5-follow.spec.ts` (mobile), after `resetDemoData()` and `blockMapTiles`:
+- [X] T093 [P] [US5] Write failing integration tests `src/features/orders/services/customer.int.test.ts`: `cancelOrderByCustomer` cancels only the customer's own Placed order (with no reason), writes messages to the customer and the kitchen, gives `order_moved_on` once accepted, and `not_found` for another customer's order.
+- [X] T094 [P] [US5] Extend `src/features/orders/services/place.int.test.ts` (or a new `customer-queries.int.test.ts`): `getCustomerOrder` returns events in time order for the timeline, the agent's name and phone once assigned, the kitchen location (or null) and the delivery location, and the reason and note for rejected or cancelled orders.
+- [X] T095 [P] [US5] Write the end-to-end test `e2e/ordering-us5-follow.spec.ts` (mobile), after `resetDemoData()` and `blockMapTiles`:
   - the demo customer opens `placedOrder()`'s page; a partner context accepts it; within 15 s, without a reload, the timeline shows "Accepted" with a time;
   - the map region has two markers found by their `aria-label`s (kitchen, delivery);
   - `rejectedOrder()`'s page shows the reason;
@@ -513,18 +513,18 @@ kitchen marker and a delivery marker.
 
 ### Implementation for User Story 5
 
-- [ ] T096 [US5] Implement `cancelOrderByCustomer` in `src/features/orders/services/customer.ts` to pass T093, plus `cancelOrderByCustomerAction`, and extend `getCustomerOrder` to pass T094
-- [ ] T097 [P] [US5] Create `src/shared/maps/order-map.tsx` (`'use client'`, via a `next/dynamic` wrapper with `ssr: false`):
+- [X] T096 [US5] Implement `cancelOrderByCustomer` in `src/features/orders/services/customer.ts` to pass T093, plus `cancelOrderByCustomerAction`, and extend `getCustomerOrder` to pass T094
+- [X] T097 [P] [US5] Create `src/shared/maps/order-map.tsx` (`'use client'`, via a `next/dynamic` wrapper with `ssr: false`):
   - kitchen and home inline-SVG `divIcon`s with translated `aria-label`s, framed with `fitBounds`;
   - dragging, zoom and keyboard turned off;
   - only the delivery marker plus a "Kitchen location not set" line when the kitchen has none;
   - the landmark text stays visible if the tiles fail.
-- [ ] T098 [P] [US5] Create `src/features/orders/components/order-timeline.tsx`:
+- [X] T098 [P] [US5] Create `src/features/orders/components/order-timeline.tsx`:
   - the steps Placed, Accepted, Preparing, Ready, Agent assigned, Picked up and Delivered, each with its time when done;
   - Rejected or Cancelled shown with the reason as a final step;
   - for UPI orders that end rejected or cancelled, the note "Nothing was charged in this demo" (FR-023).
-- [ ] T099 [US5] Extend `src/app/(customer)/orders/[id]/page.tsx`: the timeline, the order map, the agent's name and call button once assigned, "Cancel order" with a confirmation while Placed, `<LiveRefresh enabled={!finished} />`, and `<UpdatedAt />`
-- [ ] T100 [US5] Add the US5 message keys (`timeline.*`, `orderMap.*`, `customerCancel.*`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
+- [X] T099 [US5] Extend `src/app/(customer)/orders/[id]/page.tsx`: the timeline, the order map, the agent's name and call button once assigned, "Cancel order" with a confirmation while Placed, `<LiveRefresh enabled={!finished} />`, and `<UpdatedAt />`
+- [X] T100 [US5] Add the US5 message keys (`timeline.*`, `orderMap.*`, `customerCancel.*`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
 
 **Checkpoint**: US5 works on its own. T093–T095 pass. Commit with task ids.
 

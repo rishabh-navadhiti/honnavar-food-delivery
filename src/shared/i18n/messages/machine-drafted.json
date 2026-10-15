@@ -58,6 +58,9 @@
     "kitchenForm",
     "agentHome",
     "agentOrder",
-    "openInMaps"
+    "openInMaps",
+    "timeline",
+    "customerCancel",
+    "orderMap"
   ]
 }

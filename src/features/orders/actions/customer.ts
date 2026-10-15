@@ -6,6 +6,7 @@ import { currentCustomer } from '@/features/auth/actor';
 import { readCart, writeCart } from '@/features/cart/cookie';
 import { log } from '@/shared/log';
 import type { ResultError } from '@/shared/result';
+import { cancelOrderByCustomer } from '../services/customer';
 import { placeOrder, type CartChange } from '../services/place';
 
 export type PlaceOrderState = { error?: ResultError; changes?: CartChange[] };
@@ -35,4 +36,22 @@ export async function placeOrderAction(_previous: PlaceOrderState, formData: For
   await writeCart(null);
   revalidatePath('/', 'layout');
   redirect(`/orders/${orderId}`);
+}
+
+export type CancelState = { error?: ResultError };
+
+/** Cancel one's own order while it is still Placed (FR-027). */
+export async function cancelOrderByCustomerAction(_previous: CancelState, formData: FormData): Promise<CancelState> {
+  const actor = await currentCustomer();
+  if (!actor) return { error: { code: 'unauthorised' } };
+  const orderId = String(formData.get('orderId') ?? '');
+  try {
+    const result = await cancelOrderByCustomer(actor, { orderId }, new Date());
+    if (!result.ok) return { error: result.error };
+  } catch (error) {
+    log.error('cancelOrderByCustomerAction failed', { action: 'cancelOrderByCustomerAction', surface: 'customer', subjectId: actor.customerId, error });
+    return { error: { code: 'unexpected' } };
+  }
+  revalidatePath(`/orders/${orderId}`);
+  return {};
 }

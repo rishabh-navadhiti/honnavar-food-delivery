@@ -601,7 +601,9 @@
     "title": "Order",
     "expectedBy": "Expected by {time}",
     "items": "Items",
-    "deliverTo": "Delivery address"
+    "deliverTo": "Delivery address",
+    "agentTitle": "Your delivery agent",
+    "callAgent": "Call delivery agent"
   },
   "partnerOrders": {
     "title": "Orders",
@@ -705,5 +707,22 @@
   "openInMaps": {
     "kitchen": "Open kitchen in maps",
     "delivery": "Open delivery location in maps"
+  },
+  "timeline": {
+    "title": "Order status",
+    "pending": "Waiting",
+    "nothingCharged": "Nothing was charged in this demo."
+  },
+  "customerCancel": {
+    "cancel": "Cancel order",
+    "question": "Cancel this order? The kitchen has not accepted it yet.",
+    "confirm": "Yes, cancel it",
+    "keep": "Keep my order"
+  },
+  "orderMap": {
+    "label": "Map with the kitchen and your delivery location",
+    "kitchen": "Kitchen: {name}",
+    "delivery": "Your delivery location",
+    "noKitchenLocation": "The kitchen's location is not on the map yet."
   }
 }
