@@ -593,12 +593,12 @@ orders, tap Reorder, and land on `/cart` with its available dishes at current pr
 
 ### Tests for User Story 8
 
-- [ ] T110 [P] [US8] Write failing integration tests in `src/features/orders/services/customer.int.test.ts` for `reorder`: it fills the cart with still-available dishes at current prices, reports `leftOut` names, returns `other_kitchen` unless `replace`, and `not_found` for another customer's order. Also check that `listCustomerOrders` returns past orders after ongoing ones.
-- [ ] T111 [P] [US8] Write the end-to-end test `e2e/ordering-us8-reorder.spec.ts` (mobile): the demo customer reorders `deliveredOrder()` and `/cart` shows its available dishes.
+- [X] T110 [P] [US8] Write failing integration tests in `src/features/orders/services/customer.int.test.ts` for `reorder`: it fills the cart with still-available dishes at current prices, reports `leftOut` names, returns `other_kitchen` unless `replace`, and `not_found` for another customer's order. Also check that `listCustomerOrders` returns past orders after ongoing ones.
+- [X] T111 [P] [US8] Write the end-to-end test `e2e/ordering-us8-reorder.spec.ts` (mobile): the demo customer reorders `deliveredOrder()` and `/cart` shows its available dishes.
 
 ### Implementation for User Story 8
 
-- [ ] T112 [US8] Implement `reorder` in `src/features/orders/services/customer.ts` plus `reorderAction` (it writes the cart cookie and redirects to `/cart` with a left-out notice) to pass T110. Add the past-orders section and a "Reorder" button to `src/app/(customer)/orders/page.tsx`, and add `reorder.*` keys to `en.json`, `kn.json` and `machine-drafted.json`.
+- [X] T112 [US8] Implement `reorder` in `src/features/orders/services/customer.ts` plus `reorderAction` (it writes the cart cookie and redirects to `/cart` with a left-out notice) to pass T110. Add the past-orders section and a "Reorder" button to `src/app/(customer)/orders/page.tsx`, and add `reorder.*` keys to `en.json`, `kn.json` and `machine-drafted.json`.
 
 **Checkpoint**: US8 passes. Commit with task ids.
 

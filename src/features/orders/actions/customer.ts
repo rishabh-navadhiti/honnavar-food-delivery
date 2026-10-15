@@ -6,7 +6,7 @@ import { currentCustomer } from '@/features/auth/actor';
 import { readCart, writeCart } from '@/features/cart/cookie';
 import { log } from '@/shared/log';
 import type { ResultError } from '@/shared/result';
-import { cancelOrderByCustomer } from '../services/customer';
+import { cancelOrderByCustomer, reorder } from '../services/customer';
 import { placeOrder, type CartChange } from '../services/place';
 
 export type PlaceOrderState = { error?: ResultError; changes?: CartChange[] };
@@ -54,4 +54,24 @@ export async function cancelOrderByCustomerAction(_previous: CancelState, formDa
   }
   revalidatePath(`/orders/${orderId}`);
   return {};
+}
+
+export type ReorderState = { error?: ResultError };
+
+/** Optional (FR-052): fill the cart from a past order, then open the cart. */
+export async function reorderAction(_previous: ReorderState, formData: FormData): Promise<ReorderState> {
+  const actor = await currentCustomer();
+  if (!actor) return { error: { code: 'unauthorised' } };
+  let leftOut = 0;
+  try {
+    const result = await reorder(actor, { orderId: formData.get('orderId'), replace: formData.get('replace') }, await readCart());
+    if (!result.ok) return { error: result.error };
+    await writeCart(result.data.cart);
+    leftOut = result.data.leftOut.length;
+  } catch (error) {
+    log.error('reorderAction failed', { action: 'reorderAction', surface: 'customer', subjectId: actor.customerId, error });
+    return { error: { code: 'unexpected' } };
+  }
+  revalidatePath('/', 'layout');
+  redirect(leftOut > 0 ? `/cart?leftOut=${leftOut}` : '/cart');
 }

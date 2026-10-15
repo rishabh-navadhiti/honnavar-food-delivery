@@ -126,7 +126,8 @@
     "cashNotConfirmed": "Please confirm the cash you collected.",
     "agentHasOrders": "This agent still has orders to deliver: {orderNos}. Reassign or finish them first.",
     "noteRequired": "Please write a short note.",
-    "prepMinutesRange": "Enter between 5 and 120 minutes."
+    "prepMinutesRange": "Enter between 5 and 120 minutes.",
+    "nothingToReorder": "None of the items from that order are available now."
   },
   "surface": {
     "customer": "Order food in Honnavar",
@@ -731,5 +732,11 @@
     "title": "Messages",
     "intro": "Updates that would come by SMS or WhatsApp. In this demo they are only shown here.",
     "empty": "No messages yet"
+  },
+  "reorder": {
+    "button": "Order again",
+    "replaceQuestion": "Your cart has items from another kitchen. Replace them with this order?",
+    "replaceConfirm": "Replace and order again",
+    "leftOut": "{count, plural, one {# item from that order is not available now and was left out.} other {# items from that order are not available now and were left out.}}"
   }
 }

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { requireSession } from '@/features/auth/session';
 import { OrderNumber } from '@/features/orders/components/order-number';
+import { ReorderButton } from '@/features/orders/components/reorder-button';
 import { StatusBadge } from '@/features/orders/components/status-badge';
 import { listCustomerOrders, type CustomerOrderSummary } from '@/features/orders/queries';
 import { isLocale } from '@/shared/i18n/config';
@@ -20,7 +21,7 @@ export default async function OrdersPage() {
   const past = orders.filter((o) => o.finished);
 
   const card = (order: CustomerOrderSummary) => (
-    <li key={order.id}>
+    <li key={order.id} className="flex flex-col gap-2">
       <Link
         href={`/orders/${order.id}`}
         className="flex min-h-touch flex-col gap-1 rounded-2xl border border-line bg-surface p-4"
@@ -39,6 +40,7 @@ export default async function OrdersPage() {
           {formatPrice(order.grandTotal, locale)}
         </span>
       </Link>
+      {order.finished ? <ReorderButton orderId={order.id} /> : null}
     </li>
   );
 

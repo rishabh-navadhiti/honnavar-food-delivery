@@ -17,7 +17,11 @@ import { LocalizedText } from '@/shared/ui/localized-text';
  * Cart and checkout in one page (research R2): from home, open kitchen, Add, cart bar, Place order
  * is four taps for a signed-in customer (SC-001). Guests sign in here and come back (FR-007).
  */
-export default async function CartPage() {
+type Props = { searchParams: Promise<{ leftOut?: string }> };
+
+export default async function CartPage({ searchParams }: Props) {
+  const { leftOut } = await searchParams;
+  const leftOutCount = Number.parseInt(leftOut ?? '', 10);
   const t = await getTranslations();
   const current = await getLocale();
   const locale = isLocale(current) ? current : 'en';
@@ -43,6 +47,11 @@ export default async function CartPage() {
         <LocalizedText pair={view.kitchen.name} />
       </Link>
 
+      {leftOutCount > 0 ? (
+        <p role="status" className="rounded-xl border border-warn bg-amber-50 p-3 text-base font-medium" data-testid="reorder-left-out">
+          {t('reorder.leftOut', { count: leftOutCount })}
+        </p>
+      ) : null}
       <CartLines lines={view.lines} />
       {view.removedCount > 0 ? <p className="text-sm font-medium text-warn">{t('cart.removedLines', { count: view.removedCount })}</p> : null}
       <BillSummary bill={view.bill} />

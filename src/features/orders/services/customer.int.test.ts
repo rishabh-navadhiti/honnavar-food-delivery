@@ -40,3 +40,51 @@ describe('cancelOrderByCustomer (FR-027)', () => {
     });
   });
 });
+
+describe('reorder (FR-052, optional)', () => {
+  async function delivered() {
+    const { makeKitchenWithMenu } = await import('@/shared/db/test/helpers');
+    const { orderItems } = await import('@/shared/db/schema');
+    const menu = await makeKitchenWithMenu();
+    const order = await makeOrder({ kitchenId: menu.kitchen.id, status: 'delivered', placedAt: minutesAgo(60) });
+    await db.delete(orderItems).where(eq(orderItems.orderId, order.id));
+    await db.insert(orderItems).values([
+      { orderId: order.id, position: 0, dishId: menu.dishes[0].id, nameEn: 'Neer dose', nameKn: 'ನೀರ್ ದೋಸೆ', isVeg: true, priceRupees: 50, quantity: 2, lineTotal: 100 },
+      { orderId: order.id, position: 1, dishId: menu.dishes[1].id, nameEn: 'Fish thali', nameKn: 'ಮೀನು ಊಟ', isVeg: false, priceRupees: 180, quantity: 1, lineTotal: 180 },
+    ]);
+    return { order, menu };
+  }
+
+  it('fills the cart with the order’s dishes that are still available, and names the ones left out', async () => {
+    const { reorder } = await import('./customer');
+    const { dishes } = await import('@/shared/db/schema');
+    const { order, menu } = await delivered();
+    await db.update(dishes).set({ available: false }).where(eq(dishes.id, menu.dishes[1].id));
+    const result = await reorder(await customerActor(order.customerId), { orderId: order.id }, null);
+    expect(result).toEqual({
+      ok: true,
+      data: {
+        cart: { v: 1, kitchenId: menu.kitchen.id, lines: [{ dishId: menu.dishes[0].id, qty: 2 }] },
+        leftOut: [{ en: 'Fish thali', kn: 'ಮೀನು ಊಟ' }],
+      },
+    });
+  });
+
+  it('asks before replacing another kitchen’s cart, and refuses another customer’s order', async () => {
+    const { reorder } = await import('./customer');
+    const { order, menu } = await delivered();
+    const otherCart = { v: 1 as const, kitchenId: crypto.randomUUID(), lines: [{ dishId: crypto.randomUUID(), qty: 1 }] };
+    const customer = await customerActor(order.customerId);
+    expect(await reorder(customer, { orderId: order.id }, otherCart)).toMatchObject({ ok: false, error: { code: 'other_kitchen' } });
+    expect(await reorder(customer, { orderId: order.id, replace: 'true' }, otherCart)).toMatchObject({ ok: true, data: { cart: { kitchenId: menu.kitchen.id } } });
+    expect(await reorder(await customerActor(), { orderId: order.id }, null)).toMatchObject({ ok: false, error: { code: 'not_found' } });
+  });
+
+  it('lists past orders after ongoing ones', async () => {
+    const { listCustomerOrders } = await import('../queries');
+    const customer = await customerActor();
+    const past = await makeOrder({ customerId: customer.customerId, status: 'delivered', placedAt: minutesAgo(10) });
+    const ongoing = await makeOrder({ customerId: customer.customerId, status: 'preparing', placedAt: minutesAgo(60) });
+    expect((await listCustomerOrders(customer.customerId, now)).map((o) => o.id)).toEqual([ongoing.id, past.id]);
+  });
+});
