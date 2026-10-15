@@ -55,6 +55,9 @@
     "dayView",
     "dispatch",
     "adminOrder",
-    "kitchenForm"
+    "kitchenForm",
+    "agentHome",
+    "agentOrder",
+    "openInMaps"
   ]
 }

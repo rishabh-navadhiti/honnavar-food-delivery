@@ -681,5 +681,34 @@
     "prepMinutesHint": "Usual time to prepare an order (5–120). Used for the expected delivery time.",
     "location": "Map location",
     "locationHelp": "Move the map so the pin is on the kitchen. Customers and agents see this location."
+  },
+  "agentHome": {
+    "deliveriesToday": "Deliveries today",
+    "cashToday": "Cash collected today",
+    "assigned": "Your deliveries",
+    "from": "From:",
+    "to": "To:",
+    "collect": "Collect {amount} in cash",
+    "paidUpi": "Paid by UPI (demo): no cash to collect"
+  },
+  "agentOrder": {
+    "back": "My deliveries",
+    "stillPreparing": "The kitchen is still preparing this order.",
+    "pickedUp": "Picked up",
+    "delivered": "Delivered",
+    "confirmCashQuestion": "Did you collect the cash?",
+    "confirmCash": "Collected {amount} in cash",
+    "notYet": "Not yet",
+    "deliveredDone": "Delivered. Thank you!",
+    "pickupFrom": "Pick up from",
+    "callKitchen": "Call kitchen",
+    "deliverTo": "Deliver to",
+    "callCustomer": "Call customer",
+    "reassignedAway": "This order was given to another delivery agent.",
+    "cancelled": "This order was cancelled."
+  },
+  "openInMaps": {
+    "kitchen": "Open kitchen in maps",
+    "delivery": "Open delivery location in maps"
   }
 }

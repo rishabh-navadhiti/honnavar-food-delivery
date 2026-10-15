@@ -461,17 +461,17 @@ and Delivered with the cash confirmation, and see the totals grow.
 
 ### Tests for User Story 4
 
-- [ ] T084 [P] [US4] Write failing integration tests `src/features/orders/services/agent.int.test.ts`:
+- [X] T084 [P] [US4] Write failing integration tests `src/features/orders/services/agent.int.test.ts`:
   - `markPickedUp`: only `ready` orders assigned to this agent; `not_ready` otherwise; another agent's order gives `not_found`;
   - `markDelivered`: COD without `cashCollected` gives `cash_not_confirmed`, and with it `cash_collected = grand_total`; UPI needs no cash step;
   - an order reassigned away gives `not_found`;
   - messages `order_picked_up` and `order_delivered` go to the customer.
-- [ ] T085 [P] [US4] Write failing integration tests `src/features/orders/agent-queries.int.test.ts`:
+- [X] T085 [P] [US4] Write failing integration tests `src/features/orders/agent-queries.int.test.ts`:
   - `listAgentOrders` returns only non-final orders assigned now;
   - `getAgentToday` counts deliveries and sums `cash_collected` by `finished_at` within `istDayBounds`;
   - `getAgentOrder` returns `{ state: 'mine' }` with kitchen and customer details, `{ state: 'reassigned' }` after reassignment, and `{ state: 'cancelled', reason }` after cancellation.
-- [ ] T086 [P] [US4] Write failing unit tests `src/shared/maps/open-in-maps.test.ts`: with a location, `openInMapsUrl` gives `https://www.google.com/maps/dir/?api=1&destination=<lat>,<lng>`; without one, it gives `https://www.google.com/maps/search/?api=1&query=<encoded address, landmark, Honnavar>`.
-- [ ] T087 [P] [US4] Write the end-to-end test `e2e/ordering-us4-agent.spec.ts` (mobile), after `resetDemoData()`:
+- [X] T086 [P] [US4] Write failing unit tests `src/shared/maps/open-in-maps.test.ts`: with a location, `openInMapsUrl` gives `https://www.google.com/maps/dir/?api=1&destination=<lat>,<lng>`; without one, it gives `https://www.google.com/maps/search/?api=1&query=<encoded address, landmark, Honnavar>`.
+- [X] T087 [P] [US4] Write the end-to-end test `e2e/ordering-us4-agent.spec.ts` (mobile), after `resetDemoData()`:
   - sign in as `readyOrder().agent` and see a delivery count ≥ 1 and the cash total including `deliveredOrder()`'s grand total;
   - `readyOrder()` is listed; opening it shows kitchen and customer call links (`tel:`) and two "Open in maps" links whose `href` starts with `https://www.google.com/maps/`;
   - Picked up, then Delivered → confirm "Collected ₹{grand total}"; home shows the count and cash increased.
@@ -479,14 +479,14 @@ and Delivered with the cash confirmation, and see the totals grow.
 
 ### Implementation for User Story 4
 
-- [ ] T088 [US4] Implement `src/features/orders/services/agent.ts` (`markPickedUp`, `markDelivered` over `applyTransition`) to pass T084, plus `src/features/orders/actions/agent.ts`
-- [ ] T089 [US4] Implement `listAgentOrders`, `getAgentToday` and `getAgentOrder` in `src/features/orders/agent-queries.ts` (`server-only`) to pass T085, and `src/shared/maps/open-in-maps.ts` to pass T086
-- [ ] T090 [P] [US4] Create the agent components in `src/features/orders/components/` (reusing `voice-note-player` from T055):
+- [X] T088 [US4] Implement `src/features/orders/services/agent.ts` (`markPickedUp`, `markDelivered` over `applyTransition`) to pass T084, plus `src/features/orders/actions/agent.ts`
+- [X] T089 [US4] Implement `listAgentOrders`, `getAgentToday` and `getAgentOrder` in `src/features/orders/agent-queries.ts` (`server-only`) to pass T085, and `src/shared/maps/open-in-maps.ts` to pass T086
+- [X] T090 [P] [US4] Create the agent components in `src/features/orders/components/` (reusing `voice-note-player` from T055):
   - `agent-order-card.tsx` (number, kitchen name and landmark, delivery landmark, status badge with the time of the current status, amount to collect for COD);
   - `agent-order-detail.tsx` (kitchen and customer blocks with call buttons, items, the address with house, street, landmark and label, the rider note, the voice-note player, two open-in-maps links, payment and amount);
   - `deliver-form.tsx` (for COD, a confirmation step "Collected ₹{amount} in cash").
-- [ ] T091 [US4] Replace `src/app/(agent)/agent/(protected)/page.tsx` with today's count and cash, plus assigned orders (polls with `<UpdatedAt />`), keeping "No deliveries yet" as the empty state (FR-039). Create `src/app/(agent)/agent/(protected)/orders/[id]/page.tsx` (polls with `<UpdatedAt />`; "Picked up" only when Ready, otherwise "Kitchen is still preparing"; reassigned or cancelled screens with no actions; not found for never-assigned orders).
-- [ ] T092 [US4] Add the US4 message keys (`agentHome.*`, `agentOrder.*`, `openInMaps.*`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
+- [X] T091 [US4] Replace `src/app/(agent)/agent/(protected)/page.tsx` with today's count and cash, plus assigned orders (polls with `<UpdatedAt />`), keeping "No deliveries yet" as the empty state (FR-039). Create `src/app/(agent)/agent/(protected)/orders/[id]/page.tsx` (polls with `<UpdatedAt />`; "Picked up" only when Ready, otherwise "Kitchen is still preparing"; reassigned or cancelled screens with no actions; not found for never-assigned orders).
+- [X] T092 [US4] Add the US4 message keys (`agentHome.*`, `agentOrder.*`, `openInMaps.*`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
 
 **Checkpoint**: US4 works on its own. T084–T087 pass. With US1–US4 the demo milestone runs end to end. Commit with task ids.
 
