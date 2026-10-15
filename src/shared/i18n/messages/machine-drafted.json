@@ -1,5 +1,5 @@
 {
-  "note": "Kannada interface strings drafted by the agent, pending native-speaker review (Principle II). Entries are message namespaces or full key paths in kn.json. Never shown to end users.",
+  "note": "All kn strings were machine-drafted, then revised by comparing three model translations (GPT, Gemini, Claude) against a glossary on 2026-10-15 (planning/translation/GLOSSARY.md). Still pending review by a native Kannada speaker; see the 'least sure' list in that glossary.",
   "kn": [
     "common",
     "languageSwitch",
