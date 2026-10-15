@@ -3,6 +3,8 @@ import { eq } from 'drizzle-orm';
 import { db } from '@/shared/db/client';
 import { kitchenHours, kitchens } from '@/shared/db/schema';
 import { err, ok, type Result } from '@/shared/result';
+import { fields, parseInput } from '@/shared/validation';
+import { z } from 'zod';
 import { resolveKitchenScope, type Actor } from '../../auth/actor-scope';
 import { closureEnd } from '../domain/closure';
 import { WEEKDAYS } from '../domain/hours';
@@ -12,8 +14,12 @@ import { parseWeekHours, type WeekHoursInput } from '../schemas';
 
 type KitchenInput = { kitchenId?: string | null };
 
+const kitchenInputSchema = z.object({ kitchenId: fields.optionalId() });
+
 async function scopedKitchen(actor: Actor, input: KitchenInput) {
-  const scope = resolveKitchenScope(actor, input.kitchenId);
+  const parsed = parseInput(kitchenInputSchema, { kitchenId: input.kitchenId });
+  if (!parsed.ok) return parsed;
+  const scope = resolveKitchenScope(actor, parsed.data.kitchenId);
   if (!scope.ok) return scope;
   const [row] = await db.select().from(kitchens).where(eq(kitchens.id, scope.data));
   return row ? ok(row) : err<typeof row & object>('not_found');

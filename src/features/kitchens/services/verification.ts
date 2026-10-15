@@ -4,8 +4,16 @@ import { verificationProvider, type VerificationKind } from '@/shared/adapters/v
 import { db } from '@/shared/db/client';
 import { kitchens, verifications } from '@/shared/db/schema';
 import { err, ok, type Result } from '@/shared/result';
+import { fields, parseInput } from '@/shared/validation';
+import { z } from 'zod';
 import type { Actor } from '../../auth/actor-scope';
 import { requireAdmin } from './admin';
+
+const verificationInputSchema = z.object({
+  kitchenId: fields.id(),
+  kind: z.enum(['fssai_licence', 'hygiene_check'], { error: 'invalid' }),
+  reference: z.string({ error: 'required' }),
+});
 
 /**
  * Record an FSSAI licence (restaurants, cloud kitchens) or a hygiene-check reference (home kitchens)
@@ -13,10 +21,13 @@ import { requireAdmin } from './admin';
  */
 export async function recordVerification(
   actor: Actor,
-  input: { kitchenId: string; kind: VerificationKind; reference: string },
+  raw: { kitchenId: string; kind: VerificationKind; reference: string },
 ): Promise<Result<object>> {
   const admin = requireAdmin(actor);
   if (!admin.ok) return admin;
+  const parsed = parseInput(verificationInputSchema, raw);
+  if (!parsed.ok) return parsed;
+  const input = parsed.data;
   const [kitchen] = await db.select({ type: kitchens.type }).from(kitchens).where(eq(kitchens.id, input.kitchenId));
   if (!kitchen) return err('not_found');
   const expected: VerificationKind = kitchen.type === 'home_kitchen' ? 'hygiene_check' : 'fssai_licence';

@@ -3,7 +3,8 @@ import { and, eq, ne } from 'drizzle-orm';
 import { db } from '@/shared/db/client';
 import { agents } from '@/shared/db/schema';
 import { err, ok, type Result } from '@/shared/result';
-import { parseInput } from '@/shared/validation';
+import { fields, parseInput } from '@/shared/validation';
+import { z } from 'zod';
 import type { Actor } from '../../auth/actor-scope';
 import { deleteSessionsForSubject } from '../../auth/session-store';
 import { requireAdmin } from '../../kitchens/services/admin';
@@ -30,9 +31,14 @@ export async function saveAgent(actor: Actor, input: AgentInput): Promise<Result
 }
 
 /** Deactivating an agent ends their sessions (FR-007). */
-export async function setAgentActive(actor: Actor, input: { id: string; active: boolean }): Promise<Result<object>> {
+const activeSchema = z.object({ id: fields.id(), active: z.boolean({ error: 'invalid' }) });
+
+export async function setAgentActive(actor: Actor, raw: { id: string; active: boolean }): Promise<Result<object>> {
   const admin = requireAdmin(actor);
   if (!admin.ok) return admin;
+  const parsed = parseInput(activeSchema, raw);
+  if (!parsed.ok) return parsed;
+  const input = parsed.data;
   const updated = await db
     .update(agents)
     .set({ active: input.active, updatedAt: new Date() })

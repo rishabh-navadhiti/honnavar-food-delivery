@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
+import { z } from 'zod';
 import { DishFilterControl } from '@/features/browse/components/dish-filter-control';
 import { DishRow } from '@/features/browse/components/dish-row';
 import { KitchenCard } from '@/features/browse/components/kitchen-card';
@@ -12,11 +13,13 @@ import { LocalizedText } from '@/shared/ui/localized-text';
 
 type Props = { searchParams: Promise<{ q?: string | string[] }> };
 
+/** Search text from the URL: a trimmed string of at most 80 characters, anything else is empty. */
+const querySchema = z.string().trim().max(80).catch('');
+
 export default async function SearchPage({ searchParams }: Props) {
   const t = await getTranslations('search');
   const current = await getLocale();
-  const raw = (await searchParams).q;
-  const q = typeof raw === 'string' ? raw.slice(0, 80) : '';
+  const q = querySchema.parse((await searchParams).q);
   const dishFilter = await readDishFilter();
   const now = new Date();
   const results = await searchForCustomer({ q, dishFilter, now, locale: isLocale(current) ? current : 'en' });

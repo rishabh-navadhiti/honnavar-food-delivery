@@ -14,8 +14,8 @@ sign-in surface:
 - **Partners and admins** maintain menus, hours and temporary closures.
 - **Customers** browse, filter and search kitchens and menus in Kannada or English without signing
   in.
-- A **one-step demo reset** loads Honnavar demo data from a replaceable catalogue file. The data is
-  based on real businesses; the current outline stands in until the researched catalogue arrives.
+- A **one-step demo reset** loads Honnavar demo data from a replaceable catalogue file: the
+  researched catalogue of real businesses, with 11 kitchens (9 visible to customers) and 81 dishes.
 
 Technical approach:
 
@@ -52,7 +52,7 @@ client JS; images are resized and lazily loaded; fonts are self-hosted.
 provider-specific beyond PostgreSQL; nothing silently faked.
 
 **Scale/Scope**: Pilot of about 10–30 kitchens and a few hundred dishes. About 25 screens across
-four surfaces. Demo data: 9 kitchens, 1 admin, 3 agents, 1 customer.
+four surfaces. Demo data: 11 kitchens (9 visible to customers), 1 admin, 3 agents, 1 customer.
 
 There are no open `NEEDS CLARIFICATION` items: everything technical is resolved in
 [research.md](./research.md).
@@ -100,6 +100,19 @@ These are small decisions not dictated by the spec. Any can be changed without s
 14. Seed content lives in `seed/catalogue.json`, separate from the seed logic. It has deterministic
     ids, records `menuSource` per kitchen, and an integration test checks its FR-050 to FR-052
     coverage ([R15](./research.md#r15-demo-reset-and-seed)).
+15. Native operating-system controls (time and date pickers, file pickers, on-screen keyboards)
+    follow the device language by design. Principle II applies to text the app renders. The hours
+    editor and new-kitchen form keep native time inputs (T129).
+16. ESLint `react/jsx-no-literals` uses `ignoreProps`, because otherwise it flags every class name.
+    Text props (`aria-label`, `alt`, `placeholder`, `title`) are covered by the T124 parity sweep.
+17. The photo-or-placeholder component is `src/shared/ui/photo.tsx` (T040 named it
+    `placeholder-image.tsx`).
+18. The new-kitchen form sets the same hours every day. Single days are changed afterwards in the
+    hours editor.
+19. `npm run typecheck` runs `next typegen` first, so route and static-image types exist before
+    `tsc`.
+20. The font stack puts Noto Sans before Noto Sans Kannada, so Latin text uses Noto Sans (proper
+    bold weights) and Kannada glyphs fall back to Noto Sans Kannada.
 
 ## Project Structure
 

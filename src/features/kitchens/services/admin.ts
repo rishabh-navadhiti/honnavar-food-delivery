@@ -4,7 +4,8 @@ import { db } from '@/shared/db/client';
 import { dishes, kitchenContacts, kitchenHours, kitchens, kitchenSignins, verifications } from '@/shared/db/schema';
 import { deleteImageIfUnused, storeImage } from '@/shared/images/store';
 import { err, ok, type Result } from '@/shared/result';
-import { parseInput } from '@/shared/validation';
+import { fields, parseInput } from '@/shared/validation';
+import { z } from 'zod';
 import type { Actor } from '../../auth/actor-scope';
 import { WEEKDAYS } from '../domain/hours';
 import { kitchenProfileSchema, signinListSchema, statusSchema, type KitchenProfileInput } from '../admin-schemas';
@@ -96,10 +97,10 @@ export async function updateKitchenProfile(
 ): Promise<Result<object>> {
   const admin = requireAdmin(actor);
   if (!admin.ok) return admin;
-  const profile = parseInput(kitchenProfileSchema, input);
+  const profile = parseInput(kitchenProfileSchema.extend({ kitchenId: fields.id() }), input);
   if (!profile.ok) return profile;
   const p = profile.data;
-  const [existing] = await db.select({ id: kitchens.id }).from(kitchens).where(eq(kitchens.id, input.kitchenId));
+  const [existing] = await db.select({ id: kitchens.id }).from(kitchens).where(eq(kitchens.id, p.kitchenId));
   if (!existing) return err('not_found');
   if (p.pureVeg) {
     const nonVegCount = await db.$count(dishes, and(eq(dishes.kitchenId, input.kitchenId), eq(dishes.isVeg, false)));
@@ -133,6 +134,8 @@ export async function setKitchenPhoto(
 ): Promise<Result<object>> {
   const admin = requireAdmin(actor);
   if (!admin.ok) return admin;
+  const id = parseInput(z.object({ kitchenId: fields.id() }), { kitchenId: input.kitchenId });
+  if (!id.ok) return id;
   const [existing] = await db.select({ photoImageId: kitchens.photoImageId }).from(kitchens).where(eq(kitchens.id, input.kitchenId));
   if (!existing) return err('not_found');
   let photoImageId: string | null = null;

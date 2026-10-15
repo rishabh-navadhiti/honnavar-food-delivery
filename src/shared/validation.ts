@@ -23,6 +23,9 @@ function messageKey(message: string): string {
 
 /** Common field schemas, with error-message keys. */
 export const fields = {
+  /** A record id; anything else fails closed as `invalid`. */
+  id: () => z.uuid({ error: 'invalid' }),
+  optionalId: () => z.uuid({ error: 'invalid' }).nullish(),
   requiredText: (max: number) =>
     z.string({ error: 'required' }).trim().min(1, { error: 'required' }).max(max, { error: 'tooLong' }),
   optionalText: (max: number) =>

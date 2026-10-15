@@ -3,7 +3,8 @@ import { and, eq } from 'drizzle-orm';
 import { db } from '@/shared/db/client';
 import { kitchens, kitchenSignins, sessions } from '@/shared/db/schema';
 import { err, ok, type Result } from '@/shared/result';
-import { parseInput } from '@/shared/validation';
+import { fields, parseInput } from '@/shared/validation';
+import { z } from 'zod';
 import type { Actor } from '../../auth/actor-scope';
 import { signinSchema } from '../admin-schemas';
 import { requireAdmin, signinOwner } from './admin';
@@ -29,9 +30,14 @@ export async function addSignin(
 }
 
 /** Remove a number from the sign-in list and end its partner sessions; the last number stays. */
-export async function removeSignin(actor: Actor, input: { kitchenId: string; signinId: string }): Promise<Result<object>> {
+const removeSchema = z.object({ kitchenId: fields.id(), signinId: fields.id() });
+
+export async function removeSignin(actor: Actor, raw: { kitchenId: string; signinId: string }): Promise<Result<object>> {
   const admin = requireAdmin(actor);
   if (!admin.ok) return admin;
+  const parsed = parseInput(removeSchema, raw);
+  if (!parsed.ok) return parsed;
+  const input = parsed.data;
   const rows = await db.select({ id: kitchenSignins.id }).from(kitchenSignins).where(eq(kitchenSignins.kitchenId, input.kitchenId));
   if (!rows.some((r) => r.id === input.signinId)) return err('not_found');
   if (rows.length <= 1) return err('last_signin');

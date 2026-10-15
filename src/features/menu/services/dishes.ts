@@ -4,7 +4,8 @@ import { db } from '@/shared/db/client';
 import { dishes, kitchens, menuCategories } from '@/shared/db/schema';
 import { deleteImageIfUnused, storeImage } from '@/shared/images/store';
 import { err, ok, type Result } from '@/shared/result';
-import { parseInput } from '@/shared/validation';
+import { fields, parseInput } from '@/shared/validation';
+import { z } from 'zod';
 import type { Actor } from '../../auth/actor-scope';
 import { dishSchema, type DishInput } from '../schemas';
 import { resolveKitchenScope, stampFor } from './scope';
@@ -91,10 +92,17 @@ export async function saveDish(
 }
 
 /** Switch a dish on or off without losing any of its details (FR-034). */
+const refSchema = z.object({ kitchenId: fields.optionalId(), id: fields.id() });
+const availabilitySchema = refSchema.extend({ available: z.boolean({ error: 'invalid' }) });
+const reorderSchema = z.object({ kitchenId: fields.optionalId(), categoryId: fields.id(), ids: z.array(fields.id()) });
+
 export async function setDishAvailable(
   actor: Actor,
-  input: { kitchenId?: string | null; id: string; available: boolean },
+  raw: { kitchenId?: string | null; id: string; available: boolean },
 ): Promise<Result<object>> {
+  const parsed = parseInput(availabilitySchema, raw);
+  if (!parsed.ok) return parsed;
+  const input = parsed.data;
   const scope = resolveKitchenScope(actor, input.kitchenId);
   if (!scope.ok) return scope;
   const updated = await db
@@ -105,7 +113,10 @@ export async function setDishAvailable(
   return updated.length > 0 ? ok({}) : err('not_found');
 }
 
-export async function deleteDish(actor: Actor, input: { kitchenId?: string | null; id: string }): Promise<Result<object>> {
+export async function deleteDish(actor: Actor, raw: { kitchenId?: string | null; id: string }): Promise<Result<object>> {
+  const parsed = parseInput(refSchema, raw);
+  if (!parsed.ok) return parsed;
+  const input = parsed.data;
   const scope = resolveKitchenScope(actor, input.kitchenId);
   if (!scope.ok) return scope;
   const dish = await dishInKitchen(scope.data, input.id);
@@ -118,8 +129,11 @@ export async function deleteDish(actor: Actor, input: { kitchenId?: string | nul
 /** Set the order of all dishes in one category; `ids` must be exactly that set. */
 export async function reorderDishes(
   actor: Actor,
-  input: { kitchenId?: string | null; categoryId: string; ids: string[] },
+  raw: { kitchenId?: string | null; categoryId: string; ids: string[] },
 ): Promise<Result<object>> {
+  const parsed = parseInput(reorderSchema, raw);
+  if (!parsed.ok) return parsed;
+  const input = parsed.data;
   const scope = resolveKitchenScope(actor, input.kitchenId);
   if (!scope.ok) return scope;
   const current = await db

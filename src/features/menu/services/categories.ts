@@ -3,7 +3,8 @@ import { and, eq, max } from 'drizzle-orm';
 import { db } from '@/shared/db/client';
 import { dishes, menuCategories } from '@/shared/db/schema';
 import { err, ok, type Result } from '@/shared/result';
-import { parseInput } from '@/shared/validation';
+import { fields, parseInput } from '@/shared/validation';
+import { z } from 'zod';
 import type { Actor } from '../../auth/actor-scope';
 import { categorySchema } from '../schemas';
 import { resolveKitchenScope, stampFor } from './scope';
@@ -47,20 +48,29 @@ export async function saveCategory(
 }
 
 /** A category that still contains dishes cannot be deleted (FR-033). */
-export async function deleteCategory(actor: Actor, input: Ref): Promise<Result<object>> {
-  const scope = resolveKitchenScope(actor, input.kitchenId);
+const refSchema = z.object({ kitchenId: fields.optionalId(), id: fields.id() });
+const reorderSchema = z.object({ kitchenId: fields.optionalId(), ids: z.array(fields.id()) });
+
+export async function deleteCategory(actor: Actor, raw: Ref): Promise<Result<object>> {
+  const input = parseInput(refSchema, raw);
+  if (!input.ok) return input;
+  const scope = resolveKitchenScope(actor, input.data.kitchenId);
   if (!scope.ok) return scope;
-  if (!(await categoryInKitchen(scope.data, input.id))) return err('not_found');
-  if ((await db.$count(dishes, eq(dishes.categoryId, input.id))) > 0) return err('category_not_empty');
-  await db.delete(menuCategories).where(eq(menuCategories.id, input.id));
+  const id = input.data.id;
+  if (!(await categoryInKitchen(scope.data, id))) return err('not_found');
+  if ((await db.$count(dishes, eq(dishes.categoryId, id))) > 0) return err('category_not_empty');
+  await db.delete(menuCategories).where(eq(menuCategories.id, id));
   return ok({});
 }
 
 /** Set the order of all of a kitchen's categories; `ids` must be exactly that set. */
 export async function reorderCategories(
   actor: Actor,
-  input: { kitchenId?: string | null; ids: string[] },
+  raw: { kitchenId?: string | null; ids: string[] },
 ): Promise<Result<object>> {
+  const parsed = parseInput(reorderSchema, raw);
+  if (!parsed.ok) return parsed;
+  const input = parsed.data;
   const scope = resolveKitchenScope(actor, input.kitchenId);
   if (!scope.ok) return scope;
   const current = await db
