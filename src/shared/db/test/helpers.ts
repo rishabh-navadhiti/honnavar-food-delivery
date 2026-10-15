@@ -242,13 +242,15 @@ export async function makeOrder(
     quantity: 2,
     lineTotal: 120,
   });
-  await db.insert(orderEvents).values({ orderId: order!.id, kind: 'placed', actor: 'customer', at: placedAt });
+  // Events a second apart, so the history has a stable order.
+  const at = (seconds: number) => new Date(placedAt.getTime() + seconds * 1000);
+  await db.insert(orderEvents).values({ orderId: order!.id, kind: 'placed', actor: 'customer', at: at(0) });
   if (agentId) {
-    await db.insert(orderEvents).values({ orderId: order!.id, kind: 'assigned', actor: 'admin', agentId, at: placedAt });
+    await db.insert(orderEvents).values({ orderId: order!.id, kind: 'assigned', actor: 'admin', agentId, at: at(1) });
   }
   if (status !== 'placed') {
     const actor = status === 'cancelled' ? 'admin' : status === 'picked_up' || status === 'delivered' ? 'agent' : 'partner';
-    await db.insert(orderEvents).values({ orderId: order!.id, kind: status, actor, at: placedAt });
+    await db.insert(orderEvents).values({ orderId: order!.id, kind: status, actor, at: at(2) });
   }
   return order!;
 }

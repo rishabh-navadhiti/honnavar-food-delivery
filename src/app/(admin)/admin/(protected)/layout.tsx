@@ -15,6 +15,7 @@ export default async function AdminProtectedLayout({ children }: { children: Rea
           layout="side"
           ariaLabel={t('mainNavigation')}
           items={[
+            { href: '/admin/orders', label: t('kitchenOrders') },
             { href: '/admin/partners', label: t('partners') },
             { href: '/admin/agents', label: t('agents') },
           ]}

@@ -3,6 +3,7 @@ import { getLocale, getTranslations } from 'next-intl/server';
 import { requireAdminKitchen } from '@/features/kitchens/admin-page-helpers';
 import { ClosureControl } from '@/features/kitchens/components/closure-control';
 import { KitchenProfileForm } from '@/features/kitchens/components/admin/kitchen-profile-form';
+import { mapTiles } from '@/shared/maps/tiles';
 import { PhotoForm } from '@/features/kitchens/components/admin/photo-form';
 import { SigninList } from '@/features/kitchens/components/admin/signin-list';
 import { StatusPanel } from '@/features/kitchens/components/admin/status-panel';
@@ -70,7 +71,7 @@ export default async function AdminPartnerPage({ params, searchParams }: Props) 
       </div>
       <Card className="flex flex-col gap-3">
         <h2 className="text-lg font-bold">{t('profileTitle')}</h2>
-        <KitchenProfileForm mode="edit" kitchenId={kitchen.id} profile={{ ...kitchen, contacts }} />
+        <KitchenProfileForm mode="edit" kitchenId={kitchen.id} profile={{ ...kitchen, contacts }} tiles={mapTiles()} />
       </Card>
     </div>
   );

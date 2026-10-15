@@ -31,13 +31,18 @@ export async function saveAgentAction(_previous: AgentFormState, formData: FormD
   redirect('/admin/agents');
 }
 
+/** Switch an agent active or inactive. A refusal (002 FR-036) is shown on the agents list. */
 export async function setAgentActiveAction(formData: FormData): Promise<void> {
   const actor = await currentActor('admin');
   if (!actor) return;
+  const id = formText(formData, 'id');
+  let refusedOrders: string | null = null;
   try {
-    await setAgentActive(actor, { id: formText(formData, 'id'), active: formText(formData, 'active') === 'true' });
+    const result = await setAgentActive(actor, { id, active: formText(formData, 'active') === 'true' });
+    if (!result.ok && result.error.code === 'agent_has_orders') refusedOrders = String(result.error.details?.orderNos ?? '');
   } catch (error) {
     log.error('setAgentActiveAction failed', { action: 'setAgentActiveAction', surface: 'admin', error });
   }
   revalidatePath('/admin/agents');
+  if (refusedOrders !== null) redirect(`/admin/agents?${new URLSearchParams({ refused: id, orders: refusedOrders })}`);
 }

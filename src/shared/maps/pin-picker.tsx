@@ -193,7 +193,7 @@ export function PinPicker({
       ) : null}
 
       <button type="button" onClick={() => goToCurrentLocation(false)} className={buttonClasses('secondary')}>
-        {t('goToCurrentLocation')}
+        {t('useCurrentLocation')}
       </button>
       {locationMessage ? (
         <p role="status" className="text-sm font-medium text-warn">

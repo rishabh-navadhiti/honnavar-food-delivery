@@ -232,3 +232,33 @@ describe('listKitchensForAdmin (FR-024)', () => {
     expect(row).toMatchObject({ id: kitchen.id, primaryPhone: '9000006501' });
   });
 });
+
+describe('kitchen map location and preparation minutes (002 FR-037, FR-057)', () => {
+  it('saves a location and preparation minutes on create and update, and can clear the location', async () => {
+    const admin = await adminActor();
+    const created = await createKitchen(admin, { ...newKitchen, location: { lat: 14.28, lng: 74.4445 }, prepMinutes: 30 });
+    if (!created.ok) throw new Error(JSON.stringify(created.error));
+    const [row] = await db.select().from(kitchens).where(eq(kitchens.id, created.data.id));
+    expect(row).toMatchObject({ locationLat: 14.28, locationLng: 74.4445, prepMinutes: 30 });
+    expect((await updateKitchenProfile(admin, { kitchenId: created.data.id, ...newKitchen, location: null, prepMinutes: 20 })).ok).toBe(true);
+    const [after] = await db.select().from(kitchens).where(eq(kitchens.id, created.data.id));
+    expect(after).toMatchObject({ locationLat: null, locationLng: null, prepMinutes: 20 });
+  });
+
+  it('defaults preparation minutes to 25 and rejects values out of range', async () => {
+    const admin = await adminActor();
+    const created = await createKitchen(admin, newKitchen);
+    if (!created.ok) throw new Error();
+    expect((await db.select().from(kitchens).where(eq(kitchens.id, created.data.id)))[0]!.prepMinutes).toBe(25);
+    for (const [change, field] of [
+      [{ prepMinutes: 4 }, 'prepMinutes'],
+      [{ prepMinutes: 121 }, 'prepMinutes'],
+      [{ location: { lat: 40, lng: 74.4 } }, 'location.lat'],
+      [{ location: { lat: 14.2, lng: 99 } }, 'location.lng'],
+    ] as const) {
+      const result = await createKitchen(admin, { ...newKitchen, signins: [{ phone: '9000005199', personName: 'X' }], ...change });
+      expect(result.ok, field).toBe(false);
+      if (!result.ok) expect(Object.keys(result.error.fieldErrors ?? {}), field).toContain(field);
+    }
+  });
+});

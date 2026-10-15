@@ -71,6 +71,9 @@ export async function createKitchen(actor: Actor, input: CreateInput): Promise<R
         pureVeg: p.pureVeg,
         address: p.address,
         landmark: p.landmark,
+        locationLat: p.location?.lat ?? null,
+        locationLng: p.location?.lng ?? null,
+        prepMinutes: p.prepMinutes ?? 25,
         photoImageId,
         status: 'pending',
         hoursUpdatedByRole: 'admin',
@@ -118,6 +121,8 @@ export async function updateKitchenProfile(
         pureVeg: p.pureVeg,
         address: p.address,
         landmark: p.landmark,
+        ...(p.location !== undefined ? { locationLat: p.location?.lat ?? null, locationLng: p.location?.lng ?? null } : {}),
+        ...(p.prepMinutes !== undefined ? { prepMinutes: p.prepMinutes } : {}),
         updatedAt: new Date(),
       })
       .where(eq(kitchens.id, input.kitchenId));

@@ -3,5 +3,5 @@ import { requireSession } from '@/features/auth/session';
 
 export default async function AdminHomePage() {
   await requireSession('admin');
-  redirect('/admin/partners');
+  redirect('/admin/orders');
 }

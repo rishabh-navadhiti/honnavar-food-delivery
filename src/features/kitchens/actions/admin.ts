@@ -39,6 +39,12 @@ function readProfile(formData: FormData) {
       phone: formText(formData, `contact${n}`),
       isPrimary: primary === String(n),
     })),
+    // 002 FR-037, FR-057: the map pin and preparation minutes.
+    location:
+      formText(formData, 'locationLat') && formText(formData, 'locationLng')
+        ? { lat: Number(formText(formData, 'locationLat')), lng: Number(formText(formData, 'locationLng')) }
+        : undefined,
+    prepMinutes: formText(formData, 'prepMinutes').trim() ? Number(formText(formData, 'prepMinutes')) : undefined,
   };
 }
 

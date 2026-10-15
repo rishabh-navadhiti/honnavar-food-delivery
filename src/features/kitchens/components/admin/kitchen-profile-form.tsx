@@ -1,10 +1,12 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/shared/ui/button';
 import { CheckboxField, SelectField, TextAreaField, TextField } from '@/shared/ui/field';
 import { FormError, SavedMessage } from '@/shared/ui/form-message';
+import type { MapTiles } from '@/shared/maps/config';
+import { PinPicker } from '@/shared/maps/pin-picker';
 import { useErrorText } from '@/shared/ui/use-error-text';
 import { createKitchenAction, updateKitchenProfileAction, type AdminFormState } from '../../actions/admin';
 
@@ -18,12 +20,16 @@ export type ProfileValues = {
   address: string;
   landmark: string;
   contacts: { phone: string; isPrimary: boolean }[];
+  locationLat: number | null;
+  locationLng: number | null;
+  prepMinutes: number;
 };
 
 const ROWS = [1, 2, 3];
 
 function initialValues(profile?: ProfileValues): Record<string, string> {
-  if (!profile) return { type: 'restaurant', primaryContact: '1', opens1: '11:00', closes1: '15:00', opens2: '18:00', closes2: '22:00' };
+  if (!profile)
+    return { type: 'restaurant', primaryContact: '1', opens1: '11:00', closes1: '15:00', opens2: '18:00', closes2: '22:00', prepMinutes: '25' };
   const values: Record<string, string> = {
     nameEn: profile.nameEn ?? '',
     nameKn: profile.nameKn ?? '',
@@ -33,7 +39,12 @@ function initialValues(profile?: ProfileValues): Record<string, string> {
     address: profile.address,
     landmark: profile.landmark,
     primaryContact: String(Math.max(1, profile.contacts.findIndex((c) => c.isPrimary) + 1)),
+    prepMinutes: String(profile.prepMinutes),
   };
+  if (profile.locationLat !== null && profile.locationLng !== null) {
+    values.locationLat = String(profile.locationLat);
+    values.locationLng = String(profile.locationLng);
+  }
   if (profile.pureVeg) values.pureVeg = 'on';
   profile.contacts.slice(0, 3).forEach((c, i) => (values[`contact${i + 1}`] = c.phone));
   return values;
@@ -43,7 +54,17 @@ function initialValues(profile?: ProfileValues): Record<string, string> {
  * Create a kitchen (mode "create": also sign-in list, daily hours and photo) or edit the
  * admin-managed profile (FR-019). Keeps entered values after a failed save (FR-048).
  */
-export function KitchenProfileForm({ mode, kitchenId, profile }: { mode: 'create' | 'edit'; kitchenId?: string; profile?: ProfileValues }) {
+export function KitchenProfileForm({
+  mode,
+  kitchenId,
+  profile,
+  tiles,
+}: {
+  mode: 'create' | 'edit';
+  kitchenId?: string;
+  profile?: ProfileValues;
+  tiles: MapTiles;
+}) {
   const t = useTranslations();
   const [state, formAction, pending] = useActionState<AdminFormState, FormData>(
     mode === 'create' ? createKitchenAction : updateKitchenProfileAction,
@@ -51,6 +72,8 @@ export function KitchenProfileForm({ mode, kitchenId, profile }: { mode: 'create
   );
   const values = state.values ?? initialValues(profile);
   const errors = useErrorText(state.error);
+  const savedPoint = values.locationLat && values.locationLng ? { lat: Number(values.locationLat), lng: Number(values.locationLng) } : null;
+  const [point, setPoint] = useState<{ lat: number; lng: number } | null>(savedPoint);
 
   return (
     <form action={formAction} key={JSON.stringify(values)} className="grid gap-4 md:grid-cols-2" noValidate>
@@ -71,6 +94,32 @@ export function KitchenProfileForm({ mode, kitchenId, profile }: { mode: 'create
       </div>
       <TextField name="landmark" label={t('admin.landmark')} hint={t('admin.landmarkHint')} defaultValue={values.landmark} maxLength={100} error={errors.field('landmark')} />
       <TextField name="address" label={t('admin.address')} defaultValue={values.address} maxLength={200} error={errors.field('address')} />
+      <TextField
+        name="prepMinutes"
+        type="number"
+        inputMode="numeric"
+        min={5}
+        max={120}
+        label={t('kitchenForm.prepMinutes')}
+        hint={t('kitchenForm.prepMinutesHint')}
+        defaultValue={values.prepMinutes}
+        error={errors.field('prepMinutes')}
+      />
+
+      <fieldset className="flex flex-col gap-2 md:col-span-2">
+        <legend className="text-base font-bold">{t('kitchenForm.location')}</legend>
+        <p className="text-sm text-muted">{t('kitchenForm.locationHelp')}</p>
+        <input type="hidden" name="locationLat" value={point?.lat ?? ''} />
+        <input type="hidden" name="locationLng" value={point?.lng ?? ''} />
+        <div className="max-w-xl">
+          <PinPicker tiles={tiles} initial={savedPoint} onChange={(picked) => setPoint({ lat: picked.lat, lng: picked.lng })} />
+        </div>
+        {errors.field('location') ? (
+          <p role="alert" className="text-sm font-medium text-danger">
+            {errors.field('location')}
+          </p>
+        ) : null}
+      </fieldset>
 
       <fieldset className="flex flex-col gap-2 md:col-span-2">
         <legend className="text-base font-bold">{t('admin.contactsTitle')}</legend>

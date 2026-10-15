@@ -125,7 +125,8 @@
     "notReady": "The kitchen is still preparing this order.",
     "cashNotConfirmed": "Please confirm the cash you collected.",
     "agentHasOrders": "This agent still has orders to deliver: {orderNos}. Reassign or finish them first.",
-    "noteRequired": "Please write a short note."
+    "noteRequired": "Please write a short note.",
+    "prepMinutesRange": "Enter between 5 and 120 minutes."
   },
   "surface": {
     "customer": "Order food in Honnavar",
@@ -641,5 +642,44 @@
     "delivered": "Delivered",
     "deliveredValue": "Food value delivered",
     "empty": "No orders today yet"
+  },
+  "dispatch": {
+    "title": "Dispatch board",
+    "findLabel": "Find order by number",
+    "find": "Find",
+    "notFound": "No order with number {no}",
+    "noAgents": "No other active delivery agents",
+    "assignTo": "Assign to",
+    "reassignTo": "Reassign to",
+    "agentOption": "{name} · {count, plural, =0 {free} one {# undelivered} other {# undelivered}}",
+    "assign": "Assign",
+    "reassign": "Reassign",
+    "minutesAgo": "{minutes, plural, =0 {just now} one {# min ago} other {# min ago}}",
+    "agent": "Agent: {name}",
+    "none": "None"
+  },
+  "adminOrder": {
+    "cancel": "Cancel order",
+    "cancelReason": "Why is this order being cancelled?",
+    "cancelNote": "Short note",
+    "confirmCancel": "Cancel this order",
+    "actor": {
+      "customer": "Customer",
+      "partner": "Kitchen",
+      "agent": "Delivery agent",
+      "admin": "Admin",
+      "system": "System (automatic)"
+    },
+    "agentChange": "{from} → {to}",
+    "customer": "Customer",
+    "agentTitle": "Delivery agent",
+    "noAgent": "No agent assigned yet",
+    "history": "History"
+  },
+  "kitchenForm": {
+    "prepMinutes": "Preparation minutes",
+    "prepMinutesHint": "Usual time to prepare an order (5–120). Used for the expected delivery time.",
+    "location": "Map location",
+    "locationHelp": "Move the map so the pin is on the kitchen. Customers and agents see this location."
   }
 }

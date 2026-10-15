@@ -52,6 +52,9 @@
     "orderPage",
     "partnerOrders",
     "alert",
-    "dayView"
+    "dayView",
+    "dispatch",
+    "adminOrder",
+    "kitchenForm"
   ]
 }

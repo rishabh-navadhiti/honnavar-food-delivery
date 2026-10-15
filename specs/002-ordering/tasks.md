@@ -412,17 +412,17 @@ cancel another order with a reason, and fail to deactivate the agent holding `re
 
 ### Tests for User Story 3
 
-- [ ] T071 [P] [US3] Write failing integration tests `src/features/orders/services/admin.int.test.ts`:
+- [X] T071 [P] [US3] Write failing integration tests `src/features/orders/services/admin.int.test.ts`:
   - `assignAgent`: only active agents (`agent_inactive`); `not_assignable { status }` for `placed`, `picked_up` and final statuses; `same_agent`; the first assignment writes `assigned` with messages to the kitchen and the agent; a reassignment writes `reassigned` with `previous_agent_id`, `agent_unassigned` to the previous agent and `agent_assigned` to the new one;
   - `assignAgent` racing the agent's `markPickedUp`: exactly one wins;
   - `cancelOrderByAdmin`: reasons `customer_request | kitchen_issue | no_agent | delivery_problem | other`, with a note required for `other`; it works from every non-final status, and a final status gives `order_moved_on`; messages go to the customer, the kitchen and the agent if any.
-- [ ] T072 [P] [US3] Extend `src/features/agents/services/agents.int.test.ts`: `setAgentActive(false)` returns `agent_has_orders { orderNos }` while the agent holds a non-final order, and succeeds once the order is delivered.
-- [ ] T073 [P] [US3] Write failing integration tests `src/features/orders/admin-queries.int.test.ts`:
+- [X] T072 [P] [US3] Extend `src/features/agents/services/agents.int.test.ts`: `setAgentActive(false)` returns `agent_has_orders { orderNos }` while the agent holds a non-final order, and succeeds once the order is delivered.
+- [X] T073 [P] [US3] Write failing integration tests `src/features/orders/admin-queries.int.test.ts`:
   - `getDispatchBoard(now)` groups orders by `dispatchGroup`, including unfinished orders from earlier days and finished orders only from today, and lists active agents with their undelivered counts;
   - `getAdminOrder` returns the customer name and phone, the address snapshot, and events in time order with actor and phone;
   - `findOrderByNumber(1042)` returns the id or null.
-- [ ] T074 [P] [US3] Extend `src/features/kitchens/services/admin.int.test.ts`: `createKitchen` and `updateKitchenProfile` accept `location` (lat 6–37, lng 68–98, or null to clear) and `prepMinutes` (int 5–120), and reject values outside those ranges with field errors.
-- [ ] T075 [P] [US3] Write the end-to-end test `e2e/ordering-us3-dispatch.spec.ts` (desktop), after `resetDemoData()`:
+- [X] T074 [P] [US3] Extend `src/features/kitchens/services/admin.int.test.ts`: `createKitchen` and `updateKitchenProfile` accept `location` (lat 6–37, lng 68–98, or null to clear) and `prepMinutes` (int 5–120), and reject values outside those ranges with field errors.
+- [X] T075 [P] [US3] Write the end-to-end test `e2e/ordering-us3-dispatch.spec.ts` (desktop), after `resetDemoData()`:
   - the board shows `needsAgentOrder()`'s number under "Needs agent" and `placedOrder()`'s under "Waiting for kitchen";
   - assign the first of `activeAgents()`, and the order moves to "Assigned" with that agent; reassign it to the second, and the history shows both;
   - cancel `placedOrder()` with "Other" and a note, and it appears under "Finished" as cancelled with the note;
@@ -431,20 +431,20 @@ cancel another order with a reason, and fail to deactivate the agent holding `re
 
 ### Implementation for User Story 3
 
-- [ ] T076 [US3] Implement `src/features/orders/services/admin.ts` (`assignAgent`, `cancelOrderByAdmin` over `applyTransition`) to pass T071, plus `src/features/orders/actions/admin.ts`
-- [ ] T077 [US3] Add the deactivation guard to `setAgentActive` in `src/features/agents/services/agents.ts` to pass T072, and show `agent_has_orders` with the order numbers in `src/features/agents/components/agent-form.tsx`
-- [ ] T078 [US3] Implement `getDispatchBoard`, `getAdminOrder` and `findOrderByNumber` in `src/features/orders/admin-queries.ts` (`server-only`; lazy expiry over all orders) to pass T073
-- [ ] T079 [P] [US3] Create the admin components in `src/features/orders/components/`:
+- [X] T076 [US3] Implement `src/features/orders/services/admin.ts` (`assignAgent`, `cancelOrderByAdmin` over `applyTransition`) to pass T071, plus `src/features/orders/actions/admin.ts`
+- [X] T077 [US3] Add the deactivation guard to `setAgentActive` in `src/features/agents/services/agents.ts` to pass T072, and show `agent_has_orders` with the order numbers in `src/features/agents/components/agent-form.tsx`
+- [X] T078 [US3] Implement `getDispatchBoard`, `getAdminOrder` and `findOrderByNumber` in `src/features/orders/admin-queries.ts` (`server-only`; lazy expiry over all orders) to pass T073
+- [X] T079 [P] [US3] Create the admin components in `src/features/orders/components/`:
   - `dispatch-board.tsx` (five columns; cards with number, kitchen, delivery landmark, amount, payment label, minutes since placing, agent);
   - `assign-agent-form.tsx` (a select of active agents, each with "{n} undelivered"; Assign or Reassign);
   - `admin-cancel-form.tsx` (the five reasons, with the note required for "other");
   - `order-history.tsx` (every event with actor role, phone and time; reasons and notes).
-- [ ] T080 [US3] Create `src/app/(admin)/admin/(protected)/orders/page.tsx` (board; polls with `<UpdatedAt />`; `?no=` redirects to the order or shows "not found"; links the five groups) and `src/app/(admin)/admin/(protected)/orders/[id]/page.tsx` (polls with `<UpdatedAt />`; full detail, history, assign and cancel forms, voice-note player); change `src/app/(admin)/admin/(protected)/page.tsx` to redirect to `/admin/orders`, and add "Orders" first in the admin navigation
-- [ ] T081 [US3] Add location and preparation minutes to the admin kitchen form:
+- [X] T080 [US3] Create `src/app/(admin)/admin/(protected)/orders/page.tsx` (board; polls with `<UpdatedAt />`; `?no=` redirects to the order or shows "not found"; links the five groups) and `src/app/(admin)/admin/(protected)/orders/[id]/page.tsx` (polls with `<UpdatedAt />`; full detail, history, assign and cancel forms, voice-note player); change `src/app/(admin)/admin/(protected)/page.tsx` to redirect to `/admin/orders`, and add "Orders" first in the admin navigation
+- [X] T081 [US3] Add location and preparation minutes to the admin kitchen form:
   - extend `src/features/kitchens/admin-schemas.ts` and the `createKitchen` and `updateKitchenProfile` services to pass T074;
   - add the pin picker (T052, reused) and a "Preparation minutes" number input (5–120) to `src/features/kitchens/components/admin/kitchen-profile-form.tsx` and the new-kitchen page.
-- [ ] T082 [US3] Update 001 end-to-end tests that relied on `/admin` opening the partner list, in `e2e/us4-admin.spec.ts`, to navigate to `/admin/partners` explicitly, and confirm all 001 e2e specs still pass
-- [ ] T083 [US3] Add the US3 message keys (`dispatch.*`, `adminOrder.*`, `agents.hasOrders`, `kitchenForm.location`, `kitchenForm.prepMinutes`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
+- [X] T082 [US3] Update 001 end-to-end tests that relied on `/admin` opening the partner list, in `e2e/us4-admin.spec.ts`, to navigate to `/admin/partners` explicitly, and confirm all 001 e2e specs still pass
+- [X] T083 [US3] Add the US3 message keys (`dispatch.*`, `adminOrder.*`, `agents.hasOrders`, `kitchenForm.location`, `kitchenForm.prepMinutes`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
 
 **Checkpoint**: US3 works on its own. T071–T075 pass. Commit with task ids.
 

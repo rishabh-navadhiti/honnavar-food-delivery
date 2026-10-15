@@ -89,6 +89,7 @@ test('a customer adds a map-pinned address with a voice note at checkout', async
   await expect(page).toHaveURL('/addresses/new?next=/cart');
 
   // Step 1: search a place, check the address under the pin, continue (FR-053).
+  await expect(page.getByRole('button', { name: 'Use my current location' })).toBeVisible();
   await page.getByLabel('Search for a place').fill('bus');
   await page.getByRole('button', { name: 'Search', exact: true }).click();
   await page.getByRole('list', { name: 'Places found' }).getByRole('button').first().click();

@@ -49,6 +49,8 @@ export default defineConfig({
       DEMO_OTP_CODE: process.env.DEMO_OTP_CODE ?? '123456',
       // e2e never calls the public geocoder (research R7).
       GEOCODING_PROVIDER: 'stand-in',
+      // Map tiles point at a closed local port, so no e2e run ever loads the public tile server.
+      MAP_TILE_URL: 'http://127.0.0.1:9/{z}/{x}/{y}.png',
       // The test runner sets --conditions=react-server; the Next.js server must not inherit it.
       NODE_OPTIONS: '',
     },
