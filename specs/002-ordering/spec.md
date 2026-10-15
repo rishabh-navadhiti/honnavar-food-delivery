@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-15
 
-**Status**: Draft
+**Status**: Approved
 
 **Input**: User description: "Ordering: a customer can order from one kitchen and every role sees the
 same order move through its lifecycle. First demo milestone: customer places, partner accepts,
@@ -89,10 +89,12 @@ the placed order.
    required field is blocked with a message on that field.
 10. **Given** a customer with several saved addresses, **When** they reach checkout, **Then** the
     address used last is preselected and they can pick another or add a new one.
-11. **Given** checkout with cash on delivery chosen, **When** the customer taps "Place order",
+11. **Given** checkout with cash on delivery selected (preselected on a first order or when the
+    last order used it), **When** the customer taps "Place order",
     **Then** the order is placed with status "Placed" and the customer sees the order page with an
     "Expected by" time.
-12. **Given** checkout with UPI chosen, **When** the customer taps "Place order", **Then** a
+12. **Given** checkout with UPI selected (preselected when the last order used it, or chosen by the
+    customer), **When** the customer taps "Place order", **Then** a
     confirmation sheet shows the amount and states that this is a demo and nothing will be charged;
     confirming places the order marked "Paid by UPI (demo)", and closing the sheet returns to
     checkout without placing anything.
@@ -411,7 +413,9 @@ available dishes at current prices.
   address; with none saved they are guided to add one (FR-053 to FR-056).
 - **FR-009**: Checkout MUST preselect the address used for the customer's last order (or the only
   one) and allow choosing another or adding one.
-- **FR-010**: Customers MUST choose UPI or cash on delivery for each order.
+- **FR-010**: Customers MUST choose UPI or cash on delivery for each order. Checkout MUST preselect
+  the payment method used on the customer's last order, defaulting to cash on delivery for a first
+  order, so a returning customer can place an order without changing it (SC-001).
 - **FR-011**: UPI is a declared stand-in: choosing it MUST show a confirmation sheet with the amount
   and a statement that this is a demo and nothing will be charged; confirming MUST always succeed
   and place the order marked as paid by UPI (demo); dismissing MUST return to checkout without
@@ -435,11 +439,13 @@ available dishes at current prices.
   agent can be assigned at any time from acceptance until pickup, independent of the kitchen's
   progress, and pickup requires both an assigned agent and status Ready.
 - **FR-017**: Allowed transitions MUST be: Placed → Accepted or Rejected (partner), Rejected
-  (automatically, per FR-020) or Cancelled (customer or admin); Accepted → Preparing (partner); Preparing → Ready (partner); Ready → Picked
-  up (the assigned agent); Picked up → Delivered (the assigned agent); any status except Delivered,
-  Rejected and Cancelled → Cancelled (admin). Every other change MUST be refused.
+  (automatically, per FR-020) or Cancelled (customer or admin); Accepted → Preparing (partner);
+  Preparing → Ready (partner); Ready → Picked up (the assigned agent); Picked up → Delivered (the
+  assigned agent); any status except Delivered, Rejected and Cancelled → Cancelled (admin). Every
+  other change MUST be refused.
 - **FR-018**: Every status change, assignment and reassignment MUST record who made it (customer,
-  partner sign-in number, agent, admin, or the system for automatic rejection) and when, and this history MUST be visible to admins.
+  partner sign-in number, agent, admin, or the system for automatic rejection) and when, and this
+  history MUST be visible to admins.
   Customers see each step's time; partners and agents see the current status and its time.
 - **FR-019**: Rejection MUST require a reason from a fixed list (kitchen too busy, item not
   available, kitchen closing, other); "other" requires a short note. Admin cancellation MUST require
@@ -449,7 +455,9 @@ available dishes at current prices.
 - **FR-020**: A partner MUST respond to a placed order within an acceptance window (a deployment
   setting; 10 minutes for the demo) and the partner screen MUST show the time left. When the window
   passes without a response, the order MUST be rejected automatically with the reason "Kitchen did
-  not respond", recorded as made by the system, and the customer told as for any rejection.
+  not respond", recorded as made by the system, and the customer told as for any rejection. The
+  automatic rejection takes effect no later than the next time any screen loads or lists the order
+  after the window has ended, and is recorded at that moment; no background process is required.
 - **FR-021**: When two actions on the same order race, the first MUST win and the second MUST be
   refused with a message showing the order's current status.
 - **FR-022**: Status changes MUST appear on every open screen that shows the order (customer order
@@ -645,9 +653,10 @@ expected delivery time):
   street or area line, landmark, optional rider note, optional landmark voice note, label (Home,
   Work or Other), map location, and the address text found under the pin when it was saved.
 - **Order**: order number; customer; kitchen; delivery address snapshot (house, street or area,
-  landmark, label, rider note, map location, voice note); expected delivery time; payment method (UPI demo or cash on delivery); item total, delivery fee, grand
-  total; current status; assigned agent (optional); rejection or cancellation reason and note;
-  cash collected (cash orders, on delivery); placed time.
+  landmark, label, rider note, map location, voice note); expected delivery time; payment method
+  (UPI demo or cash on delivery); item total, delivery fee, grand total; current status; assigned
+  agent (optional); rejection or cancellation reason and note; cash collected (cash orders, on
+  delivery); placed time.
 - **Order item**: belongs to an order; the dish it came from; dish name pair, veg mark and price as
   at placing; quantity; line amount.
 - **Order event**: belongs to an order; what happened (status change, assignment, reassignment),
