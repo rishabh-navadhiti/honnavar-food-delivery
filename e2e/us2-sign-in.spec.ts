@@ -7,7 +7,7 @@ test.beforeAll(resetDemoData);
 
 test('a new customer signs in with any mobile number', async ({ page }) => {
   await page.goto('/login');
-  await expect(page.getByTestId('demo-code-notice')).toBeVisible();
+  await expect(page.getByTestId('demo-otp')).toHaveText(`OTP: ${process.env.DEMO_OTP_CODE ?? '123456'}`);
   await signIn(page, '/login', '9123456780');
   await page.goto('/account');
   await expect(page.getByText('91234 56780')).toBeVisible();

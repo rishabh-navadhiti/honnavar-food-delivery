@@ -40,6 +40,10 @@ test('a guest builds a one-kitchen cart, signs in at checkout and pays by UPI (d
   await page.getByRole('button', { name: 'Keep my cart' }).click();
   await expect(page.getByTestId('header-cart')).toContainText('3');
 
+  // The cart bar also shows on the home screen while the cart has items.
+  await page.goto('/');
+  await expect(page.getByTestId('cart-bar')).toContainText('3 items');
+
   // The cart shows the bill: item total + flat fee = grand total (FR-003).
   await page.getByTestId('header-cart').click();
   await expect(page).toHaveURL('/cart');

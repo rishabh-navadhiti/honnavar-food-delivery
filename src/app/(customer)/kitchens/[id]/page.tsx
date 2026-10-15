@@ -12,9 +12,8 @@ import { MenuSection } from '@/features/browse/components/menu-section';
 import { readDishFilter } from '@/features/browse/dish-filter-cookie';
 import { getKitchenForCustomer } from '@/features/browse/queries';
 import { AddToCart } from '@/features/cart/components/add-to-cart';
-import { CartBar } from '@/features/cart/components/cart-bar';
+import { CurrentCartBar } from '@/features/cart/components/cart-bar';
 import { readCart } from '@/features/cart/cookie';
-import { getCartView } from '@/features/orders/queries';
 import { etaRange } from '@/features/orders/domain/eta';
 import { env } from '@/shared/env';
 import { isLocale } from '@/shared/i18n/config';
@@ -55,7 +54,6 @@ export default async function KitchenPage({ params }: Props) {
   const dishFilter = await readDishFilter();
   const returnTo = `/kitchens/${kitchen.id}`;
   const cart = await readCart();
-  const cartView = await getCartView(cart, null, now);
   const qtyOf = (dishId: string) => (cart?.kitchenId === kitchen.id ? (cart.lines.find((l) => l.dishId === dishId)?.qty ?? 0) : 0);
   const open = kitchen.state.kind === 'open';
   const eta = etaRange(kitchen.prepMinutes, env.DELIVERY_MINUTES);
@@ -141,7 +139,7 @@ export default async function KitchenPage({ params }: Props) {
           <EmptyState title={t('kitchen.menuComingSoon')} />
         )}
       </section>
-      {cartView ? <CartBar count={cartView.lines.reduce((n, l) => n + l.qty, 0)} itemTotal={cartView.bill.itemTotal} /> : null}
+      <CurrentCartBar />
     </article>
   );
 }

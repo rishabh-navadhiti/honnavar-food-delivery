@@ -188,14 +188,13 @@
     "codeSentTo": "Enter the code for {phone}.",
     "codeLabel": "6-digit code",
     "signIn": "Sign in",
-    "changeNumber": "Change number",
-    "demoNotice": "Demo: no SMS is sent. Use the demo code."
+    "changeNumber": "Change number"
   },
   "account": {
     "title": "My account",
     "phone": "Mobile number",
     "displayName": "Your name",
-    "displayNameHint": "Optional. Helps the kitchen recognise you.",
+    "displayNameHint": "Optional. Helps the delivery agent recognise you.",
     "saveName": "Save name",
     "nameSaved": "Name saved",
     "linksTitle": "More",
@@ -423,11 +422,7 @@
   },
   "demo": {
     "title": "Demo only",
-    "body": "Shown only in demo deployments. No SMS is sent: every account uses the code {code}.",
-    "accounts": "Demo accounts",
-    "customerHint": "Any 10-digit mobile number also works for customers.",
-    "inactive": "inactive",
-    "none": "No accounts for this app yet."
+    "otp": "OTP: {code}"
   },
   "orderStatus": {
     "placed": "Placed",

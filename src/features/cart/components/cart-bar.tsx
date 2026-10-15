@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { isLocale } from '@/shared/i18n/config';
 import { formatPrice } from '@/shared/i18n/format';
+import { getCartView } from '@/features/orders/queries';
+import { readCart } from '../cookie';
 
 /** Sticky summary at the bottom of the kitchen page: item count and item total, one tap to the cart. */
 export async function CartBar({ count, itemTotal }: { count: number; itemTotal: number }) {
@@ -27,4 +29,11 @@ export async function CartBar({ count, itemTotal }: { count: number; itemTotal: 
       </Link>
     </div>
   );
+}
+
+/** The cart bar for the device's current cart, wherever a customer browses (home and kitchen pages). */
+export async function CurrentCartBar() {
+  const view = await getCartView(await readCart(), null, new Date());
+  if (!view) return null;
+  return <CartBar count={view.lines.reduce((n, l) => n + l.qty, 0)} itemTotal={view.bill.itemTotal} />;
 }

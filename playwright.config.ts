@@ -11,6 +11,9 @@ import { defineConfig, devices } from '@playwright/test';
 
 if (existsSync('.env.local')) loadEnvFile('.env.local');
 
+// Its own port, so a dev server on :3000 is never reused for e2e runs.
+const E2E_PORT = 3100;
+
 export default defineConfig({
   testDir: 'e2e',
   workers: 1,
@@ -18,7 +21,7 @@ export default defineConfig({
   retries: 0,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: `http://localhost:${E2E_PORT}`,
     trace: 'retain-on-failure',
   },
   projects: [
@@ -41,10 +44,11 @@ export default defineConfig({
   ],
   webServer: {
     command: 'npm run build && npm run demo:reset && npm run start',
-    port: 3000,
+    port: E2E_PORT,
     timeout: 300_000,
     reuseExistingServer: !process.env.CI,
     env: {
+      PORT: String(E2E_PORT),
       DEMO_MODE: 'true',
       DEMO_OTP_CODE: process.env.DEMO_OTP_CODE ?? '123456',
       // e2e never calls the public geocoder (research R7).

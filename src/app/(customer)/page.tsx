@@ -7,6 +7,7 @@ import { KitchenCard } from '@/features/browse/components/kitchen-card';
 import { SearchBox } from '@/features/browse/components/search-box';
 import { readDishFilter } from '@/features/browse/dish-filter-cookie';
 import { listKitchensForCustomer } from '@/features/browse/queries';
+import { CurrentCartBar } from '@/features/cart/components/cart-bar';
 import { isLocale } from '@/shared/i18n/config';
 import { EmptyState } from '@/shared/ui/empty-state';
 
@@ -59,6 +60,7 @@ export default async function HomePage({ searchParams }: Props) {
           ))}
         </ul>
       )}
+      <CurrentCartBar />
     </div>
   );
 }
