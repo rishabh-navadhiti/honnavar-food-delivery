@@ -4,6 +4,7 @@ import { clearCartAction } from '@/features/cart/actions';
 import { BillSummary } from '@/features/cart/components/bill-summary';
 import { CartLines } from '@/features/cart/components/cart-lines';
 import { CheckoutForm } from '@/features/cart/components/checkout-form';
+import { RefreshIfStale } from '@/features/cart/components/refresh-if-stale';
 import { readCart } from '@/features/cart/cookie';
 import { getCartView } from '@/features/orders/queries';
 import { isLocale } from '@/shared/i18n/config';
@@ -20,6 +21,9 @@ import { BackLink } from '@/shared/ui/back-link';
  */
 type Props = { searchParams: Promise<{ leftOut?: string }> };
 
+/** Always rendered from the current cart cookie, never from a cache (follow-up fix). */
+export const dynamic = 'force-dynamic';
+
 export default async function CartPage({ searchParams }: Props) {
   const { leftOut } = await searchParams;
   const leftOutCount = Number.parseInt(leftOut ?? '', 10);
@@ -27,7 +31,8 @@ export default async function CartPage({ searchParams }: Props) {
   const current = await getLocale();
   const locale = isLocale(current) ? current : 'en';
   const session = await getOptionalSession('customer');
-  const view = await getCartView(await readCart(), session?.subjectId ?? null, new Date());
+  const now = new Date();
+  const view = await getCartView(await readCart(), session?.subjectId ?? null, now);
 
   if (!view || view.lines.length === 0) {
     return (
@@ -45,6 +50,7 @@ export default async function CartPage({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col gap-5">
+      <RefreshIfStale renderedAt={now.getTime()} />
       <BackLink href={`/kitchens/${view.kitchen.id}`} label={t('backLinks.kitchen')} />
       <h1 className="text-2xl font-bold">{t('cart.title')}</h1>
       <p className="text-base font-semibold">

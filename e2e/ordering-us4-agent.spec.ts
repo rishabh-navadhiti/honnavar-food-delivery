@@ -5,19 +5,17 @@ import { signIn } from './sign-in';
 
 test.beforeAll(resetDemoData);
 
-const rupees = (n: number) => `₹${n.toLocaleString('en-IN')}`;
-
 test('an agent opens both locations in maps, picks up, delivers and collects cash', async ({ page }) => {
   const ready = readyOrder();
   const agent = ready.agent!;
   await signIn(page, '/agent/login', agent.phone);
 
-  // Today's totals include the seeded cash delivery (FR-044).
-  await expect(page.getByTestId('today-deliveries')).toHaveText('1');
-  const delivered = deliveredOrder();
-  expect(delivered.agent!.id).toBe(agent.id);
+  // Today's totals (FR-044). The seeded cash delivery counts as today's except just after IST
+  // midnight (documented reset edge), so compare before and after rather than fixing a number.
+  expect(deliveredOrder().agent!.id).toBe(agent.id);
+  await expect(page.getByTestId('today-deliveries')).toBeVisible();
+  const deliveriesBefore = Number(await page.getByTestId('today-deliveries').textContent());
   const cashBefore = await page.getByTestId('today-cash').textContent();
-  expect(cashBefore).not.toBe(rupees(0));
 
   // The Ready order is listed; its page has calls and two map links (FR-040, FR-041).
   await page.locator(`[data-testid="agent-order"][data-order-no="${ready.orderNo}"]`).click();
@@ -37,6 +35,6 @@ test('an agent opens both locations in maps, picks up, delivers and collects cas
   await expect(page.getByText('Delivered. Thank you!')).toBeVisible();
 
   await page.getByRole('link', { name: 'My deliveries' }).click();
-  await expect(page.getByTestId('today-deliveries')).toHaveText('2');
+  await expect(page.getByTestId('today-deliveries')).toHaveText(String(deliveriesBefore + 1));
   await expect(page.getByTestId('today-cash')).not.toHaveText(cashBefore!);
 });
