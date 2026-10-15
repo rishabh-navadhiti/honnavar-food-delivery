@@ -3,9 +3,9 @@
     "Seed catalogue for the Honnavar Food Delivery POC. Six kitchens are real Honnavar businesses with menus transcribed from printed menu photos (menuSource: researched); the rest are fabricated or have fabricated menus (menuSource: fabricated), see each sourceNote.",
     "All phone numbers are fictional demo numbers in the 90000xxxxx block; no real business numbers are stored.",
     "FSSAI references and hygiene-check references are fictional.",
-    "All Kannada text (names, categories, dishes, descriptions) is machine-drafted and pending native review, except 'ಉಡುಪಿಯವರ ಪಿಂಗಾರ ಢಾಬಾ' which is printed on the restaurant's own menu, and dish spellings ನೀರ್ ದೋಸೆ, ಪತ್ರೋಡೆ, ಗೋಳಿ ಬಜೆ, ತಂಬುಳಿ, ಹೋಳಿಗೆ, ಕಡುಬು, ಮೀನೂಟ which were checked against Kannada sources.",
     "Prices are as printed in Oct 2026 where researched; seasonal seafood and unprinted items are indicative.",
-    "Images are AI-generated illustrations of the dishes, not photographs from the businesses."
+    "Images are AI-generated illustrations of the dishes, not photographs from the businesses.",
+    "All Kannada text was machine-drafted, then revised on 2026-10-15 by comparing three model translations against a glossary (planning/translation/GLOSSARY.md); still pending native-speaker review. 'ಉಡುಪಿಯವರ ಪಿಂಗಾರ ಢಾಬಾ' is printed on the restaurant's own menu."
   ],
   "admins": [
     {
@@ -55,7 +55,7 @@
       },
       "description": {
         "en": "Seafood specialist by the Sharavathi: fish thalis, fresh catch fried to order, ghee roasts.",
-        "kn": "ಶರಾವತಿ ತೀರದ ಸೀಫುಡ್ ವಿಶೇಷ ಹೋಟೆಲ್: ಮೀನೂಟ, ತಾಜಾ ಮೀನಿನ ಫ್ರೈ, ಘೀ ರೋಸ್ಟ್."
+        "kn": "ಶರಾವತಿ ತೀರದ ಸೀಫುಡ್ ಹೋಟೆಲ್: ಮೀನೂಟ, ಆರ್ಡರ್ ಮಾಡಿದಾಗಲೇ ಮಾಡುವ ತಾಜಾ ಮೀನು ಫ್ರೈ, ಘೀ ರೋಸ್ಟ್."
       },
       "type": "restaurant",
       "pureVeg": false,
@@ -70,7 +70,7 @@
       "signins": [
         {
           "phone": "9000000301",
-          "personName": "Owner"
+          "personName": "Ganesh"
         }
       ],
       "hours": {
@@ -154,7 +154,7 @@
           "key": "thalis",
           "name": {
             "en": "Thalis",
-            "kn": "ಥಾಲಿ / ಊಟ"
+            "kn": "ಊಟ"
           },
           "dishes": [
             {
@@ -287,7 +287,7 @@
       },
       "description": {
         "en": "Coastal seafood, tandoor and biryani on the highway; famous for the bangda fish thali.",
-        "kn": "ಹೆದ್ದಾರಿ ಬದಿಯ ಕರಾವಳಿ ಸೀಫುಡ್, ತಂದೂರ್ ಮತ್ತು ಬಿರಿಯಾನಿ; ಬಂಗುಡೆ ಮೀನೂಟಕ್ಕೆ ಪ್ರಸಿದ್ಧ."
+        "kn": "ಹೆದ್ದಾರಿ ಬದಿಯ ಕರಾವಳಿ ಸೀಫುಡ್, ತಂದೂರ್ ಮತ್ತು ಬಿರಿಯಾನಿ ಹೋಟೆಲ್; ಬಂಗುಡೆ ಮೀನೂಟಕ್ಕೆ ಹೆಸರುವಾಸಿ."
       },
       "type": "restaurant",
       "pureVeg": false,
@@ -302,7 +302,7 @@
       "signins": [
         {
           "phone": "9000000302",
-          "personName": "Owner"
+          "personName": "Prakash"
         }
       ],
       "hours": {
@@ -358,7 +358,7 @@
           "key": "thalis",
           "name": {
             "en": "Thalis",
-            "kn": "ಥಾಲಿ / ಊಟ"
+            "kn": "ಊಟ"
           },
           "dishes": [
             {
@@ -380,7 +380,7 @@
               "key": "chicken-thali",
               "name": {
                 "en": "Chicken Thali",
-                "kn": "ಚಿಕನ್ ಥಾಲಿ"
+                "kn": "ಚಿಕನ್ ಊಟ"
               },
               "priceRupees": 220,
               "isVeg": false,
@@ -393,7 +393,7 @@
           "key": "coastal-specials",
           "name": {
             "en": "Coastal Specials",
-            "kn": "ಕರಾವಳಿ ವಿಶೇಷ"
+            "kn": "ಕರಾವಳಿ ಸ್ಪೆಷಲ್"
           },
           "dishes": [
             {
@@ -487,7 +487,7 @@
       },
       "description": {
         "en": "Family restaurant at Karkinaka with North Indian, Chinese and coastal fish; veg and non-veg kitchens.",
-        "kn": "ಕರ್ಕಿನಾಕದ ಫ್ಯಾಮಿಲಿ ರೆಸ್ಟೋರೆಂಟ್: ಉತ್ತರ ಭಾರತೀಯ, ಚೈನೀಸ್ ಮತ್ತು ಕರಾವಳಿ ಮೀನು; ಸಸ್ಯಾಹಾರ ಮತ್ತು ಮಾಂಸಾಹಾರ."
+        "kn": "ಕರ್ಕಿನಾಕದ ಫ್ಯಾಮಿಲಿ ಹೋಟೆಲ್: ನಾರ್ತ್ ಇಂಡಿಯನ್, ಚೈನೀಸ್ ಮತ್ತು ಕರಾವಳಿ ಮೀನು; ವೆಜ್ ಮತ್ತು ನಾನ್ ವೆಜ್‌ಗೆ ಬೇರೆ ಬೇರೆ ಅಡುಗೆಮನೆ."
       },
       "type": "restaurant",
       "pureVeg": false,
@@ -502,11 +502,11 @@
       "signins": [
         {
           "phone": "9000000303",
-          "personName": "Owner"
+          "personName": "Suresh"
         },
         {
           "phone": "9000000399",
-          "personName": "Counter helper"
+          "personName": "Manjunath"
         }
       ],
       "hours": {
@@ -562,7 +562,7 @@
           "key": "non-veg-specials",
           "name": {
             "en": "Non-veg Specials",
-            "kn": "ಮಾಂಸಾಹಾರ ವಿಶೇಷ"
+            "kn": "ನಾನ್ ವೆಜ್ ಸ್ಪೆಷಲ್"
           },
           "dishes": [
             {
@@ -615,7 +615,7 @@
           "key": "veg-specials",
           "name": {
             "en": "Veg Specials",
-            "kn": "ಸಸ್ಯಾಹಾರ ವಿಶೇಷ"
+            "kn": "ವೆಜ್ ಸ್ಪೆಷಲ್"
           },
           "dishes": [
             {
@@ -693,7 +693,7 @@
       "signins": [
         {
           "phone": "9000000304",
-          "personName": "Manager"
+          "personName": "Imran"
         }
       ],
       "hours": {
@@ -874,7 +874,7 @@
       },
       "description": {
         "en": "Pure-veg Udupi-style tiffin, dosas and South Indian meals from early morning.",
-        "kn": "ಶುದ್ಧ ಸಸ್ಯಾಹಾರಿ ಉಡುಪಿ ಶೈಲಿಯ ತಿಂಡಿ, ದೋಸೆ ಮತ್ತು ದಕ್ಷಿಣ ಭಾರತೀಯ ಊಟ, ಬೆಳಗ್ಗಿನಿಂದ."
+        "kn": "ಬೆಳಿಗ್ಗೆಯಿಂದಲೇ ಉಡುಪಿ ಶೈಲಿಯ ಪ್ಯೂರ್ ವೆಜ್ ತಿಂಡಿ, ದೋಸೆ ಮತ್ತು ಸೌತ್ ಇಂಡಿಯನ್ ಊಟ."
       },
       "type": "restaurant",
       "pureVeg": true,
@@ -889,7 +889,7 @@
       "signins": [
         {
           "phone": "9000000305",
-          "personName": "Owner"
+          "personName": "Ramesh"
         }
       ],
       "hours": {
@@ -1025,14 +1025,14 @@
               "key": "south-indian-meals",
               "name": {
                 "en": "South Indian Meals",
-                "kn": "ದಕ್ಷಿಣ ಭಾರತೀಯ ಊಟ"
+                "kn": "ಸೌತ್ ಇಂಡಿಯನ್ ಊಟ"
               },
               "priceRupees": 130,
               "isVeg": true,
               "available": true,
               "description": {
                 "en": "Rice, sambar, rasam, palya, curd and papad",
-                "kn": "ಅನ್ನ, ಸಾಂಬಾರ್, ರಸಂ, ಪಲ್ಯ, ಮೊಸರು ಮತ್ತು ಹಪ್ಪಳ"
+                "kn": "ಅನ್ನ, ಸಾಂಬಾರ್, ಸಾರು, ಪಲ್ಯ, ಮೊಸರು ಮತ್ತು ಹಪ್ಪಳ"
               },
               "image": "new-rameshwaram--south-indian-meals.jpg"
             },
@@ -1074,7 +1074,7 @@
       },
       "description": {
         "en": "Rooftop cafe on the highway: Chinese starters, tandoor, shakes and sundaes.",
-        "kn": "ಹೆದ್ದಾರಿ ಬದಿಯ ರೂಫ್‌ಟಾಪ್ ಕೆಫೆ: ಚೈನೀಸ್ ಸ್ಟಾರ್ಟರ್, ತಂದೂರ್, ಶೇಕ್ ಮತ್ತು ಸಂಡೇ."
+        "kn": "ಹೆದ್ದಾರಿ ಬದಿಯ ರೂಫ್‌ಟಾಪ್ ಕೆಫೆ: ಚೈನೀಸ್ ಸ್ಟಾರ್ಟರ್, ತಂದೂರ್, ಶೇಕ್ ಮತ್ತು ಐಸ್‌ಕ್ರೀಂ ಸಂಡೇ."
       },
       "type": "restaurant",
       "pureVeg": false,
@@ -1089,7 +1089,7 @@
       "signins": [
         {
           "phone": "9000000306",
-          "personName": "Owner"
+          "personName": "Rahul"
         }
       ],
       "hours": {
@@ -1269,7 +1269,7 @@
       },
       "description": {
         "en": "Coastal-style home lunch at Gandhada Oni: fish meals, chicken meals and fresh fry, lunch hours only.",
-        "kn": "ಗಂಧದ ಓಣಿಯಲ್ಲಿ ಕರಾವಳಿ ಶೈಲಿಯ ಮನೆ ಊಟ: ಮೀನೂಟ, ಚಿಕನ್ ಊಟ ಮತ್ತು ತಾಜಾ ಫ್ರೈ, ಮಧ್ಯಾಹ್ನ ಮಾತ್ರ."
+        "kn": "ಗಂಧದ ಓಣಿಯಲ್ಲಿ ಕರಾವಳಿ ಶೈಲಿಯ ಮನೆ ಊಟ: ಮೀನೂಟ, ಚಿಕನ್ ಊಟ ಮತ್ತು ತಾಜಾ ಫ್ರೈ (ಮಧ್ಯಾಹ್ನ ಮಾತ್ರ)."
       },
       "type": "home_kitchen",
       "pureVeg": false,
@@ -1284,7 +1284,7 @@
       "signins": [
         {
           "phone": "9000000307",
-          "personName": "Home cook"
+          "personName": "Shobha"
         }
       ],
       "hours": {
@@ -1368,7 +1368,7 @@
               "key": "veg-meals",
               "name": {
                 "en": "Veg Meals",
-                "kn": "ಸಸ್ಯಾಹಾರಿ ಊಟ"
+                "kn": "ವೆಜ್ ಊಟ"
               },
               "priceRupees": 90,
               "isVeg": true,
@@ -1444,7 +1444,7 @@
       },
       "description": {
         "en": "Havyaka-style pure-veg home cooking: patrode, kotte kadubu, holige and festival meals.",
-        "kn": "ಹವ್ಯಕ ಶೈಲಿಯ ಶುದ್ಧ ಸಸ್ಯಾಹಾರಿ ಮನೆ ಅಡುಗೆ: ಪತ್ರೋಡೆ, ಕೊಟ್ಟೆ ಕಡುಬು, ಹೋಳಿಗೆ ಮತ್ತು ಹಬ್ಬದ ಊಟ."
+        "kn": "ಹವ್ಯಕ ಶೈಲಿಯ ಪ್ಯೂರ್ ವೆಜ್ ಮನೆ ಅಡುಗೆ: ಪತ್ರೋಡೆ, ಕೊಟ್ಟೆ ಕಡುಬು, ಹೋಳಿಗೆ ಮತ್ತು ಹಬ್ಬದ ಊಟ."
       },
       "type": "home_kitchen",
       "pureVeg": true,
@@ -1459,7 +1459,7 @@
       "signins": [
         {
           "phone": "9000000308",
-          "personName": "Home cook"
+          "personName": "Lakshmi"
         }
       ],
       "hours": {
@@ -1543,7 +1543,7 @@
           "key": "traditional",
           "name": {
             "en": "Traditional",
-            "kn": "ಸಾಂಪ್ರದಾಯಿಕ"
+            "kn": "ಸಾಂಪ್ರದಾಯಿಕ ತಿಂಡಿ"
           },
           "dishes": [
             {
@@ -1557,7 +1557,7 @@
               "available": true,
               "description": {
                 "en": "Colocasia leaf rolls steamed with spiced rice batter",
-                "kn": "ಕೆಸುವಿನ ಎಲೆಯ ಮಸಾಲೆ ಹಿಟ್ಟಿನ ಹಬೆಯಲ್ಲಿ ಬೇಯಿಸಿದ ಸುರುಳಿ"
+                "kn": "ಕೆಸುವಿನ ಎಲೆಗೆ ಮಸಾಲೆ ಅಕ್ಕಿ ಹಿಟ್ಟು ಹಚ್ಚಿ ಸುತ್ತಿ, ಹಬೆಯಲ್ಲಿ ಬೇಯಿಸಿದ್ದು"
               },
               "image": "ammana-adige--patrode-4-pcs.jpg"
             },
@@ -1607,7 +1607,7 @@
               "key": "havyaka-veg-meals",
               "name": {
                 "en": "Havyaka Veg Meals",
-                "kn": "ಹವ್ಯಕ ಸಸ್ಯಾಹಾರಿ ಊಟ"
+                "kn": "ಹವ್ಯಕ ವೆಜ್ ಊಟ"
               },
               "priceRupees": 100,
               "isVeg": true,
@@ -1657,7 +1657,7 @@
       },
       "description": {
         "en": "Simple veg lunch boxes near the bus stand, cooked at home every morning.",
-        "kn": "ಬಸ್ ನಿಲ್ದಾಣದ ಬಳಿ ಸರಳ ಸಸ್ಯಾಹಾರಿ ಊಟದ ಡಬ್ಬಿ, ಪ್ರತಿದಿನ ಬೆಳಿಗ್ಗೆ ಮನೆಯಲ್ಲಿ ತಯಾರಿಸಿದ್ದು."
+        "kn": "ಬಸ್ ಸ್ಟ್ಯಾಂಡ್ ಹತ್ತಿರ, ದಿನಾ ಬೆಳಿಗ್ಗೆ ಮನೆಯಲ್ಲೇ ಮಾಡಿದ ಸಾದಾ ವೆಜ್ ಊಟದ ಡಬ್ಬಿ."
       },
       "type": "home_kitchen",
       "pureVeg": true,
@@ -1672,7 +1672,7 @@
       "signins": [
         {
           "phone": "9000000309",
-          "personName": "Home cook"
+          "personName": "Vanita"
         }
       ],
       "hours": {
@@ -1735,7 +1735,7 @@
               "key": "veg-meals-box",
               "name": {
                 "en": "Veg Meals Box",
-                "kn": "ಸಸ್ಯಾಹಾರಿ ಊಟದ ಡಬ್ಬಿ"
+                "kn": "ವೆಜ್ ಊಟದ ಡಬ್ಬಿ"
               },
               "priceRupees": 90,
               "isVeg": true,
@@ -1746,7 +1746,7 @@
               "key": "chapati-palya-box",
               "name": {
                 "en": "Chapati & Palya Box",
-                "kn": "ಚಪಾತಿ ಮತ್ತು ಪಲ್ಯ ಡಬ್ಬಿ"
+                "kn": "ಚಪಾತಿ-ಪಲ್ಯ ಡಬ್ಬಿ"
               },
               "priceRupees": 50,
               "isVeg": true,
@@ -1818,7 +1818,7 @@
       },
       "description": {
         "en": "Delivery-only seafood kitchen: fish curry rice boxes, fry and ghee roast, evenings.",
-        "kn": "ಡೆಲಿವರಿ ಮಾತ್ರ ಸೀಫುಡ್ ಕಿಚನ್: ಮೀನು ಸಾರು-ಅನ್ನದ ಡಬ್ಬಿ, ಫ್ರೈ ಮತ್ತು ಘೀ ರೋಸ್ಟ್, ಸಂಜೆ."
+        "kn": "ಸಂಜೆ ಹೊತ್ತು ಡೆಲಿವರಿ ಮಾತ್ರ ಇರುವ ಸೀಫುಡ್ ಕಿಚನ್: ಮೀನು ಸಾರು-ಅನ್ನದ ಡಬ್ಬಿ, ಫ್ರೈ ಮತ್ತು ಘೀ ರೋಸ್ಟ್."
       },
       "type": "cloud_kitchen",
       "pureVeg": false,
@@ -1833,7 +1833,7 @@
       "signins": [
         {
           "phone": "9000000310",
-          "personName": "Owner"
+          "personName": "Santosh"
         }
       ],
       "hours": {
@@ -1889,14 +1889,14 @@
           "key": "rice-boxes",
           "name": {
             "en": "Rice Boxes",
-            "kn": "ರೈಸ್ ಡಬ್ಬಿ"
+            "kn": "ಅನ್ನದ ಡಬ್ಬಿ"
           },
           "dishes": [
             {
               "key": "fish-curry-rice-box",
               "name": {
                 "en": "Fish Curry Rice Box",
-                "kn": "ಮೀನು ಸಾರು ಅನ್ನ ಡಬ್ಬಿ"
+                "kn": "ಮೀನು ಸಾರು-ಅನ್ನದ ಡಬ್ಬಿ"
               },
               "priceRupees": 160,
               "isVeg": false,
@@ -1994,7 +1994,7 @@
       },
       "description": {
         "en": "Delivery-only rolls, biryani and fried rice for late evenings.",
-        "kn": "ತಡರಾತ್ರಿಗೆ ಡೆಲಿವರಿ ಮಾತ್ರ ರೋಲ್, ಬಿರಿಯಾನಿ ಮತ್ತು ಫ್ರೈಡ್ ರೈಸ್."
+        "kn": "ಸಂಜೆ ತಡಹೊತ್ತಿಗೆ ರೋಲ್, ಬಿರಿಯಾನಿ ಮತ್ತು ಫ್ರೈಡ್ ರೈಸ್. ಡೆಲಿವರಿ ಮಾತ್ರ."
       },
       "type": "cloud_kitchen",
       "pureVeg": false,
@@ -2009,7 +2009,7 @@
       "signins": [
         {
           "phone": "9000000311",
-          "personName": "Owner"
+          "personName": "Nagaraj"
         }
       ],
       "hours": {
@@ -2107,7 +2107,7 @@
           "key": "rolls-snacks",
           "name": {
             "en": "Rolls & Snacks",
-            "kn": "ರೋಲ್ ಮತ್ತು ಸ್ನ್ಯಾಕ್ಸ್"
+            "kn": "ರೋಲ್ ಮತ್ತು ತಿಂಡಿ"
           },
           "dishes": [
             {
