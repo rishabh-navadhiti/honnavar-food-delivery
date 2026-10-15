@@ -18,6 +18,9 @@ means not built in the POC.
 | Manual delivery assignment by admin | Real | | 002 |
 | SMS / WhatsApp status updates | Stand-in | In-app notification log instead of outbound messages | 002 |
 | Tracker map | Stand-in | Static map with kitchen and customer pins; no GPS | 002 |
+| Map search and reverse geocoding (address under the pin) | Real | OpenStreetMap Nominatim behind an adapter, no paid keys; a deterministic stand-in adapter is used in tests | 002 |
+| Landmark voice note on addresses | Stand-in | Recorded, stored with the address and played back to the agent and admins; never transcribed | 002 |
+| Expected delivery time | Stand-in | Per-kitchen preparation minutes set by admin (default 25) plus a flat delivery-minutes setting (default 15); not based on distance, traffic or kitchen load | 002 |
 | Loud new-order alert for partners | Stand-in | In-app sound while the tab is open; no push | 002 |
 | Ratings with voice note | Out of scope | | |
 | Kannada voice prompts | Stand-in | Pre-recorded clips on a few key steps | 003 |
