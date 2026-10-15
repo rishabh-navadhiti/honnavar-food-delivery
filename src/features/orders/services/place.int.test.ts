@@ -182,3 +182,34 @@ describe('the "Other" name in the address snapshot (FR-054, FR-014)', () => {
     expect(order).toMatchObject({ addrLabel: 'other', addrLabelText: "Amma's house" });
   });
 });
+
+describe('a cart line the customer has not seen priced yet (follow-up fix)', () => {
+  it('is a new line, not a price change: the order is placed and nothing is reported at ₹0', async () => {
+    const { customer, cart, address, nonVeg, veg } = await setup();
+    const seenOnlyFirst = JSON.stringify({ [veg.id]: veg.priceRupees });
+    const result = await placeOrder(
+      customer,
+      { placeKey: crypto.randomUUID(), addressId: address.id, paymentMethod: 'cod', seenPrices: seenOnlyFirst },
+      cart,
+      now,
+    );
+    expect(result).toMatchObject({ ok: true });
+    if (!result.ok) return;
+    const items = await db.select().from(orderItems).where(eq(orderItems.orderId, result.data.orderId));
+    expect(items.map((i) => i.dishId).sort()).toEqual([veg.id, nonVeg.id].sort());
+  });
+
+  it('still reports a real change for a line the customer saw, never from ₹0', async () => {
+    const { customer, cart, address, nonVeg, veg } = await setup();
+    await db.update(dishes).set({ priceRupees: 200 }).where(eq(dishes.id, nonVeg.id));
+    const result = await placeOrder(
+      customer,
+      { placeKey: crypto.randomUUID(), addressId: address.id, paymentMethod: 'cod', seenPrices: JSON.stringify({ [veg.id]: 60, [nonVeg.id]: 180 }) },
+      cart,
+      now,
+    );
+    if (result.ok || !('changes' in result)) throw new Error('expected cart_changed');
+    expect(result.changes).toEqual([{ dishId: nonVeg.id, kind: 'price', oldPrice: 180, newPrice: 200 }]);
+    expect(result.changes!.some((c) => c.kind === 'price' && c.oldPrice === 0)).toBe(false);
+  });
+});

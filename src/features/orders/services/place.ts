@@ -76,8 +76,13 @@ export async function placeOrder(actor: CustomerActor, input: unknown, cart: Car
     const dish = byId.get(line.dishId);
     if (!dish) changes.push({ dishId: line.dishId, kind: 'removed' });
     else if (!dish.available) changes.push({ dishId: line.dishId, kind: 'unavailable' });
-    else if (seenPrices[line.dishId] !== dish.priceRupees) {
-      changes.push({ dishId: line.dishId, kind: 'price', oldPrice: seenPrices[line.dishId] ?? 0, newPrice: dish.priceRupees });
+    else {
+      // A line the cart page did not show yet (added while it was loading) is new, not a price
+      // change: it is placed at today's price. Only a price the customer saw can have changed.
+      const seen = seenPrices[line.dishId];
+      if (seen !== undefined && seen !== dish.priceRupees) {
+        changes.push({ dishId: line.dishId, kind: 'price', oldPrice: seen, newPrice: dish.priceRupees });
+      }
     }
   }
   if (changes.length > 0) {
