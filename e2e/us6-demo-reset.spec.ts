@@ -18,7 +18,8 @@ test('every sign-in screen shows its demo accounts and the fixed code', async ({
     await page.goto(path);
     const panel = page.getByTestId('demo-panel');
     await expect(panel).toContainText('Demo only');
-    await expect(panel).toContainText(process.env.DEMO_OTP_CODE ?? '123456');
+    await expect(panel.getByTestId('demo-otp')).toHaveText(`OTP: ${process.env.DEMO_OTP_CODE ?? '123456'}`);
+    await expect(page.getByTestId('demo-panel')).toHaveCount(1);
     await expect(panel.locator(`li[data-phone="${phone}"]`)).toBeVisible();
   }
   await page.goto('/login');

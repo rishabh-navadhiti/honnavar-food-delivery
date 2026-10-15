@@ -10,6 +10,9 @@ import {
   kitchens,
   kitchenSignins,
   menuCategories,
+  messages,
+  orderEvents,
+  orders,
   verifications,
 } from '@/shared/db/schema';
 import { truncateAll } from '@/shared/db/test/helpers';
@@ -38,6 +41,9 @@ async function snapshot() {
     verifications: await db.select({ kitchenId: verifications.kitchenId, reference: verifications.reference }).from(verifications).orderBy(asc(verifications.kitchenId)),
     agents: await db.select({ id: agents.id, active: agents.active }).from(agents).orderBy(asc(agents.id)),
     customers: await db.select({ phone: customers.phone }).from(customers).orderBy(asc(customers.phone)),
+    orders: await db.select({ id: orders.id, orderNo: orders.orderNo, status: orders.status, agentId: orders.agentId }).from(orders).orderBy(asc(orders.orderNo)),
+    events: await db.$count(orderEvents),
+    messages: await db.$count(messages),
   };
 }
 
@@ -53,8 +59,18 @@ describe('resetDemo (FR-049, SC-008)', () => {
     await db.update(dishes).set({ available: !dish!.available, priceRupees: 999 }).where(eq(dishes.id, dish!.id));
     await db.update(kitchens).set({ status: 'suspended', suspensionReason: 'test' }).where(eq(kitchens.id, first.kitchens[0]!.id));
     await db.insert(customers).values({ phone: '9876543210' });
+    await db.update(orders).set({ status: 'accepted' }).where(eq(orders.status, 'placed'));
 
     await resetDemo(url);
     expect(await snapshot()).toEqual(first);
+  });
+
+  it('stamps the seeded Placed order with the reset time, so its acceptance window starts fresh (002)', async () => {
+    const before = Date.now();
+    await resetDemo(url);
+    const after = Date.now();
+    const [placed] = await db.select({ placedAt: orders.placedAt }).from(orders).where(eq(orders.status, 'placed'));
+    expect(placed!.placedAt.getTime()).toBeGreaterThanOrEqual(before - 5000);
+    expect(placed!.placedAt.getTime()).toBeLessThanOrEqual(after + 5000);
   });
 });

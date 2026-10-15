@@ -7,7 +7,9 @@ test.beforeAll(resetDemoData);
 
 test('an admin onboards, verifies, activates and suspends a kitchen', async ({ page, browser }) => {
   await signIn(page, '/admin/login', admin().phone);
-  await expect(page).toHaveURL('/admin/partners');
+  // Since 002 the admin home is the dispatch board; partners are one link away.
+  await expect(page).toHaveURL('/admin/orders');
+  await page.goto('/admin/partners');
 
   await page.getByRole('link', { name: 'Add partner' }).click();
   await page.getByLabel('Kitchen name in English').fill('E2E Test Kitchen');

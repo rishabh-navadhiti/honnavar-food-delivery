@@ -13,7 +13,7 @@ export function AppHeader({ homeHref, surfaceLabel, actions }: { homeHref: strin
           <span className="whitespace-nowrap text-lg font-bold text-primary">{t('appName')}</span>
           {surfaceLabel ? <span className="text-xs font-medium text-muted">{surfaceLabel}</span> : null}
         </Link>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           {actions}
           <LanguageSwitch />
         </div>

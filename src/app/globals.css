@@ -37,3 +37,12 @@ body {
   background: var(--color-page);
   color: var(--color-ink);
 }
+
+/* 002: Leaflet's zoom buttons as large touch targets (Principle IV). */
+.leaflet-container .leaflet-control-zoom a.leaflet-control-zoom-in,
+.leaflet-container .leaflet-control-zoom a.leaflet-control-zoom-out {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  font-size: 22px;
+}

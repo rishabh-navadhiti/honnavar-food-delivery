@@ -4,6 +4,12 @@ import { phoneSchema } from '../auth/schemas';
 import { localizedOptional, localizedRequired } from '../menu/schemas';
 
 const contact = z.object({ phone: phoneSchema, isPrimary: z.boolean() });
+
+/** Map location within India (002 FR-037); null clears it, absent leaves it unchanged. */
+const location = z.object({
+  lat: z.coerce.number({ error: 'invalid' }).min(6, { error: 'invalid' }).max(37, { error: 'invalid' }),
+  lng: z.coerce.number({ error: 'invalid' }).min(68, { error: 'invalid' }).max(98, { error: 'invalid' }),
+});
 const signin = z.object({ phone: phoneSchema, personName: fields.requiredText(60) });
 
 const uniquePhones = (list: { phone: string }[]) => new Set(list.map((x) => x.phone)).size === list.length;
@@ -21,6 +27,9 @@ export const kitchenProfileSchema = z.object({
     .min(1, { error: 'contactRequired' })
     .refine((c) => c.filter((x) => x.isPrimary).length === 1, { error: 'primaryContactRequired' })
     .refine(uniquePhones, { error: 'duplicatePhone' }),
+  location: location.nullable().optional(),
+  /** Preparation minutes for the expected delivery time (002 FR-057). */
+  prepMinutes: z.coerce.number({ error: 'invalid' }).int({ error: 'invalid' }).min(5, { error: 'prepMinutesRange' }).max(120, { error: 'prepMinutesRange' }).optional(),
 });
 
 export const signinListSchema = z

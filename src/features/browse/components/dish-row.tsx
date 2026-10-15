@@ -1,4 +1,5 @@
 import { useLocale, useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
 import { isLocale, type Locale } from '@/shared/i18n/config';
 import { formatPrice } from '@/shared/i18n/format';
 import { pickLocalized } from '@/shared/i18n/localized';
@@ -7,8 +8,11 @@ import { Photo } from '@/shared/ui/photo';
 import { VegMark } from '@/shared/ui/veg-mark';
 import type { DishView } from '../queries';
 
-/** A dish with photo, name, description, price and veg mark; dimmed when not available (FR-045). */
-export function DishRow({ dish }: { dish: DishView }) {
+/**
+ * A dish with photo, name, description, price and veg mark; dimmed when not available (FR-045).
+ * `action` is the kitchen page's add-to-cart control (002).
+ */
+export function DishRow({ dish, action }: { dish: DishView; action?: ReactNode }) {
   const t = useTranslations('menu');
   const current = useLocale();
   const locale: Locale = isLocale(current) ? current : 'en';
@@ -36,7 +40,7 @@ export function DishRow({ dish }: { dish: DishView }) {
         <LocalizedText pair={dish.description} className="text-sm text-muted" />
         <div className="mt-auto flex items-center justify-between gap-2">
           <span className="text-base font-bold">{formatPrice(dish.priceRupees, locale)}</span>
-          {dish.available ? null : (
+          {dish.available ? (action ?? null) : (
             <span data-testid="not-available" className="rounded-full border border-line px-2 py-0.5 text-sm font-medium text-muted">
               {t('notAvailable')}
             </span>

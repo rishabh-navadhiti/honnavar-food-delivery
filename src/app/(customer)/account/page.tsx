@@ -1,10 +1,12 @@
 import { getTranslations } from 'next-intl/server';
 import { CustomerNameForm } from '@/features/auth/components/customer-name-form';
+import Link from 'next/link';
 import { SignOutButton } from '@/features/auth/components/sign-out-button';
 import { getCustomer } from '@/features/auth/queries';
 import { requireSession } from '@/features/auth/session';
 import { formatPhone } from '@/shared/i18n/format';
 import { Card } from '@/shared/ui/card';
+import { CustomerDock } from '@/features/cart/components/customer-dock';
 
 export default async function AccountPage() {
   const session = await requireSession('customer');
@@ -20,7 +22,20 @@ export default async function AccountPage() {
         </div>
         <CustomerNameForm displayName={customer?.displayName ?? ''} />
       </Card>
+      <nav aria-label={t('linksTitle')}>
+        <ul className="flex flex-col divide-y divide-line rounded-2xl border border-line bg-surface">
+          {(['addresses', 'orders', 'messages'] as const).map((page) => (
+            <li key={page}>
+              <Link href={`/${page}`} className="flex min-h-touch items-center justify-between px-4 py-3 text-base font-semibold">
+                {t(`links.${page}`)}
+                <span aria-hidden="true">→</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
       <SignOutButton surface="customer" />
+      <CustomerDock />
     </div>
   );
 }

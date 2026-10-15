@@ -10,7 +10,7 @@ test('search finds the same dish in Kannada and English', async ({ page }) => {
     await page.goto('/');
     await page.getByRole('searchbox').fill(term);
     await page.getByRole('button', { name: 'Search' }).click();
-    await expect(page).toHaveURL(/\/search\?q=/);
+    await expect(page).toHaveURL(/\/\?q=/); // search results show on the home screen since 002
     await expect(page.getByTestId('dish-result').filter({ hasText: dish.name.en! }).first()).toBeVisible();
   }
 });

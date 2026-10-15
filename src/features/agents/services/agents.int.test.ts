@@ -48,3 +48,19 @@ describe('agents (FR-026, FR-027, FR-007)', () => {
     expect(await db.$count(sessions)).toBe(0);
   });
 });
+
+describe('deactivating an agent who holds orders (002 FR-036)', () => {
+  it('is refused with the order numbers while an order is unfinished, and allowed once it is delivered', async () => {
+    const { makeOrder } = await import('@/shared/db/test/helpers');
+    const { orders } = await import('@/shared/db/schema');
+    const admin = await adminActor();
+    const agent = await makeAgent();
+    const order = await makeOrder({ status: 'ready', agentId: agent.id });
+    expect(await setAgentActive(admin, { id: agent.id, active: false })).toEqual({
+      ok: false,
+      error: { code: 'agent_has_orders', details: { orderNos: `#${order.orderNo}` } },
+    });
+    await db.update(orders).set({ status: 'delivered', finishedAt: new Date() }).where(eq(orders.id, order.id));
+    expect((await setAgentActive(admin, { id: agent.id, active: false })).ok).toBe(true);
+  });
+});

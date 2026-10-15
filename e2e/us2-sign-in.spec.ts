@@ -7,7 +7,7 @@ test.beforeAll(resetDemoData);
 
 test('a new customer signs in with any mobile number', async ({ page }) => {
   await page.goto('/login');
-  await expect(page.getByTestId('demo-code-notice')).toBeVisible();
+  await expect(page.getByTestId('demo-otp')).toHaveText(`OTP: ${process.env.DEMO_OTP_CODE ?? '123456'}`);
   await signIn(page, '/login', '9123456780');
   await page.goto('/account');
   await expect(page.getByText('91234 56780')).toBeVisible();
@@ -34,7 +34,7 @@ test('a partner helper reaches their own kitchen; partner numbers are refused el
   await expect(page).toHaveURL('/partner/login');
 });
 
-test('an inactive agent is refused; an active agent sees no deliveries and their profile', async ({ page }) => {
+test('an inactive agent is refused; an active agent sees their deliveries home and profile', async ({ page }) => {
   await page.goto('/agent/login');
   await page.getByLabel('Mobile number').fill(inactiveAgent().phone);
   await page.getByRole('button', { name: 'Get code' }).click();
@@ -42,7 +42,8 @@ test('an inactive agent is refused; an active agent sees no deliveries and their
 
   const agent = activeAgent();
   await signIn(page, '/agent/login', agent.phone);
-  await expect(page.getByText('No deliveries yet')).toBeVisible();
+  // Since 002 the seeded agent has deliveries: the home shows today's totals (FR-044).
+  await expect(page.getByTestId('today-deliveries')).toBeVisible();
   await page.getByRole('link', { name: 'Profile' }).click();
   await expect(page.getByText(agent.name)).toBeVisible();
 });

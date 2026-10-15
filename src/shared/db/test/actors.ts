@@ -1,12 +1,27 @@
-import type { Actor } from '@/features/auth/actor-scope';
-import { makeAdmin, makeSignin } from './helpers';
+import { eq } from 'drizzle-orm';
+import type { AdminActor, AgentActor, CustomerActor, PartnerActor } from '@/features/auth/actor-scope';
+import { db } from '../client';
+import { agents, customers } from '../schema';
+import { makeAdmin, makeAgent, makeCustomer, makeSignin } from './helpers';
 
-export async function partnerActor(kitchenId: string): Promise<Actor> {
+export async function partnerActor(kitchenId: string): Promise<PartnerActor> {
   const signin = await makeSignin(kitchenId);
   return { role: 'partner', phone: signin.phone, signinId: signin.id, kitchenId };
 }
 
-export async function adminActor(): Promise<Actor> {
+export async function adminActor(): Promise<AdminActor> {
   const admin = await makeAdmin();
   return { role: 'admin', phone: admin.phone, adminId: admin.id };
+}
+
+/** The given customer as an actor, or a new one. */
+export async function customerActor(customerId?: string): Promise<CustomerActor> {
+  const [row] = customerId ? await db.select().from(customers).where(eq(customers.id, customerId)) : [await makeCustomer()];
+  return { role: 'customer', customerId: row!.id, phone: row!.phone };
+}
+
+/** The given agent as an actor, or a new one. */
+export async function agentActor(agentId?: string): Promise<AgentActor> {
+  const [row] = agentId ? await db.select().from(agents).where(eq(agents.id, agentId)) : [await makeAgent()];
+  return { role: 'agent', agentId: row!.id, phone: row!.phone };
 }

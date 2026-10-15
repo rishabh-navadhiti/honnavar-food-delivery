@@ -24,9 +24,6 @@ export function SignInForm({ surface, next }: { surface: Surface; next?: string 
 
   return (
     <div className="flex flex-col gap-4">
-      <p className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-warn" data-testid="demo-code-notice">
-        {t('auth.demoNotice')}
-      </p>
       {state.step === 'phone' ? (
         <form action={formAction} className="flex flex-col gap-4" noValidate>
           <input type="hidden" name="surface" value={surface} />

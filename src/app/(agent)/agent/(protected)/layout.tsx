@@ -21,6 +21,7 @@ export default async function AgentProtectedLayout({ children }: { children: Rea
         ariaLabel={t('mainNavigation')}
         items={[
           { href: '/agent', label: t('deliveries'), exact: true },
+          { href: '/agent/messages', label: t('messages') },
           { href: '/agent/profile', label: t('profile') },
         ]}
       />

@@ -106,7 +106,28 @@
     "signinRequired": "Add at least one sign-in number.",
     "duplicatePhone": "This number is listed twice.",
     "reorderMismatch": "The list changed. Please reload and try again.",
-    "notFound": "This item no longer exists. Please reload."
+    "notFound": "This item no longer exists. Please reload.",
+    "dishUnavailable": "This item is not available now.",
+    "kitchenClosed": "This kitchen is closed now.",
+    "cartFull": "Your cart is full. Remove an item to add another.",
+    "quantityLimit": "You can order up to 20 of one item.",
+    "otherKitchen": "Your cart has items from another kitchen.",
+    "cartEmpty": "Your cart is empty.",
+    "cartChanged": "Your cart changed. Please check it again.",
+    "kitchenUnavailable": "This kitchen is not taking orders any more.",
+    "upiNotConfirmed": "Please confirm the UPI payment.",
+    "addressLimit": "You can save up to 10 addresses. Delete one to add another.",
+    "invalidAudio": "This voice note could not be saved. Please record it again.",
+    "orderMovedOn": "This order has already moved on. Its current status is shown.",
+    "notAssignable": "A delivery agent can be assigned only after the kitchen accepts and before pickup.",
+    "agentInactive": "This delivery agent is not active.",
+    "sameAgent": "This agent already has the order.",
+    "notReady": "The kitchen is still preparing this order.",
+    "cashNotConfirmed": "Please confirm the cash you collected.",
+    "agentHasOrders": "This agent still has orders to deliver: {orderNos}. Reassign or finish them first.",
+    "noteRequired": "Please write a short note.",
+    "prepMinutesRange": "Enter between 5 and 120 minutes.",
+    "nothingToReorder": "None of the items from that order are available now."
   },
   "surface": {
     "customer": "Order food in Honnavar",
@@ -126,7 +147,12 @@
     "profile": "Profile",
     "partners": "Partners",
     "agents": "Delivery agents",
-    "mainNavigation": "Main navigation"
+    "mainNavigation": "Main navigation",
+    "customerNavigation": "Orders and cart",
+    "orders": "My orders",
+    "cart": "Cart",
+    "kitchenOrders": "Orders",
+    "messages": "Messages"
   },
   "home": {
     "title": "Kitchens in Honnavar",
@@ -140,7 +166,8 @@
     "menuTitle": "Menu",
     "addressTitle": "Address",
     "menuComingSoon": "Menu coming soon",
-    "allKitchens": "All kitchens"
+    "allKitchens": "All kitchens",
+    "etaRange": "Delivery in about {from}–{to} min"
   },
   "menu": {
     "notAvailable": "Not available"
@@ -163,16 +190,21 @@
     "codeSentTo": "Enter the code for {phone}.",
     "codeLabel": "6-digit code",
     "signIn": "Sign in",
-    "changeNumber": "Change number",
-    "demoNotice": "Demo: no SMS is sent. Use the demo code."
+    "changeNumber": "Change number"
   },
   "account": {
     "title": "My account",
     "phone": "Mobile number",
     "displayName": "Your name",
-    "displayNameHint": "Optional. Helps the kitchen recognise you.",
+    "displayNameHint": "Optional. Helps the delivery agent recognise you.",
     "saveName": "Save name",
-    "nameSaved": "Name saved"
+    "nameSaved": "Name saved",
+    "linksTitle": "More",
+    "links": {
+      "addresses": "My addresses",
+      "orders": "My orders",
+      "messages": "Messages"
+    }
   },
   "agent": {
     "noDeliveriesTitle": "No deliveries yet",
@@ -382,20 +414,342 @@
     "label": "Search kitchens and dishes",
     "placeholder": "For example: neer dose",
     "submit": "Search",
-    "title": "Search",
     "resultsFor": "Results for “{q}”",
     "kitchens": "Kitchens",
     "dishes": "Dishes",
     "noResultsTitle": "Nothing found for “{q}”",
     "noResultsBody": "Try a shorter word, the other language, or clear the dish filter.",
-    "tooShort": "Type at least 2 letters."
+    "tooShort": "Type at least 2 letters.",
+    "clear": "Clear search"
   },
   "demo": {
     "title": "Demo only",
-    "body": "Shown only in demo deployments. No SMS is sent: every account uses the code {code}.",
-    "accounts": "Demo accounts",
-    "customerHint": "Any 10-digit mobile number also works for customers.",
-    "inactive": "inactive",
-    "none": "No accounts for this app yet."
+    "otp": "OTP: {code}"
+  },
+  "orderStatus": {
+    "placed": "Placed",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "preparing": "Preparing",
+    "ready": "Ready",
+    "picked_up": "Picked up",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
+  },
+  "orderEvent": {
+    "placed": "Order placed",
+    "accepted": "Accepted by the kitchen",
+    "rejected": "Not accepted",
+    "preparing": "Preparing",
+    "ready": "Ready for pickup",
+    "assigned": "Delivery agent assigned",
+    "reassigned": "Delivery agent changed",
+    "picked_up": "Picked up",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled"
+  },
+  "orderReason": {
+    "kitchen_busy": "Kitchen too busy",
+    "item_unavailable": "Item not available",
+    "kitchen_closing": "Kitchen closing",
+    "kitchen_no_response": "Kitchen did not respond",
+    "customer_request": "Customer asked to cancel",
+    "kitchen_issue": "Problem at the kitchen",
+    "no_agent": "No delivery agent available",
+    "delivery_problem": "Delivery problem",
+    "other": "Other"
+  },
+  "paymentMethod": {
+    "cod": "Cash on delivery",
+    "upi_demo": "Paid by UPI (demo)",
+    "upiChoice": "UPI"
+  },
+  "addressLabel": {
+    "home": "Home",
+    "work": "Work",
+    "other": "Other"
+  },
+  "dispatchGroup": {
+    "waiting_kitchen": "Waiting for kitchen",
+    "needs_agent": "Needs agent",
+    "assigned": "Assigned",
+    "out_for_delivery": "Out for delivery",
+    "finished": "Finished"
+  },
+  "notifications": {
+    "order_placed": "Order #{orderNo} placed. Total {amount}.",
+    "order_accepted": "The kitchen accepted order #{orderNo}.",
+    "order_rejected": "Sorry, the kitchen could not take order #{orderNo}.",
+    "order_preparing": "Order #{orderNo} is being prepared.",
+    "order_picked_up": "Order #{orderNo} is on the way.",
+    "order_delivered": "Order #{orderNo} delivered. Total {amount}.",
+    "order_cancelled": "Order #{orderNo} was cancelled.",
+    "kitchen_new_order": "New order #{orderNo}: {amount}.",
+    "kitchen_agent_assigned": "{agentName} will pick up order #{orderNo}.",
+    "kitchen_order_cancelled": "Order #{orderNo} was cancelled.",
+    "agent_assigned": "New delivery: order #{orderNo}, {amount}.",
+    "agent_unassigned": "Order #{orderNo} was given to another agent.",
+    "agent_order_cancelled": "Order #{orderNo} was cancelled.",
+    "reasonLine": "Reason: {reason}",
+    "demoLabel": "Demo: not sent by SMS or WhatsApp"
+  },
+  "orders": {
+    "number": "#{orderNo}",
+    "title": "My orders",
+    "empty": "You have not ordered yet",
+    "ongoing": "Ongoing",
+    "noOngoing": "No ongoing orders",
+    "past": "Past orders"
+  },
+  "polling": {
+    "updatedAt": "Updated {time}"
+  },
+  "cart": {
+    "add": "Add",
+    "oneLess": "One less",
+    "oneMore": "One more",
+    "quantity": "Quantity",
+    "maxReached": "You can order up to {max} of one item.",
+    "replaceQuestion": "Your cart has items from another kitchen. Start a new cart with this item?",
+    "replaceConfirm": "Start a new cart",
+    "replaceKeep": "Keep my cart",
+    "itemCount": "{count, plural, one {# item} other {# items}}",
+    "viewCart": "View cart",
+    "orderWhenOpen": "This kitchen is closed now. You can order when it opens.",
+    "title": "Your cart",
+    "empty": "Your cart is empty",
+    "browse": "Find food",
+    "removedLines": "{count, plural, one {# item is no longer on the menu and was removed.} other {# items are no longer on the menu and were removed.}}",
+    "clear": "Empty the cart",
+    "signInToCheckOut": "Sign in to check out",
+    "itemTotal": "Item total",
+    "deliveryFee": "Delivery fee",
+    "grandTotal": "Grand total",
+    "lineUnavailable": "Not available now. It will not be ordered."
+  },
+  "checkout": {
+    "deliverTo": "Deliver to",
+    "addAddress": "Add a new address",
+    "payment": "Payment",
+    "cartChanged": "Your cart changed. Please check it and place the order again.",
+    "changedPrice": "{name}: price changed from {from} to {to}",
+    "changedUnavailable": "{name} is not available now and was removed",
+    "changedRemoved": "An item is no longer on the menu and was removed",
+    "placing": "Placing your order…",
+    "placeOrder": "Place order · {amount}",
+    "needAddress": "Add a delivery address to place your order.",
+    "addFirstAddress": "Add delivery address"
+  },
+  "upiSheet": {
+    "title": "Pay with UPI (demo)",
+    "demoNotice": "This is a demo. Nothing will be charged.",
+    "confirm": "Confirm payment",
+    "close": "Close"
+  },
+  "pinPicker": {
+    "locationUnavailable": "This phone cannot share its location. Move the map or search instead.",
+    "locationRefused": "Location is off. Move the map or search for a place.",
+    "searchLabel": "Search for a place",
+    "searchPlaceholder": "Search for a place, e.g. bus stand",
+    "searching": "Searching…",
+    "search": "Search",
+    "searchFailed": "Search is not working right now. Move the map by hand instead.",
+    "noPlaces": "No places found. Try another name.",
+    "results": "Places found",
+    "useCurrentLocation": "Use my current location",
+    "mapLabel": "Map. Move it so the pin is on your door.",
+    "addressHere": "Address at the pin",
+    "lookingUp": "Finding the address…",
+    "lookupFailed": "The address could not be looked up. You can still use this pin.",
+    "noAddress": "No address found here. You can still use this pin.",
+    "continue": "Continue",
+    "pinPlaced": "Pin placed on the map"
+  },
+  "voiceNote": {
+    "title": "Voice note for the landmark (optional)",
+    "hint": "Say how to find your home, up to {seconds} seconds.",
+    "playSaved": "Play the saved voice note",
+    "delete": "Delete voice note",
+    "unavailable": "Voice notes are not available on this phone.",
+    "recording": "Recording… {seconds} s left",
+    "stop": "Stop",
+    "playRecording": "Play your recording",
+    "reRecord": "Record again",
+    "recordNew": "Record a new voice note",
+    "record": "Record a voice note",
+    "landmarkNote": "Landmark voice note",
+    "notTranscribed": "Demo: voice notes are not turned into text."
+  },
+  "addresses": {
+    "changeLocation": "Change pin",
+    "house": "House or door number, or house name",
+    "street": "Street or area (optional)",
+    "landmark": "Landmark",
+    "landmarkHint": "For example: behind the temple, near the bus stand",
+    "riderNote": "Note for the delivery agent (optional)",
+    "labelTitle": "Save as",
+    "save": "Save address",
+    "mapStepTitle": "Where should we deliver?",
+    "mapStepHint": "Move the map so the pin is on your door, then continue.",
+    "detailsStepTitle": "Address details",
+    "newTitle": "Add a delivery address",
+    "editTitle": "Edit address",
+    "delete": "Delete this address",
+    "title": "My addresses",
+    "empty": "No saved addresses yet",
+    "add": "Add a new address",
+    "labelText": "Name for this place (optional)",
+    "labelTextHint": "Up to 30 letters, for example: Amma's house",
+    "backLabel": "My addresses"
+  },
+  "orderPage": {
+    "title": "Order",
+    "expectedBy": "Expected by {time}",
+    "items": "Items",
+    "deliverTo": "Delivery address",
+    "agentTitle": "Your delivery agent",
+    "callAgent": "Call delivery agent"
+  },
+  "partnerOrders": {
+    "title": "Orders",
+    "empty": "No orders right now",
+    "dayLink": "Today's orders and totals",
+    "allOrders": "All orders",
+    "timeLeft": "Accept or reject within {time}",
+    "accept": "Accept order",
+    "reject": "Reject",
+    "startPreparing": "Start preparing",
+    "markReady": "Ready for pickup",
+    "waitingPickup": "Waiting for the delivery agent",
+    "rejectReason": "Why can't you take this order?",
+    "rejectNote": "Short note for the customer",
+    "confirmReject": "Reject order",
+    "placedAt": "Ordered at {time}",
+    "quantity": "× {quantity}",
+    "customer": "Customer",
+    "cancelledBy": {
+      "customer": "Cancelled by the customer",
+      "admin": "Cancelled by the operations team"
+    },
+    "messagesLink": "Messages"
+  },
+  "alert": {
+    "turnOnSound": "Tap to turn on order sounds",
+    "newOrder": "New order #{orderNo}{count, plural, one {} other { (+# more waiting)}}. Tap to open."
+  },
+  "dayView": {
+    "title": "Today",
+    "received": "Orders received",
+    "accepted": "Accepted",
+    "rejectedOrCancelled": "Rejected or cancelled",
+    "delivered": "Delivered",
+    "deliveredValue": "Food value delivered",
+    "empty": "No orders today yet"
+  },
+  "dispatch": {
+    "title": "Dispatch board",
+    "findLabel": "Find order by number",
+    "find": "Find",
+    "notFound": "No order with number {no}",
+    "noAgents": "No other active delivery agents",
+    "assignTo": "Assign to",
+    "reassignTo": "Reassign to",
+    "agentOption": "{name} · {count, plural, =0 {free} one {# undelivered} other {# undelivered}}",
+    "assign": "Assign",
+    "reassign": "Reassign",
+    "minutesAgo": "{minutes, plural, =0 {just now} one {# min ago} other {# min ago}}",
+    "agent": "Agent: {name}",
+    "none": "None"
+  },
+  "adminOrder": {
+    "cancel": "Cancel order",
+    "cancelReason": "Why is this order being cancelled?",
+    "cancelNote": "Short note",
+    "confirmCancel": "Cancel this order",
+    "actor": {
+      "customer": "Customer",
+      "partner": "Kitchen",
+      "agent": "Delivery agent",
+      "admin": "Admin",
+      "system": "System (automatic)"
+    },
+    "agentChange": "{from} → {to}",
+    "customer": "Customer",
+    "agentTitle": "Delivery agent",
+    "noAgent": "No agent assigned yet",
+    "history": "History"
+  },
+  "kitchenForm": {
+    "prepMinutes": "Preparation minutes",
+    "prepMinutesHint": "Usual time to prepare an order (5–120). Used for the expected delivery time.",
+    "location": "Map location",
+    "locationHelp": "Move the map so the pin is on the kitchen. Customers and agents see this location."
+  },
+  "agentHome": {
+    "deliveriesToday": "Deliveries today",
+    "cashToday": "Cash collected today",
+    "assigned": "Your deliveries",
+    "from": "From:",
+    "to": "To:",
+    "collect": "Collect {amount} in cash",
+    "paidUpi": "Paid by UPI (demo): no cash to collect"
+  },
+  "agentOrder": {
+    "back": "My deliveries",
+    "stillPreparing": "The kitchen is still preparing this order.",
+    "pickedUp": "Picked up",
+    "delivered": "Delivered",
+    "confirmCashQuestion": "Did you collect the cash?",
+    "confirmCash": "Collected {amount} in cash",
+    "notYet": "Not yet",
+    "deliveredDone": "Delivered. Thank you!",
+    "pickupFrom": "Pick up from",
+    "callKitchen": "Call kitchen",
+    "deliverTo": "Deliver to",
+    "callCustomer": "Call customer",
+    "reassignedAway": "This order was given to another delivery agent.",
+    "cancelled": "This order was cancelled."
+  },
+  "openInMaps": {
+    "kitchen": "Open kitchen in maps",
+    "delivery": "Open delivery location in maps"
+  },
+  "timeline": {
+    "title": "Order status",
+    "pending": "Waiting",
+    "nothingCharged": "Nothing was charged in this demo."
+  },
+  "customerCancel": {
+    "cancel": "Cancel order",
+    "question": "Cancel this order? The kitchen has not accepted it yet.",
+    "confirm": "Yes, cancel it",
+    "keep": "Keep my order"
+  },
+  "orderMap": {
+    "label": "Map with the kitchen and your delivery location",
+    "kitchen": "Kitchen: {name}",
+    "delivery": "Your delivery location",
+    "noKitchenLocation": "The kitchen's location is not on the map yet."
+  },
+  "messageLog": {
+    "title": "Messages",
+    "intro": "Updates that would come by SMS or WhatsApp. In this demo they are only shown here.",
+    "empty": "No messages yet"
+  },
+  "reorder": {
+    "button": "Order again",
+    "replaceQuestion": "Your cart has items from another kitchen. Replace them with this order?",
+    "replaceConfirm": "Replace and order again",
+    "leftOut": "{count, plural, one {# item from that order is not available now and was left out.} other {# items from that order are not available now and were left out.}}"
+  },
+  "ongoing": {
+    "label": "Your current order:"
+  },
+  "backLinks": {
+    "home": "Home",
+    "kitchen": "Back to the kitchen",
+    "account": "My account",
+    "orders": "My orders",
+    "back": "Back"
   }
 }

@@ -2,6 +2,7 @@ import { sql } from 'drizzle-orm';
 import {
   boolean,
   check,
+  numeric,
   pgEnum,
   pgTable,
   primaryKey,
@@ -42,6 +43,11 @@ export const kitchens = pgTable(
     hoursUpdatedByRole: actorRole('hours_updated_by_role'),
     hoursUpdatedByPhone: varchar('hours_updated_by_phone', { length: 10 }),
     hoursUpdatedAt: timestamp('hours_updated_at', { withTimezone: true }),
+    /** Map location set by an admin (002 FR-037); both or neither. */
+    locationLat: numeric('location_lat', { precision: 9, scale: 6, mode: 'number' }),
+    locationLng: numeric('location_lng', { precision: 9, scale: 6, mode: 'number' }),
+    /** Preparation minutes for the expected delivery time (002 FR-057). */
+    prepMinutes: smallint('prep_minutes').notNull().default(25),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
@@ -50,6 +56,15 @@ export const kitchens = pgTable(
       'kitchens_name_present',
       sql`coalesce(btrim(${t.nameEn}), '') <> '' or coalesce(btrim(${t.nameKn}), '') <> ''`,
     ),
+    check(
+      'kitchens_location_pair',
+      sql`(${t.locationLat} is null) = (${t.locationLng} is null)`,
+    ),
+    check(
+      'kitchens_location_range',
+      sql`${t.locationLat} is null or (${t.locationLat} between 6 and 37 and ${t.locationLng} between 68 and 98)`,
+    ),
+    check('kitchens_prep_minutes', sql`${t.prepMinutes} between 5 and 120`),
     check(
       'kitchens_suspension_reason',
       sql`${t.status} <> 'suspended' or coalesce(btrim(${t.suspensionReason}), '') <> ''`,

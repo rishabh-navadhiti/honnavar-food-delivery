@@ -13,7 +13,7 @@ export function LanguageSwitch() {
         type="submit"
         aria-label={t('ariaLabel')}
         lang={target}
-        className="min-h-touch rounded-xl border border-line bg-surface px-4 text-base font-semibold text-ink hover:bg-secondary"
+        className="min-h-touch rounded-xl border border-line bg-surface px-3 text-base font-semibold text-ink hover:bg-secondary"
       >
         {t('label')}
       </button>

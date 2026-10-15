@@ -5,7 +5,7 @@ import { admins, agents, customers, kitchens, kitchenSignins } from '@/shared/db
 import type { LocalizedPair } from '@/shared/i18n/localized';
 import type { Surface } from '../auth/surfaces';
 
-export type DemoAccount = { phone: string; name: string | null; kitchen?: LocalizedPair; inactive?: boolean };
+export type DemoAccount = { phone: string; name: string | null; kitchen?: LocalizedPair };
 
 /** The accounts that can sign in on a surface right now, for the demo-only panel (FR-011). */
 export async function getDemoAccounts(surface: Surface): Promise<DemoAccount[]> {
@@ -18,11 +18,7 @@ export async function getDemoAccounts(surface: Surface): Promise<DemoAccount[]> 
     case 'admin':
       return (await db.select().from(admins).orderBy(asc(admins.name))).map((a) => ({ phone: a.phone, name: a.name }));
     case 'agent':
-      return (await db.select().from(agents).orderBy(asc(agents.name))).map((a) => ({
-        phone: a.phone,
-        name: a.name,
-        inactive: !a.active,
-      }));
+      return (await db.select().from(agents).orderBy(asc(agents.name))).map((a) => ({ phone: a.phone, name: a.name }));
     case 'partner':
       return (
         await db

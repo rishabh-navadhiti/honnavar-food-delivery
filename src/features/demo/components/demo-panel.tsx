@@ -6,36 +6,37 @@ import type { Surface } from '../../auth/surfaces';
 import { getDemoAccounts } from '../queries';
 
 /**
- * STAND-IN support: lists the role's demo accounts and the fixed code, only when DEMO_MODE is on
- * (FR-011). Never rendered in a non-demo deployment.
+ * STAND-IN support (FR-011): "Demo only", the role's demo accounts, and the fixed OTP. Shown once
+ * per sign-in screen, only when DEMO_MODE is on.
  */
 export async function DemoPanel({ surface }: { surface: Surface }) {
   if (!env.DEMO_MODE) return null;
   const t = await getTranslations('demo');
   const accounts = await getDemoAccounts(surface);
   return (
-    <aside data-testid="demo-panel" aria-labelledby="demo-panel-title" className="rounded-2xl border-2 border-dashed border-amber-400 bg-amber-50 p-4 text-ink">
-      <h2 id="demo-panel-title" className="text-base font-bold uppercase tracking-wide text-warn">
+    <aside data-testid="demo-panel" aria-labelledby="demo-panel-title" className="rounded-xl border border-line bg-secondary px-3 py-2 text-sm text-ink">
+      <h2 id="demo-panel-title" className="text-xs font-semibold uppercase tracking-wide text-muted">
         {t('title')}
       </h2>
-      <p className="mt-1 text-sm">{t('body', { code: env.DEMO_OTP_CODE })}</p>
-      <h3 className="mt-3 text-sm font-semibold">{t('accounts')}</h3>
-      {accounts.length === 0 ? <p className="text-sm">{t('none')}</p> : null}
-      <ul className="mt-1 flex flex-col gap-1 text-sm">
+      <ul className="mt-1 flex flex-col gap-0.5">
         {accounts.map((a) => (
-          <li key={a.phone} data-phone={a.phone}>
-            <span className="font-mono font-semibold">{formatPhone(a.phone)}</span>
-            {a.name ? <span className="ms-2">{a.name}</span> : null}
-            {a.kitchen ? (
-              <span className="ms-2 text-muted">
-                <LocalizedText pair={a.kitchen} />
-              </span>
-            ) : null}
-            {a.inactive ? <span className="ms-2 font-semibold text-danger">{t('inactive')}</span> : null}
+          <li key={a.phone} data-phone={a.phone} className="flex flex-wrap gap-x-2">
+            <span>
+              {a.name}
+              {a.kitchen ? (
+                <>
+                  <span aria-hidden="true"> · </span>
+                  <LocalizedText pair={a.kitchen} />
+                </>
+              ) : null}
+            </span>
+            <span className="font-mono">{formatPhone(a.phone)}</span>
           </li>
         ))}
       </ul>
-      {surface === 'customer' ? <p className="mt-2 text-sm text-muted">{t('customerHint')}</p> : null}
+      <p className="mt-1 font-semibold" data-testid="demo-otp">
+        {t('otp', { code: env.DEMO_OTP_CODE })}
+      </p>
     </aside>
   );
 }
