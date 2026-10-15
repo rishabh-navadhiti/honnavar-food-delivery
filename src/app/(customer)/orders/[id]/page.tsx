@@ -1,3 +1,4 @@
+import { AddressLabel } from '@/features/addresses/components/address-label';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { z } from 'zod';
@@ -117,7 +118,9 @@ export default async function OrderPage({ params }: Props) {
         <h2 id="address-title" className="text-lg font-bold">
           {t('orderPage.deliverTo')}
         </h2>
-        <p className="text-base font-semibold">{t(`addressLabel.${order.address.label}`)}</p>
+        <p className="text-base font-semibold" data-testid="order-address-label">
+          <AddressLabel label={order.address.label} labelText={order.address.labelText} />
+        </p>
         <p className="text-base">{order.address.house}</p>
         {order.address.street ? <p className="text-base">{order.address.street}</p> : null}
         <p className="text-base text-muted">{order.address.landmark}</p>

@@ -52,6 +52,7 @@ holds an order whose status is not `delivered`, `rejected` or `cancelled` (FR-03
 | id | uuid PK | |
 | customer_id | uuid FK → customers, cascade | |
 | label | `address_label` | not null |
+| label_text | varchar(30) | nullable: the customer's name for an `other` address, 1–30 characters after trimming; null for `home` and `work` (FR-054, amended) |
 | house | varchar(100) | not null, trimmed: house or door number or house name (FR-054) |
 | street | varchar(150) | nullable: street or area line |
 | landmark | varchar(100) | not null |
@@ -97,7 +98,7 @@ Deleted when no address and no order references it.
 | reason_note | varchar(200) | required when reason = `other` |
 | cash_collected | integer | set on delivery of `cod` orders; CHECK equals `grand_total` when set (FR-043) |
 | address_id | uuid FK → customer_addresses, set null | the saved address it came from; used to preselect the next checkout (FR-009) |
-| addr_label, addr_house, addr_street, addr_landmark, addr_rider_note, addr_lat, addr_lng, addr_geocoded_text | as in `customer_addresses` | **snapshot** at placing (FR-014) |
+| addr_label, addr_label_text, addr_house, addr_street, addr_landmark, addr_rider_note, addr_lat, addr_lng, addr_geocoded_text | as in `customer_addresses` | **snapshot** at placing (FR-014) |
 | addr_voice_note_id | uuid FK → audio_clips, restrict | snapshot of the voice note, kept alive by this reference |
 | placed_at | timestamptz | not null |
 | status_changed_at | timestamptz | not null; time of the latest event |

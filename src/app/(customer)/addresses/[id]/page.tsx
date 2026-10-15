@@ -27,6 +27,7 @@ export default async function EditAddressPage({ params }: Props) {
           values: {
             id: address.id,
             label: address.label,
+            labelText: address.labelText,
             house: address.house,
             street: address.street,
             landmark: address.landmark,

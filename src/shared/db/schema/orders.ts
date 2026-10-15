@@ -87,6 +87,7 @@ export const orders = pgTable(
     cashCollected: integer('cash_collected'),
     addressId: uuid('address_id').references(() => customerAddresses.id, { onDelete: 'set null' }),
     addrLabel: addressLabel('addr_label').notNull(),
+    addrLabelText: varchar('addr_label_text', { length: 30 }),
     addrHouse: varchar('addr_house', { length: 100 }).notNull(),
     addrStreet: varchar('addr_street', { length: 150 }),
     addrLandmark: varchar('addr_landmark', { length: 100 }).notNull(),

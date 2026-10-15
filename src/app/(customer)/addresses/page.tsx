@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { AddressLabel } from '@/features/addresses/components/address-label';
 import { getTranslations } from 'next-intl/server';
 import { listAddresses } from '@/features/addresses/queries';
 import { requireSession } from '@/features/auth/session';
@@ -22,7 +23,9 @@ export default async function AddressesPage() {
             <li key={a.id}>
               <Card className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
-                  <p className="text-base font-bold">{t(`addressLabel.${a.label}`)}</p>
+                  <p className="text-base font-bold">
+                    <AddressLabel label={a.label} labelText={a.labelText} />
+                  </p>
                   <p className="text-base">{a.house}</p>
                   <p className="text-sm text-muted">{a.landmark}</p>
                 </div>

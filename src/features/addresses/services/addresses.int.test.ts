@@ -130,3 +130,29 @@ describe('deleteAddress', () => {
     expect(await db.$count(audioClips)).toBe(1);
   });
 });
+
+describe('a name for an "Other" address (FR-054, amended)', () => {
+  it('keeps a trimmed name of 1–30 characters when the label is Other', async () => {
+    const customer = await customerActor();
+    const saved = await saveAddress(customer, { ...valid, label: 'other', labelText: "  Amma's house  " });
+    if (!saved.ok) throw new Error(saved.error.code);
+    expect((await load(saved.data.id))!.labelText).toBe("Amma's house");
+    const thirty = await saveAddress(customer, { ...valid, label: 'other', labelText: 'x'.repeat(30) });
+    expect(thirty.ok).toBe(true);
+  });
+
+  it('refuses a name longer than 30 characters', async () => {
+    const customer = await customerActor();
+    const result = await saveAddress(customer, { ...valid, label: 'other', labelText: 'x'.repeat(31) });
+    expect(result).toMatchObject({ ok: false, error: { code: 'invalid', fieldErrors: { labelText: 'tooLong' } } });
+  });
+
+  it('stores no name when it is empty or the label is not Other', async () => {
+    const customer = await customerActor();
+    const empty = await saveAddress(customer, { ...valid, label: 'other', labelText: '   ' });
+    const home = await saveAddress(customer, { ...valid, label: 'home', labelText: 'Ignored' });
+    if (!empty.ok || !home.ok) throw new Error();
+    expect((await load(empty.data.id))!.labelText).toBeNull();
+    expect((await load(home.data.id))!.labelText).toBeNull();
+  });
+});

@@ -119,6 +119,7 @@ export type CustomerOrderView = {
   kitchen: { id: string; name: LocalizedPair; phone: string | null; location: { lat: number; lng: number } | null };
   address: {
     label: 'home' | 'work' | 'other';
+    labelText: string | null;
     house: string;
     street: string | null;
     landmark: string;
@@ -179,6 +180,7 @@ export async function getCustomerOrder(customerId: string, orderId: string, now:
     },
     address: {
       label: order.addrLabel,
+      labelText: order.addrLabelText,
       house: order.addrHouse,
       street: order.addrStreet,
       landmark: order.addrLandmark,

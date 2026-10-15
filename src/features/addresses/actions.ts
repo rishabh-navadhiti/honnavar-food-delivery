@@ -10,7 +10,7 @@ import { deleteAddress, saveAddress, type VoiceNoteUpload } from './services/add
 
 export type AddressFormState = { error?: ResultError };
 
-const ADDRESS_FIELDS = ['id', 'label', 'house', 'street', 'landmark', 'riderNote', 'lat', 'lng', 'geocodedText', 'removeVoiceNote'];
+const ADDRESS_FIELDS = ['id', 'label', 'labelText', 'house', 'street', 'landmark', 'riderNote', 'lat', 'lng', 'geocodedText', 'removeVoiceNote'];
 
 /** Save an address with its optional voice note, then go back to where the customer came from. */
 export async function saveAddressAction(_previous: AddressFormState, formData: FormData): Promise<AddressFormState> {

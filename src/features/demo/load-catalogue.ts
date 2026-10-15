@@ -266,6 +266,7 @@ async function loadOrders(database: Db, catalogue: Catalogue, now: Date): Promis
         address: {
           id: demoIds.address(customer.key, address.key),
           label: address.label,
+          labelText: null,
           house: address.house,
           street: address.street ?? null,
           landmark: address.landmark,

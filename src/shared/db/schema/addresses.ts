@@ -42,6 +42,8 @@ export const customerAddresses = pgTable(
       .notNull()
       .references(() => customers.id, { onDelete: 'cascade' }),
     label: addressLabel('label').notNull(),
+    /** The customer's name for an "Other" address (FR-054, amended); null otherwise. */
+    labelText: varchar('label_text', { length: 30 }),
     house: varchar('house', { length: 100 }).notNull(),
     street: varchar('street', { length: 150 }),
     landmark: varchar('landmark', { length: 100 }).notNull(),

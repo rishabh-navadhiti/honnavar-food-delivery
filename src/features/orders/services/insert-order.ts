@@ -20,6 +20,7 @@ export type NewOrderItem = {
 export type AddressSnapshot = {
   id: string | null;
   label: 'home' | 'work' | 'other';
+  labelText: string | null;
   house: string;
   street: string | null;
   landmark: string;
@@ -68,6 +69,7 @@ export async function insertPlacedOrder(tx: Executor, input: NewOrder): Promise<
       expectedAt: expectedAt(input.placedAt, input.prepMinutes, input.deliveryMinutes),
       addressId: input.address.id,
       addrLabel: input.address.label,
+      addrLabelText: input.address.labelText,
       addrHouse: input.address.house,
       addrStreet: input.address.street,
       addrLandmark: input.address.landmark,

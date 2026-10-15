@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { AddressLabel } from '@/features/addresses/components/address-label';
 import { VoiceNotePlayer } from '@/shared/audio/voice-note-player';
 import { openInMapsUrl } from '@/shared/maps/open-in-maps';
 import { buttonClasses } from '@/shared/ui/button';
@@ -62,7 +63,7 @@ export function AgentOrderDetail({ order }: { order: Detail }) {
         <h2 className="text-lg font-bold">{t('agentOrder.deliverTo')}</h2>
         <p className="text-base font-semibold">{order.customer.name ?? t('partnerOrders.customer')}</p>
         <p className="text-base">
-          {t(`addressLabel.${order.address.label}`)}: {order.address.house}
+          <AddressLabel label={order.address.label} labelText={order.address.labelText} />: {order.address.house}
         </p>
         {order.address.street ? <p className="text-base">{order.address.street}</p> : null}
         <p className="text-base font-semibold">{order.address.landmark}</p>

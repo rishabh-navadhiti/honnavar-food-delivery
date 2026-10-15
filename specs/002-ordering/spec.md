@@ -576,7 +576,10 @@ available dishes at current prices.
   text and update when the pin moves. Continue leads to the details screen.
 - **FR-054**: The details screen MUST ask for house or door number or house name (required), street
   or area line (optional), landmark as text (required), a note for the rider (optional), an
-  optional voice note for the landmark, and a label: Home, Work or Other.
+  optional voice note for the landmark, and a label: Home, Work or Other. With Other, an optional
+  name for the place (1–30 characters, for example "Amma's house") is asked for and shown in place of
+  "Other" wherever the address appears, including the order's address snapshot. *(Amended
+  2026-10-15 from the reviewer's walkthrough.)*
 - **FR-055**: The landmark voice note is a declared stand-in for voice-assisted addresses: it MUST
   be recorded on the phone (up to 30 seconds), stored with the address, and playable by the
   customer, the assigned agent and admins; it is never transcribed or interpreted.
@@ -608,7 +611,7 @@ Per Constitution Principle II, every new kind of text in this feature belongs to
 | Dish names in the cart and on orders | Partner-authored content | Kept as the language pair from placing time; fallback to the other language with a marker |
 | Kitchen names on orders, boards and messages | Partner-authored content | Language pair; fallback with a marker |
 | Address labels (Home, Work, Other), "Use current location", "Expected by", delivery-time range, "Kitchen did not respond", voice-note controls, location and microphone permission messages | Interface string | Translated via keys; the label is stored as a fixed value |
-| House or door number or house name, street or area line, landmark, rider note | User-generated text | Shown as entered |
+| House or door number or house name, street or area line, landmark, rider note, the name given to an "Other" address | User-generated text | Shown as entered |
 | Landmark voice note | User-generated audio | Played back as recorded; never transcribed or translated |
 | Address text shown under the map pin and map search results | Third-party map content | Shown as the map service provides it; not translated by this product |
 | "Other" notes on rejection and cancellation | User-generated text | Shown as entered |
@@ -651,7 +654,8 @@ expected delivery time):
   platform.
 - **Saved address**: belongs to a customer account; house or door number or house name, optional
   street or area line, landmark, optional rider note, optional landmark voice note, label (Home,
-  Work or Other), map location, and the address text found under the pin when it was saved.
+  Work or Other) with an optional name for Other, map location, and the address text found under
+  the pin when it was saved.
 - **Order**: order number; customer; kitchen; delivery address snapshot (house, street or area,
   landmark, label, rider note, map location, voice note); expected delivery time; payment method
   (UPI demo or cash on delivery); item total, delivery fee, grand total; current status; assigned

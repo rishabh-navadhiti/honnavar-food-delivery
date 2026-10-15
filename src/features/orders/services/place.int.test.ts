@@ -168,3 +168,17 @@ describe('getCartView (FR-003, FR-009, FR-010)', () => {
     expect(await getCartView(null, null, now)).toBeNull();
   });
 });
+
+describe('the "Other" name in the address snapshot (FR-054, FR-014)', () => {
+  it('is copied into the order and kept when the address is edited later', async () => {
+    const { saveAddress } = await import('@/features/addresses/services/addresses');
+    const { customerAddresses } = await import('@/shared/db/schema');
+    const { customer, cart, input, address } = await setup();
+    await db.update(customerAddresses).set({ label: 'other', labelText: "Amma's house" }).where(eq(customerAddresses.id, address.id));
+    const placed = await placeOrder(customer, input(), cart, now);
+    if (!placed.ok) throw new Error(placed.error.code);
+    await saveAddress(customer, { id: address.id, label: 'other', labelText: 'Office', house: address.house, landmark: address.landmark, lat: address.lat, lng: address.lng });
+    const [order] = await db.select().from(orders).where(eq(orders.id, placed.data.orderId));
+    expect(order).toMatchObject({ addrLabel: 'other', addrLabelText: "Amma's house" });
+  });
+});

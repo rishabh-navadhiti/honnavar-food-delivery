@@ -94,6 +94,7 @@ export type AdminOrderView = {
   kitchen: { id: string; name: LocalizedPair; phone: string | null };
   address: {
     label: 'home' | 'work' | 'other';
+    labelText: string | null;
     house: string;
     street: string | null;
     landmark: string;
@@ -158,6 +159,7 @@ export async function getAdminOrder(orderId: string, now: Date): Promise<AdminOr
     kitchen: { id: kitchen.id, name: { en: kitchen.nameEn, kn: kitchen.nameKn }, phone: contacts[0]?.phone ?? null },
     address: {
       label: order.addrLabel,
+      labelText: order.addrLabelText,
       house: order.addrHouse,
       street: order.addrStreet,
       landmark: order.addrLandmark,

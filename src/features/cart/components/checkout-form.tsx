@@ -2,6 +2,7 @@
 
 import { useActionState, useRef, useState } from 'react';
 import Link from 'next/link';
+import { AddressLabel } from '@/features/addresses/components/address-label';
 import { useLocale, useTranslations } from 'next-intl';
 import { placeOrderAction, type PlaceOrderState } from '@/features/orders/actions/customer';
 import { isLocale } from '@/shared/i18n/config';
@@ -10,7 +11,7 @@ import { buttonClasses } from '@/shared/ui/button';
 import { FormError } from '@/shared/ui/form-message';
 import { useErrorText } from '@/shared/ui/use-error-text';
 
-export type CheckoutAddress = { id: string; label: 'home' | 'work' | 'other'; house: string; landmark: string };
+export type CheckoutAddress = { id: string; label: 'home' | 'work' | 'other'; labelText: string | null; house: string; landmark: string };
 
 /**
  * Address and payment choice, both preselected from the last order (FR-009, FR-010), and "Place
@@ -65,7 +66,9 @@ export function CheckoutForm({
           <label key={a.id} className={choice}>
             <input type="radio" name="addressId" value={a.id} defaultChecked={a.id === preselected.addressId} className="size-5 accent-primary" />
             <span className="flex flex-col">
-              <span className="text-base font-bold">{t(`addressLabel.${a.label}`)}</span>
+              <span className="text-base font-bold">
+                <AddressLabel label={a.label} labelText={a.labelText} />
+              </span>
               <span className="text-sm">{a.house}</span>
               <span className="text-sm text-muted">{a.landmark}</span>
             </span>

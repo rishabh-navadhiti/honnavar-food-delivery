@@ -83,7 +83,7 @@ export default async function CartPage({ searchParams }: Props) {
         </div>
       ) : (
         <CheckoutForm
-          addresses={view.addresses.map((a) => ({ id: a.id, label: a.label, house: a.house, landmark: a.landmark }))}
+          addresses={view.addresses.map((a) => ({ id: a.id, label: a.label, labelText: a.labelText, house: a.house, landmark: a.landmark }))}
           preselected={view.preselected}
           placeKey={crypto.randomUUID()}
           seenPrices={Object.fromEntries(orderable.map((l) => [l.dishId, l.priceRupees]))}

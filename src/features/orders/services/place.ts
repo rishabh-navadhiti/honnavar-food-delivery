@@ -103,6 +103,7 @@ export async function placeOrder(actor: CustomerActor, input: unknown, cart: Car
         address: {
           id: address.id,
           label: address.label,
+          labelText: address.labelText,
           house: address.house,
           street: address.street,
           landmark: address.landmark,

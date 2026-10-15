@@ -107,9 +107,13 @@ test('a customer adds a map-pinned address with a voice note at checkout', async
   await page.waitForTimeout(2000);
   await page.getByRole('button', { name: 'Stop' }).click();
   await expect(page.getByTestId('voice-preview')).toBeVisible();
-  await page.getByText('Work', { exact: true }).click();
+  // "Other" asks for an optional name, shown in place of "Other" (FR-054, amended).
+  await page.getByText('Other', { exact: true }).click();
+  await page.getByLabel('Name for this place (optional)').fill("Amma's house");
   await page.getByRole('button', { name: 'Save address' }).click();
 
   await expect(page).toHaveURL('/cart');
-  await expect(page.getByText('Shop 12, Sagar Complex')).toBeVisible();
+  const card = page.locator('label').filter({ hasText: 'Shop 12, Sagar Complex' });
+  await expect(card).toContainText("Amma's house");
+  await expect(card).not.toContainText('Other');
 });

@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import type { PickedLocation } from '@/shared/maps/pin-picker';
 import { Button } from '@/shared/ui/button';
@@ -13,6 +13,7 @@ import { VoiceRecorder } from './voice-recorder';
 export type AddressValues = {
   id?: string;
   label: 'home' | 'work' | 'other';
+  labelText: string | null;
   house: string;
   street: string | null;
   landmark: string;
@@ -37,6 +38,7 @@ export function AddressDetailsForm({
   const t = useTranslations();
   const [state, formAction, pending] = useActionState<AddressFormState, FormData>(saveAddressAction, {});
   const errors = useErrorText(state.error);
+  const [label, setLabel] = useState<AddressValues['label']>(values?.label ?? 'home');
   return (
     <form action={formAction} className="flex flex-col gap-4">
       {values?.id ? <input type="hidden" name="id" value={values.id} /> : null}
@@ -95,16 +97,26 @@ export function AddressDetailsForm({
       <fieldset className="flex flex-col gap-2">
         <legend className="text-sm font-semibold">{t('addresses.labelTitle')}</legend>
         <div className="grid grid-cols-3 gap-2">
-          {LABELS.map((label) => (
+          {LABELS.map((option) => (
             <label
-              key={label}
+              key={option}
               className="flex min-h-touch cursor-pointer items-center justify-center rounded-xl border border-line bg-surface px-2 text-base font-semibold has-[:checked]:border-primary has-[:checked]:bg-orange-50"
             >
-              <input type="radio" name="label" value={label} defaultChecked={(values?.label ?? 'home') === label} className="sr-only" />
-              {t(`addressLabel.${label}`)}
+              <input type="radio" name="label" value={option} checked={label === option} onChange={() => setLabel(option)} className="sr-only" />
+              {t(`addressLabel.${option}`)}
             </label>
           ))}
         </div>
+        {label === 'other' ? (
+          <TextField
+            name="labelText"
+            label={t('addresses.labelText')}
+            hint={t('addresses.labelTextHint')}
+            maxLength={30}
+            defaultValue={values?.labelText ?? ''}
+            error={errors.field('labelText')}
+          />
+        ) : null}
       </fieldset>
 
       <FormError message={errors.form} />

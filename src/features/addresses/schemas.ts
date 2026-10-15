@@ -14,6 +14,8 @@ const checkbox = z
 export const addressSchema = z.object({
   id: fields.optionalId(),
   label: z.enum(['home', 'work', 'other'], { error: 'required' }),
+  /** A name for an "Other" address, 1–30 characters after trimming (FR-054, amended). */
+  labelText: fields.optionalText(30),
   house: fields.requiredText(100),
   street: fields.optionalText(150),
   landmark: fields.requiredText(100),

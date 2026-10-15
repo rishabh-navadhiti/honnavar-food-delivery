@@ -48,6 +48,7 @@ export async function saveAddress(
     }
     const row = {
       label: values.label,
+      labelText: values.label === 'other' ? (values.labelText ?? null) : null,
       house: values.house,
       street: values.street ?? null,
       landmark: values.landmark,

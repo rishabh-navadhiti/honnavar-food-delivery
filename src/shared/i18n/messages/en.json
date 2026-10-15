@@ -597,7 +597,9 @@
     "delete": "Delete this address",
     "title": "My addresses",
     "empty": "No saved addresses yet",
-    "add": "Add a new address"
+    "add": "Add a new address",
+    "labelText": "Name for this place (optional)",
+    "labelTextHint": "Up to 30 letters, for example: Amma's house"
   },
   "orderPage": {
     "title": "Order",
