@@ -117,9 +117,12 @@ export async function listKitchensForAdmin(filters: {
       status: kitchens.status,
       pureVeg: kitchens.pureVeg,
       landmark: kitchens.landmark,
-      primaryPhone: sql<string | null>`(select c.phone from kitchen_contacts c where c.kitchen_id = ${kitchens.id} and c.is_primary limit 1)`,
+      primaryPhone: kitchenContacts.phone,
     })
     .from(kitchens)
+    // A join, not a correlated subselect: in a single-table select Drizzle renders `${kitchens.id}`
+    // unqualified, which inside a subquery would resolve to kitchen_contacts.id.
+    .leftJoin(kitchenContacts, and(eq(kitchenContacts.kitchenId, kitchens.id), eq(kitchenContacts.isPrimary, true)))
     .where(conditions.length > 0 ? and(...conditions) : undefined)
     .orderBy(asc(kitchens.nameEn), asc(kitchens.nameKn));
   return rows;
