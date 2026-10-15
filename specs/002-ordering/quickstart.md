@@ -40,8 +40,9 @@ npm run build
 npm run test:e2e               # RESETS the DATABASE_URL database; geocoding uses the stand-in
 ```
 
-The e2e web server runs with `GEOCODING_PROVIDER=stand-in`, blocks map-tile requests, and uses
-Chromium's fake microphone, so the suite needs no network beyond localhost.
+The e2e web server runs on its own port (3100) with `GEOCODING_PROVIDER=stand-in` and map tiles
+pointed at a closed local port; the voice-note test records a synthetic tone through the real
+recorder. The suite needs no network beyond localhost.
 
 ## Demo walkthrough: four screens (US1 to US5)
 

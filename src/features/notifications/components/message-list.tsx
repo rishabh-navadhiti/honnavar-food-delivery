@@ -25,7 +25,7 @@ export function MessageList({ messages, orderHref }: { messages: MessageView[]; 
             <span className="text-xs font-semibold uppercase tracking-wide text-muted">{t('notifications.demoLabel')}</span>
             <span className="text-sm text-muted">{formatDayTime(m.createdAt, locale)}</span>
           </span>
-          <Link href={orderHref(m.orderId)} className="text-base font-semibold text-ink underline-offset-4 hover:underline">
+          <Link href={orderHref(m.orderId)} className="flex min-h-touch items-center text-base font-semibold text-ink underline-offset-4 hover:underline">
             {t(`notifications.${m.kind}`, {
               orderNo: String(m.params.orderNo),
               amount: m.params.amount !== undefined ? formatPrice(m.params.amount, locale) : '',

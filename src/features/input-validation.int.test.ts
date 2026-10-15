@@ -64,3 +64,71 @@ describe('malformed ids are rejected as invalid', () => {
     }
   });
 });
+
+/** 002: every ordering service and route handler fails closed on malformed input. */
+describe('malformed ordering input is rejected as invalid (002)', () => {
+  it('in cart, address, place and reorder services', async () => {
+    const { customerActor } = await import('@/shared/db/test/actors');
+    const { addToCart, setCartQuantity } = await import('./cart/services/cart');
+    const { saveAddress, deleteAddress } = await import('./addresses/services/addresses');
+    const { placeOrder } = await import('./orders/services/place');
+    const { cancelOrderByCustomer, reorder } = await import('./orders/services/customer');
+    const customer = await customerActor();
+    const now = new Date();
+    const cart = { v: 1 as const, kitchenId: crypto.randomUUID(), lines: [{ dishId: crypto.randomUUID(), qty: 1 }] };
+    for (const result of [
+      await addToCart(null, { dishId: BAD }, now),
+      setCartQuantity(cart, { dishId: BAD, qty: 1 }),
+      setCartQuantity(cart, { dishId: cart.lines[0]!.dishId, qty: -1 }),
+      await saveAddress(customer, { id: BAD, label: 'home', house: 'A', landmark: 'B', lat: 14.2, lng: 74.4 }),
+      await saveAddress(customer, { label: 'home', house: 'A', landmark: 'B', lat: 'north', lng: 74.4 }),
+      await deleteAddress(customer, { id: BAD }),
+      await placeOrder(customer, { placeKey: BAD, addressId: crypto.randomUUID(), paymentMethod: 'cod', seenPrices: '{}' }, cart, now),
+      await placeOrder(customer, { placeKey: crypto.randomUUID(), addressId: BAD, paymentMethod: 'cod', seenPrices: '{}' }, cart, now),
+      await placeOrder(customer, { placeKey: crypto.randomUUID(), addressId: crypto.randomUUID(), paymentMethod: 'cheque', seenPrices: '{}' }, cart, now),
+      await placeOrder(customer, { placeKey: crypto.randomUUID(), addressId: crypto.randomUUID(), paymentMethod: 'cod', seenPrices: 'oops' }, cart, now),
+      await cancelOrderByCustomer(customer, { orderId: BAD }, now),
+      await reorder(customer, { orderId: BAD }, null),
+    ]) {
+      expect(result.ok || result.error.code).toBe('invalid');
+    }
+  });
+
+  it('in partner, admin and agent order services', async () => {
+    const { agentActor } = await import('@/shared/db/test/actors');
+    const { acceptOrder, markPreparing, markReady, rejectOrder } = await import('./orders/services/partner');
+    const { assignAgent, cancelOrderByAdmin } = await import('./orders/services/admin');
+    const { markDelivered, markPickedUp } = await import('./orders/services/agent');
+    const kitchen = await makeKitchen();
+    const partner = await partnerActor(kitchen.id);
+    const admin = await adminActor();
+    const agent = await agentActor();
+    const now = new Date();
+    for (const result of [
+      await acceptOrder(partner, { orderId: BAD }, now),
+      await markPreparing(partner, { orderId: BAD }, now),
+      await markReady(partner, { orderId: BAD }, now),
+      await rejectOrder(partner, { orderId: BAD, reason: 'kitchen_busy' }, now),
+      await rejectOrder(partner, { orderId: crypto.randomUUID(), reason: 'bogus' }, now),
+      await assignAgent(admin, { orderId: BAD, agentId: crypto.randomUUID() }, now),
+      await assignAgent(admin, { orderId: crypto.randomUUID(), agentId: BAD }, now),
+      await cancelOrderByAdmin(admin, { orderId: BAD, reason: 'no_agent' }, now),
+      await cancelOrderByAdmin(admin, { orderId: crypto.randomUUID(), reason: 'kitchen_busy' }, now),
+      await markPickedUp(agent, { orderId: BAD }, now),
+      await markDelivered(agent, { orderId: BAD, cashCollected: 'true' }, now),
+    ]) {
+      expect(result.ok || result.error.code).toBe('invalid');
+    }
+  });
+
+  it('in the geo, voice-note and new-order feed route handlers', async () => {
+    const { customerActor } = await import('@/shared/db/test/actors');
+    const { handleGeoReverse, handleGeoSearch, handleVoiceNote } = await import('./addresses/handlers');
+    const customer = await customerActor();
+    const url = (path: string) => new URL(`http://localhost${path}`);
+    expect((await handleGeoSearch(url('/api/geo/search?q=%20%20'), { customer })).status).toBe(400);
+    expect((await handleGeoReverse(url('/api/geo/reverse?lat=14.2'), { customer })).status).toBe(400);
+    expect((await handleGeoReverse(url('/api/geo/reverse?lat=14.2&lng=74.4&locale=xx'), { customer })).status).toBe(400);
+    expect((await handleVoiceNote('../../etc/passwd', { admin: await adminActor() })).status).toBe(404);
+  });
+});

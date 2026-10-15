@@ -608,7 +608,7 @@ orders, tap Reorder, and land on `/cart` with its available dishes at current pr
 
 **Purpose**: The cross-role run, validation sweeps, documentation and the full gate.
 
-- [ ] T113 Write the cross-role end-to-end test `e2e/ordering-milestone.spec.ts` (mobile project; four browser contexts: customer, partner and agent at 360 px, admin at 1280 px), after `resetDemoData()`, `openAllDay(orderableKitchen().id)` and `blockMapTiles`:
+- [X] T113 Write the cross-role end-to-end test `e2e/ordering-milestone.spec.ts` (mobile project; four browser contexts: customer, partner and agent at 360 px, admin at 1280 px), after `resetDemoData()`, `openAllDay(orderableKitchen().id)` and `blockMapTiles`:
   - the customer places a COD order;
   - the partner sees the banner and accepts;
   - the admin assigns the first active agent;
@@ -616,21 +616,21 @@ orders, tap Reorder, and land on `/cart` with its available dishes at current pr
   - the agent picks up and delivers, confirming cash;
   - the customer's open order page reaches "Delivered" without a reload.
   Assert every cross-role change appears within 15 s, that the same grand total is shown on the customer order page, the partner order, the admin order view and the agent order (SC-005), and that the whole run stays under 5 minutes (SC-002, SC-003).
-- [ ] T114 [P] Extend `src/features/input-validation.int.test.ts` with malformed ids and out-of-range values for every new service (cart, addresses, place, partner, admin, agent, reorder), each returning `invalid`, and add malformed query cases for the geo and voice-note route handlers
-- [ ] T115 [P] Update `README.md`:
+- [X] T114 [P] Extend `src/features/input-validation.int.test.ts` with malformed ids and out-of-range values for every new service (cart, addresses, place, partner, admin, agent, reorder), each returning `invalid`, and add malformed query cases for the geo and voice-note route handlers
+- [X] T115 [P] Update `README.md`:
   - add Leaflet (maps) to the "one sanctioned tool per concern" table;
   - list the new environment variables, pointing to `.env.example`;
   - list the three new adapters and which are stand-ins;
   - note the Nominatim usage policy limits;
   - document `scripts/make-alert-sound.ts`.
-- [ ] T116 [P] Check that the 002 rows in `docs/fidelity-matrix.md` match what was delivered (cart, payment stand-in, lifecycle, assignment, messages stand-in, tracker map, new-order alert, geocoding, voice note, delivery estimate), and that every stand-in file (`payment`, `notifications`, `geocoding/stand-in.ts`) has its `STAND-IN` header
-- [ ] T117 Run a parity sweep over the new code:
+- [X] T116 [P] Check that the 002 rows in `docs/fidelity-matrix.md` match what was delivered (cart, payment stand-in, lifecycle, assignment, messages stand-in, tracker map, new-order alert, geocoding, voice note, delivery estimate), and that every stand-in file (`payment`, `notifications`, `geocoding/stand-in.ts`) has its `STAND-IN` header
+- [X] T117 Run a parity sweep over the new code:
   - `grep` `src/` for hard-coded user-facing text in `aria-label`, `alt`, `placeholder` and `title` (including map marker labels and the recorder);
   - confirm statuses, reasons and message entries change language with the switch;
   - confirm `machine-drafted.json` lists every agent-drafted Kannada key.
-- [ ] T118 Run a 360 px review of every new customer, partner and agent screen in Playwright device mode: no horizontal scroll (`document.documentElement.scrollWidth <= 360`), touch targets ≥ 48 px, one primary action per screen. Check the four-tap path from home to a placed COD order (SC-001). Time adding a new address by hand (pin, house details, landmark, label) at 360 px and record the result against the 90 s target (SC-010). Fix what fails in the relevant component files.
-- [ ] T119 Clean up: remove dead code, commented-out code and debug logging. Confirm every `catch` in the new `actions` files logs through `src/shared/log.ts` with the action name, surface and subject id, and that no client component imports a `server-only` module.
-- [ ] T120 Run the full gate (`npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run test:e2e`) and walk through the quickstart demo walkthrough (steps 0–14) and further scenarios 1–12 in `specs/002-ordering/quickstart.md`. Record the results, and any scenario not run with the reason.
+- [X] T118 Run a 360 px review of every new customer, partner and agent screen in Playwright device mode: no horizontal scroll (`document.documentElement.scrollWidth <= 360`), touch targets ≥ 48 px, one primary action per screen. Check the four-tap path from home to a placed COD order (SC-001). Time adding a new address by hand (pin, house details, landmark, label) at 360 px and record the result against the 90 s target (SC-010). Fix what fails in the relevant component files.
+- [X] T119 Clean up: remove dead code, commented-out code and debug logging. Confirm every `catch` in the new `actions` files logs through `src/shared/log.ts` with the action name, surface and subject id, and that no client component imports a `server-only` module.
+- [X] T120 Run the full gate (`npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run test:e2e`) and walk through the quickstart demo walkthrough (steps 0–14) and further scenarios 1–12 in `specs/002-ordering/quickstart.md`. Record the results, and any scenario not run with the reason.
 
 ---
 
