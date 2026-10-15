@@ -224,4 +224,11 @@ describe('listKitchensForAdmin (FR-024)', () => {
     expect(await ids({ status: 'active', q: 'goli' })).toEqual([]);
     expect((await ids({})).length).toBe(2);
   });
+
+  it('includes each kitchen’s primary contact number', async () => {
+    const kitchen = await makeKitchen({ nameEn: 'Primary Phone Kitchen' }, { contactPhone: '9000006501' });
+    await db.insert(kitchenContacts).values({ kitchenId: kitchen.id, phone: '9000006502', isPrimary: false, position: 1 });
+    const [row] = await listKitchensForAdmin({});
+    expect(row).toMatchObject({ id: kitchen.id, primaryPhone: '9000006501' });
+  });
 });

@@ -18,6 +18,7 @@ export function FilterBar({ filters }: { filters: KitchenFilters }) {
   const t = useTranslations();
   const chip = (label: string, active: boolean, next: KitchenFilters, testId: string) => (
     <Link
+      key={testId}
       href={filtersToQuery(next)}
       data-testid={testId}
       data-active={active}
