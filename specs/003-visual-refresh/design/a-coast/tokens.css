@@ -1,0 +1,134 @@
+/* ==========================================================================
+   A · Coast — design tokens
+   One shared set of tokens for every surface (customer, partner, agent, admin).
+   Light theme only. Mockup loads the font from Google Fonts; the product self-hosts it.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Anek+Kannada:wdth,wght@75..100,100..800&display=swap');
+
+:root {
+  /* ---- Type family -------------------------------------------------------
+     Anek Kannada: one variable family drawn for Kannada and Latin together.
+     Axes: wght 100–800, wdth 75–100. Width is used as a hierarchy tool:
+     100 for reading text, 87.5 for display/headings, 80 for dense labels. */
+  --font: 'Anek Kannada', 'Noto Sans Kannada', system-ui, sans-serif;
+  --wdth-read: 100%;
+  --wdth-head: 87.5%;
+  --wdth-dense: 80%;
+
+  /* ---- Type scale (same px for both scripts; Kannada never smaller) ------ */
+  --fs-display: 28px;
+  --fs-title: 22px;
+  --fs-heading: 18px;
+  --fs-body: 16px;
+  --fs-small: 14px;
+  --fs-caption: 13px;
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-heavy: 780;
+
+  /* Line heights: Kannada needs more room for vowel signs above and
+     conjuncts (ottaksharas) below the baseline. */
+  --lh-tight: 1.18;
+  --lh-snug: 1.3;
+  --lh-body: 1.45;
+  --lh-tight-kn: 1.42;
+  --lh-snug-kn: 1.5;
+  --lh-body-kn: 1.62;
+
+  /* ---- Palette: brand ---------------------------------------------------- */
+  --tile-800: #7e2e10;   /* deep tile — pressed */
+  --tile-700: #9c3512;   /* links on white, active text */
+  --tile-600: #b8461a;   /* PRIMARY "Mangalore tile" — buttons, active tab (5.34:1 on white) */
+  --tile-500: #d0602e;   /* illustration */
+  --tile-200: #f6cdb4;
+  --tile-100: #fbe3d4;
+  --tile-50:  #fdf1e8;
+
+  --saffron-500: #f2a541; /* marigold — decorative highlight only, never text on light */
+  --saffron-300: #f8c97f;
+  --saffron-100: #fdebcb;
+
+  --sea-700: #0b5a54;
+  --sea-600: #0e6e67;    /* SECONDARY "Sharavathi" teal — call, map, delivery pin (6.1:1) */
+  --sea-200: #b9e1db;
+  --sea-100: #dff2ef;
+  --sea-50:  #eef8f6;
+
+  /* ---- Palette: neutrals (warm) ------------------------------------------ */
+  --ink:     #2b1b12;    /* tamarind — primary text (15:1 on page) */
+  --ink-2:   #5c4a3e;    /* secondary text (7.6:1 on page) */
+  --ink-3:   #7a675a;    /* tertiary text, placeholders (4.9:1 on page) */
+  --line:    #ece2d5;
+  --line-2:  #dccdbb;
+  --page:    #faf4ea;    /* coconut cream page */
+  --surface: #ffffff;
+  --surface-2: #fdf9f3;  /* sunk rows inside cards */
+  --scrim:   rgb(43 27 18 / 0.42);
+
+  /* ---- Meaning colours (always paired with icon or text) ----------------- */
+  --open:      #18794e;  --open-bg:     #e3f4ea;
+  --closed:    #6a5d54;  --closed-bg:   #f0ebe5;
+  --veg:       #1a7f47;
+  --nonveg:    #8f3b1b;
+  --warning:   #9a5507;  --warning-bg:  #fff3d9;
+  --danger:    #b42318;  --danger-bg:   #fde8e6;
+  --success:   #18794e;  --success-bg:  #e3f4ea;
+
+  /* Order statuses: text colour on its own tint ≥ 4.5:1 */
+  --st-placed:    #9a5507;  --st-placed-bg:    #fff3d9;   /* bell-ring  */
+  --st-accepted:  #1e5bb0;  --st-accepted-bg:  #e6effa;   /* circle-check */
+  --st-preparing: #b4430f;  --st-preparing-bg: #fdebdd;   /* chef-hat   */
+  --st-ready:     #6b3fa0;  --st-ready-bg:     #f1e9fa;   /* package-check */
+  --st-picked:    #0e6e67;  --st-picked-bg:    #dff2ef;   /* bike       */
+  --st-delivered: #18794e;  --st-delivered-bg: #e3f4ea;   /* check-check */
+  --st-rejected:  #b42318;  --st-rejected-bg:  #fde8e6;   /* circle-x   */
+  --st-cancelled: #5f5550;  --st-cancelled-bg: #efebe7;   /* ban        */
+
+  /* ---- Spacing scale (4-based) ------------------------------------------- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --gutter: 16px;        /* phone side gutter */
+
+  /* ---- Radii ------------------------------------------------------------- */
+  --r-xs: 6px;           /* veg mark, tiny tags */
+  --r-sm: 10px;          /* inputs inside cards, thumbnails */
+  --r-md: 14px;          /* buttons, dish photos, inputs */
+  --r-lg: 18px;          /* cards */
+  --r-xl: 24px;          /* sheets, hero photo */
+  --r-pill: 999px;       /* chips, badges, pills */
+
+  /* ---- Elevation (warm, layered) ----------------------------------------- */
+  --e-0: none;
+  --e-1: 0 1px 2px rgb(92 52 24 / 0.06), 0 1px 1px rgb(92 52 24 / 0.04);
+  --e-2: 0 1px 2px rgb(92 52 24 / 0.06), 0 4px 12px -2px rgb(120 60 20 / 0.10), 0 12px 28px -12px rgb(120 60 20 / 0.16);
+  --e-3: 0 2px 6px rgb(92 52 24 / 0.08), 0 16px 40px -8px rgb(92 40 12 / 0.24);
+  --e-bar: 0 -1px 0 var(--line), 0 -8px 24px -12px rgb(92 52 24 / 0.18);
+
+  /* ---- Sizes ------------------------------------------------------------- */
+  --tap: 48px;           /* minimum tap target */
+  --topbar-h: 56px;
+  --tabbar-h: 66px;
+  --placebar-h: 76px;
+
+  /* ---- Motion (all < 200 ms; skipped under reduced motion) --------------- */
+  --t-fast: 120ms;
+  --t-base: 180ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --focus: 0 0 0 3px var(--surface), 0 0 0 5px var(--sea-600);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --t-fast: 0ms; --t-base: 0ms; }
+}

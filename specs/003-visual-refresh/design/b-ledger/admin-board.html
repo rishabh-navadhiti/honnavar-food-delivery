@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledger · Dispatch board</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="ui.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  .desk { width: 1280px; height: 800px; border-radius: 12px; overflow: hidden; border: 1px solid #B7C0C7; background: var(--c-page); display: flex; flex-direction: column; font-family: var(--font); font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-ink); box-shadow: 0 24px 48px -28px rgba(20,25,31,.35); -webkit-font-smoothing: antialiased; }
+  .anav { flex: none; height: 60px; display: flex; align-items: center; gap: var(--s5); padding: 0 var(--s5); background: var(--c-surface); border-bottom: 1px solid var(--c-line); }
+  .anav .brand { flex: none; }
+  .anav .tabs { display: flex; gap: 4px; height: 100%; flex: 1; }
+  .anav .tabs a { position: relative; display: inline-flex; align-items: center; gap: 8px; height: 100%; padding: 0 14px; color: var(--c-ink-2); text-decoration: none; font-weight: var(--fw-medium); font-size: var(--fs-sm); }
+  .anav .tabs a svg.lucide { width: 18px; height: 18px; color: var(--c-muted); }
+  .anav .tabs a.on { color: var(--c-primary-press); font-weight: var(--fw-semi); }
+  .anav .tabs a.on svg.lucide { color: var(--c-primary); }
+  .anav .tabs a.on::after { content: ''; position: absolute; left: 10px; right: 10px; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; background: var(--c-primary); }
+  .anav .right { display: flex; align-items: center; gap: 4px; }
+  .anav .btn { min-height: 40px; height: 48px; }
+
+  .bhead { flex: none; display: flex; align-items: flex-end; gap: var(--s5); padding: var(--s4) var(--s5) var(--s3); }
+  .bhead h1 { font-size: var(--fs-display); line-height: var(--lh-display); font-weight: var(--fw-bold); letter-spacing: -.01em; }
+  .bhead .upd { display: flex; align-items: center; gap: 6px; font-size: var(--fs-cap); color: var(--c-muted); font-feature-settings: var(--num); margin-top: 2px; }
+  .bhead .upd svg.lucide { width: 14px; height: 14px; }
+  .bhead .tally { display: flex; gap: 6px; margin-left: var(--s3); padding-bottom: 2px; }
+  .bhead .tally span { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: var(--r-pill); background: var(--c-surface); border: 1px solid var(--c-line); font-size: var(--fs-cap); color: var(--c-ink-2); font-feature-settings: var(--num); }
+  .bhead .tally b { color: var(--c-ink); }
+  .bhead .tally .warn { background: var(--c-warning-bg); border-color: var(--c-warning-line); color: var(--c-warning); }
+  .bhead .tally .warn b { color: var(--c-warning); }
+  .find { margin-left: auto; display: flex; align-items: flex-end; gap: 8px; }
+  .find label { display: grid; gap: 4px; font-size: var(--fs-micro); font-weight: var(--fw-semi); color: var(--c-muted); }
+  .find .field { width: 200px; }
+  .find .field .hash { color: var(--c-muted); font-weight: var(--fw-semi); }
+
+  .board { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; padding: 0 var(--s5) var(--s5); }
+  .col { min-width: 0; display: flex; flex-direction: column; background: #E9EDEF; border-radius: var(--r-lg); overflow: hidden; }
+  .col-h { flex: none; display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 12px; border-top: 3px solid var(--gc); }
+  .col-h svg.lucide { width: 18px; height: 18px; color: var(--gc); stroke-width: 2; }
+  .col-h h2 { font-size: var(--fs-sm); line-height: var(--lh-sm); font-weight: var(--fw-bold); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .col-h .n { min-width: 26px; height: 22px; padding: 0 7px; border-radius: 11px; background: var(--c-surface); color: var(--c-ink); font-weight: var(--fw-bold); font-size: var(--fs-cap); line-height: 22px; text-align: center; font-feature-settings: var(--num); box-shadow: 0 0 0 1px var(--c-line); }
+  .col.attn .col-h .n { background: var(--c-accent); box-shadow: none; }
+  .col-b { flex: 1; overflow: auto; padding: 0 8px 8px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: none; }
+
+  .bc { position: relative; background: var(--c-surface); border: 1px solid var(--c-line); border-radius: 10px; padding: 10px 12px 12px; }
+  .bc .r1 { display: flex; align-items: center; gap: 6px; }
+  .bc .no { font-size: var(--fs-head); line-height: 22px; font-weight: var(--fw-bold); font-feature-settings: var(--num); letter-spacing: -.01em; }
+  .bc .el { display: inline-flex; align-items: center; gap: 3px; font-size: var(--fs-cap); color: var(--c-ink-2); font-weight: var(--fw-semi); font-feature-settings: var(--num); white-space: nowrap; }
+  .bc .el svg.lucide { width: 14px; height: 14px; color: var(--c-muted); }
+  .bc .r1 .amt { margin-left: auto; font-size: var(--fs-head); font-weight: var(--fw-bold); font-feature-settings: var(--num); }
+  .bc .r2 { display: flex; align-items: center; gap: 6px; margin-top: 6px; }
+  .bc .k { margin-top: 8px; font-weight: var(--fw-semi); font-size: var(--fs-sm); line-height: var(--lh-sm); }
+  .bc .lm { display: flex; align-items: flex-start; gap: 5px; margin-top: 2px; font-size: var(--fs-cap); line-height: var(--lh-cap); color: var(--c-muted); }
+  .bc .lm svg.lucide { width: 14px; height: 14px; flex: none; margin-top: 2px; }
+  .bc .money { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: var(--fs-cap); color: var(--c-ink-2); white-space: nowrap; }
+  .bc .money b { font-size: var(--fs-body); color: var(--c-ink); font-feature-settings: var(--num); }
+  .bc .money .pay { display: inline-flex; align-items: center; gap: 4px; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  .bc .money svg.lucide { width: 15px; height: 15px; color: var(--c-muted); }
+  .bc .ag { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--c-line); }
+  .bc .agl { display: flex; align-items: center; gap: 6px; font-size: var(--fs-micro); font-weight: var(--fw-semi); color: var(--c-muted); margin-bottom: 6px; }
+  .bc .agl svg.lucide { width: 14px; height: 14px; }
+  .bc .need { display: flex; align-items: center; gap: 6px; font-size: var(--fs-cap); font-weight: var(--fw-bold); color: var(--c-warning); margin-bottom: 8px; }
+  .bc .need svg.lucide { width: 16px; height: 16px; }
+  .assign { display: flex; gap: 6px; }
+  .combo { flex: 1; min-width: 0; height: 48px; display: flex; align-items: center; gap: 6px; padding: 0 8px 0 10px; border: 1px solid var(--c-line-strong); border-radius: var(--r-md); background: var(--c-surface); text-align: left; }
+  .combo.open { border-color: var(--c-primary); box-shadow: 0 0 0 3px var(--c-primary-tint); }
+  .combo .tx { flex: 1; min-width: 0; }
+  .combo .tx b { display: block; font-size: var(--fs-cap); line-height: 16px; font-weight: var(--fw-semi); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .combo .tx span { display: block; font-size: var(--fs-micro); line-height: 15px; color: var(--c-muted); white-space: nowrap; }
+  .combo svg.lucide { width: 16px; height: 16px; color: var(--c-muted); }
+  .assign .btn { padding: 0 12px; font-size: var(--fs-sm); }
+  .who { display: flex; align-items: center; gap: 8px; }
+  .av { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--c-primary-tint); color: var(--c-primary-press); font-size: 11px; font-weight: var(--fw-bold); flex: none; }
+  .who .nm { flex: 1; min-width: 0; font-size: var(--fs-cap); line-height: 16px; }
+  .who .nm b { display: block; font-weight: var(--fw-semi); font-size: var(--fs-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .who .nm span { color: var(--c-muted); font-size: var(--fs-micro); }
+  .who .btn.rb { width: 48px; min-height: 48px; padding: 0; }
+  .bc.done { background: #FAFBFB; }
+  .bc.done .no, .bc.done .k { color: var(--c-ink-2); }
+  .bc .why { margin-top: 6px; font-size: var(--fs-cap); color: var(--c-ink-2); display: flex; gap: 5px; align-items: center; }
+  .bc .why svg.lucide { width: 14px; height: 14px; color: var(--c-muted); }
+  .menu { position: absolute; left: 11px; right: 11px; top: calc(100% - 6px); z-index: 5; background: var(--c-surface); border: 1px solid var(--c-line); border-radius: 10px; box-shadow: var(--e1-down); padding: 4px; }
+  .menu .opt { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 8px; border-radius: 6px; font-size: var(--fs-cap); }
+  .menu .opt.sel { background: var(--c-primary-tint); }
+  .menu .opt b { display: block; font-size: var(--fs-sm); font-weight: var(--fw-semi); }
+  .menu .opt span.l { color: var(--c-muted); font-size: var(--fs-micro); }
+  .menu .opt .ck { margin-left: auto; color: var(--c-primary); width: 16px; height: 16px; }
+  .g-wait { --gc: var(--st-placed); } .g-need { --gc: var(--c-warning); } .g-asg { --gc: var(--st-accepted); } .g-out { --gc: var(--st-picked); } .g-fin { --gc: var(--c-muted); }
+</style>
+</head>
+<body class="canvas">
+<header class="canvas-head">
+  <div class="crumbs"><a href="index.html">B · Ledger</a> / Admin dispatch board</div>
+  <h1>Dispatch board</h1>
+  <p>Admin moves to a top navigation so the board gets the full 1232 px: five 237 px columns, each with an icon, its count and a colour rule. Every card answers dispatch's questions without opening it: number, status and minutes in that status, kitchen, landmark, total, payment, and the agent (or an amber “Needs agent” with the assign control right on the card). The agent picker shows each agent's undelivered load on a second line instead of truncating it; Reassign (the arrows button) opens the same picker.</p>
+</header>
+
+<figure class="frame">
+  <figcaption class="frame-cap">Admin · Orders <span class="tag">1280 × 800</span><span class="tag">EN</span></figcaption>
+  <div class="desk" lang="en">
+    <header class="anav">
+      <a class="brand" href="#"><svg class="mark" aria-hidden="true"><use href="#i-mark"/></svg><span class="brand-text"><span class="wordmark">Honnavar Food</span><span class="brand-sub">Admin panel</span></span></a>
+      <nav class="tabs" aria-label="Main navigation">
+        <a class="on" href="#" aria-current="page"><i data-lucide="inbox"></i>Orders</a>
+        <a href="#"><i data-lucide="store"></i>Partners</a>
+        <a href="#"><i data-lucide="bike"></i>Delivery agents</a>
+      </nav>
+      <div class="right">
+        <button class="lang-btn" aria-label="Switch to Kannada"><span class="face" lang="kn">ಕನ್ನಡ</span></button>
+        <button class="btn btn-ghost" style="color:var(--c-ink-2)"><i data-lucide="log-out"></i>Sign out</button>
+      </div>
+    </header>
+
+    <div class="bhead">
+      <div>
+        <h1>Dispatch board</h1>
+        <p class="upd"><i data-lucide="refresh-cw"></i>Updated 7:42 pm</p>
+      </div>
+      <form class="find" role="search">
+        <label>Find order by number
+          <span class="field"><span class="hash">#</span><span class="ph">1042</span></span>
+        </label>
+        <button class="btn btn-secondary">Find</button>
+      </form>
+    </div>
+
+    <div class="board" id="board"></div>
+  </div>
+  <p class="frame-note" style="max-width:1280px">The #1042 picker is shown open. Elapsed time is minutes in the current status (finished cards: since it finished). Between 1024 and 1280 px the five columns keep a 200 px minimum and the board scrolls sideways; below 1024 px admin is not a target.</p>
+</figure>
+<script>
+const IC = { placed: 'bell-ring', accepted: 'circle-check', preparing: 'chef-hat', ready: 'package-check', picked: 'bike', delivered: 'check-check', rejected: 'circle-x', cancelled: 'ban' };
+const LBL = { placed: 'Placed', accepted: 'Accepted', preparing: 'Preparing', ready: 'Ready', picked: 'Picked up', delivered: 'Delivered', rejected: 'Rejected', cancelled: 'Cancelled' };
+const PAY = { cod: '<i data-lucide="banknote"></i>Cash on delivery', upi: '<i data-lucide="smartphone"></i>Paid by UPI (demo)' };
+const AG = { RN: ['Ravi Naik', '1 undelivered'], SG: ['Suresh Gouda', '2 undelivered'] };
+const combo = (who, open) => `<button class="combo${open ? ' open' : ''}" aria-label="${open !== undefined ? 'Assign to' : 'Reassign to'}" ${open ? 'aria-expanded="true"' : ''}><span class="tx"><b>${AG[who][0]}</b><span>${AG[who][1]}</span></span><i data-lucide="${open ? 'chevron-up' : 'chevron-down'}"></i></button>`;
+function card(o) {
+  let ag = '';
+  if (o.need) ag = `<div class="ag"><p class="need"><i data-lucide="triangle-alert"></i>Needs agent</p><div class="assign">${combo('RN', !!o.open)}<button class="btn btn-primary">Assign</button></div></div>`;
+  else if (o.agent && o.reassign) ag = `<div class="ag who"><span class="av">${o.agent}</span><span class="nm"><b>${AG[o.agent][0]}</b><span>${AG[o.agent][1]}</span></span><button class="btn btn-secondary rb" aria-label="Reassign ${AG[o.agent][0]}" title="Reassign"><i data-lucide="repeat-2"></i></button></div>`;
+  else if (o.agent) ag = `<div class="ag who"><span class="av">${o.agent}</span><span class="nm"><b>${AG[o.agent][0]}</b><span>${AG[o.agent][1]}</span></span></div>`;
+  const menu = o.open ? `<div class="menu" role="listbox" aria-label="Assign to">
+      <div class="opt sel" role="option" aria-selected="true"><span class="av">RN</span><span><b>Ravi Naik</b><span class="l">1 undelivered</span></span><i class="ck" data-lucide="check"></i></div>
+      <div class="opt" role="option"><span class="av">SG</span><span><b>Suresh Gouda</b><span class="l">2 undelivered</span></span></div></div>` : '';
+  return `<article class="bc${o.done ? ' done' : ''}"${o.open ? ' style="z-index:2"' : ''}>
+    <div class="r1"><span class="no">#${o.no}</span><span class="amt">₹${o.amt}</span></div>
+    <div class="r2"><span class="st st-${o.st}"><i data-lucide="${IC[o.st]}"></i>${LBL[o.st]}</span><span class="el"><i data-lucide="timer"></i>${o.min} min</span></div>
+    <p class="k">${o.k}</p>
+    ${o.lm ? `<p class="lm"><i data-lucide="map-pin"></i><span>${o.lm}</span></p>` : ''}
+    <p class="money"><span class="pay">${PAY[o.pay]}</span></p>
+    ${o.why ? `<p class="why"><i data-lucide="${o.whyIcon || 'message-square-text'}"></i>${o.why}</p>` : ''}
+    ${ag}${menu}</article>`;
+}
+const P = 'Behind Prabhatnagar temple', K = 'Opposite KSRTC bus stand';
+const COLS = [
+  { cls: 'g-wait', icon: 'hourglass', name: 'Waiting for kitchen', cards: [
+    { no: 1051, amt: 350, st: 'placed', min: 1, k: 'Samrat Sea Food', lm: P, pay: 'upi' },
+    { no: 1050, amt: 160, st: 'placed', min: 4, k: 'Ammana Adige', lm: K, pay: 'cod' } ] },
+  { cls: 'g-need attn', icon: 'user-plus', name: 'Needs agent', cards: [
+    { no: 1042, amt: 560, st: 'preparing', min: 6, k: "Nagvekar's Restaurant", lm: P, pay: 'cod', need: 1, open: 1 },
+    { no: 1049, amt: 250, st: 'accepted', min: 8, k: 'New Rameshwaram Restaurant', lm: K, pay: 'upi', need: 1 } ] },
+  { cls: 'g-asg', icon: 'user-check', name: 'Assigned', cards: [
+    { no: 1046, amt: 430, st: 'ready', min: 4, k: 'Prameela Restaurant', lm: P, pay: 'cod', agent: 'RN', reassign: 'SG' },
+    { no: 1044, amt: 280, st: 'preparing', min: 12, k: "Udupi's Pingar Dhaba", lm: K, pay: 'upi', agent: 'SG', reassign: 'RN' } ] },
+  { cls: 'g-out', icon: 'bike', name: 'Out for delivery', cards: [
+    { no: 1045, amt: 430, st: 'picked', min: 9, k: 'Romansiah Halal Family Restaurant', lm: K, pay: 'upi', agent: 'SG' } ] },
+  { cls: 'g-fin', icon: 'flag', name: 'Finished', cards: [
+    { no: 1041, amt: 450, st: 'delivered', min: 22, k: "BaBa's Cafe", pay: 'cod', done: 1, why: 'Ravi Naik', whyIcon: 'user-round' },
+    { no: 1040, amt: 350, st: 'rejected', min: 51, k: 'Samrat Sea Food', pay: 'upi', done: 1, why: 'Kitchen too busy' },
+    { no: 1039, amt: 280, st: 'cancelled', min: 46, k: "Udupi's Pingar Dhaba", pay: 'cod', done: 1, why: 'Customer asked to cancel' } ] }
+];
+document.getElementById('board').innerHTML = COLS.map(c => `<section class="col ${c.cls}">
+  <div class="col-h"><i data-lucide="${c.icon}"></i><h2>${c.name}</h2><span class="n">${c.cards.length}</span></div>
+  <div class="col-b"${c.cls.includes('attn') ? ' style="overflow:visible"' : ''}>${c.cards.map(card).join('')}</div></section>`).join('');
+</script>
+<script src="ledger.js"></script>
+</body>
+</html>

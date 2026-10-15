@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A · Coast — Home</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="coast.css">
+<style>
+  .home-head { padding: 18px var(--gutter) 0; }
+  .home-head h1 {
+    font-size: 25px; font-weight: 760; font-stretch: var(--wdth-head);
+    line-height: var(--lh-tight); letter-spacing: -0.015em;
+  }
+  .home-head h1 em { font-style: normal; color: var(--tile-600); }
+  .search { margin-top: 12px; position: relative; }
+  .search .input { padding-right: 4px; }
+  .search .go {
+    width: 44px; height: 44px; border-radius: 12px; border: 0; flex: none;
+    background: var(--tile-600); color: #fff; display: grid; place-items: center;
+  }
+  .search .go .lucide { color: #fff; width: 20px; height: 20px; }
+  .filters { margin-top: 6px; }
+  .chip-row .divider { width: 1px; background: var(--line-2); margin: 12px 6px; flex: none; }
+
+  .klist { display: flex; flex-direction: column; gap: 16px; padding: 14px var(--gutter) 24px; }
+  .kcard { overflow: hidden; display: block; }
+  .kcard-photo { height: 158px; }
+  .kcard-photo::after {
+    content: ""; position: absolute; inset: auto 0 0 0; height: 56px;
+    background: linear-gradient(to top, rgb(30 16 8 / 0.38), transparent);
+  }
+  .kcard-tags { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; z-index: 1; }
+  .eta-chip {
+    position: absolute; left: 12px; bottom: 10px; z-index: 1;
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 30px; padding: 0 11px 0 9px; border-radius: var(--r-pill);
+    background: var(--surface); color: var(--ink); font-size: 14px; font-weight: 720;
+    box-shadow: var(--e-2); font-variant-numeric: tabular-nums; padding-top: 2px;
+  }
+  .eta-chip .lucide { width: 17px; height: 17px; color: var(--sea-600); stroke-width: 2.2; }
+  .kcard-body { padding: 12px 16px 14px; display: grid; gap: 4px; }
+  .kcard-body h3 {
+    font-size: 19px; font-weight: 720; font-stretch: var(--wdth-head);
+    line-height: var(--lh-snug); letter-spacing: -0.01em;
+  }
+  .kcard-body h3:lang(kn) { line-height: var(--lh-snug-kn); }
+  .state { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; font-size: 14px; }
+  .state.open { color: var(--open); }
+  .state.closed { color: var(--closed); }
+  .kcard .meta { flex-wrap: wrap; row-gap: 2px; }
+  .kcard.is-closed .kcard-body h3 { color: var(--ink-2); }
+  .closed-over {
+    position: absolute; inset: 0; display: grid; place-items: center; z-index: 1;
+    background: rgb(250 244 234 / 0.25);
+  }
+  .closed-over .badge { height: 34px; font-size: 14px; padding: 0 14px; background: var(--surface); color: var(--closed); box-shadow: var(--e-2); }
+
+  /* Suggestions */
+  .suggest-scrim { position: absolute; inset: 0; background: var(--scrim); z-index: 5; }
+  .search.raised { z-index: 6; }
+  .suggest {
+    position: absolute; left: 0; right: 0; top: calc(100% + 8px); z-index: 7;
+    background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--e-3);
+    padding: 6px 0 4px; overflow: hidden;
+  }
+  .suggest h4 {
+    font-size: 12.5px; font-weight: 750; letter-spacing: 0.07em; text-transform: uppercase;
+    color: var(--ink-3); padding: 10px 16px 4px;
+  }
+  .sug {
+    display: flex; align-items: center; gap: 12px; min-height: 60px; padding: 6px 14px 6px 12px;
+  }
+  .sug.hl { background: var(--tile-50); }
+  .sug .th { width: 44px; height: 44px; border-radius: 12px; overflow: hidden; flex: none; background: var(--tile-50); }
+  .sug .th img { width: 100%; height: 100%; object-fit: cover; }
+  .sug .tx { flex: 1; min-width: 0; }
+  .sug .nm { font-size: 16px; font-weight: 560; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: flex; align-items: center; gap: 6px; }
+  .sug .nm b { font-weight: 800; color: var(--tile-700); }
+  .sug .sb { font-size: 13.5px; color: var(--ink-2); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+  .sug .pr { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .sug .chev { color: var(--ink-3); }
+  .sug.all { border-top: 1px solid var(--line); margin-top: 4px; color: var(--tile-700); font-weight: 650; min-height: 52px; }
+  .sug.all .ic { width: 44px; height: 32px; display: grid; place-items: center; }
+  .sug.all .lucide { color: var(--tile-600); }
+</style>
+</head>
+<body>
+<div class="review">
+  <div class="review-head">
+    <div>
+      <div class="kicker">A · Coast</div>
+      <h1>Home</h1>
+      <p>Photo-led kitchen cards, one slim top bar and a four-tab bottom bar that carries the cart total and the ongoing order. Fixed chrome: 56 + 66 = 122 px (15.6% of 360×780).</p>
+    </div>
+    <nav class="review-nav">
+      <a href="index.html">Overview</a><a href="home.html" aria-current="page">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html">Cart</a><a href="order.html">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html">Admin board</a>
+    </nav>
+  </div>
+
+  <div class="frames">
+  <!-- =============================== FRAME 1: home =============================== -->
+  <div class="frame">
+    <div class="frame-cap"><b>Home</b><span class="tag">390 × 844</span><span class="tag">English</span></div>
+    <div class="phone" lang="en">
+      <header class="topbar">
+        <a class="wordmark" href="home.html" aria-label="Honnavar Food, home">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#b8461a"/><path d="M6.5 15.5h19a9.5 9.5 0 0 1-19 0Z" fill="#fff6ea"/><path d="M7 10.5c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0" fill="none" stroke="#f8c97f" stroke-width="2" stroke-linecap="round"/><path d="M10.5 19.5c1.2.9 2.4.9 3.6 0s2.4-.9 3.6 0 2.4.9 3.6 0" stroke="#0e6e67" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+          <span>Honnavar <span class="food">Food</span></span>
+        </a>
+        <span class="spacer"></span>
+        <button class="lang-switch" aria-label="Switch to Kannada"><span><i data-lucide="languages"></i><span class="kn-label" lang="kn">ಕನ್ನಡ</span></span></button>
+      </header>
+
+      <main class="scroll">
+        <div class="home-head">
+          <h1>Kitchens in <em>Honnavar</em></h1>
+          <form class="search" role="search">
+            <label class="sr-only" for="q1">Search kitchens and dishes</label>
+            <div class="input">
+              <i data-lucide="search"></i>
+              <input id="q1" type="search" placeholder="For example: neer dose">
+              <button class="go" type="submit" aria-label="Search"><i data-lucide="arrow-right"></i></button>
+            </div>
+          </form>
+        </div>
+
+        <div class="filters chip-row" role="group" aria-label="Filter kitchens">
+          <button class="chip" aria-pressed="true"><span class="face"><i data-lucide="clock"></i>Open now</span></button>
+          <button class="chip" aria-pressed="false"><span class="face"><span class="vmark veg" aria-hidden="true"></span>Pure veg</span></button>
+          <span class="divider" aria-hidden="true"></span>
+          <button class="chip" aria-pressed="false"><span class="face"><i data-lucide="store"></i>Restaurant</span></button>
+          <button class="chip" aria-pressed="false"><span class="face"><i data-lucide="house"></i>Home kitchen</span></button>
+          <button class="chip" aria-pressed="false"><span class="face"><i data-lucide="cloud"></i>Cloud kitchen</span></button>
+        </div>
+
+        <div class="dishfilter">
+          <span class="lbl" id="df1">Show dishes</span>
+          <div class="seg" role="radiogroup" aria-labelledby="df1">
+            <button role="radio" aria-checked="true">All</button>
+            <button role="radio" aria-checked="false"><span class="vmark veg" aria-hidden="true"></span>Veg only</button>
+            <button role="radio" aria-checked="false"><span class="vmark nonveg" aria-hidden="true"></span>Non-veg only</button>
+          </div>
+        </div>
+
+        <div class="klist">
+          <a class="kcard card" href="kitchen.html">
+            <div class="photo kcard-photo">
+              <img src="../../../../seed/images/nagvekars.jpg" alt="">
+              <div class="kcard-tags"><span class="badge on-photo"><i data-lucide="store"></i>Restaurant</span></div>
+              <span class="eta-chip"><i data-lucide="bike"></i>35–45 min</span>
+            </div>
+            <div class="kcard-body">
+              <h3>Nagvekar's Restaurant</h3>
+              <div class="meta">
+                <span class="state open"><span class="dot"></span>Open now</span><span class="sep"></span><span>Closes 3:30 pm</span>
+              </div>
+              <div class="meta"><i data-lucide="map-pin"></i>Near Sharavathi bridge</div>
+            </div>
+          </a>
+
+          <a class="kcard card" href="kitchen.html">
+            <div class="photo kcard-photo">
+              <img src="../../../../seed/images/pingar-dhaba.jpg" alt="">
+              <div class="kcard-tags"><span class="badge on-photo"><i data-lucide="store"></i>Restaurant</span></div>
+              <span class="eta-chip"><i data-lucide="bike"></i>40–50 min</span>
+            </div>
+            <div class="kcard-body">
+              <h3>Udupi's Pingar Dhaba</h3>
+              <div class="meta">
+                <span class="state open"><span class="dot"></span>Open now</span><span class="sep"></span><span>Closes 12:00 am</span>
+              </div>
+              <div class="meta"><i data-lucide="map-pin"></i>Karkinaka junction</div>
+            </div>
+          </a>
+
+          <a class="kcard card" href="kitchen.html">
+            <div class="photo kcard-photo">
+              <img src="../../../../seed/images/new-rameshwaram.jpg" alt="">
+              <div class="kcard-tags"><span class="badge on-photo"><i data-lucide="store"></i>Restaurant</span><span class="badge on-photo" style="color:var(--veg)"><span class="vmark veg" aria-hidden="true"></span>Pure veg</span></div>
+              <span class="eta-chip"><i data-lucide="bike"></i>35–45 min</span>
+            </div>
+            <div class="kcard-body">
+              <h3>New Rameshwaram Restaurant</h3>
+              <div class="meta"><span class="state open"><span class="dot"></span>Open now</span><span class="sep"></span><span>Closes 10:00 pm</span></div>
+              <div class="meta"><i data-lucide="map-pin"></i>Near KSRTC bus stand</div>
+            </div>
+          </a>
+
+          <a class="kcard card is-closed" href="kitchen.html">
+            <div class="photo kcard-photo closed">
+              <img src="../../../../seed/images/samrat-sea-food.jpg" alt="">
+              <div class="kcard-tags"><span class="badge on-photo"><i data-lucide="cloud"></i>Cloud kitchen</span></div>
+              <div class="closed-over"><span class="badge"><i data-lucide="moon"></i>Closed · opens today 6:00 pm</span></div>
+            </div>
+            <div class="kcard-body">
+              <h3>Samrat Sea Food</h3>
+              <div class="meta"><i data-lucide="map-pin"></i>Near the port road</div>
+            </div>
+          </a>
+        </div>
+      </main>
+
+      <nav class="tabbar" aria-label="Main navigation">
+        <a class="tab active" href="home.html" aria-current="page"><span class="pill"><i data-lucide="house"></i></span><span class="lbl">Home</span></a>
+        <a class="tab ongoing" href="order.html" aria-label="Orders. Current order #1042: Preparing"><span class="pill"><i data-lucide="chef-hat"></i></span><span class="lbl">Preparing</span></a>
+        <a class="tab cart-full" href="cart.html" aria-label="Cart, 3 items, ₹620"><span class="pill"><i data-lucide="shopping-bag"></i><span class="count">3</span></span><span class="lbl">₹620</span></a>
+        <a class="tab" href="#"><span class="pill"><i data-lucide="user-round"></i></span><span class="lbl">Account</span></a>
+      </nav>
+    </div>
+    <p class="frame-note"><b>Tabs:</b> Orders shows the ongoing order's status (icon + word, status colour); Cart shows the count on the icon and the running total as its label. Both stay readable side by side. <b>Motion:</b> chip and tab presses tint in 120 ms.</p>
+  </div>
+
+  <!-- ====================== FRAME 2: search suggestions ====================== -->
+  <div class="frame">
+    <div class="frame-cap"><b>Search suggestions</b><span class="tag">after typing “pr”</span><span class="tag">English</span></div>
+    <div class="phone" lang="en">
+      <header class="topbar">
+        <a class="wordmark" href="home.html" aria-label="Honnavar Food, home">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#b8461a"/><path d="M6.5 15.5h19a9.5 9.5 0 0 1-19 0Z" fill="#fff6ea"/><path d="M7 10.5c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0" fill="none" stroke="#f8c97f" stroke-width="2" stroke-linecap="round"/><path d="M10.5 19.5c1.2.9 2.4.9 3.6 0s2.4-.9 3.6 0 2.4.9 3.6 0" stroke="#0e6e67" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+          <span>Honnavar <span class="food">Food</span></span>
+        </a>
+        <span class="spacer"></span>
+        <button class="lang-switch" aria-label="Switch to Kannada"><span><i data-lucide="languages"></i><span class="kn-label" lang="kn">ಕನ್ನಡ</span></span></button>
+      </header>
+
+      <main class="scroll">
+        <div class="suggest-scrim" aria-hidden="true"></div>
+        <div class="home-head">
+          <h1>Kitchens in <em>Honnavar</em></h1>
+          <form class="search raised" role="search">
+            <label class="sr-only" for="q2">Search kitchens and dishes</label>
+            <div class="input focus">
+              <i data-lucide="search"></i>
+              <input id="q2" type="search" value="pr" aria-expanded="true" aria-controls="sg">
+              <button class="icon-btn" type="button" aria-label="Clear search" style="width:44px;height:44px"><i data-lucide="x"></i></button>
+            </div>
+            <div class="suggest" id="sg" role="listbox" aria-label="Suggestions">
+              <h4>Kitchens</h4>
+              <a class="sug hl" role="option" href="kitchen.html">
+                <span class="th"><img src="../../../../seed/images/prameela.jpg" alt=""></span>
+                <span class="tx"><span class="nm"><span><b>Pr</b>ameela Restaurant</span></span><span class="sb">Restaurant · Near Bangalore Circle</span></span>
+                <i data-lucide="chevron-right" class="chev"></i>
+              </a>
+              <h4>Dishes</h4>
+              <a class="sug" role="option" href="kitchen.html#prawns-ghee-roast">
+                <span class="th"><img src="../../../../seed/images/nagvekars--prawns-ghee-roast.jpg" alt=""></span>
+                <span class="tx"><span class="nm"><span class="vmark nonveg" aria-label="Non-veg"></span><span><b>Pr</b>awns Ghee Roast</span></span><span class="sb">Nagvekar's Restaurant</span></span>
+                <span class="pr">₹380</span>
+              </a>
+              <a class="sug" role="option" href="kitchen.html#prawns-ghee-roast">
+                <span class="th"><img src="../../../../seed/images/prameela--prawns-ghee-roast.jpg" alt=""></span>
+                <span class="tx"><span class="nm"><span class="vmark nonveg" aria-label="Non-veg"></span><span><b>Pr</b>awns Ghee Roast</span></span><span class="sb">Prameela Restaurant</span></span>
+                <span class="pr">₹400</span>
+              </a>
+              <a class="sug" role="option" href="kitchen.html#prawn-sukka">
+                <span class="th"><img src="../../../../seed/images/karavali-mane-oota--prawn-sukka.jpg" alt=""></span>
+                <span class="tx"><span class="nm"><span class="vmark nonveg" aria-label="Non-veg"></span><span><b>Pr</b>awn Sukka</span></span><span class="sb">Karavali Shailiya Mane Oota</span></span>
+                <span class="pr">₹180</span>
+              </a>
+              <button class="sug all" type="submit" style="width:100%;border-left:0;border-right:0;border-bottom:0;background:none;text-align:left">
+                <span class="ic"><i data-lucide="search"></i></span>
+                <span class="tx">Search for “pr”</span>
+                <i data-lucide="arrow-right" class="chev"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="filters chip-row" aria-hidden="true">
+          <button class="chip" aria-pressed="true" tabindex="-1"><span class="face"><i data-lucide="clock"></i>Open now</span></button>
+          <button class="chip" tabindex="-1"><span class="face"><span class="vmark veg"></span>Pure veg</span></button>
+          <span class="divider"></span>
+          <button class="chip" tabindex="-1"><span class="face"><i data-lucide="store"></i>Restaurant</span></button>
+          <button class="chip" tabindex="-1"><span class="face"><i data-lucide="house"></i>Home kitchen</span></button>
+        </div>
+        <div class="dishfilter" aria-hidden="true">
+          <span class="lbl">Show dishes</span>
+          <div class="seg"><button aria-checked="true" tabindex="-1">All</button><button tabindex="-1"><span class="vmark veg"></span>Veg only</button><button tabindex="-1"><span class="vmark nonveg"></span>Non-veg only</button></div>
+        </div>
+        <div class="klist" aria-hidden="true">
+          <div class="kcard card"><div class="photo kcard-photo"><img src="../../../../seed/images/nagvekars.jpg" alt=""></div><div class="kcard-body"><h3>Nagvekar's Restaurant</h3></div></div>
+          <div class="kcard card"><div class="photo kcard-photo"><img src="../../../../seed/images/pingar-dhaba.jpg" alt=""></div><div class="kcard-body"><h3>Udupi's Pingar Dhaba</h3></div></div>
+        </div>
+      </main>
+
+      <nav class="tabbar" aria-label="Main navigation">
+        <a class="tab active" href="home.html" aria-current="page"><span class="pill"><i data-lucide="house"></i></span><span class="lbl">Home</span></a>
+        <a class="tab ongoing" href="order.html" aria-label="Orders. Current order #1042: Preparing"><span class="pill"><i data-lucide="chef-hat"></i></span><span class="lbl">Preparing</span></a>
+        <a class="tab cart-full" href="cart.html" aria-label="Cart, 3 items, ₹620"><span class="pill"><i data-lucide="shopping-bag"></i><span class="count">3</span></span><span class="lbl">₹620</span></a>
+        <a class="tab" href="#"><span class="pill"><i data-lucide="user-round"></i></span><span class="lbl">Account</span></a>
+      </nav>
+    </div>
+    <p class="frame-note"><b>From the second letter</b>, matches appear under the box, kitchens first, then dishes with their kitchen and price. A kitchen opens that kitchen; a dish opens its kitchen scrolled to the dish. The last row (or Enter) runs the existing search. With no match the panel says “Nothing found for “pr”” instead of an empty list. <b>Motion:</b> panel fades/slides 6 px in 140 ms.</p>
+  </div>
+
+  <!-- ====================== FRAME 3: 360 check ====================== -->
+  <div class="frame">
+    <div class="frame-cap"><b>Home at 360</b><span class="tag">360 × 780</span><span class="tag">English</span></div>
+    <div class="phone w360" lang="en">
+      <header class="topbar">
+        <a class="wordmark" href="home.html" aria-label="Honnavar Food, home">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#b8461a"/><path d="M6.5 15.5h19a9.5 9.5 0 0 1-19 0Z" fill="#fff6ea"/><path d="M7 10.5c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0" fill="none" stroke="#f8c97f" stroke-width="2" stroke-linecap="round"/><path d="M10.5 19.5c1.2.9 2.4.9 3.6 0s2.4-.9 3.6 0 2.4.9 3.6 0" stroke="#0e6e67" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+          <span>Honnavar <span class="food">Food</span></span>
+        </a>
+        <span class="spacer"></span>
+        <button class="lang-switch" aria-label="Switch to Kannada"><span><i data-lucide="languages"></i><span class="kn-label" lang="kn">ಕನ್ನಡ</span></span></button>
+      </header>
+      <main class="scroll">
+        <div class="home-head">
+          <h1>Kitchens in <em>Honnavar</em></h1>
+          <form class="search" role="search">
+            <div class="input"><i data-lucide="search"></i><input type="search" placeholder="For example: neer dose" aria-label="Search kitchens and dishes"><button class="go" type="submit" aria-label="Search"><i data-lucide="arrow-right"></i></button></div>
+          </form>
+        </div>
+        <div class="filters chip-row" role="group" aria-label="Filter kitchens">
+          <button class="chip" aria-pressed="true"><span class="face"><i data-lucide="clock"></i>Open now</span></button>
+          <button class="chip" aria-pressed="false"><span class="face"><span class="vmark veg" aria-hidden="true"></span>Pure veg</span></button>
+          <span class="divider" aria-hidden="true"></span>
+          <button class="chip" aria-pressed="false"><span class="face"><i data-lucide="store"></i>Restaurant</span></button>
+          <button class="chip" aria-pressed="false"><span class="face"><i data-lucide="house"></i>Home kitchen</span></button>
+        </div>
+        <div class="dishfilter">
+          <span class="lbl" id="df3">Show dishes</span>
+          <div class="seg" role="radiogroup" aria-labelledby="df3">
+            <button role="radio" aria-checked="true">All</button>
+            <button role="radio" aria-checked="false"><span class="vmark veg" aria-hidden="true"></span>Veg only</button>
+            <button role="radio" aria-checked="false"><span class="vmark nonveg" aria-hidden="true"></span>Non-veg only</button>
+          </div>
+        </div>
+        <div class="klist">
+          <a class="kcard card" href="kitchen.html">
+            <div class="photo kcard-photo"><img src="../../../../seed/images/nagvekars.jpg" alt=""><div class="kcard-tags"><span class="badge on-photo"><i data-lucide="store"></i>Restaurant</span></div><span class="eta-chip"><i data-lucide="bike"></i>35–45 min</span></div>
+            <div class="kcard-body"><h3>Nagvekar's Restaurant</h3><div class="meta"><span class="state open"><span class="dot"></span>Open now</span><span class="sep"></span><span>Closes 3:30 pm</span></div><div class="meta"><i data-lucide="map-pin"></i>Near Sharavathi bridge</div></div>
+          </a>
+          <a class="kcard card" href="kitchen.html">
+            <div class="photo kcard-photo"><img src="../../../../seed/images/karavali-mane-oota.jpg" alt=""><div class="kcard-tags"><span class="badge on-photo"><i data-lucide="house"></i>Home kitchen</span></div><span class="eta-chip"><i data-lucide="bike"></i>35–45 min</span></div>
+            <div class="kcard-body"><h3>Karavali Shailiya Mane Oota</h3><div class="meta"><span class="state open"><span class="dot"></span>Open now</span><span class="sep"></span><span>Closes 3:30 pm</span></div><div class="meta"><i data-lucide="map-pin"></i>Gandhada Oni</div></div>
+          </a>
+        </div>
+      </main>
+      <nav class="tabbar" aria-label="Main navigation">
+        <a class="tab active" href="home.html" aria-current="page"><span class="pill"><i data-lucide="house"></i></span><span class="lbl">Home</span></a>
+        <a class="tab ongoing" href="order.html" aria-label="Orders. Current order #1042: Preparing"><span class="pill"><i data-lucide="chef-hat"></i></span><span class="lbl">Preparing</span></a>
+        <a class="tab cart-full" href="cart.html" aria-label="Cart, 3 items, ₹620"><span class="pill"><i data-lucide="shopping-bag"></i><span class="count">3</span></span><span class="lbl">₹620</span></a>
+        <a class="tab" href="#"><span class="pill"><i data-lucide="user-round"></i></span><span class="lbl">Account</span></a>
+      </nav>
+    </div>
+    <p class="frame-note">Same markup at 360 px: the chip row scrolls inside itself, the dish filter and tab labels still fit, no sideways page scroll.</p>
+  </div>
+  </div>
+</div>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

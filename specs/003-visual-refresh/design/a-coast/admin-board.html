@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A · Coast — Admin board</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="coast.css">
+<style>
+  .review { max-width: 1420px; }
+  .desk {
+    position: relative; width: 1280px; height: 800px; overflow: hidden; border-radius: 14px;
+    background: var(--page);
+    box-shadow: 0 0 0 1.5px #b5ada5, 0 0 0 9px #f6f3ef, 0 0 0 10px #cfc8c0, 0 30px 60px -30px rgb(60 40 20 / 0.35);
+    display: flex; flex-direction: column;
+  }
+  .a-top {
+    height: 60px; flex: none; display: flex; align-items: center; gap: 8px; padding: 0 12px 0 20px;
+    background: var(--surface); border-bottom: 1px solid var(--line);
+  }
+  .a-top .wordmark small { display: inline; margin: 0 0 0 8px; padding: 4px 8px 3px; border-radius: var(--r-pill); background: var(--tile-50); color: var(--tile-700); font-size: 12px; font-weight: 700; }
+  .a-nav { display: flex; gap: 2px; margin-left: 24px; }
+  .a-nav a {
+    height: var(--tap); display: inline-flex; align-items: center; gap: 8px; padding: 2px 14px 0; border-radius: var(--r-md);
+    font-size: 15px; font-weight: 640; color: var(--ink-2); position: relative;
+  }
+  .a-nav a .lucide { width: 18px; height: 18px; }
+  .a-nav a[aria-current] { color: var(--tile-700); background: var(--tile-50); font-weight: 740; }
+  .a-top .spacer { flex: 1; }
+  .a-top .lang-switch > span { box-shadow: none; }
+
+  .a-head { display: flex; align-items: center; gap: 16px; padding: 14px 20px 10px; flex: none; }
+  .a-head h1 { font-size: 24px; font-weight: 800; font-stretch: var(--wdth-head); line-height: 1.15; letter-spacing: -0.01em; }
+  .a-head .upd { font-size: 13px; color: var(--ink-3); display: flex; align-items: center; gap: 4px; }
+  .a-head .upd .lucide { width: 13px; height: 13px; }
+  .a-head .totals { display: flex; gap: 6px; margin-left: 8px; }
+  .a-head .spacer { flex: 1; }
+  .find { display: flex; align-items: center; gap: 8px; }
+  .find label { font-size: 13.5px; color: var(--ink-2); font-weight: 600; }
+  .find .input { min-height: 48px; width: 170px; padding: 0 10px; box-shadow: none; }
+  .find .input input { height: 44px; font-size: 15px; }
+  .find .input .hash { color: var(--ink-3); font-weight: 700; }
+
+  .board { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; padding: 0 16px 16px; }
+  .col { background: #f3e9dc; border-radius: var(--r-lg); display: flex; flex-direction: column; min-height: 0; overflow: hidden; }
+  .col-h { display: flex; align-items: center; gap: 8px; padding: 12px 12px 10px 14px; flex: none; position: relative; }
+  .col-h::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--acc); }
+  .col-h .ic { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; background: var(--surface); color: var(--acc); box-shadow: var(--e-1); }
+  .col-h .ic .lucide { width: 16px; height: 16px; stroke-width: 2.3; }
+  .col-h h2 { font-size: 15.5px; font-weight: 760; font-stretch: var(--wdth-head); line-height: 1.25; flex: 1; min-width: 0; }
+  .col-h .n { min-width: 26px; height: 24px; padding: 2px 8px 0; border-radius: var(--r-pill); background: var(--surface); font-weight: 800; font-size: 14px; display: grid; place-items: center; font-variant-numeric: tabular-nums; }
+  .col.hot { background: #fbe6d6; }
+  .col.hot .col-h .n { background: var(--tile-600); color: #fff; }
+  .col-b { flex: 1; min-height: 0; overflow-y: auto; padding: 0 8px 8px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: thin; }
+
+  .bc { background: var(--surface); border-radius: 14px; box-shadow: var(--e-1), 0 0 0 1px rgb(92 52 24 / 0.05); padding: 11px 12px 12px; }
+  .bc .r1 { display: flex; align-items: center; gap: 6px; }
+  .bc .no { font-size: 17px; font-weight: 800; font-stretch: var(--wdth-head); font-variant-numeric: tabular-nums; color: var(--ink); padding-top: 2px; }
+  .bc .status { height: 24px; font-size: 12.5px; padding: 2px 8px 0 6px; gap: 4px; }
+  .bc .status .lucide { width: 14px; height: 14px; }
+  .bc .el { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--ink-2); white-space: nowrap; font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: 3px; }
+  .bc .el .lucide { width: 13px; height: 13px; color: var(--ink-3); }
+  .bc .kn { font-size: 14.5px; font-weight: 700; line-height: 1.3; margin-top: 8px; }
+  .bc .ln { display: flex; align-items: flex-start; gap: 6px; font-size: 13.5px; color: var(--ink-2); line-height: 1.35; margin-top: 4px; }
+  .bc .ln .lucide { width: 14px; height: 14px; color: var(--ink-3); margin-top: 2px; }
+  .bc .money-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .bc .money-row b { font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .bc .pay { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--ink-2); font-weight: 600; white-space: nowrap; }
+  .bc .pay .lucide { width: 14px; height: 14px; }
+  .bc .reason { font-size: 13px; color: var(--ink-3); margin-top: 4px; }
+  .bc .ag { border-top: 1px solid var(--line); margin-top: 10px; padding-top: 10px; display: grid; gap: 6px; }
+  .bc .who { display: flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 650; }
+  .bc .who .av { width: 26px; height: 26px; border-radius: 50%; background: var(--sea-100); color: var(--sea-700); font-size: 11.5px; font-weight: 800; display: grid; place-items: center; padding-top: 1px; }
+  .bc .who.need { color: var(--warning); }
+  .bc .who.need .av { background: var(--warning-bg); color: var(--warning); }
+  .bc .who.need .av .lucide { width: 15px; height: 15px; }
+  .bc .ctl { display: grid; gap: 6px; }
+  .sel {
+    height: var(--tap); border-radius: var(--r-sm); border: 1.5px solid var(--line-2); background: var(--surface);
+    padding: 2px 28px 0 9px; font-size: 13.5px; font-weight: 600; font-stretch: 87.5%; width: 100%; appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237a675a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 8px center;
+    text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
+  }
+  .bc .btn { min-height: var(--tap); font-size: 15px; border-radius: var(--r-sm); }
+  .bc.done { box-shadow: 0 0 0 1px rgb(92 52 24 / 0.06); background: #fffdf9; }
+</style>
+</head>
+<body>
+<div class="review">
+  <div class="review-head">
+    <div>
+      <div class="kicker">A · Coast</div>
+      <h1>Admin dispatch board</h1>
+      <p>Five groups side by side at 1280 px with counts; “Needs agent” is the warm, actionable column. Every card answers dispatch's questions without opening it: number, status with time in it, kitchen, delivery landmark, total and payment, and the agent (or the need for one) with assign / reassign on the card.</p>
+    </div>
+    <nav class="review-nav">
+      <a href="index.html">Overview</a><a href="home.html">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html">Cart</a><a href="order.html">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html" aria-current="page">Admin board</a>
+    </nav>
+  </div>
+
+  <div class="frame">
+    <div class="frame-cap" style="max-width:none"><b>Dispatch board</b><span class="tag">1280 × 800</span><span class="tag">English</span></div>
+    <div class="desk" lang="en">
+      <header class="a-top">
+        <a class="wordmark" href="#" aria-label="Honnavar Food admin panel">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#b8461a"/><path d="M6.5 15.5h19a9.5 9.5 0 0 1-19 0Z" fill="#fff6ea"/><path d="M7 10.5c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0" fill="none" stroke="#f8c97f" stroke-width="2" stroke-linecap="round"/><path d="M10.5 19.5c1.2.9 2.4.9 3.6 0s2.4-.9 3.6 0 2.4.9 3.6 0" stroke="#0e6e67" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+          <span>Honnavar <span class="food">Food</span></span><small>Admin panel</small>
+        </a>
+        <nav class="a-nav" aria-label="Main navigation">
+          <a href="#" aria-current="page"><i data-lucide="layout-dashboard"></i>Dispatch board</a>
+          <a href="#"><i data-lucide="store"></i>Partners</a>
+          <a href="#"><i data-lucide="bike"></i>Delivery agents</a>
+        </nav>
+        <span class="spacer"></span>
+        <button class="lang-switch" aria-label="Switch to Kannada"><span><i data-lucide="languages"></i><span class="kn-label" lang="kn">ಕನ್ನಡ</span></span></button>
+        <button class="icon-btn" aria-label="Sign out"><i data-lucide="log-out"></i></button>
+      </header>
+
+      <div class="a-head">
+        <div>
+          <h1>Dispatch board</h1>
+          <div class="upd"><i data-lucide="refresh-cw"></i>Updated 1:18 pm</div>
+        </div>
+        <span class="spacer"></span>
+        <form class="find" role="search">
+          <label for="find">Find order by number</label>
+          <div class="input"><span class="hash">#</span><input id="find" inputmode="numeric" placeholder="1042"></div>
+          <button class="btn btn-secondary" type="submit"><i data-lucide="search"></i>Find</button>
+        </form>
+      </div>
+
+      <div class="board" id="board"></div>
+    </div>
+    <p class="frame-note" style="max-width:1280px"><b>Columns</b> share the width equally (no sideways scroll at 1280); a long column scrolls inside itself. Group colours sit only on a 4 px top rule and the group icon — the status chips on each card carry their own colour, icon and word. Between 1024 and 1280 px the board may scroll sideways (spec edge case). <b>Motion:</b> a card that changes group fades out and in at its new place in 160 ms.</p>
+  </div>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+const ST = {
+  placed: ['st-placed', 'bell-ring', 'Placed'], accepted: ['st-accepted', 'circle-check', 'Accepted'],
+  preparing: ['st-preparing', 'chef-hat', 'Preparing'], ready: ['st-ready', 'package-check', 'Ready'],
+  picked: ['st-picked', 'bike', 'Picked up'], delivered: ['st-delivered', 'check-check', 'Delivered'],
+  rejected: ['st-rejected', 'circle-x', 'Rejected'], cancelled: ['st-cancelled', 'ban', 'Cancelled']
+};
+const PAY = { cod: ['banknote', 'Cash on delivery'], upi: ['smartphone', 'Paid by UPI (demo)'] };
+const AGENTS = ['Ravi Naik · 2 undelivered', 'Suresh Gouda · 1 undelivered'];
+const initials = n => n.split(' ').map(x => x[0]).join('');
+
+const card = o => {
+  const [cls, ic, label] = ST[o.st];
+  const [pic, plabel] = PAY[o.pay];
+  let ag = '';
+  if (o.need) ag = `
+    <div class="ag">
+      <div class="who need"><span class="av"><i data-lucide="user-round-x"></i></span>Needs agent</div>
+      <div class="ctl">
+        <label class="sr-only" for="as-${o.no}">Assign to</label>
+        <select class="sel" id="as-${o.no}">${AGENTS.map((a, i) => `<option ${i === o.pick ? 'selected' : ''}>${a}</option>`).join('')}</select>
+        <button class="btn btn-primary"><i data-lucide="user-round-check"></i>Assign</button>
+      </div>
+    </div>`;
+  else if (o.agent && o.reassign) ag = `
+    <div class="ag">
+      <div class="who"><span class="av">${initials(o.agent)}</span>Agent: ${o.agent}</div>
+      <div class="ctl">
+        <label class="sr-only" for="ra-${o.no}">Reassign to</label>
+        <select class="sel" id="ra-${o.no}"><option>Suresh Gouda · 1 undelivered</option></select>
+        <button class="btn btn-secondary"><i data-lucide="repeat"></i>Reassign</button>
+      </div>
+    </div>`;
+  else if (o.agent) ag = `<div class="ag"><div class="who"><span class="av">${initials(o.agent)}</span>Agent: ${o.agent}</div></div>`;
+  return `
+    <article class="bc ${o.done ? 'done' : ''}">
+      <div class="r1"><span class="no">#${o.no}</span><span class="status ${cls}"><i data-lucide="${ic}"></i>${label}</span><span class="el" title="Time in this status">${o.el}</span></div>
+      <div class="kn">${o.k}</div>
+      <div class="ln"><i data-lucide="map-pin"></i><span>${o.lm}</span></div>
+      <div class="money-row"><b>₹${o.tot}</b><span class="pay"><i data-lucide="${pic}"></i>${plabel}</span></div>
+      ${o.reason ? `<div class="reason">${o.reason}</div>` : ''}
+      ${ag}
+    </article>`;
+};
+
+const COLS = [
+  { name: 'Waiting for kitchen', icon: 'hourglass', acc: 'var(--st-placed)', cards: [
+    { no: 1047, st: 'placed', el: '7 min', k: 'Karavali Shailiya Mane Oota', lm: 'Behind Prabhatnagar temple', tot: 360, pay: 'cod' } ] },
+  { name: 'Needs agent', icon: 'user-round-search', acc: 'var(--tile-600)', hot: true, cards: [
+    { no: 1045, st: 'accepted', el: '10 min', k: 'Karavali Shailiya Mane Oota', lm: 'Opposite KSRTC bus stand', tot: 450, pay: 'upi', need: true, pick: 1 },
+    { no: 1042, st: 'preparing', el: '2 min', k: "Nagvekar's Restaurant", lm: 'Behind Prabhatnagar temple', tot: 480, pay: 'upi', need: true, pick: 0 } ] },
+  { name: 'Assigned', icon: 'user-round-check', acc: 'var(--st-accepted)', cards: [
+    { no: 1044, st: 'preparing', el: '15 min', k: 'Karavali Shailiya Mane Oota', lm: 'Market Road', tot: 480, pay: 'cod', agent: 'Ravi Naik', reassign: true },
+    { no: 1041, st: 'ready', el: '6 min', k: 'Karavali Shailiya Mane Oota', lm: 'Near Bangalore Circle', tot: 330, pay: 'upi', agent: 'Ravi Naik', reassign: true } ] },
+  { name: 'Out for delivery', icon: 'bike', acc: 'var(--st-picked)', cards: [
+    { no: 1039, st: 'picked', el: '8 min', k: 'Romansiah Halal Family Restaurant', lm: 'Behind Prabhatnagar temple', tot: 430, pay: 'upi', agent: 'Suresh Gouda' } ] },
+  { name: 'Finished', icon: 'flag', acc: 'var(--st-cancelled)', cards: [
+    { no: 1038, st: 'delivered', el: '22 min ago', k: "BaBa's Cafe", lm: 'Opposite KSRTC bus stand', tot: 450, pay: 'cod', agent: 'Ravi Naik', done: true },
+    { no: 1036, st: 'rejected', el: '41 min ago', k: 'Ammana Adige', lm: 'Near Bangalore Circle', tot: 190, pay: 'upi', reason: 'Kitchen closing', done: true },
+    { no: 1035, st: 'cancelled', el: '52 min ago', k: "Udupi's Pingar Dhaba", lm: 'Opposite KSRTC bus stand', tot: 280, pay: 'cod', reason: 'Customer asked to cancel', done: true } ] }
+];
+
+document.getElementById('board').innerHTML = COLS.map(c => `
+  <section class="col ${c.hot ? 'hot' : ''}" style="--acc:${c.acc}" aria-label="${c.name}, ${c.cards.length}">
+    <header class="col-h"><span class="ic"><i data-lucide="${c.icon}"></i></span><h2>${c.name}</h2><span class="n">${c.cards.length}</span></header>
+    <div class="col-b">${c.cards.map(card).join('')}</div>
+  </section>`).join('');
+lucide.createIcons();
+</script>
+</body>
+</html>

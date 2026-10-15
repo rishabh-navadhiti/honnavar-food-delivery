@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 56" role="img" aria-label="Kitchen">
+  <ellipse cx="22" cy="53" rx="8" ry="2.6" fill="#1C1A44" opacity=".22"/>
+  <path d="M22 51 C22 51 4 33 4 20 A18 18 0 0 1 40 20 C40 33 22 51 22 51 Z" fill="#FFB81C" stroke="#1C1A44" stroke-width="2.4" stroke-linejoin="round"/>
+  <circle cx="22" cy="20" r="12" fill="#1C1A44"/>
+  <g transform="translate(13.6 11.6) scale(.7)" fill="none" stroke="#FFB81C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/>
+    <path d="M7 2v20"/>
+    <path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>
+  </g>
+</svg>

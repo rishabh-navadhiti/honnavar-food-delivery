@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marigold · Partner orders</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  .tabbar.ops { height: 68px; }
+  .tabbar.ops .tab { padding-top: 7px; }
+  .tabbar.ops .tab .ic { width: 48px; }
+  .tabbar.ops .count { right: 0; }
+  .topbar .brand .wordmark { font-size: 18px; }
+  .topbar .brand .stack { display: flex; flex-direction: column; }
+
+  .phead { display: flex; align-items: center; gap: 12px; padding: 12px var(--s-4) 8px; }
+  .phead .h1 { font-size: 26px; }
+  .phead .upd { font-size: 13px; color: var(--c-text-3); display: flex; align-items: center; gap: 5px; }
+  .phead .upd .lucide { width: 13px; height: 13px; }
+  .soundpill .pill {
+    display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px 0 10px; border-radius: var(--r-pill);
+    background: var(--c-leaf-100); color: var(--c-leaf-700); font-weight: 700; font-size: 14px; white-space: nowrap;
+    box-shadow: inset 0 0 0 1.5px rgba(23,121,63,.25);
+  }
+  .soundpill .pill .lucide { width: 18px; height: 18px; }
+  .soundpill.is-blocked .pill { background: var(--c-warn-bg); color: var(--c-warn-fg); box-shadow: inset 0 0 0 1.5px rgba(138,75,0,.3); }
+
+  .olist { display: grid; gap: 10px; padding: 4px var(--s-4) 20px; }
+  .ocard { padding: 12px 14px 14px; }
+  .ocard .r1 { display: flex; align-items: center; gap: 10px; }
+  .ocard .ono { font: 800 22px/1.2 var(--font-display); letter-spacing: -.01em; padding-top: 2px; }
+  .ocard .tot { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; font: 800 21px/1.15 var(--font-display); white-space: nowrap; }
+  .ocard .tot small { font: 600 12px/1.3 var(--font-body); color: var(--c-text-3); }
+  [lang="kn"] .ocard .tot small { line-height: 1.45; }
+  .ocard .r2 { display: flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 14px; color: var(--c-text-2); flex-wrap: wrap; }
+  .ocard .r2 .m { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .ocard .r2 .m .lucide { width: 16px; height: 16px; color: var(--c-ink-700); }
+  .ocard .r2 .sep { width: 4px; height: 4px; border-radius: 50%; background: var(--c-line-strong); }
+  .paytag { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; height: 28px; padding: 0 9px; border-radius: var(--r-sm); background: var(--c-sunken); color: var(--c-ink-900); font-size: 13.5px; font-weight: 600; white-space: nowrap; }
+  .paytag .lucide { width: 16px; height: 16px; }
+  .paytag.upi { background: var(--c-indigo-50); }
+  .ocard .acts { display: flex; gap: 10px; margin-top: 12px; }
+  .ocard .acts .btn { flex: 1 1 0; padding: 0 12px; }
+  .ocard .acts .btn-secondary { flex: 0 0 auto; }
+  .ocard .wait { display: flex; align-items: center; gap: 8px; margin-top: 10px; padding: 10px 12px; border-radius: var(--r-md); background: var(--st-ready-bg); color: var(--st-ready-fg); font-weight: 600; font-size: 14.5px; }
+  .ocard .wait .lucide { width: 18px; height: 18px; }
+  .ocard .itemsline { margin-top: 8px; font-size: 14.5px; color: var(--c-text); }
+  .ocard .itemsline .q { color: var(--c-text-3); font-weight: 600; }
+
+  .ocard.is-new { padding: 0; overflow: hidden; box-shadow: inset 0 0 0 2.5px var(--c-ink-900), 0 8px 24px -8px rgba(255,184,28,.7); border: 0; background: var(--c-marigold-50); }
+  .ocard.is-new .band { display: flex; align-items: center; gap: 8px; padding: 9px 14px; background: var(--c-ink-900); color: #fff; font-weight: 600; font-size: 14.5px; }
+  .ocard.is-new .band .lucide { width: 18px; height: 18px; color: var(--c-marigold-500); }
+  .ocard.is-new .band b { font: 800 17px/1 var(--font-display); color: var(--c-marigold-500); padding-top: 2px; font-variant-numeric: tabular-nums; }
+  .ocard.is-new .inner { padding: 12px 14px 14px; }
+
+  /* first-time sound prompt */
+  .prompt { margin: 12px var(--s-4) 4px; display: flex; align-items: center; gap: 14px; padding: 14px; border-radius: var(--r-lg); background: var(--c-marigold-500); color: var(--c-ink-900); text-decoration: none; box-shadow: inset 0 -4px 0 var(--c-marigold-600), 0 10px 24px -12px rgba(28,26,68,.5); }
+  .prompt .bell { width: 56px; height: 56px; border-radius: 16px; background: var(--c-ink-900); color: var(--c-marigold-500); display: grid; place-items: center; flex: none; }
+  .prompt .bell .lucide { width: 30px; height: 30px; }
+  .prompt .t { font: 800 19px/1.25 var(--font-display); padding-top: 2px; }
+  [lang="kn"] .prompt .t { line-height: 1.42; }
+  .prompt .s { font-size: 13.5px; font-weight: 500; margin-top: 2px; color: #3A3060; }
+
+  /* reject sheet */
+  .sheet .h2 { margin-bottom: 4px; }
+  .sheet .ref { font-size: 14px; color: var(--c-text-3); margin-bottom: 14px; }
+  .reasons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .reason { display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 8px 10px; border-radius: var(--r-md); background: var(--c-surface); box-shadow: inset 0 0 0 1.5px var(--c-line-strong); text-align: left; font: 600 14.5px/1.3 var(--font-body); color: var(--c-ink-900); border: 0; position: relative; }
+  [lang="kn"] .reason { line-height: 1.5; }
+  .reason .ri { width: 36px; height: 36px; border-radius: 10px; background: var(--c-indigo-50); display: grid; place-items: center; flex: none; color: var(--c-ink-700); }
+  .reason .ri .lucide { width: 20px; height: 20px; }
+  .reason.is-sel { box-shadow: inset 0 0 0 2.5px var(--c-ink-900); background: var(--c-marigold-50); }
+  .reason.is-sel .ri { background: var(--c-marigold-500); color: var(--c-ink-900); }
+  .notefield { margin-top: 14px; }
+  .notefield label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+  .notefield label .faint { font-weight: 500; }
+  .notefield .ta { min-height: 64px; padding: 10px 12px; border-radius: var(--r-md); box-shadow: inset 0 0 0 1.5px var(--c-line-strong); font-size: 15px; background: #fff; }
+  .sheet .acts { display: flex; gap: 10px; margin-top: 16px; }
+  .sheet .acts .btn-secondary { flex: 0 0 auto; }
+  .sheet .acts .btn-danger { flex: 1 1 auto; }
+
+  /* order page behind the sheet */
+  .backlink { display: flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 var(--s-4); font-weight: 600; color: var(--c-ink-900); text-decoration: none; }
+  .backlink .lucide { width: 20px; height: 20px; }
+  .oitems .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 15px; }
+</style>
+</head>
+<body class="board">
+<header class="board-head">
+  <img src="mark.svg" alt="">
+  <h1>C · Marigold <small>Partner orders · English and Kannada</small></h1>
+  <nav>
+    <a href="index.html">Overview</a><a href="home.html">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html">Cart</a><a href="order.html">Order</a><a href="partner-orders.html" aria-current="page">Partner orders</a><a href="admin-board.html">Admin board</a>
+  </nav>
+</header>
+
+<div class="frames" id="frames"></div>
+
+<section class="notes">
+  <h2>Design notes</h2>
+  <ul>
+    <li><b>One-second scan</b>: every card reads in the same order: big order number, status chip (icon + text, status colour), the item total under its label (as partners see it today; the delivery fee is not theirs); then time, item count and a payment tag; then the one next step as a full-width button. Waiting orders come first, inverted with an ink outline, a marigold glow and an ink band carrying the countdown.</li>
+    <li><b>Density</b>: top bar 56 + compact five-tab bar 68 leaves 720 px; the waiting card plus the accepted and preparing cards fit fully at 390×844 in both languages, the ready card starts below. At 360 px in Kannada, wrapped meta lines leave two full cards and most of the third.</li>
+    <li><b>Sound</b>: first visit shows a full-width marigold prompt (middle frames); after the first tap it shrinks into the green “Sound on” pill beside the title (150 ms height + fade, remembered on the device). If the browser blocks sound again, the pill turns amber with a crossed bell: “Tap for sound”, never the full prompt.</li>
+    <li><b>Reject</b> is a sheet over the order: four reasons as 2×2 icon tiles, optional note, Back and a red Reject order; all inside 390×844 with no scrolling.</li>
+    <li>Drafted strings (not final): “Sound on” / “ಸದ್ದು ಆನ್”, “Tap for sound” / “ಸದ್ದಿಗೆ ಒತ್ತಿ”, “Cash” / “ಕ್ಯಾಶ್”, “UPI (demo)” / “UPI (ಡೆಮೊ)”, “You will hear a ring for every new order.” / “ಪ್ರತಿ ಹೊಸ ಆರ್ಡರ್ ಬಂದಾಗ ಸದ್ದು ಕೇಳಿಸುತ್ತದೆ.”, tab “Orders” uses the existing “ಆರ್ಡರ್‌ಗಳು”.</li>
+  </ul>
+</section>
+
+<script>
+const T = {
+  en: {
+    sub: 'Partner app', lang: 'ಕನ್ನಡ', langLang: 'kn', langAria: 'Switch to Kannada', msgs: 'Messages',
+    title: 'Orders', updated: 'Updated 7:52 pm', soundOn: 'Sound on',
+    left: t => `Accept or reject within <b>${t}</b>`,
+    st: { placed: 'Placed', accepted: 'Accepted', preparing: 'Preparing', ready: 'Ready' },
+    ago: m => `${m} min ago`, items: n => `${n} items`, cash: 'Cash', upi: 'UPI (demo)',
+    accept: 'Accept order', reject: 'Reject', start: 'Start preparing', ready: 'Ready for pickup', waitPickup: 'Waiting for the delivery agent',
+    newItems: [['Fish Curry Rice Box', 2], ['Bangda Fry (2 pcs)', 1]],
+    tabs: ['Orders', 'Today', 'Menu', 'Hours', 'My kitchen'],
+    promptT: 'Tap to turn on order sounds', promptS: 'You will hear a ring for every new order.',
+    allOrders: 'All orders', why: "Why can't you take this order?",
+    reasons: [['flame', 'Kitchen too busy'], ['package-x', 'Item not available'], ['door-closed', 'Kitchen closing'], ['message-circle', 'Other']],
+    note: 'Short note for the customer', optional: 'optional', noteVal: 'Bangda is over for today.',
+    back: 'Back', confirm: 'Reject order', itemTotal: 'Item total', customer: 'Customer',
+  },
+  kn: {
+    sub: 'ಪಾರ್ಟ್ನರ್ ಆ್ಯಪ್', lang: 'English', langLang: 'en', langAria: 'ಇಂಗ್ಲಿಷ್‌ಗೆ ಬದಲಿಸಿ', msgs: 'ಸಂದೇಶಗಳು',
+    title: 'ಆರ್ಡರ್‌ಗಳು', updated: 'ಅಪ್‌ಡೇಟ್: ಸಂಜೆ 7:52', soundOn: 'ಸದ್ದು ಆನ್',
+    left: t => `<b>${t}</b> ಒಳಗೆ ಒಪ್ಪಿ ಅಥವಾ ಬೇಡ ಎನ್ನಿ`,
+    st: { placed: 'ಆರ್ಡರ್ ಆಗಿದೆ', accepted: 'ಒಪ್ಪಿಕೊಂಡಿದೆ', preparing: 'ತಯಾರಾಗುತ್ತಿದೆ', ready: 'ರೆಡಿ ಆಗಿದೆ' },
+    ago: m => `${m} ನಿಮಿಷದ ಹಿಂದೆ`, items: n => `${n} ಐಟಂಗಳು`, cash: 'ಕ್ಯಾಶ್', upi: 'UPI (ಡೆಮೊ)',
+    accept: 'ಆರ್ಡರ್ ಒಪ್ಪಿಕೊಳ್ಳಿ', reject: 'ಬೇಡ ಎನ್ನಿ', start: 'ತಯಾರಿಸಲು ಶುರು ಮಾಡಿ', ready: 'ಪಿಕಪ್‌ಗೆ ರೆಡಿ', waitPickup: 'ಡೆಲಿವರಿಯವರಿಗಾಗಿ ಕಾಯುತ್ತಿದೆ',
+    newItems: [['ಮೀನು ಸಾರು-ಅನ್ನದ ಡಬ್ಬಿ', 2], ['ಬಂಗುಡೆ ಫ್ರೈ (2)', 1]],
+    tabs: ['ಆರ್ಡರ್‌ಗಳು', 'ಇಂದು', 'ಮೆನು', 'ಸಮಯ', 'ನನ್ನ ಕಿಚನ್'],
+    promptT: 'ಆರ್ಡರ್ ಸದ್ದು ಆನ್ ಮಾಡಲು ಒತ್ತಿ', promptS: 'ಪ್ರತಿ ಹೊಸ ಆರ್ಡರ್ ಬಂದಾಗ ಸದ್ದು ಕೇಳಿಸುತ್ತದೆ.',
+    allOrders: 'ಎಲ್ಲಾ ಆರ್ಡರ್‌ಗಳು', why: 'ಈ ಆರ್ಡರ್ ಯಾಕೆ ತೆಗೆದುಕೊಳ್ಳಲು ಆಗುವುದಿಲ್ಲ?',
+    reasons: [['flame', 'ಕಿಚನ್ ತುಂಬಾ ಬ್ಯುಸಿ ಇದೆ'], ['package-x', 'ಐಟಂ ಸಿಗುವುದಿಲ್ಲ'], ['door-closed', 'ಕಿಚನ್ ಮುಚ್ಚುವ ಸಮಯ'], ['message-circle', 'ಬೇರೆ']],
+    note: 'ಗ್ರಾಹಕರಿಗೆ ಚಿಕ್ಕ ಸೂಚನೆ', optional: 'ಬೇಕಿದ್ದರೆ', noteVal: 'ಇಂದು ಬಂಗುಡೆ ಮುಗಿದಿದೆ.',
+    back: 'ಹಿಂದೆ', confirm: 'ಆರ್ಡರ್ ಬೇಡ ಎನ್ನಿ', itemTotal: 'ಐಟಂಗಳ ಮೊತ್ತ', customer: 'ಗ್ರಾಹಕರು',
+  }
+};
+
+const ST_ICON = { placed: 'bell-ring', accepted: 'thumbs-up', preparing: 'chef-hat', ready: 'package-check' };
+const chip = (t, s) => `<span class="status st-${s}"><i data-lucide="${ST_ICON[s]}"></i>${t.st[s]}</span>`;
+const pay = (t, k) => k === 'cod' ? `<span class="paytag"><i data-lucide="banknote"></i>${t.cash}</span>` : `<span class="paytag upi"><i data-lucide="smartphone"></i>${t.upi}</span>`;
+const meta = (t, mins, n) => `${mins != null ? `<span class="m"><i data-lucide="clock-4"></i>${t.ago(mins)}</span><span class="sep"></span>` : ''}<span class="m"><i data-lucide="shopping-bag"></i>${t.items(n)}</span>`;
+
+function newCard(t) {
+  return `<article class="card ocard is-new">
+    <div class="band"><i data-lucide="timer"></i><span>${t.left('9:42')}</span></div>
+    <div class="inner">
+      <div class="r1"><span class="ono">#1046</span>${chip(t, 'placed')}<span class="tot"><small>${t.itemTotal}</small>₹440</span></div>
+      <div class="r2">${meta(t, null, 3)}${pay(t, 'cod')}</div>
+      <div class="itemsline">${t.newItems.map(([n, q]) => `${n} <span class="q">× ${q}</span>`).join(' · ')}</div>
+      <div class="acts"><button class="btn btn-secondary"><i data-lucide="x"></i><span>${t.reject}</span></button><button class="btn btn-primary"><i data-lucide="check"></i><span>${t.accept}</span></button></div>
+    </div>
+  </article>`;
+}
+function card(t, no, s, tot, mins, n, p, act) {
+  const action = act === 'wait'
+    ? `<div class="wait"><i data-lucide="hourglass"></i>${t.waitPickup}</div>`
+    : `<div class="acts"><button class="btn btn-primary"><i data-lucide="${act === 'start' ? 'chef-hat' : 'package-check'}"></i><span>${t[act]}</span></button></div>`;
+  return `<article class="card ocard">
+    <div class="r1"><span class="ono">#${no}</span>${chip(t, s)}<span class="tot"><small>${t.itemTotal}</small>₹${tot}</span></div>
+    <div class="r2">${meta(t, mins, n)}${pay(t, p)}</div>
+    ${action}
+  </article>`;
+}
+
+function topbar(t) {
+  return `<header class="topbar">
+      <a class="brand" href="#"><img src="mark.svg" alt=""><span class="stack"><span class="wordmark">Honnavar Food</span><span class="brand-sub">${t.sub}</span></span></a>
+      <span class="spacer"></span>
+      <a class="hit iconbtn-dark" href="#" aria-label="${t.msgs}"><i data-lucide="message-square"></i></a>
+      <a class="hit lang" href="#" aria-label="${t.langAria}"><span class="pill"><i data-lucide="languages"></i><span lang="${t.langLang}">${t.lang}</span></span></a>
+    </header>`;
+}
+function tabbar(t) {
+  const ic = ['clipboard-list', 'calendar-days', 'book-open', 'clock-4', 'store'];
+  return `<nav class="tabbar ops" aria-label="Main navigation">${t.tabs.map((l, i) =>
+    `<a class="tab${i === 0 ? ' is-active' : ''}" href="#"${i === 0 ? ' aria-current="page"' : ''}><span class="ic"><i data-lucide="${ic[i]}"></i>${i === 0 ? '<span class="count">1</span>' : ''}</span><span class="lbl">${l}</span></a>`).join('')}</nav>`;
+}
+
+function listScreen(lang, firstTime) {
+  const t = T[lang];
+  const head = firstTime
+    ? `<div class="phead"><div class="grow"><h1 class="h1">${t.title}</h1><div class="upd"><i data-lucide="refresh-cw"></i>${t.updated}</div></div></div>
+       <a class="prompt" href="#"><span class="bell"><i data-lucide="bell-ring"></i></span><span><span class="t">${t.promptT}</span><span class="s" style="display:block">${t.promptS}</span></span></a>`
+    : `<div class="phead"><div class="grow"><h1 class="h1">${t.title}</h1><div class="upd"><i data-lucide="refresh-cw"></i>${t.updated}</div></div>
+         <a class="hit soundpill" href="#" aria-label="${t.soundOn}"><span class="pill"><i data-lucide="bell-ring"></i>${t.soundOn}</span></a></div>`;
+  return `<div class="phone"><div class="screen" lang="${lang}">
+    ${topbar(t)}
+    <main>
+      ${head}
+      <div class="olist">
+        ${newCard(t)}
+        ${card(t, 1044, 'accepted', 420, 6, 2, 'upi', 'start')}
+        ${card(t, 1041, 'preparing', 410, 14, 2, 'cod', 'ready')}
+        ${card(t, 1039, 'ready', 580, 22, 2, 'cod', 'wait')}
+      </div>
+    </main>
+    ${tabbar(t)}
+  </div></div>`;
+}
+
+function rejectScreen(lang) {
+  const t = T[lang];
+  return `<div class="phone"><div class="screen" lang="${lang}">
+    ${topbar(t)}
+    <main>
+      <a class="backlink" href="#"><i data-lucide="chevron-left"></i>${t.allOrders}</a>
+      <div class="olist">${newCard(t)}</div>
+    </main>
+    ${tabbar(t)}
+    <div class="scrim"></div>
+    <section class="sheet" role="dialog" aria-label="${t.why}">
+      <div class="grab"></div>
+      <h2 class="h2">${t.why}</h2>
+      <div class="ref">#1046 · ₹440 · ${t.items(3)}</div>
+      <div class="reasons" role="radiogroup">
+        ${t.reasons.map(([ic, l], i) => `<button class="reason${i === 1 ? ' is-sel' : ''}" role="radio" aria-checked="${i === 1}"><span class="ri"><i data-lucide="${ic}"></i></span><span>${l}</span></button>`).join('')}
+      </div>
+      <div class="notefield"><label>${t.note} <span class="faint">(${t.optional})</span></label><div class="ta">${t.noteVal}</div></div>
+      <div class="acts"><button class="btn btn-secondary"><i data-lucide="arrow-left"></i><span>${t.back}</span></button><button class="btn btn-danger"><i data-lucide="x"></i><span>${t.confirm}</span></button></div>
+    </section>
+  </div></div>`;
+}
+
+const frames = [
+  ['Orders', '390 × 844 · English · sound pill collapsed', listScreen('en', false)],
+  ['First visit', 'full sound prompt before the first tap', listScreen('en', true)],
+  ['Reject step', 'reasons, note and actions in one screen', rejectScreen('en')],
+  ['ಆರ್ಡರ್‌ಗಳು', '390 × 844 · Kannada · sound pill collapsed', listScreen('kn', false)],
+  ['ಮೊದಲ ಭೇಟಿ', 'Kannada · full sound prompt', listScreen('kn', true)],
+  ['ಬೇಡ ಎನ್ನುವ ಹಂತ', 'Kannada · reject step', rejectScreen('kn')],
+];
+document.getElementById('frames').innerHTML = frames.map(([cap, sub, html], i) =>
+  `<figure class="frame-wrap"><figcaption${i > 2 ? ' lang="kn"' : ''}>${cap} <span lang="en">${sub}</span></figcaption>${html}</figure>`).join('');
+</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  if (location.hash === '#360') document.documentElement.classList.add('w360');
+  lucide.createIcons();
+</script>
+</body>
+</html>

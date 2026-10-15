@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A · Coast — Order</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="coast.css">
+<style>
+  .stack { display: flex; flex-direction: column; gap: 14px; padding: 6px var(--gutter) 24px; }
+  .o-head { display: flex; align-items: center; gap: 4px; margin: 0 -8px 0 -12px; }
+  .o-head h1 { font-size: 19px; font-weight: 750; font-stretch: var(--wdth-head); line-height: 1.2; padding-top: 2px; }
+  .o-head p { font-size: 13.5px; color: var(--ink-2); line-height: 1.3; }
+  .o-head .grow { flex: 1; min-width: 0; }
+  .o-head .upd { font-size: 12.5px; color: var(--ink-3); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; padding-right: 8px; }
+  .o-head .upd .lucide { width: 13px; height: 13px; }
+
+  /* Status hero */
+  .hero { padding: 18px 18px 16px; position: relative; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 5px; background: var(--st-preparing);
+  }
+  .hero-top { display: flex; align-items: center; gap: 14px; }
+  .hero .bigic {
+    width: 56px; height: 56px; border-radius: 18px; flex: none;
+    background: var(--st-preparing-bg); color: var(--st-preparing); display: grid; place-items: center;
+  }
+  .hero .bigic .lucide { width: 30px; height: 30px; stroke-width: 1.9; }
+  .hero .eyebrow { color: var(--ink-3); }
+  .hero h2 { font-size: 27px; font-weight: 800; font-stretch: var(--wdth-head); line-height: 1.12; color: var(--st-preparing); letter-spacing: -0.015em; }
+  .hero .exp { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 17px; font-weight: 650; }
+  .hero .exp .lucide { color: var(--tile-600); width: 20px; height: 20px; }
+  .hero .exp b { font-weight: 800; font-variant-numeric: tabular-nums; }
+  .progress { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-top: 14px; }
+  .progress span { height: 6px; border-radius: 3px; background: var(--line); }
+  .progress .done { background: var(--st-preparing); }
+  .progress .now { background: linear-gradient(90deg, var(--st-preparing) 50%, var(--tile-200) 50%); }
+  .progress-lbl { display: flex; justify-content: space-between; margin-top: 6px; font-size: 12.5px; color: var(--ink-3); font-weight: 600; }
+
+  /* Map */
+  .map { overflow: hidden; }
+  .map svg.m { display: block; width: 100%; height: auto; }
+  .map-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 10px 14px 12px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--ink-2); }
+  .map-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .map-legend svg { width: 14px; height: 18px; }
+
+  /* Timeline */
+  .tl { padding: 14px 16px 6px; }
+  .tl h3 { font-size: 16px; font-weight: 740; font-stretch: var(--wdth-head); margin-bottom: 8px; }
+  .step { display: grid; grid-template-columns: 28px 1fr auto; gap: 0 12px; position: relative; min-height: 44px; }
+  .step .nd {
+    width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; position: relative; z-index: 1;
+    background: var(--success-bg); color: var(--success);
+  }
+  .step .nd .lucide { width: 16px; height: 16px; stroke-width: 2.6; }
+  .step::before { content: ""; position: absolute; left: 13px; top: 28px; bottom: 0; width: 2px; background: var(--success); opacity: 0.35; }
+  .step:last-child::before { display: none; }
+  .step .t { font-size: 15px; font-weight: 600; line-height: 1.3; padding-top: 4px; }
+  .step .w { font-size: 13.5px; color: var(--ink-3); padding-top: 5px; font-variant-numeric: tabular-nums; }
+  .step.now .nd { background: var(--st-preparing); color: #fff; box-shadow: 0 0 0 4px var(--st-preparing-bg); }
+  .step.now .t { color: var(--st-preparing); font-weight: 760; }
+  .step.now .w { color: var(--st-preparing); font-weight: 650; }
+  .step.now::before, .step.todo::before { background: var(--line-2); opacity: 1; }
+  .step.todo .nd { background: var(--surface); color: var(--ink-3); box-shadow: inset 0 0 0 2px var(--line-2); }
+  .step.todo .t { color: var(--ink-2); font-weight: 520; }
+
+  .krow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 14px 14px; }
+  .krow .call-btn { flex: 1 0 100%; }
+  .krow .th { width: 48px; height: 48px; border-radius: 12px; overflow: hidden; flex: none; }
+  .krow .th img { width: 100%; height: 100%; object-fit: cover; }
+  .krow .grow { flex: 1; min-width: 0; }
+  .krow b { display: block; font-size: 16px; font-weight: 720; line-height: 1.25; }
+  .krow small { font-size: 13.5px; color: var(--ink-2); }
+  .krow .btn { padding: 2px 14px 0; gap: 6px; font-size: 15px; }
+  .krow .btn .lucide { width: 18px; height: 18px; }
+
+  .items { padding: 14px 16px; display: grid; gap: 8px; }
+  .items h3 { font-size: 16px; font-weight: 740; font-stretch: var(--wdth-head); }
+  .items .it { display: flex; align-items: center; gap: 8px; font-size: 15.5px; }
+  .items .it .q { color: var(--ink-3); font-weight: 650; min-width: 26px; font-variant-numeric: tabular-nums; }
+  .items .it .p { margin-left: auto; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .items .row { display: flex; justify-content: space-between; font-size: 15px; color: var(--ink-2); }
+  .items .row span:last-child { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .items .grand { border-top: 1px dashed var(--line-2); padding-top: 10px; font-size: 18px; color: var(--ink); font-weight: 760; }
+  .items .grand span:last-child { font-weight: 800; }
+  .paychip { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 2px 12px 0; border-radius: var(--r-pill); background: var(--sea-50); color: var(--sea-700); font-weight: 680; font-size: 14.5px; width: fit-content; }
+  .paychip .lucide { width: 17px; height: 17px; }
+  .note { font-size: 13px; color: var(--ink-3); }
+  .addr { padding: 14px 16px; display: flex; gap: 12px; }
+  .addr .ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--surface-2); color: var(--tile-600); flex: none; }
+  .addr b { font-size: 15.5px; font-weight: 700; display: block; }
+  .addr p { font-size: 14px; color: var(--ink-2); line-height: 1.4; }
+</style>
+</head>
+<body>
+<!-- Shared map pins -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="pin-kitchen" viewBox="0 0 40 52">
+      <ellipse cx="20" cy="49" rx="8" ry="2.6" fill="rgb(43 27 18 / .22)"/>
+      <path d="M20 1.5C9.8 1.5 1.8 9.4 1.8 19.4c0 13 18.2 28.2 18.2 28.2s18.2-15.2 18.2-28.2C38.2 9.4 30.2 1.5 20 1.5Z" fill="#b8461a" stroke="#fff" stroke-width="2.4"/>
+      <circle cx="20" cy="19" r="11.5" fill="#fff6ea"/>
+      <path d="M12.6 18.4h14.8a7.4 7.4 0 0 1-14.8 0Z" fill="#b8461a"/>
+      <path d="M11 18.4h18" stroke="#b8461a" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M16.6 15.2c-.9-1 .9-1.8 0-3M20 15.2c-.9-1 .9-1.8 0-3M23.4 15.2c-.9-1 .9-1.8 0-3" stroke="#f2a541" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="pin-home" viewBox="0 0 40 52">
+      <ellipse cx="20" cy="49" rx="8" ry="2.6" fill="rgb(43 27 18 / .22)"/>
+      <path d="M20 1.5C9.8 1.5 1.8 9.4 1.8 19.4c0 13 18.2 28.2 18.2 28.2s18.2-15.2 18.2-28.2C38.2 9.4 30.2 1.5 20 1.5Z" fill="#0e6e67" stroke="#fff" stroke-width="2.4"/>
+      <circle cx="20" cy="19" r="11.5" fill="#eef8f6"/>
+      <path d="M13.2 19.2 20 13l6.8 6.2v6.6a.9.9 0 0 1-.9.9h-3.6v-4.4h-4.6v4.4h-3.6a.9.9 0 0 1-.9-.9Z" fill="#0e6e67"/>
+    </symbol>
+    <pattern id="waves" width="22" height="10" patternUnits="userSpaceOnUse">
+      <path d="M1 6c2.5-2.4 5-2.4 7.5 0s5 2.4 7.5 0" stroke="#9fd0c8" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="review">
+  <div class="review-head">
+    <div>
+      <div class="kicker">A · Coast</div>
+      <h1>Order</h1>
+      <p>Status first: the current step is the biggest thing on the screen, in its own colour and icon, with the expected time beside a six-step progress strip. The map is a drawn, offline-safe frame of the town (sea, Sharavathi, NH 66) with custom kitchen and delivery pins; the timeline, kitchen call, items and bill follow.</p>
+    </div>
+    <nav class="review-nav">
+      <a href="index.html">Overview</a><a href="home.html">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html">Cart</a><a href="order.html" aria-current="page">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html">Admin board</a>
+    </nav>
+  </div>
+
+  <div class="frames">
+  <!-- reusable screen, rendered twice (top and scrolled) -->
+  <template id="order-screen">
+    <div class="phone" lang="en">
+      <header class="topbar">
+        <a class="wordmark" href="home.html" aria-label="Honnavar Food, home">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#b8461a"/><path d="M6.5 15.5h19a9.5 9.5 0 0 1-19 0Z" fill="#fff6ea"/><path d="M7 10.5c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0" fill="none" stroke="#f8c97f" stroke-width="2" stroke-linecap="round"/><path d="M10.5 19.5c1.2.9 2.4.9 3.6 0s2.4-.9 3.6 0 2.4.9 3.6 0" stroke="#0e6e67" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+          <span>Honnavar <span class="food">Food</span></span>
+        </a>
+        <span class="spacer"></span>
+        <button class="lang-switch" aria-label="Switch to Kannada"><span><i data-lucide="languages"></i><span class="kn-label" lang="kn">ಕನ್ನಡ</span></span></button>
+      </header>
+
+      <main class="scroll">
+        <div class="stack">
+          <div class="o-head">
+            <a class="icon-btn" href="#" aria-label="My orders"><i data-lucide="arrow-left"></i></a>
+            <div class="grow"><h1>Order #1042</h1><p>Nagvekar's Restaurant</p></div>
+            <span class="upd"><i data-lucide="refresh-cw"></i>Updated 1:16 pm</span>
+          </div>
+
+          <section class="card hero" aria-live="polite">
+            <div class="hero-top">
+              <span class="bigic"><i data-lucide="chef-hat"></i></span>
+              <div>
+                <div class="eyebrow">Order status</div>
+                <h2>Preparing</h2>
+              </div>
+            </div>
+            <div class="exp"><i data-lucide="clock"></i><span>Expected by <b>1:55 pm</b></span></div>
+            <div class="progress" aria-hidden="true"><span class="done"></span><span class="done"></span><span class="now"></span><span></span><span></span><span></span></div>
+            <div class="progress-lbl" aria-hidden="true"><span>Placed</span><span>Delivered</span></div>
+          </section>
+
+          <section class="card map" aria-label="Map with the kitchen and your delivery location">
+            <svg class="m" viewBox="0 0 358 200" role="img" aria-label="Kitchen: Nagvekar's Restaurant, near Sharavathi bridge. Your delivery location: Prabhatnagar.">
+              <rect width="358" height="200" fill="#f6ecdf"/>
+              <!-- groves -->
+              <path d="M262 4c22-6 52 2 70 14 14 10 2 26-18 26-22 0-60-6-62-20-1-8 2-17 10-20Z" fill="#e4ead4"/>
+              <path d="M96 84c18-8 40-4 44 8 4 14-12 22-30 22-16 0-26-6-26-14 0-6 4-12 12-16Z" fill="#e4ead4"/>
+              <path d="M300 112c16-4 40 0 50 8v14c-18 4-46 2-56-6-6-6-2-14 6-16Z" fill="#e4ead4"/>
+              <!-- sea + beach -->
+              <path d="M0 0h78c-8 28 8 52 0 78-6 22-16 38-10 62 5 22-6 40 0 60H0Z" fill="#f2e2c6"/>
+              <path d="M0 0h70c-8 28 8 52 0 78-6 22-16 38-10 62 5 22-6 40 0 60H0Z" fill="#cfe8e3"/>
+              <path d="M0 0h70c-8 28 8 52 0 78-6 22-16 38-10 62 5 22-6 40 0 60H0Z" fill="url(#waves)" opacity=".9"/>
+              <!-- river -->
+              <path d="M58 136c40 2 80 14 124 12 46-2 80 6 110 14 26 7 46 6 66 2v28c-24 6-46 4-72-2-30-7-62-12-104-10-46 2-80-10-124-12Z" fill="#cfe8e3"/>
+              <path d="M58 136c40 2 80 14 124 12 46-2 80 6 110 14 26 7 46 6 66 2v28c-24 6-46 4-72-2-30-7-62-12-104-10-46 2-80-10-124-12Z" fill="url(#waves)" opacity=".7"/>
+              <!-- minor roads -->
+              <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M84 46c40-4 90 2 150-2s84 4 124 0" stroke="#e6d6c2" stroke-width="7"/>
+                <path d="M84 46c40-4 90 2 150-2s84 4 124 0" stroke="#fff" stroke-width="4.5"/>
+                <path d="M158 96c40-4 70 4 124 0 30-2 52 2 76 0" stroke="#e6d6c2" stroke-width="7"/>
+                <path d="M158 96c40-4 70 4 124 0 30-2 52 2 76 0" stroke="#fff" stroke-width="4.5"/>
+                <path d="M300 96c-2-22 2-40-2-66" stroke="#e6d6c2" stroke-width="7"/>
+                <path d="M300 96c-2-22 2-40-2-66" stroke="#fff" stroke-width="4.5"/>
+                <path d="M240 46c2 30-4 60 0 100" stroke="#e6d6c2" stroke-width="6"/>
+                <path d="M240 46c2 30-4 60 0 100" stroke="#fff" stroke-width="3.5"/>
+                <path d="M106 46c4 22 18 40 52 50" stroke="#e6d6c2" stroke-width="6"/>
+                <path d="M106 46c4 22 18 40 52 50" stroke="#fff" stroke-width="3.5"/>
+              </g>
+              <!-- NH 66 with bridge -->
+              <g fill="none" stroke-linecap="round">
+                <path d="M150 0c-2 34 10 66 8 100-1 22-2 52-4 100" stroke="#dcc5a8" stroke-width="11"/>
+                <path d="M150 0c-2 34 10 66 8 100-1 22-2 52-4 100" stroke="#fff4dc" stroke-width="8"/>
+                <path d="M150.6 0c-2 34 10 66 8 100-1 22-2 52-4 100" stroke="#f2c574" stroke-width="1.2" stroke-dasharray="5 5"/>
+                <path d="M149 142v36M163 142v36" stroke="#b9a184" stroke-width="2"/>
+              </g>
+              <!-- route -->
+              <path d="M172 128c-8-12-12-24-14-32 30 2 80 4 142 0 0-8-1-18-1-30" fill="none" stroke="#b8461a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 7"/>
+              <!-- labels -->
+              <text x="22" y="132" transform="rotate(-90 22 132)" font-family="Anek Kannada" font-size="11.5" font-weight="600" fill="#2d7d74" letter-spacing="2.4">ARABIAN SEA</text>
+              <text x="236" y="186" font-family="Anek Kannada" font-size="12" font-style="italic" font-weight="600" fill="#2d7d74" letter-spacing="0.5">Sharavathi</text>
+              <g transform="translate(134 14)"><rect width="34" height="18" rx="5" fill="#fff" stroke="#dcc5a8"/><text x="17" y="13" text-anchor="middle" font-family="Anek Kannada" font-size="10.5" font-weight="760" fill="#7a675a">NH 66</text></g>
+              <text x="302" y="116" text-anchor="middle" font-family="Anek Kannada" font-size="10.5" font-weight="650" fill="#8a7666" letter-spacing="1.1">PRABHATNAGAR</text>
+              <text x="168" y="74" font-family="Anek Kannada" font-size="10.5" font-weight="650" fill="#a39080" letter-spacing="1.3">HONNAVAR</text>
+              <!-- pins -->
+              <use href="#pin-kitchen" x="152" y="92" width="40" height="52"/>
+              <use href="#pin-home" x="279" y="15" width="40" height="52"/>
+              <g transform="translate(108 140)"><rect width="76" height="20" rx="10" fill="#fff" stroke="#f6cdb4"/><text x="38" y="14" text-anchor="middle" font-family="Anek Kannada" font-size="11.5" font-weight="700" fill="#9c3512">Nagvekar's</text></g>
+            </svg>
+            <div class="map-legend">
+              <span><svg viewBox="0 0 40 52" aria-hidden="true"><use href="#pin-kitchen"/></svg>Kitchen: Nagvekar's Restaurant</span>
+              <span><svg viewBox="0 0 40 52" aria-hidden="true"><use href="#pin-home"/></svg>Your delivery location</span>
+            </div>
+          </section>
+
+          <section class="card tl" aria-label="Order status">
+            <h3>Order status</h3>
+            <ol>
+              <li class="step"><span class="nd"><i data-lucide="check"></i></span><span class="t">Order placed</span><span class="w">1:12 pm</span></li>
+              <li class="step"><span class="nd"><i data-lucide="check"></i></span><span class="t">Accepted by the kitchen</span><span class="w">1:14 pm</span></li>
+              <li class="step now"><span class="nd"><i data-lucide="chef-hat"></i></span><span class="t">Preparing</span><span class="w">1:16 pm</span></li>
+              <li class="step todo"><span class="nd"><i data-lucide="package-check"></i></span><span class="t">Ready for pickup</span><span class="w">Waiting</span></li>
+              <li class="step todo"><span class="nd"><i data-lucide="bike"></i></span><span class="t">Picked up</span><span class="w">Waiting</span></li>
+              <li class="step todo"><span class="nd"><i data-lucide="house"></i></span><span class="t">Delivered</span><span class="w">Waiting</span></li>
+            </ol>
+          </section>
+
+          <section class="card krow">
+            <span class="th"><img src="../../../../seed/images/nagvekars.jpg" alt=""></span>
+            <div class="grow"><b>Nagvekar's Restaurant</b><small>Near Sharavathi bridge</small></div>
+            <a class="btn btn-sea call-btn" href="tel:9000001001" aria-label="Call kitchen on 9000001001"><i data-lucide="phone"></i>Call kitchen</a>
+          </section>
+
+          <section class="card items" aria-label="Items">
+            <h3>Items</h3>
+            <div class="it"><span class="vmark nonveg" role="img" aria-label="Non-veg"></span><span class="q">1 ×</span><span>Sea Food Thali</span><span class="p">₹350</span></div>
+            <div class="it"><span class="vmark veg" role="img" aria-label="Veg"></span><span class="q">2 ×</span><span>Ginger Kokum Soda</span><span class="p">₹100</span></div>
+            <hr class="hr" style="margin:4px 0">
+            <div class="row"><span>Item total</span><span>₹450</span></div>
+            <div class="row"><span>Delivery fee</span><span>₹30</span></div>
+            <div class="row grand"><span>Grand total</span><span>₹480</span></div>
+            <span class="paychip"><i data-lucide="smartphone"></i>Paid by UPI (demo)</span>
+            <p class="note">Nothing was charged in this demo.</p>
+          </section>
+
+          <section class="card addr" aria-label="Delivery address">
+            <span class="ic"><i data-lucide="house"></i></span>
+            <div><b>Delivery address · Home</b><p>Door 2-114, Nayak House, Prabhatnagar 2nd cross<br>Behind Prabhatnagar temple</p></div>
+          </section>
+        </div>
+      </main>
+
+      <nav class="tabbar" aria-label="Main navigation">
+        <a class="tab" href="home.html"><span class="pill"><i data-lucide="house"></i></span><span class="lbl">Home</span></a>
+        <a class="tab active" href="#" aria-current="page"><span class="pill"><i data-lucide="receipt-text"></i></span><span class="lbl">Orders</span></a>
+        <a class="tab cart-full" href="cart.html" aria-label="Cart, 3 items, ₹620"><span class="pill"><i data-lucide="shopping-bag"></i><span class="count">3</span></span><span class="lbl">₹620</span></a>
+        <a class="tab" href="#"><span class="pill"><i data-lucide="user-round"></i></span><span class="lbl">Account</span></a>
+      </nav>
+    </div>
+  </template>
+
+  <div class="frame" data-slot="top">
+    <div class="frame-cap"><b>Ongoing order</b><span class="tag">390 × 844</span><span class="tag">English</span><span class="tag">top</span></div>
+    <p class="frame-note" style="order:3"><b>On its own page</b> the Orders tab is plain (it does not advertise this order). Status, expected time and progress refresh in place; the status block crossfades in 160 ms when the step changes, nothing below moves.</p>
+  </div>
+  <div class="frame" data-slot="end">
+    <div class="frame-cap"><b>Ongoing order</b><span class="tag">390 × 844</span><span class="tag">scrolled</span></div>
+    <p class="frame-note" style="order:3"><b>Timeline</b> uses the status colour only for the current step; done steps are ticked, waiting steps are outlined with their icon. Payment keeps “(demo)” and the “Nothing was charged” note.</p>
+  </div>
+  </div>
+</div>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  const tpl = document.getElementById('order-screen');
+  document.querySelectorAll('[data-slot]').forEach(slot => {
+    const node = tpl.content.cloneNode(true);
+    slot.insertBefore(node, slot.querySelector('.frame-note'));
+  });
+  lucide.createIcons();
+  const s = document.querySelector('[data-slot="end"] .scroll');
+  s.scrollTop = 560;
+</script>
+</body>
+</html>

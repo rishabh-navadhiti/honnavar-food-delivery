@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledger · Partner orders</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="ui.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  /* Sound pill: 48 px hit area, 32 px visual */
+  .pill { height: var(--touch); padding: 0 2px; border: 0; background: none; display: inline-flex; align-items: center; flex: none; }
+  .ocard .r2 .pay { margin-left: auto; }
+  .topbar { gap: 4px; }
+  .topbar .wordmark { font-size: 16px; }
+  .topbar .lang-btn .face { padding: 0 10px; }
+  .pill .face { height: 32px; padding: 0 9px 0 7px; display: inline-flex; align-items: center; gap: 4px; border-radius: var(--r-pill); background: var(--c-open-bg); color: var(--c-open); font-size: var(--fs-cap); font-weight: var(--fw-semi); white-space: nowrap; transition: width var(--dur-1) var(--ease); }
+  .pill .face svg.lucide { width: 16px; height: 16px; stroke-width: 2.2; }
+  .pill.need .face { background: var(--c-warning-bg); color: var(--c-warning); box-shadow: inset 0 0 0 1px var(--c-warning-line); }
+
+  .phead { display: flex; align-items: center; gap: var(--s1); padding: 10px var(--s0) 6px var(--gutter); }
+  .phead h1 { font-size: var(--fs-display); line-height: var(--lh-display); font-weight: var(--fw-bold); letter-spacing: -.01em; }
+  .phead .upd { font-size: var(--fs-cap); color: var(--c-muted); font-feature-settings: var(--num); white-space: nowrap; margin-top: 3px; }
+  .phead .grow { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .phead .link { padding: 0 12px; }
+
+  .ocard.waiting .r1 .new { margin-left: auto; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: var(--r-sm); background: var(--c-accent); color: var(--c-on-accent); font-size: var(--fs-micro); font-weight: var(--fw-bold); letter-spacing: .02em; }
+  .ocard .who { margin-top: 8px; display: flex; align-items: center; gap: 6px; font-size: var(--fs-cap); line-height: var(--lh-cap); color: var(--c-muted); }
+  .ocard .who svg.lucide { width: 14px; height: 14px; }
+  .ocard .countdown .msg b { font-size: var(--fs-title); color: var(--c-ink); font-feature-settings: var(--num); font-weight: var(--fw-bold); margin: 0 2px; }
+  .ocard .countdown .msg { flex: 1; }
+  .ocard .r3 .btn-primary { flex: 1.6; }
+
+  /* First-time sound prompt */
+  .prompt { width: calc(100% - 2 * var(--gutter)); margin: 12px var(--gutter) 4px; border: 0; border-radius: var(--r-lg); background: var(--c-ink); color: #fff; padding: 14px var(--s3) 14px 14px; display: grid; grid-template-columns: 44px minmax(0,1fr) 22px; gap: var(--s2); align-items: center; text-align: left; min-height: 72px; }
+  .prompt .go { width: 22px; height: 22px; color: var(--c-accent); }
+  .prompt .ib { width: 44px; height: 44px; border-radius: var(--r-md); background: var(--c-accent); color: var(--c-on-accent); display: grid; place-items: center; }
+  .prompt .ib svg.lucide { width: 24px; height: 24px; stroke-width: 2; }
+  .prompt p { font-size: var(--fs-head); line-height: var(--lh-head); font-weight: var(--fw-bold); }
+
+  /* Reject sheet */
+  .sheet .in { padding: 4px var(--gutter) var(--s3); }
+  .sheet h2 { font-size: var(--fs-title); line-height: var(--lh-title); font-weight: var(--fw-bold); margin-top: 12px; }
+  .sheet .sub { display: flex; align-items: center; gap: 8px; font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-muted); margin-top: 4px; font-feature-settings: var(--num); }
+  .sheet .sub b { color: var(--c-ink); }
+  .reasons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: var(--s3); }
+  .reason { min-height: var(--touch); display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid var(--c-line-strong); border-radius: var(--r-md); background: var(--c-surface); text-align: left; font-size: var(--fs-sm); line-height: var(--lh-sm); font-weight: var(--fw-medium); }
+  .reason .rd { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--c-line-strong); flex: none; display: grid; place-items: center; }
+  .reason[aria-checked="true"] { border-color: var(--c-danger); background: var(--c-danger-bg); color: var(--c-ink); font-weight: var(--fw-semi); box-shadow: inset 0 0 0 1px var(--c-danger); }
+  .reason[aria-checked="true"] .rd { border-color: var(--c-danger); }
+  .reason[aria-checked="true"] .rd::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--c-danger); }
+  .note-l { display: block; margin-top: var(--s3); font-size: var(--fs-sm); line-height: var(--lh-sm); font-weight: var(--fw-semi); }
+  .note-l span { color: var(--c-muted); font-weight: var(--fw-regular); }
+  .ta { margin-top: 6px; height: 76px; border: 1px solid var(--c-line-strong); border-radius: 10px; padding: 10px 12px; font-size: var(--fs-body); line-height: var(--lh-body); color: var(--c-ink); }
+  .ta .cnt { float: right; color: var(--c-muted); font-size: var(--fs-micro); margin-top: 26px; font-feature-settings: var(--num); }
+  .sheet .acts { display: grid; grid-template-columns: 1fr 1.4fr; gap: 8px; margin-top: var(--s3); }
+  .frames { gap: 40px 28px; }
+  .row-label { width: 100%; font-size: 13px; font-weight: 700; color: var(--c-ink-2); letter-spacing: .04em; text-transform: uppercase; margin: 8px 0 -24px; }
+</style>
+</head>
+<body class="canvas">
+<header class="canvas-head">
+  <div class="crumbs"><a href="index.html">B · Ledger</a> / Partner orders</div>
+  <h1>Partner orders</h1>
+  <p>Each card reads left to right in one pass: number, status (icon + word + colour rail), age, then items · item total · payment, then the one next action. The waiting order is the only loud card: turmeric tint, “New” tag, a live countdown and Accept / Reject. Once sounds are on, the prompt shrinks into a pill in the top bar. Rejecting opens a short sheet: four reason chips in a 2 × 2 grid, an optional note and Back / Reject, all inside 390 × 844. Same template in English and Kannada.</p>
+</header>
+
+<div class="frames">
+  <p class="row-label">English</p>
+  <figure class="frame"><figcaption class="frame-cap">Orders, sounds on (pill) <span class="tag">390 × 844</span><span class="tag">EN</span></figcaption><div class="device"><div class="screen" id="p-en" lang="en"></div></div></figure>
+  <figure class="frame"><figcaption class="frame-cap">First visit: full sound prompt <span class="tag">390 × 844</span><span class="tag">EN</span></figcaption><div class="device"><div class="screen" id="p-en-prompt" lang="en"></div></div></figure>
+  <figure class="frame"><figcaption class="frame-cap">Reject step <span class="tag">390 × 844</span><span class="tag">EN</span></figcaption><div class="device"><div class="screen" id="p-en-reject" lang="en"></div></div></figure>
+  <p class="row-label">ಕನ್ನಡ</p>
+  <figure class="frame"><figcaption class="frame-cap">Orders, sounds on (pill) <span class="tag">390 × 844</span><span class="tag">ಕನ್ನಡ</span></figcaption><div class="device"><div class="screen" id="p-kn" lang="kn"></div></div></figure>
+  <figure class="frame"><figcaption class="frame-cap">First visit: full sound prompt <span class="tag">390 × 844</span><span class="tag">ಕನ್ನಡ</span></figcaption><div class="device"><div class="screen" id="p-kn-prompt" lang="kn"></div></div></figure>
+  <figure class="frame"><figcaption class="frame-cap">Reject step <span class="tag">390 × 844</span><span class="tag">ಕನ್ನಡ</span></figcaption><div class="device"><div class="screen" id="p-kn-reject" lang="kn"></div></div></figure>
+  <figure class="frame"><figcaption class="frame-cap">Fit check <span class="tag">360 × 780</span><span class="tag">ಕನ್ನಡ</span></figcaption><div class="device"><div class="screen w360" lang="kn" data-clone-of="p-kn"></div></div>
+    <p class="frame-note">Kannada at 360 × 780: two full cards and the start of the third (the three-card rule is met at 390 × 844 in both languages). Card amounts are the item total, as partners see today. Pill states: <b>Sounds on</b> (green, speaker) and <b>Tap for sound</b> (amber, outlined) when the browser blocks audio again after a reload — never the full prompt again on this device.</p></figure>
+</div>
+
+<script>
+/* Real strings from en.json / kn.json. NEW = drafted for this feature (Kannada pending review). */
+const T = {
+  en: {
+    sub: 'Partner app', lang: 'ಕನ್ನಡ', langAria: 'Switch to Kannada',
+    pillOn: 'Sounds on' /* NEW alert.soundOn */, pillAria: 'Order sounds are on',
+    title: 'Orders', upd: 'Updated 1:05 pm', msgs: 'Messages',
+    prompt: 'Tap to turn on order sounds',
+    st: { placed: 'Placed', accepted: 'Accepted', preparing: 'Preparing', ready: 'Ready' },
+    newTag: 'NEW', timeLeft: t => `Accept or reject within <b>${t}</b>`, orderedAt: 'Ordered at 1:04 pm',
+    ago: m => `${m} min ago`, itemTotal: 'Item total', items: n => `${n} items`,
+    cod: 'Cash on delivery', upi: 'Paid by UPI (demo)',
+    customer: 'Demo Customer · Behind Prabhatnagar temple',
+    accept: 'Accept order', reject: 'Reject', start: 'Start preparing', ready: 'Ready for pickup', waitAgent: 'Waiting for the delivery agent',
+    d: { fish: 'Fish Meals', veg: 'Veg Meals' },
+    nav: ['Orders', 'Today', 'Menu', 'Hours', 'My kitchen'],
+    why: "Why can't you take this order?",
+    reasons: ['Kitchen too busy', 'Item not available', 'Kitchen closing', 'Other'],
+    note: 'Short note for the customer', optional: '(optional)', noteVal: 'Fish is over for today, sorry.',
+    back: 'Back', confirm: 'Reject order'
+  },
+  kn: {
+    sub: 'ಪಾರ್ಟ್ನರ್ ಆ್ಯಪ್', lang: 'English', langAria: 'ಇಂಗ್ಲಿಷ್‌ಗೆ ಬದಲಿಸಿ',
+    pillOn: 'ಸದ್ದು ಆನ್', pillAria: 'ಆರ್ಡರ್ ಸದ್ದು ಆನ್ ಆಗಿದೆ',
+    title: 'ಆರ್ಡರ್‌ಗಳು', upd: 'ಅಪ್‌ಡೇಟ್: ಮಧ್ಯಾಹ್ನ 1:05', msgs: 'ಸಂದೇಶಗಳು',
+    prompt: 'ಆರ್ಡರ್ ಸದ್ದು ಆನ್ ಮಾಡಲು ಒತ್ತಿ',
+    st: { placed: 'ಆರ್ಡರ್ ಆಗಿದೆ', accepted: 'ಒಪ್ಪಿಕೊಂಡಿದೆ', preparing: 'ತಯಾರಾಗುತ್ತಿದೆ', ready: 'ರೆಡಿ ಆಗಿದೆ' },
+    newTag: 'ಹೊಸದು', timeLeft: t => `<b>${t}</b> ಒಳಗೆ ಒಪ್ಪಿ ಅಥವಾ ಬೇಡ ಎನ್ನಿ`, orderedAt: 'ಮಧ್ಯಾಹ್ನ 1:04 ಕ್ಕೆ ಆರ್ಡರ್',
+    ago: m => `${m} ನಿಮಿಷದ ಹಿಂದೆ`, itemTotal: 'ಐಟಂಗಳ ಮೊತ್ತ', items: n => `${n} ಐಟಂಗಳು`,
+    cod: 'ಡೆಲಿವರಿ ಆದಾಗ ಕ್ಯಾಶ್', upi: 'UPI ಮೂಲಕ ಪಾವತಿ (ಡೆಮೊ)',
+    customer: 'Demo Customer · Behind Prabhatnagar temple',
+    accept: 'ಆರ್ಡರ್ ಒಪ್ಪಿಕೊಳ್ಳಿ', reject: 'ಬೇಡ ಎನ್ನಿ', start: 'ತಯಾರಿಸಲು ಶುರು ಮಾಡಿ', ready: 'ಪಿಕಪ್‌ಗೆ ರೆಡಿ', waitAgent: 'ಡೆಲಿವರಿಯವರಿಗಾಗಿ ಕಾಯುತ್ತಿದೆ',
+    d: { fish: 'ಮೀನೂಟ', veg: 'ವೆಜ್ ಊಟ' },
+    nav: ['ಆರ್ಡರ್‌ಗಳು', 'ಇಂದು', 'ಮೆನು', 'ಸಮಯ', 'ನನ್ನ ಕಿಚನ್'],
+    why: 'ಈ ಆರ್ಡರ್ ಯಾಕೆ ತೆಗೆದುಕೊಳ್ಳಲು ಆಗುವುದಿಲ್ಲ?',
+    reasons: ['ಕಿಚನ್ ತುಂಬಾ ಬ್ಯುಸಿ ಇದೆ', 'ಐಟಂ ಸಿಗುವುದಿಲ್ಲ', 'ಕಿಚನ್ ಮುಚ್ಚುವ ಸಮಯ', 'ಬೇರೆ'],
+    note: 'ಗ್ರಾಹಕರಿಗೆ ಚಿಕ್ಕ ಸೂಚನೆ', optional: '(ಬೇಕಿದ್ದರೆ)', noteVal: 'ಇವತ್ತು ಮೀನು ಮುಗಿದಿದೆ, ಕ್ಷಮಿಸಿ.',
+    back: 'ಹಿಂದೆ', confirm: 'ಆರ್ಡರ್ ಬೇಡ ಎನ್ನಿ'
+  }
+};
+const ICON = { placed: 'bell-ring', accepted: 'circle-check', preparing: 'chef-hat', ready: 'package-check' };
+
+function chip(s, L) { return `<span class="st st-${s}"><i data-lucide="${ICON[s]}"></i>${L.st[s]}</span>`; }
+function pay(kind, L) { return kind === 'cod' ? `<span class="pay"><i data-lucide="banknote"></i>${L.cod}</span>` : `<span class="pay"><i data-lucide="smartphone"></i>${L.upi}</span>`; }
+function r2(n, amt, kind, L) { return `<div class="r2"><span>${L.items(n)}</span><span class="dotsep"></span><span class="amt" title="${L.itemTotal}" aria-label="${L.itemTotal} ₹${amt}">₹${amt}</span>${pay(kind, L)}</div>`; }
+
+function cards(L) {
+  return `
+  <article class="ocard waiting" aria-label="#1048">
+    <div class="r1"><span class="no">#1048</span>${chip('placed', L)}<span class="new">${L.newTag}</span></div>
+    <div class="countdown"><i data-lucide="timer"></i><span class="msg">${L.timeLeft('8:42')}</span></div>
+    <div class="bar"><i></i></div>
+    <ul class="items"><li><span>${L.d.fish}</span><span class="q">× 1</span></li><li><span>${L.d.veg}</span><span class="q">× 1</span></li></ul>
+    ${r2(2, 240, 'cod', L)}
+    <p class="who"><i data-lucide="map-pin"></i>${L.customer}</p>
+    <div class="r3"><button class="btn btn-danger-ghost">${L.reject}</button><button class="btn btn-primary"><i data-lucide="check"></i>${L.accept}</button></div>
+  </article>
+  <article class="ocard rail-accepted">
+    <div class="r1"><span class="no">#1046</span>${chip('accepted', L)}<span class="ago"><i data-lucide="clock-3"></i>${L.ago(6)}</span></div>
+    ${r2(3, 390, 'upi', L)}
+    <div class="r3"><button class="btn btn-tonal"><i data-lucide="chef-hat"></i>${L.start}</button></div>
+  </article>
+  <article class="ocard rail-preparing">
+    <div class="r1"><span class="no">#1045</span>${chip('preparing', L)}<span class="ago"><i data-lucide="clock-3"></i>${L.ago(14)}</span></div>
+    ${r2(2, 300, 'cod', L)}
+    <div class="r3"><button class="btn btn-tonal"><i data-lucide="package-check"></i>${L.ready}</button></div>
+  </article>
+  <article class="ocard rail-ready">
+    <div class="r1"><span class="no">#1043</span>${chip('ready', L)}<span class="ago"><i data-lucide="clock-3"></i>${L.ago(22)}</span></div>
+    ${r2(2, 170, 'upi', L)}
+    <p class="note"><i data-lucide="bike"></i>${L.waitAgent}</p>
+  </article>
+  <div style="height:16px"></div>`;
+}
+
+function screen(lang, mode) {
+  const L = T[lang];
+  const pill = mode === 'prompt' ? '' : `<button class="pill" aria-label="${L.pillAria}"><span class="face"><i data-lucide="volume-2"></i>${L.pillOn}</span></button>`;
+  const prompt = mode === 'prompt' ? `<button class="prompt"><span class="ib"><i data-lucide="volume-2"></i></span><p>${L.prompt}</p><i class="go" data-lucide="arrow-right"></i></button>` : '';
+  const sheet = mode === 'reject' ? `
+    <div class="scrim"></div>
+    <section class="sheet" role="dialog" aria-label="${L.why}">
+      <div class="grab"></div>
+      <div class="in">
+        <h2>${L.why}</h2>
+        <p class="sub"><b class="num">#1048</b><span>·</span><span>${L.items(2)}</span><span>·</span><b>₹240</b></p>
+        <div class="reasons" role="radiogroup">
+          ${L.reasons.map((r, i) => `<button class="reason" role="radio" aria-checked="${i === 1}"><span class="rd"></span>${r}</button>`).join('')}
+        </div>
+        <label class="note-l">${L.note} <span>${L.optional}</span></label>
+        <div class="ta">${L.noteVal}<span class="cnt">${L.noteVal.length}/200</span></div>
+        <div class="acts"><button class="btn btn-secondary">${L.back}</button><button class="btn btn-danger"><i data-lucide="circle-x"></i>${L.confirm}</button></div>
+      </div>
+    </section>` : '';
+  return `
+  <header class="topbar">
+    <a class="brand" href="#"><svg class="mark" aria-hidden="true"><use href="#i-mark"/></svg><span class="brand-text"><span class="wordmark">Honnavar Food</span><span class="brand-sub">${L.sub}</span></span></a>
+    ${pill}
+    <button class="lang-btn" aria-label="${L.langAria}"><span class="face" lang="${lang === 'en' ? 'kn' : 'en'}">${L.lang}</span></button>
+  </header>
+  <main class="content">
+    ${prompt}
+    <div class="phead"><div class="grow"><h1>${L.title}</h1><span class="upd">${L.upd}</span></div><a class="link" href="#"><i data-lucide="message-square"></i>${L.msgs}</a></div>
+    ${cards(L)}
+  </main>
+  <nav class="tabbar" aria-label="Main navigation">
+    <a class="tab active" href="#" aria-current="page"><span class="icw"><i data-lucide="inbox"></i><span class="badge">1</span></span><span class="lbl">${L.nav[0]}</span></a>
+    <a class="tab" href="#"><span class="icw"><i data-lucide="calendar-days"></i></span><span class="lbl">${L.nav[1]}</span></a>
+    <a class="tab" href="#"><span class="icw"><i data-lucide="utensils-crossed"></i></span><span class="lbl">${L.nav[2]}</span></a>
+    <a class="tab" href="#"><span class="icw"><i data-lucide="clock"></i></span><span class="lbl">${L.nav[3]}</span></a>
+    <a class="tab" href="#"><span class="icw"><i data-lucide="store"></i></span><span class="lbl">${L.nav[4]}</span></a>
+  </nav>
+  ${sheet}`;
+}
+for (const lang of ['en', 'kn']) {
+  document.getElementById(`p-${lang}`).innerHTML = screen(lang, 'list');
+  document.getElementById(`p-${lang}-prompt`).innerHTML = screen(lang, 'prompt');
+  document.getElementById(`p-${lang}-reject`).innerHTML = screen(lang, 'reject');
+}
+</script>
+<script src="ledger.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+/* =====================================================================
+   B · Ledger — design tokens (single source for every screen)
+   Light theme only. Every colour pair below was checked against WCAG:
+   text pairs ≥ 4.5:1, meaningful icons and large text ≥ 3:1.
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Kannada:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ---------- Type: Noto superfamily ---------- */
+  /* Latin and digits come from Noto Sans; Kannada glyphs fall through to
+     Noto Sans Kannada. Same designers, same weights, same stroke contrast. */
+  --font: 'Noto Sans', 'Noto Sans Kannada', system-ui, sans-serif;
+  --num: 'tnum' 1, 'lnum' 1;            /* tabular, lining figures for ₹, times, counts */
+
+  /* Scale (px). Kannada uses the same size, never smaller, and more leading. */
+  --fs-display: 22px;  --lh-display: 28px;  --lh-display-kn: 34px;
+  --fs-title:   18px;  --lh-title:   24px;  --lh-title-kn:   28px;
+  --fs-head:    16px;  --lh-head:    22px;  --lh-head-kn:    26px;
+  --fs-body:    15px;  --lh-body:    21px;  --lh-body-kn:    24px;
+  --fs-sm:      14px;  --lh-sm:      20px;  --lh-sm-kn:      22px;
+  --fs-cap:     13px;  --lh-cap:     18px;  --lh-cap-kn:     21px;
+  --fs-micro:   12px;  --lh-micro:   16px;  --lh-micro-kn:   19px;
+
+  --fw-regular: 400; --fw-medium: 500; --fw-semi: 600; --fw-bold: 700;
+
+  /* ---------- Neutrals (cool) ---------- */
+  --c-page:        #F3F5F6;  /* page behind surfaces */
+  --c-surface:     #FFFFFF;  /* rows, cards, bars */
+  --c-sunken:      #EEF1F3;  /* segmented track, inset areas */
+  --c-line:        #E3E7EA;  /* hairline dividers */
+  --c-line-strong: #CDD3D8;  /* input and button outlines */
+  --c-ink:         #14191F;  /* 17.7:1 on white */
+  --c-ink-2:       #3D4650;  /*  9.6:1 */
+  --c-muted:       #5A646E;  /*  6.0:1, smallest text allowed */
+  --c-faint:       #8A939B;  /*  3.1:1, icons/decoration only, never body text */
+  --c-scrim:       rgba(20, 25, 31, .48);
+
+  /* ---------- Brand ---------- */
+  --c-primary:       #0B6B57;  /* "Sharavathi" leaf-teal, white text 6.45:1 */
+  --c-primary-press: #08533F;  /* pressed / hover, 9.0:1 */
+  --c-primary-tint:  #E7F3EF;  /* selected rows, active chip */
+  --c-primary-line:  #A9D3C6;
+  --c-on-primary:    #FFFFFF;
+  --c-accent:        #E8A13A;  /* "Turmeric": fills only (badges, timers, mark) with ink text */
+  --c-accent-tint:   #FFF6E6;
+  --c-on-accent:     #14191F;  /* 8.1:1 on turmeric */
+
+  /* ---------- Meaning colours ---------- */
+  --c-open:      #18713A;  --c-open-bg:   #E6F4EB;
+  --c-closed:    #5A646E;  --c-closed-bg: #EEF0F2;
+  --c-veg:       #18713A;
+  --c-nonveg:    #8B2B1A;
+  --c-warning:   #9A5200;  --c-warning-bg: #FFF4E0;  --c-warning-line: #F0C98A;
+  --c-danger:    #B42318;  --c-danger-bg:  #FDECEA;  --c-danger-line:  #F2B8B1;
+  --c-success:   #18713A;  --c-success-bg: #E6F4EB;
+
+  /* ---------- Order status system (colour + icon + label, never colour alone) ---------- */
+  --st-placed:    #A64B00;  --st-placed-bg:    #FFF3E0;  /* bell-ring    */
+  --st-accepted:  #1D5BB5;  --st-accepted-bg:  #EAF1FC;  /* circle-check */
+  --st-preparing: #6A3DB0;  --st-preparing-bg: #F2EDFB;  /* chef-hat     */
+  --st-ready:     #0B6F80;  --st-ready-bg:     #E2F4F6;  /* package-check*/
+  --st-picked:    #A3306B;  --st-picked-bg:    #FBEAF3;  /* bike         */
+  --st-delivered: #18713A;  --st-delivered-bg: #E6F4EB;  /* check-check  */
+  --st-rejected:  #B42318;  --st-rejected-bg:  #FDECEA;  /* circle-x     */
+  --st-cancelled: #58616B;  --st-cancelled-bg: #EEF0F2;  /* ban          */
+
+  /* ---------- Map (stylised, no tiles) ---------- */
+  --map-land:   #EEF1EC;
+  --map-block:  #E3E8E1;
+  --map-green:  #D8E8D6;
+  --map-water:  #CFE3EC;
+  --map-shore:  #A9CBDA;
+  --map-road:   #FFFFFF;
+  --map-hwy:    #F3D58F;
+  --map-route:  #0B6B57;
+
+  /* ---------- Spacing (4-pt) ---------- */
+  --s-1: 2px;  --s0: 4px;  --s1: 8px;  --s2: 12px;  --s3: 16px;
+  --s4: 20px;  --s5: 24px; --s6: 32px; --s7: 40px;  --s8: 48px;
+  --gutter: 16px;          /* screen side gutter at 360–430 px */
+  --touch: 48px;           /* minimum tap target, every control */
+
+  /* ---------- Radii ---------- */
+  --r-xs: 3px;    /* veg mark, tiny tags */
+  --r-sm: 6px;    /* status chips, badges */
+  --r-md: 8px;    /* thumbnails, inputs, buttons */
+  --r-lg: 12px;   /* cards, row groups, sheets */
+  --r-pill: 999px;
+
+  /* ---------- Elevation: flat by default, one shadow level ---------- */
+  --e0: 0 0 0 1px var(--c-line);                                      /* border only */
+  --e1-up:   0 -1px 0 var(--c-line), 0 -6px 18px rgba(20, 25, 31, .07); /* bottom bars */
+  --e1-down: 0 1px 0 var(--c-line), 0 8px 24px rgba(20, 25, 31, .10);   /* dropdowns */
+  --e1-sheet: 0 -10px 30px rgba(20, 25, 31, .16);                       /* sheets */
+
+  /* ---------- Motion (all < 200 ms; skipped for reduced motion) ---------- */
+  --dur-1: 120ms;   /* press, chip toggle, pill collapse */
+  --dur-2: 180ms;   /* sheet / dropdown in */
+  --ease:  cubic-bezier(.2, 0, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; }
+}
+
+/* Kannada: same sizes, more leading (Kannada stacks vowel signs and
+   ottaksharas above and below the line). Applied wherever lang="kn". */
+[lang="kn"] {
+  --lh-display: var(--lh-display-kn);
+  --lh-title:   var(--lh-title-kn);
+  --lh-head:    var(--lh-head-kn);
+  --lh-body:    var(--lh-body-kn);
+  --lh-sm:      var(--lh-sm-kn);
+  --lh-cap:     var(--lh-cap-kn);
+  --lh-micro:   var(--lh-micro-kn);
+}

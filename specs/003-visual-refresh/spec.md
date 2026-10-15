@@ -110,7 +110,7 @@ accept one order and reject another with a reason, without scrolling inside the 
    device.
 2. **Given** the partner orders list, **When** it shows several orders, **Then** each card shows
    order number, status (icon and text), time left to answer or time since placed, item count,
-   grand total and payment method, with waiting orders visually first and distinct.
+   item total and payment method, with waiting orders visually first and distinct.
 3. **Given** a waiting order, **When** the partner chooses to reject it, **Then** the reasons are
    offered as compact choices and the reject and back actions fit on one screen at 390×844
    without scrolling.
@@ -233,7 +233,7 @@ board screens; force an empty list and a not-found order on each surface.
   connection, typing is never blocked.
 - Images that fail to load or kitchens without photos keep the existing placeholders, restyled.
 - The map failing to load tiles (offline, provider down) still shows a framed area with the
-  markers' labels and the open-in-maps action.
+  markers' labels, and the open-in-maps action on the screens that have it (agent).
 - Admin at widths between 1024 and 1280 px: the board remains usable (columns may scroll sideways);
   below 1024 px admin is not a design target.
 - Tablet widths (600–1024 px) on customer, partner and agent: content does not stretch into
@@ -312,8 +312,9 @@ board screens; force an empty list and a not-found order on each surface.
 - **FR-017**: The order-sound prompt MUST collapse to a compact pill after the first tap that turns
   sounds on, remembered on that device; the pill shows whether sounds are on or need a tap.
 - **FR-018**: Partner order cards MUST show order number, status with icon, time left to answer
-  (waiting orders) or time since placed, item count, grand total and payment method; waiting
-  orders MUST be visually distinct and listed first, as today.
+  (waiting orders) or time since placed, item count, item total (the amount partners see today,
+  not the grand total) and payment method; waiting orders MUST be visually distinct and listed
+  first, as today.
 - **FR-019**: The reject step MUST present reasons as compact choices and keep the reasons, the
   optional note and both actions within one 390×844 screen.
 

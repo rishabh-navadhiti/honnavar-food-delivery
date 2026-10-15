@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marigold · Home</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  /* Home-only layout */
+  .hero { background: var(--c-ink-900); color: #fff; padding: 6px var(--s-4) 20px; border-radius: 0 0 28px 28px; }
+  .hero .display { color: #fff; font-size: 28px; margin: 4px 0 14px; }
+  .hero .display em { font-style: normal; color: var(--c-marigold-500); }
+  .search .field { box-shadow: none; padding-right: 4px; }
+  .search .field { min-height: 56px; }
+  .search .btn { min-height: 48px; height: 48px; padding: 0 16px; font-size: 16px; }
+  .search .field .clear { color: var(--c-text-3); }
+  .filters { padding: 16px var(--s-4) 0; }
+  .filters .seg { margin-top: 12px; }
+  .klist-head { padding: 0 var(--s-4); margin: 20px 0 10px; }
+  .filters .seg { margin-top: 12px; }
+  .seg-label { font-size: 13px; font-weight: 600; color: var(--c-text-3); margin: 14px 2px 6px; display: block; }
+  .seg-label + .seg { margin-top: 0 !important; }
+
+  .klist { display: grid; gap: 12px; padding: 0 var(--s-4) 24px; }
+  .kcard { display: grid; grid-template-columns: 92px 1fr; gap: 12px; padding: 10px; text-decoration: none; color: inherit; align-items: stretch; }
+  .kcard .photo { width: 92px; height: 100%; min-height: 100px; }
+  .kbody { min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 2px 2px 2px 0; }
+  .kbody .h3 { font-size: 18px; }
+  .kbadges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .kmeta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: auto; }
+  .eta { display: inline-flex; align-items: center; gap: 6px; font: 700 15px/1 var(--font-display); color: var(--c-ink-900); padding-top: 2px; }
+  .eta .lucide { width: 18px; height: 18px; color: var(--c-ink-700); margin-top: -2px; }
+  .landmark { display: flex; align-items: center; gap: 5px; font-size: 13.5px; color: var(--c-text-3); }
+  .landmark .lucide { width: 15px; height: 15px; flex: none; }
+  .kcard.is-closed .photo { filter: grayscale(1) contrast(.9); opacity: .75; }
+  .kcard.is-closed .h3 { color: var(--c-text-2); }
+
+  /* Suggestions popover */
+  .suggest-wrap { position: relative; }
+  .suggest {
+    position: absolute; left: 0; right: 0; top: calc(100% + 8px); z-index: 4; background: var(--c-surface);
+    border-radius: var(--r-lg); box-shadow: var(--e-2); overflow: hidden; color: var(--c-text);
+  }
+  .suggest h4 { margin: 0; padding: 12px 16px 4px; font: 700 12.5px/1.4 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--c-text-3); }
+  .sg { display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center; min-height: 60px; padding: 6px 12px 6px 16px; text-decoration: none; color: inherit; }
+  .sg + .sg { border-top: 1px solid var(--c-line); }
+  .sg .photo { width: 44px; height: 44px; border-radius: 10px; }
+  .sg .t { font: 700 16px/1.25 var(--font-display); padding-top: 2px; display: flex; align-items: center; gap: 6px; }
+  .sg .t b { font-weight: 800; text-decoration: underline 3px var(--c-marigold-500); text-underline-offset: 4px; text-decoration-skip-ink: none; }
+  .sg .m { font-size: 13.5px; color: var(--c-text-3); line-height: 1.35; }
+  .sg .r { font: 800 16px/1 var(--font-display); }
+  .sg .go { color: var(--c-text-3); }
+  .sg.is-hover { background: var(--c-marigold-50); }
+  .suggest .all { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 16px; background: var(--c-indigo-50); font-weight: 600; font-size: 15px; color: var(--c-ink-900); border-top: 1px solid var(--c-line); }
+  .suggest .all .lucide { width: 18px; height: 18px; }
+  .dimmed { opacity: .18; filter: saturate(.6); }
+  .badge.wrap { height: auto; min-height: 28px; white-space: normal; padding: 5px 9px; line-height: 1.3; align-items: flex-start; }
+  .badge.wrap .lucide { margin-top: 1px; }
+</style>
+</head>
+<body class="board">
+<header class="board-head">
+  <img src="mark.svg" alt="">
+  <h1>C · Marigold <small>Home and search suggestions</small></h1>
+  <nav>
+    <a href="index.html">Overview</a><a href="home.html" aria-current="page">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html">Cart</a><a href="order.html">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html">Admin board</a>
+  </nav>
+</header>
+
+<div class="frames">
+  <!-- ============ Frame 1: Home ============ -->
+  <figure class="frame-wrap" id="f-home">
+    <figcaption>Home <span>390 × 844 · English · cart and ongoing order in the tabs</span></figcaption>
+    <div class="phone"><div class="screen" lang="en">
+      <header class="topbar">
+        <a class="brand" href="#"><img src="mark.svg" alt=""><span class="wordmark">Honnavar Food</span></a>
+        <span class="spacer"></span>
+        <a class="hit lang" href="#" aria-label="Switch to Kannada"><span class="pill"><i data-lucide="languages"></i><span lang="kn">ಕನ್ನಡ</span></span></a>
+      </header>
+      <main>
+        <section class="hero">
+          <h1 class="display">Kitchens in Honnavar</h1>
+          <form class="search" role="search" onsubmit="return false">
+            <label class="field">
+              <i data-lucide="search"></i>
+              <input type="search" placeholder="For example: neer dose" aria-label="Search kitchens and dishes">
+              <button class="btn btn-primary" type="submit"><span>Search</span></button>
+            </label>
+          </form>
+        </section>
+
+        <div class="filters">
+          <div class="chips" role="group" aria-label="Filter kitchens">
+            <button class="chip"><i data-lucide="clock-4"></i>Open now</button>
+            <button class="chip"><img src="veg.svg" alt="">Pure veg</button>
+            <button class="chip"><i data-lucide="utensils"></i>Restaurant</button>
+            <button class="chip"><i data-lucide="cooking-pot"></i>Home kitchen</button>
+            <button class="chip"><i data-lucide="cloud"></i>Cloud kitchen</button>
+          </div>
+          <div class="seg" role="radiogroup" aria-label="Show dishes">
+            <button class="is-on" role="radio" aria-checked="true">All</button>
+            <button role="radio" aria-checked="false"><img src="veg.svg" alt="">Veg only</button>
+            <button role="radio" aria-checked="false"><img src="nonveg.svg" alt="">Non-veg only</button>
+          </div>
+        </div>
+
+        <h2 class="h2 klist-head">All kitchens</h2>
+
+        <div class="klist">
+          <a class="kcard card" href="kitchen.html">
+            <img class="photo" src="../../../../seed/images/nagvekars.jpg" alt="">
+            <div class="kbody">
+              <h3 class="h3 clamp2">Nagvekar's Restaurant</h3>
+              <div class="kbadges"><span class="badge"><i data-lucide="utensils"></i>Restaurant</span></div>
+              <div class="kmeta"><span class="badge badge-open"><span class="dot"></span>Open now</span><span class="eta"><i data-lucide="bike"></i>35–45 min</span></div>
+            </div>
+          </a>
+          <a class="kcard card" href="kitchen.html">
+            <img class="photo" src="../../../../seed/images/new-rameshwaram.jpg" alt="">
+            <div class="kbody">
+              <h3 class="h3 clamp2">New Rameshwaram Restaurant</h3>
+              <div class="kbadges"><span class="badge"><i data-lucide="utensils"></i>Restaurant</span><span class="badge badge-veg"><img src="veg.svg" alt="">Pure veg</span></div>
+              <div class="kmeta"><span class="badge badge-open"><span class="dot"></span>Open now</span><span class="eta"><i data-lucide="bike"></i>35–45 min</span></div>
+            </div>
+          </a>
+          <a class="kcard card" href="kitchen.html">
+            <img class="photo" src="../../../../seed/images/pingar-dhaba.jpg" alt="">
+            <div class="kbody">
+              <h3 class="h3 clamp2">Udupi's Pingar Dhaba</h3>
+              <div class="kbadges"><span class="badge"><i data-lucide="utensils"></i>Restaurant</span></div>
+              <div class="kmeta"><span class="badge badge-open"><span class="dot"></span>Open now</span><span class="eta"><i data-lucide="bike"></i>35–45 min</span></div>
+            </div>
+          </a>
+          <a class="kcard card" href="kitchen.html">
+            <img class="photo" src="../../../../seed/images/ammana-adige.jpg" alt="">
+            <div class="kbody">
+              <h3 class="h3 clamp2">Ammana Adige</h3>
+              <div class="kbadges"><span class="badge"><i data-lucide="cooking-pot"></i>Home kitchen</span><span class="badge badge-veg"><img src="veg.svg" alt="">Pure veg</span></div>
+              <div class="kmeta"><span class="badge badge-open"><span class="dot"></span>Open now</span><span class="eta"><i data-lucide="bike"></i>35–45 min</span></div>
+            </div>
+          </a>
+          <a class="kcard card is-closed" href="kitchen.html">
+            <img class="photo" src="../../../../seed/images/karavali-mane-oota.jpg" alt="">
+            <div class="kbody">
+              <h3 class="h3 clamp2">Karavali Shailiya Mane Oota</h3>
+              <div class="kbadges"><span class="badge"><i data-lucide="cooking-pot"></i>Home kitchen</span></div>
+              <div class="kmeta"><span class="badge badge-closed wrap"><i data-lucide="moon"></i>Closed · opens tomorrow 11:30 am</span></div>
+            </div>
+          </a>
+        </div>
+      </main>
+      <nav class="tabbar" aria-label="Main navigation">
+        <a class="tab is-active" href="home.html" aria-current="page"><span class="ic"><i data-lucide="house"></i></span><span class="lbl">Home</span></a>
+        <a class="tab" href="order.html"><span class="ic"><i data-lucide="receipt-text"></i></span><span class="lbl">Orders</span><span class="sub live"><span class="dot"></span>Preparing</span></a>
+        <a class="tab" href="cart.html" aria-label="Cart, 5 items, ₹840"><span class="ic"><i data-lucide="shopping-bag"></i><span class="count">5</span></span><span class="lbl">Cart</span><span class="sub money">₹840</span></a>
+        <a class="tab" href="#"><span class="ic"><i data-lucide="circle-user-round"></i></span><span class="lbl">Account</span></a>
+      </nav>
+    </div></div>
+  </figure>
+
+  <!-- ============ Frame 2: Suggestions ============ -->
+  <figure class="frame-wrap" id="f-suggest">
+    <figcaption>Search suggestions <span>after typing “pr” · kitchens and dishes</span></figcaption>
+    <div class="phone"><div class="screen" lang="en">
+      <header class="topbar">
+        <a class="brand" href="#"><img src="mark.svg" alt=""><span class="wordmark">Honnavar Food</span></a>
+        <span class="spacer"></span>
+        <a class="hit lang" href="#" aria-label="Switch to Kannada"><span class="pill"><i data-lucide="languages"></i><span lang="kn">ಕನ್ನಡ</span></span></a>
+      </header>
+      <main>
+        <section class="hero">
+          <h1 class="display">Kitchens in Honnavar</h1>
+          <form class="search suggest-wrap" role="search" onsubmit="return false">
+            <label class="field is-focus">
+              <i data-lucide="search"></i>
+              <input type="search" value="pr" aria-label="Search kitchens and dishes" aria-expanded="true" aria-controls="sg-list">
+              <span class="hit clear" aria-label="Clear search"><i data-lucide="x"></i></span>
+            </label>
+            <div class="suggest" id="sg-list" role="listbox" aria-label="Suggestions">
+              <h4>Kitchens</h4>
+              <a class="sg is-hover" role="option" href="kitchen.html">
+                <img class="photo" src="../../../../seed/images/prameela.jpg" alt="">
+                <span><span class="t"><span><b>Pr</b>ameela Restaurant</span></span><span class="m">Restaurant · Open now · 35–45 min</span></span>
+                <i class="go" data-lucide="chevron-right"></i>
+              </a>
+              <h4>Dishes</h4>
+              <a class="sg" role="option" href="kitchen.html">
+                <img class="photo" src="../../../../seed/images/nagvekars--prawns-ghee-roast.jpg" alt="">
+                <span><span class="t"><img class="vmark" src="nonveg.svg" alt="Non-veg"><span><b>Pr</b>awns Ghee Roast</span></span><span class="m">Nagvekar's Restaurant</span></span>
+                <span class="r">₹380</span>
+              </a>
+              <a class="sg" role="option" href="kitchen.html">
+                <img class="photo" src="../../../../seed/images/prameela--prawns-ghee-roast.jpg" alt="">
+                <span><span class="t"><img class="vmark" src="nonveg.svg" alt="Non-veg"><span><b>Pr</b>awns Ghee Roast</span></span><span class="m">Prameela Restaurant</span></span>
+                <span class="r">₹400</span>
+              </a>
+              <a class="sg" role="option" href="kitchen.html">
+                <img class="photo" src="../../../../seed/images/samrat-sea-food--prawn-ghee-roast.jpg" alt="">
+                <span><span class="t"><img class="vmark" src="nonveg.svg" alt="Non-veg"><span><b>Pr</b>awn Ghee Roast</span></span><span class="m">Samrat Sea Food</span></span>
+                <span class="r">₹300</span>
+              </a>
+              <a class="sg" role="option" href="kitchen.html">
+                <img class="photo" src="../../../../seed/images/karavali-mane-oota--prawn-sukka.jpg" alt="">
+                <span><span class="t"><img class="vmark" src="nonveg.svg" alt="Non-veg"><span><b>Pr</b>awn Sukka</span></span><span class="m">Karavali Shailiya Mane Oota</span></span>
+                <span class="r">₹180</span>
+              </a>
+              <a class="all" href="#"><i data-lucide="search"></i>Results for “pr”</a>
+            </div>
+          </form>
+        </section>
+
+        <div class="dimmed" aria-hidden="true">
+          <div class="filters">
+            <div class="chips">
+              <span class="chip"><i data-lucide="clock-4"></i>Open now</span>
+              <span class="chip"><img src="veg.svg" alt="">Pure veg</span>
+              <span class="chip"><i data-lucide="utensils"></i>Restaurant</span>
+              <span class="chip"><i data-lucide="cooking-pot"></i>Home kitchen</span>
+            </div>
+            <div class="seg"><button class="is-on">All</button><button><img src="veg.svg" alt="">Veg only</button><button><img src="nonveg.svg" alt="">Non-veg only</button></div>
+          </div>
+          <h2 class="h2 klist-head">All kitchens</h2>
+        </div>
+      </main>
+      <nav class="tabbar" aria-label="Main navigation">
+        <a class="tab is-active" href="home.html" aria-current="page"><span class="ic"><i data-lucide="house"></i></span><span class="lbl">Home</span></a>
+        <a class="tab" href="order.html"><span class="ic"><i data-lucide="receipt-text"></i></span><span class="lbl">Orders</span><span class="sub live"><span class="dot"></span>Preparing</span></a>
+        <a class="tab" href="cart.html" aria-label="Cart, 5 items, ₹840"><span class="ic"><i data-lucide="shopping-bag"></i><span class="count">5</span></span><span class="lbl">Cart</span><span class="sub money">₹840</span></a>
+        <a class="tab" href="#"><span class="ic"><i data-lucide="circle-user-round"></i></span><span class="lbl">Account</span></a>
+      </nav>
+    </div></div>
+  </figure>
+
+  <!-- Frame 3 (cloned by script): the same home at 360 px -->
+  <figure class="frame-wrap" id="f-360">
+    <figcaption>Home at 360 px <span>same markup, narrowest supported phone</span></figcaption>
+  </figure>
+</div>
+
+<section class="notes">
+  <h2>Design notes</h2>
+  <ul>
+    <li><b>Fixed chrome:</b> top bar 56 px + bottom bar 80 px = 136 px (17.4% of 360×780). The indigo hero with the title and search scrolls away with the page. The dish filter keeps its accessible label “Show dishes” but drops the visible caption.</li>
+    <li><b>Bottom bar:</b> the Cart tab carries the count badge and the running item total (₹840) in marigold; the Orders tab carries the ongoing order's status with a live dot. Both visible together; no in-page cart bar, no ongoing strip.</li>
+    <li><b>Suggestions</b> open under the box from the second letter, with the matched letters highlighted. Kitchens first, then dishes with photo, veg mark, kitchen name and price. A kitchen row opens the kitchen; a dish row opens its kitchen scrolled to that dish. The last row runs the existing search. With no match the panel shows one line: “Nothing found for “…””. Opens with a 150 ms fade + 4 px rise; none under reduced motion.</li>
+    <li><b>Kitchen cards</b>: photo beside text, two compact rows (type and pure veg; open state and delivery estimate) so three cards show per 390×844 screen; the landmark moves to the kitchen page. Closed kitchens keep their place, photo greyed, with a moon icon and the opening time.</li>
+    <li>New strings drafted (not final): tab labels Orders / ಆರ್ಡರ್, Account / ಖಾತೆ; short ETA “35–45 min” / “35–45 ನಿಮಿಷ”.</li>
+  </ul>
+</section>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  // Clone frame 1 into a 360 px frame so the narrow layout can be checked side by side.
+  (function () {
+    var src = document.querySelector('#f-home .phone').cloneNode(true);
+    src.style.setProperty('--w', '360px');
+    document.getElementById('f-360').appendChild(src);
+    if (location.hash === '#360') document.documentElement.classList.add('w360');
+    lucide.createIcons();
+  })();
+</script>
+</body>
+</html>
