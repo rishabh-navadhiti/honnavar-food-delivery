@@ -83,6 +83,26 @@ plus `seed/images/`. Seed **logic** lives in `src/features/demo/`.
 - Missing image files are fine: the reset logs one warning, and the app shows placeholder
   illustrations.
 
+### Demo orders
+
+The reset also restores seven orders, all placed shortly before the reset so they count as today's,
+plus two saved addresses for the demo customer and a map location for every kitchen. Each order is
+made by the same code as live orders, so its history and messages are real.
+
+| Order | State at reset | For |
+|---|---|---|
+| `demo-placed` (#1001) | Placed, stamped with the reset time | The partner accepts it (it rejects itself after `ACCEPT_WINDOW_MINUTES`) |
+| `demo-needs-agent` (#1002) | Accepted, no agent | The admin assigns an agent |
+| `demo-ready` (#1003) | Ready, assigned to the first active agent | The agent picks it up and delivers it |
+| `demo-out` (#1004) | Picked up | "Out for delivery" on the board; the customer's timeline |
+| `demo-delivered` (#1005) | Delivered, cash collected | The agent's and partner's totals for today |
+| `demo-rejected` (#1006) | Rejected ("kitchen too busy") | The customer sees the reason |
+| `demo-cancelled` (#1007) | Cancelled by admin | The board's "Finished" group and messages |
+
+Placed and rejected orders always use fabricated kitchens: a real business is never shown with an
+unflattering reason (checked by `catalogue.int.test.ts`). A reset between midnight and about 01:30
+IST puts some of these orders on the previous day.
+
 ## One sanctioned tool per concern
 
 | Concern | Tool |

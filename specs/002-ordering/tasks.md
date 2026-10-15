@@ -569,8 +569,8 @@ the full acceptance window left; the same order numbers appear on the board.
 
 ### Tests for User Story 7
 
-- [ ] T107 [P] [US7] Extend `src/features/demo/reset.int.test.ts`: two consecutive `resetDemo` runs give identical order ids, numbers, statuses, event counts and message counts; the Placed order's `placed_at` is within 5 s of the reset time.
-- [ ] T108 [P] [US7] Write the end-to-end test `e2e/ordering-us7-reset.spec.ts` (mobile):
+- [X] T107 [P] [US7] Extend `src/features/demo/reset.int.test.ts`: two consecutive `resetDemo` runs give identical order ids, numbers, statuses, event counts and message counts; the Placed order's `placed_at` is within 5 s of the reset time.
+- [X] T108 [P] [US7] Write the end-to-end test `e2e/ordering-us7-reset.spec.ts` (mobile):
   - as the partner, accept `placedOrder()`;
   - call `resetDemoData()`;
   - the order is Placed again, with a time left greater than `ACCEPT_WINDOW_MINUTES − 2` minutes;
@@ -578,7 +578,7 @@ the full acceptance window left; the same order numbers appear on the board.
 
 ### Implementation for User Story 7
 
-- [ ] T109 [US7] Fix whatever T107 and T108 expose in `src/features/demo/load-catalogue.ts` and `src/features/demo/reset-demo.ts`, and add a short "Demo orders" section to the demo notes in `README.md` listing the seven seeded orders and what each is for
+- [X] T109 [US7] Fix whatever T107 and T108 expose in `src/features/demo/load-catalogue.ts` and `src/features/demo/reset-demo.ts`, and add a short "Demo orders" section to the demo notes in `README.md` listing the seven seeded orders and what each is for
 
 **Checkpoint**: US7 passes. Commit with task ids.
 
