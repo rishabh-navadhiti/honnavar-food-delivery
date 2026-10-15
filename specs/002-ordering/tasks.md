@@ -56,7 +56,8 @@ task"). In short, and with what 002 adds:
   first (research R5).
 - **Page-level session checks**: every page under a `(protected)` group, and every customer page
   that needs a customer, calls `requireSession(surface)` itself.
-- **Polling pages** mount `<LiveRefresh />` (T030); they never poll JSON except the partner alert
+- **Polling pages** mount `<LiveRefresh />` and `<UpdatedAt />` (T030), so a failed refresh leaves
+  the last render with its stale "Updated" time; they never poll JSON except the partner alert
   feed.
 - **E2E**: each spec file calls `resetDemoData()` in `test.beforeAll` and selects subjects from
   `seed/catalogue.json` by flags and keys through `e2e/catalogue.ts`, never by name. Specs that
@@ -197,7 +198,8 @@ complete.
   - every order's events follow `canTransition` from `placed` to its status, and its messages equal `messagesFor` of those events;
   - the Ready order's agent is the first active agent in the catalogue;
   - order numbers are 1001 onwards in catalogue order;
-  - reloading gives identical order ids and numbers.
+  - reloading gives identical order ids and numbers;
+  - every seeded order with status `placed` or `rejected` is at a kitchen with `menuSource: fabricated` (a real business is never shown with an unflattering reason, including an automatic "Kitchen did not respond").
 - [ ] T034 Extend `src/features/demo/catalogue-schema.ts`, keeping it pure (no `server-only`):
   - kitchens: required `location: { lat (6–37), lng (68–98) }` and optional `prepMinutes` (int 5–120, default 25);
   - customers: `addresses: [{ key, label: 'home'|'work'|'other', house (1–100), street? (≤150), landmark (1–100), riderNote? (≤200), location }]`;
@@ -207,10 +209,10 @@ complete.
 - [ ] T035 Update `seed/catalogue.json` from `/Users/rish/Development/Honnavar Food Delivery/planning/seed-research/kitchen-locations.json`. **Copy the values; do not geocode.**
   - For each kitchen key, copy `location` and `prepMinutes`.
   - Copy `demoCustomerAddresses` into the `demo-customer` entry's `addresses`.
-  - Append the file's `note` to the catalogue `notes`.
+  - Append the file's `note` to the catalogue `notes`, and add the rule "Never show a real business (menuSource: researched) as suspended or pending, or with an unflattering reason; seeded Placed and Rejected orders use fabricated kitchens." to the catalogue `notes`.
   - Then author the seven orders of data-model.md "Seed outline additions" (`demo-placed` with `placedMinutesBeforeReset: 0` and `cod`; `demo-needs-agent` UPI; `demo-ready` `cod` on the first active agent `agent-ravi`; `demo-out` UPI on `agent-suresh`; `demo-delivered` `cod` on `agent-ravi`; `demo-rejected` `kitchen_busy`; `demo-cancelled` admin `customer_request`).
   - Use active kitchens other than the `temporarilyClosedAtReset` one, available dishes, and the demo customer's addresses.
-  - Place `demo-rejected` (reason `kitchen_busy`) at a **fabricated** active kitchen, `karavali-mane-oota` or `samrat-sea-food`, never at a `menuSource: researched` kitchen: a real business is never shown with an unflattering reason.
+  - Place both `demo-placed` and `demo-rejected` (reason `kitchen_busy`) at **fabricated** active kitchens, `karavali-mane-oota` or `samrat-sea-food`, never at a `menuSource: researched` kitchen: a real business is never shown with an unflattering reason, and `demo-placed` is rejected automatically as "Kitchen did not respond" if nobody accepts it within the window.
 - [ ] T036 Extend `src/features/demo/load-catalogue.ts` to pass T033:
   - write kitchen location and `prep_minutes`, and the addresses;
   - for each order, in catalogue order:
@@ -257,7 +259,8 @@ preselected address, pay by UPI, confirm the demo sheet, and see the order page 
   - limits verbatim: house 1–100, street ≤150, landmark 1–100, rider note ≤200, geocoded text ≤300, label `home|work|other`, location within lat 6–37 and lng 68–98;
   - at most 10 per customer (`address_limit`);
   - another customer's id gives `not_found`;
-  - an attached voice note is stored, `removeVoiceNote` detaches it, and deleting the address deletes an unused clip.
+  - an attached voice note is stored, `removeVoiceNote` detaches it, and deleting the address deletes an unused clip;
+  - editing and then deleting an address used by an order leaves that order's address snapshot (and its voice-note clip) unchanged.
 - [ ] T042 [P] [US1] Write failing unit tests `src/shared/adapters/geocoding/nominatim.test.ts` with an injected `fetch` and fake timers:
   - search URL params `format=jsonv2`, `countrycodes=in`, the Honnavar `viewbox`, `limit=5`, `accept-language`;
   - reverse URL with `zoom=18`;
@@ -319,7 +322,8 @@ preselected address, pay by UPI, confirm the demo sheet, and see the order page 
 - [ ] T055 [US1] Create the address screens:
   - `src/features/addresses/components/address-details-form.tsx`, with fields and limits from T041: label as three large choices Home, Work, Other; the voice recorder; field-level errors; entered data kept on failure;
   - `src/app/(customer)/addresses/new/page.tsx`: step 1 the pin picker, step 2 the details form, then redirect to `next` (customer-surface paths only);
-  - `src/app/(customer)/addresses/page.tsx` (list, edit and delete links) and `src/app/(customer)/addresses/[id]/page.tsx` (edit; not found unless owned);
+  - `src/shared/audio/voice-note-player.tsx` (an `<audio controls preload="none">` pointing at `/voice-notes/[id]`, with a translated label; reused by US3 and US4);
+  - `src/app/(customer)/addresses/page.tsx` (list, edit and delete links) and `src/app/(customer)/addresses/[id]/page.tsx` (edit; shows `voice-note-player` for a saved note so the customer can play it, alongside re-record and delete; not found unless owned);
   - links from `src/app/(customer)/account/page.tsx` to addresses, orders and messages.
 - [ ] T056 [US1] Implement `src/features/orders/services/place.ts` (`placeOrder`, using `bill`, `expectedAt`, `PaymentProvider.confirmUpi` and `Notifier` in one transaction, with `place_key` idempotency) and `getCartView` in `src/features/orders/queries.ts` to pass T044, plus `placeOrderAction` (it rewrites the cart cookie on `cart_changed`, clears it on success, and redirects to `/orders/[id]`)
 - [ ] T057 [P] [US1] Create the cart components in `src/features/cart/components/`:
@@ -378,11 +382,11 @@ reason; the day view counts both.
 - [ ] T064 [US2] Implement `src/features/orders/services/partner.ts` (`acceptOrder`, `rejectOrder`, `markPreparing`, `markReady` over `applyTransition`, scoped to `actor.kitchenId`) to pass T061, plus `src/features/orders/actions/partner.ts`
 - [ ] T065 [US2] Implement `listPartnerOrders`, `getPartnerOrder`, `getPartnerDay` and `getNewOrderFeed` in `src/features/orders/partner-queries.ts` (`server-only`) to pass T062
 - [ ] T066 [P] [US2] Create the partner order components in `src/features/orders/components/`:
-  - `partner-order-card.tsx` (number, time placed, dishes and quantities, item total, payment label, display name or "Customer", rider note; Placed highlighted);
+  - `partner-order-card.tsx` (number, time placed, status badge with the time of the current status, dishes and quantities, item total, payment label, display name or "Customer", rider note; Placed highlighted; a cancelled order shows who cancelled it, customer or admin, with the reason);
   - `time-left.tsx` (`'use client'`; counts down from the server's deadline, and never shows a negative);
   - `reject-form.tsx` (the 4 reasons as large choices; a note field required for "other");
   - `partner-actions.tsx` (Accept / Reject / Preparing / Ready per status, with `order_moved_on` shown alongside the current status).
-- [ ] T067 [US2] Create `src/app/(partner)/partner/(protected)/orders/page.tsx` (polls; empty state "No orders right now") and `src/app/(partner)/partner/(protected)/orders/[id]/page.tsx` (polls; not found for another kitchen's order; marks the order acknowledged for the alert)
+- [ ] T067 [US2] Create `src/app/(partner)/partner/(protected)/orders/page.tsx` (polls with `<UpdatedAt />`; empty state "No orders right now") and `src/app/(partner)/partner/(protected)/orders/[id]/page.tsx` (polls with `<UpdatedAt />`; a cancelled order shows who cancelled it and no actions; not found for another kitchen's order; marks the order acknowledged for the alert)
 - [ ] T068 [US2] Implement `src/app/(partner)/partner/orders/new/route.ts` to pass its part of T062, and `src/features/orders/components/new-order-alert.tsx` (`'use client'`; research R10):
   - it polls the feed with `usePolling` every 10 s;
   - it shows the "Tap to turn on order sounds" button until unlocked (unlock remembered in `sessionStorage` inside try/catch);
@@ -435,7 +439,7 @@ cancel another order with a reason, and fail to deactivate the agent holding `re
   - `assign-agent-form.tsx` (a select of active agents, each with "{n} undelivered"; Assign or Reassign);
   - `admin-cancel-form.tsx` (the five reasons, with the note required for "other");
   - `order-history.tsx` (every event with actor role, phone and time; reasons and notes).
-- [ ] T080 [US3] Create `src/app/(admin)/admin/(protected)/orders/page.tsx` (board; polls; `?no=` redirects to the order or shows "not found"; links the five groups) and `src/app/(admin)/admin/(protected)/orders/[id]/page.tsx` (polls; full detail, history, assign and cancel forms, voice-note player); change `src/app/(admin)/admin/(protected)/page.tsx` to redirect to `/admin/orders`, and add "Orders" first in the admin navigation
+- [ ] T080 [US3] Create `src/app/(admin)/admin/(protected)/orders/page.tsx` (board; polls with `<UpdatedAt />`; `?no=` redirects to the order or shows "not found"; links the five groups) and `src/app/(admin)/admin/(protected)/orders/[id]/page.tsx` (polls with `<UpdatedAt />`; full detail, history, assign and cancel forms, voice-note player); change `src/app/(admin)/admin/(protected)/page.tsx` to redirect to `/admin/orders`, and add "Orders" first in the admin navigation
 - [ ] T081 [US3] Add location and preparation minutes to the admin kitchen form:
   - extend `src/features/kitchens/admin-schemas.ts` and the `createKitchen` and `updateKitchenProfile` services to pass T074;
   - add the pin picker (T052, reused) and a "Preparation minutes" number input (5–120) to `src/features/kitchens/components/admin/kitchen-profile-form.tsx` and the new-kitchen page.
@@ -477,11 +481,11 @@ and Delivered with the cash confirmation, and see the totals grow.
 
 - [ ] T088 [US4] Implement `src/features/orders/services/agent.ts` (`markPickedUp`, `markDelivered` over `applyTransition`) to pass T084, plus `src/features/orders/actions/agent.ts`
 - [ ] T089 [US4] Implement `listAgentOrders`, `getAgentToday` and `getAgentOrder` in `src/features/orders/agent-queries.ts` (`server-only`) to pass T085, and `src/shared/maps/open-in-maps.ts` to pass T086
-- [ ] T090 [P] [US4] Create `src/shared/audio/voice-note-player.tsx` (an `<audio controls preload="none">` pointing at `/voice-notes/[id]`, with a translated label) and the agent components in `src/features/orders/components/`:
-  - `agent-order-card.tsx` (number, kitchen name and landmark, delivery landmark, status badge, amount to collect for COD);
+- [ ] T090 [P] [US4] Create the agent components in `src/features/orders/components/` (reusing `voice-note-player` from T055):
+  - `agent-order-card.tsx` (number, kitchen name and landmark, delivery landmark, status badge with the time of the current status, amount to collect for COD);
   - `agent-order-detail.tsx` (kitchen and customer blocks with call buttons, items, the address with house, street, landmark and label, the rider note, the voice-note player, two open-in-maps links, payment and amount);
   - `deliver-form.tsx` (for COD, a confirmation step "Collected ₹{amount} in cash").
-- [ ] T091 [US4] Replace `src/app/(agent)/agent/(protected)/page.tsx` with today's count and cash, plus assigned orders (polls), keeping "No deliveries yet" as the empty state (FR-039). Create `src/app/(agent)/agent/(protected)/orders/[id]/page.tsx` (polls; "Picked up" only when Ready, otherwise "Kitchen is still preparing"; reassigned or cancelled screens with no actions; not found for never-assigned orders).
+- [ ] T091 [US4] Replace `src/app/(agent)/agent/(protected)/page.tsx` with today's count and cash, plus assigned orders (polls with `<UpdatedAt />`), keeping "No deliveries yet" as the empty state (FR-039). Create `src/app/(agent)/agent/(protected)/orders/[id]/page.tsx` (polls with `<UpdatedAt />`; "Picked up" only when Ready, otherwise "Kitchen is still preparing"; reassigned or cancelled screens with no actions; not found for never-assigned orders).
 - [ ] T092 [US4] Add the US4 message keys (`agentHome.*`, `agentOrder.*`, `openInMaps.*`) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
 
 **Checkpoint**: US4 works on its own. T084–T087 pass. With US1–US4 the demo milestone runs end to end. Commit with task ids.
@@ -549,7 +553,7 @@ newest first, with the demo label; switching to Kannada changes the entry text.
 - [ ] T103 [US6] Implement `listMessages(recipient)` in `src/features/notifications/queries.ts` (`server-only`) to pass T101
 - [ ] T104 [P] [US6] Create `src/features/notifications/components/message-list.tsx`: each entry renders `notifications.<kind>` with its params (amount through `formatPrice`, reason through `orderReason.*`, the note as entered, kitchen name through `pickLocalized`), the time through `formatTime`, a link to the order on the viewer's surface, the demo label, and an empty state
 - [ ] T105 [US6] Create `src/app/(customer)/messages/page.tsx`, `src/app/(partner)/partner/(protected)/messages/page.tsx` and `src/app/(agent)/agent/(protected)/messages/page.tsx`, and add "Messages" to each surface's navigation
-- [ ] T106 [US6] Add the US6 message keys (`messages.*` page copy) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
+- [ ] T106 [US6] Add the US6 message keys (`messageLog.*` page copy) to `en.json` and `kn.json`, and list the drafted Kannada in `machine-drafted.json`
 
 **Checkpoint**: US6 works on its own. T101–T102 pass. Commit with task ids.
 
@@ -611,7 +615,7 @@ orders, tap Reorder, and land on `/cart` with its available dishes at current pr
   - the partner marks Preparing and Ready;
   - the agent picks up and delivers, confirming cash;
   - the customer's open order page reaches "Delivered" without a reload.
-  Assert every cross-role change appears within 15 s, and that the whole run stays under 5 minutes (SC-002, SC-003).
+  Assert every cross-role change appears within 15 s, that the same grand total is shown on the customer order page, the partner order, the admin order view and the agent order (SC-005), and that the whole run stays under 5 minutes (SC-002, SC-003).
 - [ ] T114 [P] Extend `src/features/input-validation.int.test.ts` with malformed ids and out-of-range values for every new service (cart, addresses, place, partner, admin, agent, reorder), each returning `invalid`, and add malformed query cases for the geo and voice-note route handlers
 - [ ] T115 [P] Update `README.md`:
   - add Leaflet (maps) to the "one sanctioned tool per concern" table;
@@ -624,7 +628,7 @@ orders, tap Reorder, and land on `/cart` with its available dishes at current pr
   - `grep` `src/` for hard-coded user-facing text in `aria-label`, `alt`, `placeholder` and `title` (including map marker labels and the recorder);
   - confirm statuses, reasons and message entries change language with the switch;
   - confirm `machine-drafted.json` lists every agent-drafted Kannada key.
-- [ ] T118 Run a 360 px review of every new customer, partner and agent screen in Playwright device mode: no horizontal scroll (`document.documentElement.scrollWidth <= 360`), touch targets ≥ 48 px, one primary action per screen. Check the four-tap path from home to a placed COD order (SC-001). Fix what fails in the relevant component files.
+- [ ] T118 Run a 360 px review of every new customer, partner and agent screen in Playwright device mode: no horizontal scroll (`document.documentElement.scrollWidth <= 360`), touch targets ≥ 48 px, one primary action per screen. Check the four-tap path from home to a placed COD order (SC-001). Time adding a new address by hand (pin, house details, landmark, label) at 360 px and record the result against the 90 s target (SC-010). Fix what fails in the relevant component files.
 - [ ] T119 Clean up: remove dead code, commented-out code and debug logging. Confirm every `catch` in the new `actions` files logs through `src/shared/log.ts` with the action name, surface and subject id, and that no client component imports a `server-only` module.
 - [ ] T120 Run the full gate (`npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run test:e2e`) and walk through the quickstart demo walkthrough (steps 0–14) and further scenarios 1–12 in `specs/002-ordering/quickstart.md`. Record the results, and any scenario not run with the reason.
 
@@ -646,7 +650,7 @@ orders, tap Reorder, and land on `/cart` with its available dishes at current pr
 - **US1 (Phase 3)**: needs Foundational only.
 - **US2 (Phase 4)**: needs Foundational only. Its e2e places a second order, so it needs US1's cart and checkout for that step.
 - **US3 (Phase 5)**: needs Foundational; T081 reuses the pin picker from US1 (T052).
-- **US4 (Phase 6)**: needs Foundational; T090 reuses the voice-note route from US1 (T050).
+- **US4 (Phase 6)**: needs Foundational; T090 reuses the voice-note route (T050) and player (T055) from US1.
 - **US5 (Phase 7)**: needs US1 (order page) and, for its e2e, US2's partner actions.
 - **US6 (Phase 8)**: needs Foundational (messages are written by `applyTransition`).
 - **US7 (Phase 9)**: needs Foundational; its e2e uses US2's partner screen.
