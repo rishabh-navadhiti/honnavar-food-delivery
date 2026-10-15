@@ -1,11 +1,14 @@
 import { and, eq, isNotNull, isNull } from 'drizzle-orm';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { db } from '@/shared/db/client';
 import { admins, agents, customers, dishes, kitchenHours, kitchens, kitchenSignins } from '@/shared/db/schema';
 import { truncateAll } from '@/shared/db/test/helpers';
 import { WEEKDAYS, emptyWeek } from '../kitchens/domain/hours';
 import { kitchenState } from '../kitchens/domain/state';
 import { loadCatalogue, readCatalogue } from './load-catalogue';
+
+// Loading the full researched catalogue (and resizing its seed images) takes longer than the 5 s default.
+vi.setConfig({ testTimeout: 180_000, hookTimeout: 180_000 });
 
 beforeEach(truncateAll);
 

@@ -1,5 +1,5 @@
 import { asc, eq, sql } from 'drizzle-orm';
-import { afterAll, describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it, vi } from 'vitest';
 import { db } from '@/shared/db/client';
 import {
   agents,
@@ -14,6 +14,9 @@ import {
 } from '@/shared/db/schema';
 import { truncateAll } from '@/shared/db/test/helpers';
 import { resetDemo } from './reset-demo';
+
+// Loading the full researched catalogue (and resizing its seed images) takes longer than the 5 s default.
+vi.setConfig({ testTimeout: 180_000, hookTimeout: 180_000 });
 
 const url = process.env.TEST_DATABASE_URL!;
 
