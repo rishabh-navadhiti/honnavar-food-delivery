@@ -15,6 +15,30 @@ order is kept." (full description in the `/speckit-specify` request for 003)
 `specs/001-platform-core/spec.md` and `specs/002-ordering/spec.md`, whose behaviour this feature
 keeps unchanged. Layout problems come from the owner's first walkthrough of 002.
 
+## Clarifications
+
+### Session 2026-10-16
+
+- Q: What goes in the customer's bottom navigation, and where do the cart and the ongoing order
+  live? → A: Four tabs: Home, Orders (shows the ongoing order's status), Cart (count and running
+  ₹ total), Account (with Messages and Addresses inside). The Cart tab shows the running total on
+  the kitchen page too, so no in-page cart bar is needed.
+- Q: What happens when a customer chooses a search suggestion? → A: A kitchen suggestion opens
+  that kitchen; a dish suggestion opens its kitchen scrolled to that dish.
+- Q: On the cart screen, how does "Place order" stay reachable with only one bottom bar? → A: On
+  the cart the bottom navigation is replaced by a fixed "Place order · ₹total" bar; a back control
+  returns to browsing.
+- Q: When an element moves, may an existing end-to-end test change how it finds that element? → A:
+  Yes, only how a test finds an element; what it checks stays the same, and every such edit is
+  listed in the plan and the commit.
+- Q: How are the layout rules verified? → A: Both: new automated checks on the six reference
+  screens at 360 and 390 px in both languages plus the board at 1280 px, and a screenshot set for
+  review. The capture is repeatable and kept in the repository with the tests, because the planning
+  session uses the same set for its reviews.
+- Owner notes: the text app name as wordmark is fine for now; each direction may propose a simple
+  mark beside it (a later feature needs an app icon), not required. Every direction shows at least
+  two of its six mockup screens in Kannada, because the type pairing is the biggest risk.
+
 ## User Scenarios & Testing *(mandatory)*
 
 This feature changes how every screen looks and is arranged, not what any screen does. Each story
@@ -43,19 +67,21 @@ most one, and that search suggests names while typing.
    screen loads, **Then** there is one slim top bar (brand and language) and one bottom
    navigation bar, and no other fixed bar.
 2. **Given** a customer with items in the cart, **When** they browse home or a kitchen page,
-   **Then** the cart's item count and total are visible from the bottom navigation, and one tap
-   opens the cart.
+   **Then** the Cart tab shows the item count and running total (updated as dishes are added),
+   there is no separate in-page cart bar, and one tap opens the cart.
 3. **Given** a signed-in customer with an ongoing order, **When** they are on any customer screen
-   other than that order's page, **Then** the order's current status is reachable in one tap from
-   the bottom navigation, without an extra stacked strip.
+   other than that order's page, **Then** the Orders tab shows the order's current status and one
+   tap opens that order, without an extra stacked strip.
 4. **Given** the home screen, **When** the customer types at least two letters of a kitchen or
-   dish name (in either language), **Then** matching names are suggested below the box while
-   typing, and choosing one behaves as described in FR-012.
+   dish name (in either language), **Then** matching kitchen and dish names are suggested below
+   the box while typing; choosing a kitchen opens it, and choosing a dish opens its kitchen
+   scrolled to that dish.
 5. **Given** a kitchen page, **When** it opens, **Then** the kitchen name, its badges (type, pure
    veg, open or closed) and the delivery estimate sit together in a compact header, and the
    address and opening hours are collapsed until the customer expands them.
 6. **Given** the cart, **When** it opens, **Then** lines, bill, address and payment read as
-   distinct, clearly ordered sections with the place-order action always reachable.
+   distinct, clearly ordered sections; the bottom navigation is replaced by a fixed
+   "Place order · ₹total" bar, and a back control returns to browsing.
 7. **Given** an order page, **When** it opens, **Then** status, expected time, timeline and map
    are arranged so the current status is the first thing read.
 8. **Given** a screen with nothing to show (no kitchens match, empty cart, no orders, no
@@ -194,8 +220,12 @@ board screens; force an empty list and a not-found order on each surface.
   design.
 - 360 px with the phone's text size raised one step: content reflows; nothing is cut off
   horizontally.
-- Cart and ongoing order at the same time: both are reachable from the bottom navigation, with
-  neither hiding the other.
+- Cart and ongoing order at the same time: the Cart tab shows the cart and the Orders tab shows
+  the ongoing order, side by side, neither hiding the other.
+- Long totals or Kannada tab labels at 360 px: the four tabs keep their 48 px targets; the Cart
+  tab's total stays legible (labels may shorten, the total does not disappear).
+- Empty cart screen: there is nothing to place, so it shows the empty state with the normal bottom
+  navigation instead of the place-order bar.
 - The ongoing order finishes while the customer is browsing: the bottom navigation stops showing
   it on the next refresh without the layout jumping.
 - An order page for the ongoing order itself does not also advertise that order in the navigation.
@@ -220,10 +250,9 @@ board screens; force an empty list and a not-found order on each surface.
 - **FR-001**: Every behaviour specified in 001 and 002 MUST stay as specified: same routes, same
   data shown and accepted, same validation, same permissions, same states and transitions.
 - **FR-002**: The existing unit, integration and end-to-end tests MUST pass at the end of this
-  feature. [NEEDS CLARIFICATION: may an end-to-end test's way of finding an element change when the
-  element moves (for example the cart link moving from the header into a bottom navigation), as
-  long as what the test checks is unchanged and every such edit is listed, or must the existing
-  test files stay byte-for-byte unchanged?]
+  feature. When an element moves (for example the cart link moving from the header into the bottom
+  navigation), an end-to-end test MAY change only how it finds that element; what it checks MUST
+  stay the same, and every such edit MUST be listed in the plan and in the commit that makes it.
 - **FR-003**: Interface text keys MAY be added; existing keys MUST NOT be renamed. A key the new
   design no longer uses MAY be removed only from both languages together.
 - **FR-004**: A customer MUST still be able to go from the home screen to a placed cash-on-delivery
@@ -258,17 +287,18 @@ board screens; force an empty list and a not-found order on each surface.
 
 - **FR-012**: The home search MUST suggest matching kitchen and dish names, in either language,
   while the customer types (from the second character), using the same matching rules as the
-  existing search. [NEEDS CLARIFICATION: what does choosing a suggestion do: (a) a kitchen
-  suggestion opens that kitchen and a dish suggestion opens its kitchen at that dish; (b) any
-  suggestion fills the box and runs the existing search; (c) kitchens only, opening the kitchen?]
-  The existing search results, clear control and URL-kept query and filters MUST keep working.
+  existing search. Choosing a kitchen suggestion MUST open that kitchen; choosing a dish
+  suggestion MUST open its kitchen scrolled to that dish. Submitting the box without choosing a
+  suggestion runs the existing search. The existing search results, clear control and URL-kept
+  query and filters MUST keep working.
 - **FR-013**: Customer screens MUST have one slim top bar (brand, language switch) and one bottom
-  navigation bar; no other bar may be fixed to the screen at the same time. The cart (item count
-  and total) and the ongoing order (current status) MUST be resolved into the bottom navigation.
-  [NEEDS CLARIFICATION: bottom navigation layout: (a) four tabs: Home, Orders (shows the ongoing
-  order's status), Cart (count and total), Account (with Messages and Addresses inside); (b) five
-  tabs adding Messages; (c) four tabs plus one contextual row attached to the navigation that shows
-  the cart on browsing screens and the ongoing order elsewhere?]
+  navigation bar with four tabs: Home; Orders, which shows the ongoing order's current status when
+  there is one; Cart, which shows the item count and running ₹ total; and Account, which holds
+  Messages and Addresses. No other bar may be fixed to the screen at the same time; the in-page
+  cart bar and the ongoing-order strip are replaced by these tabs, including on the kitchen page.
+- **FR-013a**: On the cart screen the bottom navigation MUST be replaced by a fixed
+  "Place order · ₹total" bar, with a back control that returns to browsing; this is the only
+  screen where the bottom navigation is replaced.
 - **FR-014**: The kitchen page header MUST place the kitchen name, its badges and the delivery
   estimate together in a compact block; address and opening hours MUST be collapsible and
   collapsed by default; call and open/closed information stay visible.
@@ -310,14 +340,27 @@ board screens; force an empty list and a not-found order on each surface.
   a short message and one next step where one exists; error and not-found pages MUST use the
   surface's theme and navigation and offer a way back. No permanent spinner or blank screen.
 
+**Verification**
+
+- **FR-027**: New automated checks MUST cover the layout rules on the six reference screens at 360
+  and 390 px in both languages, and on the admin board at 1280 px: no sideways scrolling, tap
+  targets of at least 48 by 48 px, at most one fixed bar at the top and one at the bottom, and the
+  four-tap cash order path. They run with the existing test suites on every gate.
+- **FR-028**: A repeatable screenshot capture MUST produce the review set (every customer, partner
+  and agent screen at 360 and 390 px, admin screens at 1280 px, in both languages, from a fresh
+  demo reset) and MUST be kept in the repository with the tests, so the owner and the planning
+  session review the same set.
+
 **Design exploration (before planning)**
 
 - **FR-025**: Before planning, two or three distinct design directions MUST be produced as static
   mockups of six screens (home, kitchen, cart, order page, partner orders, admin board), using real
   seeded kitchens and dishes, with phone screens at 390 px and the admin board at 1280 px, each
   direction with a one-paragraph rationale covering palette, type pairing, density and how it
-  solves the known layout problems. Each direction MUST show at least the kitchen page in Kannada
-  as well as English.
+  solves the known layout problems. Each direction MUST show at least two of its six screens in
+  Kannada, because the Kannada and Latin type pairing is the feature's biggest risk. Each direction
+  uses the text app name as a wordmark and MAY propose a simple mark beside it (a later feature
+  needs an app icon); a mark is not required.
 - **FR-026**: The owner picks one direction (possibly with edits); planning MUST start only after
   that choice, and the chosen direction becomes the reference for every screen in this feature.
 
