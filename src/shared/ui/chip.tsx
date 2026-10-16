@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 /**
- * A filter or choice chip (003): a 48 px tap box around a 38 px pill. Pressed chips are ink-filled,
- * and say so with aria-pressed, so the state is never colour alone.
+ * A filter chip (003): a 48 px tap box around a 38 px pill. The active chip is ink-filled and says so
+ * with aria-current and a screen-reader word, so the state is never colour alone.
  */
 function face(pressed: boolean): string {
   return [
@@ -14,23 +14,6 @@ function face(pressed: boolean): string {
 }
 
 const box = 'inline-flex min-h-touch shrink-0 items-center';
-
-export function Chip({
-  pressed = false,
-  icon,
-  children,
-  className = '',
-  ...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { pressed?: boolean; icon?: ReactNode }) {
-  return (
-    <button type="button" aria-pressed={pressed} className={`${box} ${className}`} {...props}>
-      <span className={face(pressed)}>
-        {icon}
-        {children}
-      </span>
-    </button>
-  );
-}
 
 /** A chip that navigates (filters kept in the URL); `aria-current` marks the active one. */
 export function ChipLink({

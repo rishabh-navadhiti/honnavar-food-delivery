@@ -25,4 +25,3 @@ export function StatusChip({ status }: { status: OrderStatus }) {
   );
 }
 
-export const statusIcon = (status: OrderStatus): LucideIcon => look[status].icon;

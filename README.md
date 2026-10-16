@@ -65,7 +65,8 @@ All are validated at startup, and the app refuses to start with a missing or mal
 | `npm run typecheck` | Generates Next.js route types, then runs `tsc --noEmit` (strict) |
 | `npm test` | Vitest: unit tests, plus integration tests against `TEST_DATABASE_URL` |
 | `npm run test:unit` / `test:int` | One Vitest project only |
-| `npm run test:e2e` | Playwright: builds, resets `DATABASE_URL`, then runs the mobile (360 px) and desktop specs on its own server at port 3100, with the stand-in geocoder and no map tiles. macOS/Linux shell syntax. |
+| `npm run test:e2e` | Playwright: builds, resets `DATABASE_URL`, then runs the mobile (360 px), desktop and `layout` (003 visual checks: layout rules in both languages, every route, states) specs on its own server at port 3100, with the stand-in geocoder and no map tiles. macOS/Linux shell syntax. |
+| `npm run screens` | Review screenshots of every screen (customer, partner and agent at 360 and 390 px, admin at 1280 px, both languages) into `screens/` with a contact sheet at `screens/index.html`. Uses the e2e server on port 3100 and **resets** `DATABASE_URL`. Not part of the gate. |
 | `npm run db:generate` | Generates a new versioned SQL migration from the Drizzle schema |
 | `npm run demo:reset` | One step back to the known demo state |
 | `npm run format` | Prettier |

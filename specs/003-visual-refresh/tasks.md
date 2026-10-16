@@ -494,15 +494,15 @@ Force an empty list and a not-found order on each surface (spec US6, SC-009).
 
 **Purpose**: Sweeps, documentation, the screenshot review and the full gate.
 
-- [ ] T089 [P] Update `README.md`:
+- [X] T089 [P] Update `README.md`:
   - icons (lucide-react) and the Anek Kannada font in the tool table;
   - `npm run screens` and where it writes;
   - the `layout` Playwright project.
-- [ ] T090 [P] Run a parity sweep: `grep` `src/` for hard-coded user-facing text in JSX text, `aria-label`, `alt`, `placeholder` and `title` (icon buttons, illustrations, the tab bar, suggestions, the pill); confirm every new key exists in both languages and every agent-drafted Kannada key is listed in `machine-drafted.json`
-- [ ] T091 [P] Remove dead code: components and CSS no longer used (old card markup, `layout="side"` branch, unused `RouteLoading` variants), commented-out code and debug logging. Confirm no client component imports a `server-only` module and that `src/app/globals.css` has no leftover Noto references
-- [ ] T092 Check that no existing e2e file changed beyond E1, E2 and listed locator edits: `git diff main -- e2e/ ':!e2e/visual-*' ':!e2e/layout.ts' ':!e2e/screens'`. Record the list in the final report
-- [ ] T093 Run `npm run screens` and review every screen against `design/a-coast/` and the owner's edits (quickstart "Review walkthrough" steps 1–13). Fix what differs and record anything left with a reason
-- [ ] T094 Run the full gate (`npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run test:e2e`) and record the counts (existing 350 unit and integration plus new; existing 31 e2e plus new)
+- [X] T090 [P] Run a parity sweep: `grep` `src/` for hard-coded user-facing text in JSX text, `aria-label`, `alt`, `placeholder` and `title` (icon buttons, illustrations, the tab bar, suggestions, the pill); confirm every new key exists in both languages and every agent-drafted Kannada key is listed in `machine-drafted.json`
+- [X] T091 [P] Remove dead code: components and CSS no longer used (old card markup, `layout="side"` branch, unused `RouteLoading` variants), commented-out code and debug logging. Confirm no client component imports a `server-only` module and that `src/app/globals.css` has no leftover Noto references
+- [X] T092 Check that no existing e2e file changed beyond E1, E2 and listed locator edits: `git diff main -- e2e/ ':!e2e/visual-*' ':!e2e/layout.ts' ':!e2e/screens'`. Record the list in the final report
+- [ ] T093 *(Deferred 2026-10-16: the owner asked to skip the screenshot review for now; run it before sign-off.)* Run `npm run screens` and review every screen against `design/a-coast/` and the owner's edits (quickstart "Review walkthrough" steps 1–13). Fix what differs and record anything left with a reason
+- [X] T094 Run the full gate (`npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run test:e2e`) and record the counts (existing 350 unit and integration plus new; existing 31 e2e plus new)
 
 ---
 
