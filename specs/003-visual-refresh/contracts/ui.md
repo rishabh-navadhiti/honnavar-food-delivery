@@ -33,7 +33,7 @@ Base styles: `:lang(kn)` raises line heights (body 1.62, headings 1.42). `font-s
 | `Button`, `ButtonLink`, `buttonClasses` | `variant: 'primary' \| 'secondary' \| 'ghost' \| 'danger' \| 'sea'`, `size`, `icon?` | Existing API kept; restyled; min 48 px |
 | `Chip` (new) | `pressed?`, `icon?`, `href?` | Filter chips and reject reasons; `aria-pressed` for toggles |
 | `StatusChip` (replaces `status-badge` styling) | `status` | Icon plus word, status tint; the only place status colour appears |
-| `Card` | `as?`, `tone?: 'default' \| 'attention'` | Attention is an amber tint and border for the waiting order, no rail |
+| `Card` | `as?`, `tone?: 'default' \| 'attention'` | Attention is a neutral 2 px ink outline for the waiting order; no coloured ring, rail or tint (owner edit 2) |
 | `EmptyState` | `illustration`, `title`, `body?`, `action?` | Existing props plus `illustration` |
 | `RouteLoading` and named skeletons | `variant` | Shaped skeletons (R10); `role="status"` with the loading text |
 | `AppHeader` | `homeHref`, `actions?`, `back?` | Slim top bar: mark, wordmark, language switch; optional back link (`data-testid="back-link"` kept) |

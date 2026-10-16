@@ -228,7 +228,8 @@ motion.
   (waiting) or age, item count, **item total** (as today), payment label, customer display name,
   landmark and rider note (as today), dishes, then the one next action. The waiting order keeps
   its countdown as words; the countdown bar from the mockup stays only as a time-left indicator
-  inside the card (functional, not decorative), with the time also in text.
+  inside the card (functional, not decorative), with the time also in text. The waiting card is
+  marked by a neutral ink outline and its position first, not by an amber ring, rail or tint.
 - **Reject step**: a bottom sheet with reasons as a 2×2 grid of 48 px choices, the optional note,
   and Back and Reject side by side; same form, fields and validation as today.
 - **Agent**: today's deliveries and cash as two figures; order cards reuse the partner card
@@ -237,7 +238,8 @@ motion.
 - **Admin**: navigation moves from the side column to a top bar so the board gets the full width;
   five equal columns at ≥ 1280 px with group icon, word and count; cards show number, status chip
   and minutes in status, kitchen, landmark, grand total, payment, and agent or "Needs agent" with
-  assign/reassign on the card. No coloured column rules or card rails (owner edit 2). Between 1024
+  assign/reassign on the card. No coloured column rules, card rails or column tints (owner edit
+  2); "Needs agent" is marked by its icon, its name and its count. Between 1024
   and 1280 px the board keeps a 200 px column minimum and scrolls sideways (spec edge case).
 
 **Rationale**: Mirrors the reference screens with the owner edits; no data or permission changes.
@@ -245,8 +247,8 @@ motion.
 ## R12. Kitchen rows on home and search (owner edit 1)
 
 **Decision**: Kitchens are list rows: a 96 px square photo (Coast `radius-md`) on the left; name,
-type badge, open state with closing or opening time, and delivery estimate on the right; landmark
-on one line where it fits. Row height is fixed at the photo height plus padding so three rows fit
+type badge (plus pure veg where it applies), open state, and delivery estimate on the right, as
+the owner listed; the landmark stays on the kitchen page, not the row. Row height is fixed at the photo height plus padding so three rows fit
 at 390×844 and four at 430×932 below the top bar, search box and filters (SC-007a), in both
 languages. Closed kitchens keep their place and greyed photo with word and icon. The
 `kitchen-card` test id and `data-kitchen-id` stay on the row.

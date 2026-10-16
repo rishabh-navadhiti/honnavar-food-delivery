@@ -95,6 +95,7 @@ a { color: inherit; text-decoration: none; }
   isolation: isolate;
 }
 .phone.w360 { --w: 360px; height: 780px; }
+.phone.w430 { --w: 430px; height: 932px; }
 
 /* --------------------------------------------------------------------------
    App chrome
@@ -201,6 +202,44 @@ a { color: inherit; text-decoration: none; }
   content: ""; position: absolute; top: 3px; right: 9px; width: 8px; height: 8px;
   border-radius: 50%; background: var(--st-preparing); box-shadow: 0 0 0 2px var(--st-preparing-bg);
 }
+
+/* Stated tab bar (customer, owner edit 4): every stateful tab reads word + state,
+   "Orders · Preparing", "Cart · ₹620", set as two lines (word above, state below).
+   Taller bar (72 px) so Kannada keeps its line height; each tab stays ≥ 48 px wide. */
+.phone.tabs-stated { --tabbar-h: var(--tabbar-stated-h); }
+.tabbar.stated { height: var(--tabbar-stated-h); }
+.tabbar.stated .tab { justify-content: flex-start; padding-top: 5px; gap: 1px; }
+.tabbar.stated .tab .pill { height: 26px; flex: none; }
+.tabbar.stated .tab .lbl { display: flex; flex-direction: column; align-items: center; overflow: visible; line-height: 1.32; }
+.tabbar.stated .tab .lbl > span { display: block; max-width: 100%; white-space: nowrap; overflow: visible; line-height: 1.32; }
+.tabbar.stated .tab .lbl .st { font-weight: 760; }
+.tabbar.stated .tab:lang(kn) .lbl > span { line-height: 1.5; } /* vowel signs and ottaksharas need the room */
+.tabbar.stated .tab.cart-full .lbl { color: var(--ink-2); font-weight: 600; font-size: var(--fs-caption); font-stretch: var(--wdth-dense); }
+.tabbar.stated .tab.cart-full .lbl .st { color: var(--tile-700); font-size: 14px; font-stretch: var(--wdth-head); }
+.tabbar.stated .tab.ongoing .lbl { color: var(--ink-2); font-weight: 600; }
+.tabbar.stated .tab.ongoing .lbl .st { color: var(--st-preparing); }
+.tabbar.stated .tab.active .lbl { color: var(--tile-700); font-weight: 720; }
+
+/* --------------------------------------------------------------------------
+   Colour discipline (owner edit 2026-10-16)
+   No decorative colour rules anywhere in Coast: no top rules on columns or
+   cards, no coloured left rails, no thin accent bars above elements.
+   Group and status colour lives only in the status chip and the group icon,
+   always beside its word. The shared pieces below are the only places it may go.
+   -------------------------------------------------------------------------- */
+/* Group header (board columns): icon tile in the group colour + the group word + count */
+.group-head { display: flex; align-items: center; gap: 8px; padding: 12px 12px 10px 14px; flex: none; }
+.group-ic {
+  width: 28px; height: 28px; border-radius: 9px; flex: none; display: grid; place-items: center;
+  background: var(--surface); color: var(--acc, var(--ink-2)); box-shadow: var(--e-1);
+}
+.group-ic .lucide { width: 16px; height: 16px; stroke-width: 2.3; }
+/* A card that needs attention first (waiting order): neutral emphasis, no colour */
+.card.attention { box-shadow: 0 0 0 2px var(--ink), var(--e-2); }
+/* Countdown: functional, not decorative. Fill length = share of the answer
+   window still left; it shrinks to zero and always sits under the words. */
+.countdown { height: 6px; border-radius: 3px; background: var(--warning-bg); box-shadow: inset 0 0 0 1px #efcf8f; overflow: hidden; }
+.countdown > span { display: block; height: 100%; width: var(--left, 100%); background: var(--warning); border-radius: 3px; }
 
 /* --------------------------------------------------------------------------
    Buttons

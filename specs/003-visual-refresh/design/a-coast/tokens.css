@@ -78,7 +78,9 @@
   --danger:    #b42318;  --danger-bg:   #fde8e6;
   --success:   #18794e;  --success-bg:  #e3f4ea;
 
-  /* Order statuses: text colour on its own tint ≥ 4.5:1 */
+  /* Order statuses: text colour on its own tint ≥ 4.5:1.
+     Status and group colour is used ONLY in the status chip (.status) and the
+     group / status icon, always next to its word. Never as a rule, rail or bar. */
   --st-placed:    #9a5507;  --st-placed-bg:    #fff3d9;   /* bell-ring  */
   --st-accepted:  #1e5bb0;  --st-accepted-bg:  #e6effa;   /* circle-check */
   --st-preparing: #b4430f;  --st-preparing-bg: #fdebdd;   /* chef-hat   */
@@ -119,6 +121,7 @@
   --tap: 48px;           /* minimum tap target */
   --topbar-h: 56px;
   --tabbar-h: 66px;
+  --tabbar-stated-h: 72px; /* customer tab bar with two-line "word / state" labels (owner edit 4) */
   --placebar-h: 76px;
 
   /* ---- Motion (all < 200 ms; skipped under reduced motion) --------------- */
