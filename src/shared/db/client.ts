@@ -7,7 +7,11 @@ import * as schema from './schema';
 
 const globalForDb = globalThis as unknown as { hfdSql?: postgres.Sql };
 
-const sqlClient = globalForDb.hfdSql ?? postgres(env.DATABASE_URL, { max: 10, onnotice: () => {} });
+/** Neon's pooled endpoints (host contains "-pooler") run PgBouncer in transaction mode, which cannot
+ * hold named prepared statements across requests; postgres.js must not prepare there. */
+const pooled = /-pooler\./.test(env.DATABASE_URL);
+const sqlClient =
+  globalForDb.hfdSql ?? postgres(env.DATABASE_URL, { max: 10, prepare: !pooled, onnotice: () => {} });
 if (process.env.NODE_ENV !== 'production') globalForDb.hfdSql = sqlClient;
 
 export const db = drizzle(sqlClient, { schema });
