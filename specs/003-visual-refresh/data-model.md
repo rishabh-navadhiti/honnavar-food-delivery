@@ -22,7 +22,7 @@ Built by a pure function `tabBarState(input)` in `features/cart/tab-bar-state.ts
 | Output | Rule |
 |---|---|
 | `visible` | `false` only when `onCartPage` and `cart.count > 0` (the place-order bar replaces the tabs) |
-| `orders` | `{ href: '/orders/<id>', state: status }` when `ongoing` exists and `ongoing.id !== excludeOrderId`; otherwise `{ href: '/orders', state: null }` |
+| `orders` | `{ href: '/orders', state: status }` when `ongoing` exists and `ongoing.id !== excludeOrderId`; otherwise `{ href: '/orders', state: null }` (the tab always opens the list) |
 | `cart` | `{ count, itemTotal }` when `count > 0`; otherwise `null` (label "Cart" only) |
 | `active` | `current` |
 

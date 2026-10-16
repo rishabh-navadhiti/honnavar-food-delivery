@@ -50,8 +50,8 @@ pill (R9).
 
 **Testing**:
 - Vitest unchanged: 350 unit and integration tests stay green.
-- Playwright: the existing 31 e2e tests stay green. One assertion edit, E1, needs owner approval
-  (R15).
+- Playwright: the existing 31 e2e tests stay green. Assertion edits (R15): E1 approved; E2, which
+  follows from the Orders tab change, awaits the owner's answer.
 - A new `layout` project runs `e2e/visual-layout.spec.ts`: 360 and 390 px (430 for the kitchen
   count), en and kn, the board at 1280 (R13).
 - A separate `npm run screens` capture, not part of the gate (R14).
@@ -105,8 +105,8 @@ No open `NEEDS CLARIFICATION` items. Every decision requested for this plan is r
 
 ## Constitution Check
 
-*Gate before Phase 0, re-checked after Phase 1 design. Result: **PASS** both times. One test
-assertion edit (E1) is raised for the owner rather than made silently.*
+*Gate before Phase 0, re-checked after Phase 1 design. Result: **PASS** both times. Test assertion
+edits are raised for the owner rather than made silently: E1 approved, E2 awaiting an answer.*
 
 | Principle | How this plan complies | Pre | Post |
 |---|---|---|---|
@@ -127,8 +127,8 @@ assertion edit (E1) is raised for the owner rather than made silently.*
    values; new groups are added beside them (R1).
 2. The customer tab bar is rendered by each page, like today's dock, not by the layout, so cart and
    order state stay fresh on navigation (R5).
-3. With an ongoing order, the Orders tab opens that order; the order list is one tap further, from
-   the order page's back link (R5).
+3. The Orders tab always opens the orders list; the ongoing order is its first card with its
+   status, and its label reads "Orders · <status>" (R5, owner plan review).
 4. On the cart with items, the ongoing order is not shown (the place-order bar replaces the tabs);
    it shows again on any other screen (R6).
 5. Tab labels are two lines (word above, state below) in a fixed 72 px bar so states never shift
@@ -207,7 +207,7 @@ e2e/
 ├── visual-layout.spec.ts                 # FR-027 checks (R13)
 ├── layout.ts                             # helpers: sideways scroll, targets, fixed chrome, counts
 ├── screens/capture.spec.ts               # FR-028 capture (R14)
-└── ordering-ongoing-strip.spec.ts        # E1 only, if approved (R15)
+└── ordering-ongoing-strip.spec.ts        # E1 (approved) and E2 (if approved) only (R15)
 playwright.config.ts                      # new `layout` project
 playwright.screens.config.ts              # capture config (same web server)
 package.json                              # lucide-react; "screens" script
@@ -226,5 +226,6 @@ No constitution violations. Two items for the owner:
 
 | Item | Why | Simpler alternative rejected because |
 |---|---|---|
-| E1: change one existing e2e assertion (`ordering-ongoing-strip.spec.ts`, "strip above cart bar" → "both visible, not overlapping") | The assertion encodes the stacked layout this feature removes; FR-002 allows only locator changes, so this needs the owner's agreement | Keeping the old assertion would force the old stacked layout back, which contradicts FR-013 |
+| E2: follow the Orders tab to the list, then the first card (`ordering-ongoing-strip.spec.ts` lines 37–39) | Follows from the owner's plan-review edit; awaiting the owner's yes | Keeping the old assertion would make the tab open the order page, which the owner ruled out |
+| E1 (approved 2026-10-16): change one existing e2e assertion (`ordering-ongoing-strip.spec.ts`, "strip above cart bar" → "both visible, not overlapping") | The assertion encodes the stacked layout this feature removes; FR-002 allows only locator changes, so this needs the owner's agreement | Keeping the old assertion would force the old stacked layout back, which contradicts FR-013 |
 | A new route handler for suggestions (`/api/search/suggestions`) | Suggestions while typing need a small, abortable read; it calls the existing search function, so matching rules are unchanged | A server action is POST-only and less clean to abort. Sending every name to the client is heavier and goes stale on open state |

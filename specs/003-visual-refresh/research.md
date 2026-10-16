@@ -105,8 +105,9 @@ bar reads, per request, the cart view (count and item total, as the cart bar doe
 ongoing order (as the strip does today), and renders four fixed-position tabs:
 
 - **Home**.
-- **Orders**: with an ongoing order (and not on that order's page), the label reads
-  "Orders · <status>" and the link opens that order; otherwise it opens the order list.
+- **Orders**: always opens the orders list (`/orders`), whose first card is the ongoing order with
+  its status (the list already orders ongoing before past). With an ongoing order, and not on that
+  order's own page, the label reads "Orders · <status>".
 - **Cart**: with items, "Cart · ₹<item total>" and a count badge; otherwise "Cart".
 - **Account**: account, with Messages and Addresses reached from it.
 
@@ -247,8 +248,10 @@ motion.
 ## R12. Kitchen rows on home and search (owner edit 1)
 
 **Decision**: Kitchens are list rows: a 96 px square photo (Coast `radius-md`) on the left; name,
-type badge (plus pure veg where it applies), open state, and delivery estimate on the right, as
-the owner listed; the landmark stays on the kitchen page, not the row. Row height is fixed at the photo height plus padding so three rows fit
+landmark as a short secondary line under the name (one line, truncated with the full text kept
+for screen readers), type badge (plus pure veg where it applies), open state, and delivery
+estimate on the right (owner edit 1 and plan review). The row is drawn at a fixed height that
+includes the landmark line. Row height is fixed at the photo height plus padding so three rows fit
 at 390×844 and four at 430×932 below the top bar, search box and filters (SC-007a), in both
 languages. Closed kitchens keep their place and greyed photo with word and icon. The
 `kitchen-card` test id and `data-kitchen-id` stay on the row.
@@ -311,6 +314,10 @@ With that, one edit is expected:
 | # | File | Lines | Today | Proposed | Why |
 |---|---|---|---|---|---|
 | E1 | `e2e/ordering-ongoing-strip.spec.ts` | 25–29 | Asserts the ongoing strip sits **above** the cart bar | Asserts both are visible and do **not overlap** | The old assertion encodes the stacked layout this feature removes (spec FR-013); "both reachable, neither hiding the other" is the spec's edge case. This changes an assertion, not only a locator, so it needs the owner's agreement under FR-002 |
+
+| E2 | `e2e/ordering-ongoing-strip.spec.ts` | 37–39 | Clicking the ongoing strip opens `/orders/<id>` | Clicking the Orders tab's ongoing state opens `/orders`, whose first order card is that order with its status; clicking it opens `/orders/<id>`, where the state is not shown | Follows from the owner's plan-review edit (the Orders tab always opens the list). This changes an assertion, so it needs the owner's yes under FR-002 |
+
+E1 was approved by the owner on 2026-10-16. E2 is awaiting the owner's answer.
 
 Any further edit found during implementation is limited to how an element is found, listed in this
 table and in the commit that makes it.

@@ -45,12 +45,12 @@ listed in research R14. Not part of the gate.
 
 | # | Screen | Do | Expect |
 |---|---|---|---|
-| 1 | Home, 390 px | Open | One slim top bar, one tab bar; three kitchen rows visible (four at 430 px) |
+| 1 | Home, 390 px | Open | One slim top bar, one tab bar; three kitchen rows with landmark lines visible (four at 430 px) |
 | 2 | Home | Type "pr" | Kitchens and dishes suggested within a second; a dish opens its kitchen at that dish, tinted |
 | 3 | Kitchen | Open; tap "Address and hours" | Compact header with badges and estimate; details expand without moving the header |
 | 4 | Kitchen | Add two dishes | Cart tab reads "Cart · ₹…" with a count; no in-page cart bar |
 | 5 | Cart (signed in) | Open from the Cart tab | Place-order bar replaces the tabs; Place order → order page (four taps from home) |
-| 6 | Order page | Watch | Status first; Orders tab elsewhere reads "Orders · <status>" |
+| 6 | Order page, then home | Watch; go home; tap Orders | Status first; elsewhere the tab reads "Orders · <status>" and opens the list with this order first |
 | 7 | Partner orders, 390 px | First visit; tap the prompt; reload | Full prompt once, then the pill; three cards visible; card shows item total, name, landmark, rider note |
 | 8 | Partner | Reject the waiting order | Sheet with four reasons, note, Back and Reject, no scrolling at 390×844 |
 | 9 | Admin board, 1280 px | Open | Five columns, no sideways scroll; colour only in chips and group icons; assign on the card |

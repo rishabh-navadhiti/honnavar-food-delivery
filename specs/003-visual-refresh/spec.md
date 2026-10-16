@@ -45,6 +45,9 @@ keeps unchanged. Layout problems come from the owner's first walkthrough of 002.
   cards keep the customer's name, landmark and rider note; (4) tab labels show the word plus the
   state ("Orders · Preparing", "Cart · ₹620"); (5) partner amounts are the item total, as today.
   Anek Kannada for both scripts and the Coast mark are kept.
+- Plan review (2026-10-16): kitchen rows keep the landmark as a short secondary line under the
+  name; the Orders tab always opens the orders list, where the ongoing order is the first card
+  with its status, never the order page directly.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -77,8 +80,9 @@ most one, and that search suggests names while typing.
    **Then** the Cart tab shows the item count and running total (updated as dishes are added),
    there is no separate in-page cart bar, and one tap opens the cart.
 3. **Given** a signed-in customer with an ongoing order, **When** they are on any customer screen
-   other than that order's page, **Then** the Orders tab shows the order's current status and one
-   tap opens that order, without an extra stacked strip.
+   other than that order's page, **Then** the Orders tab shows the order's current status, and one
+   tap opens the orders list with that order as the first card showing its status, without an
+   extra stacked strip.
 4. **Given** the home screen, **When** the customer types at least two letters of a kitchen or
    dish name (in either language), **Then** matching kitchen and dish names are suggested below
    the box while typing; choosing a kitchen opens it, and choosing a dish opens its kitchen
@@ -300,7 +304,7 @@ board screens; force an empty list and a not-found order on each surface.
   query and filters MUST keep working.
 - **FR-013**: Customer screens MUST have one slim top bar (brand, language switch) and one bottom
   navigation bar with four tabs: Home; Orders, which shows the ongoing order's current status when
-  there is one; Cart, which shows the item count and running ₹ total; and Account, which holds
+  there is one and always opens the orders list (the ongoing order is its first card); Cart, which shows the item count and running ₹ total; and Account, which holds
   Messages and Addresses. A tab with a live state shows its word and the state together
   ("Orders · Preparing", "Cart · ₹620"); the word is never replaced by the state. No other bar may be fixed to the screen at the same time; the in-page
   cart bar and the ongoing-order strip are replaced by these tabs, including on the kitchen page.
@@ -311,7 +315,8 @@ board screens; force an empty list and a not-found order on each surface.
   estimate together in a compact block; address and opening hours MUST be collapsible and
   collapsed by default; call and open/closed information stay visible.
 - **FR-015**: Kitchens on home and in search results MUST be shown as rows with a square photo,
-  name, type badge, open state and delivery estimate, so that at least three kitchens are fully
+  name, the landmark as a short secondary line under the name, type badge, open state and delivery
+  estimate, so that at least three kitchens are fully
   visible on a 390×844 screen and four on a 430 px wide screen of the same proportions.
 - **FR-016**: Cart, order page, orders list, messages, account, addresses and sign-in screens MUST
   be redesigned in the shared theme with clear section hierarchy and one obvious next step.
