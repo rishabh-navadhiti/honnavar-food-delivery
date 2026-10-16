@@ -80,7 +80,8 @@ most one, and that search suggests names while typing.
    **Then** the Cart tab shows the item count and running total (updated as dishes are added),
    there is no separate in-page cart bar, and one tap opens the cart.
 3. **Given** a signed-in customer with an ongoing order, **When** they are on any customer screen
-   other than that order's page, **Then** the Orders tab shows the order's current status, and one
+   other than that order's page and the cart while it has items, **Then** the Orders tab shows the
+   order's current status, and one
    tap opens the orders list with that order as the first card showing its status, without an
    extra stacked strip.
 4. **Given** the home screen, **When** the customer types at least two letters of a kitchen or

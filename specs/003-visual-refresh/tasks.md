@@ -49,7 +49,7 @@ task"). What 003 adds:
 - **Test hooks**: keep every `data-testid` and accessible name listed in
   [contracts/ui.md](./contracts/ui.md) and research R15 on the element that now carries that
   information. An existing e2e file may change only how it finds an element (FR-002); assertion
-  changes are E1 (approved) and E2 (awaiting the owner). Any further locator edit is added to the
+  changes are E1 and E2 (both approved). Any further locator edit is added to the
   table in research R15 and named in the commit message.
 - **Copy**: new strings as keys in `en.json` and `kn.json`, never renamed. Agent-drafted Kannada is
   listed in `machine-drafted.json`. Unused keys are removed from both files together and named in
@@ -74,6 +74,10 @@ task"). What 003 adds:
   - call `Anek_Kannada({ subsets: ['kannada', 'latin'], axes: ['wdth'], display: 'swap', variable: '--font-anek' })`;
   - set the `<html>` class to its variable;
   - set the viewport `themeColor` to the Coast primary `#b8461a`.
+- [ ] T095 Write the contrast unit test `src/app/theme-contrast.test.ts` (SC-006; analyze C1) before T003. It reads the `@theme` block of `src/app/globals.css`, computes WCAG contrast ratios, and asserts:
+  - at least 4.5:1 for every body-text pair: `ink`, `muted` and `subtle` on `page`, `surface` and `surface-sunk`; `on-primary` on `primary` and `primary-strong`; `primary` on `surface` (links); each `status-*` on its `status-*-soft`; `open`, `closed`, `warn` and `danger` on their `-soft` tints; `on-danger` on `danger`;
+  - at least 3:1 for large text and meaningful icons: `sea`, `veg` and `nonveg` on `surface` and `page`, and `line-strong` on `surface` for control borders.
+  It must fail until T003 defines the new tokens.
 - [ ] T003 Rewrite the `@theme` block and base styles in `src/app/globals.css` with the Coast tokens (research R1, contracts/ui.md, values from `design/a-coast/tokens.css`):
   - keep the existing names (`primary`, `primary-strong`, `on-primary`, `secondary`, `on-secondary`, `danger`, `on-danger`, `veg`, `nonveg`, `surface`, `page`, `ink`, `muted`, `line`, `open`, `closed`, `warn`, `spacing-touch`) with Coast values;
   - add `sea` and `sea-soft`, `subtle`, `surface-sunk`, `line-strong`, `-soft` tints for open, closed, veg, nonveg, warn and danger, and `status-{placed,accepted,preparing,ready,picked,delivered,rejected,cancelled}` with `-soft` tints;
@@ -103,7 +107,8 @@ surface uses.
   - `smallTargets(page)`: visible `a`, `button`, `summary`, `select`, `input:not([type=hidden])` and `[role=button]` elements whose box is under 48×48, excluding links inside `p` (WCAG inline exception); returns a short description of each;
   - `fixedChrome(page)`: visible elements with computed `position` `fixed` or `sticky` touching the top or bottom edge; returns `{ top: count, bottom: count, totalHeight }`;
   - `fullyVisibleCount(page, locator)`: how many matches lie fully inside the viewport, above the bottom fixed bar;
-  - `clippedText(page)`: elements whose `scrollWidth > clientWidth` or `scrollHeight > clientHeight` while `overflow` is not `visible`, excluding intentional one-line truncation marked with `data-truncate`.
+  - `clippedText(page)`: elements whose `scrollWidth > clientWidth` or `scrollHeight > clientHeight` while `overflow` is not `visible`, excluding intentional one-line truncation marked with `data-truncate`;
+  - `truncatedWithoutFullText(page)`: `data-truncate` elements that expose neither a `title` nor screen-reader text holding the full value (every layout check asserts this list is empty; analyze U1).
 - [ ] T008 Write the screenshot capture `e2e/screens/capture.spec.ts` (research R14):
   - `resetDemoData()` first;
   - sign in per role with `e2e/sign-in.ts`, choosing subjects through `e2e/catalogue.ts` flags (demo customer, the kitchen of the placed order, the agent of the ready order, the admin);
@@ -111,7 +116,7 @@ surface uses.
   - add these states: home with suggestions open, kitchen with "Address and hours" open, cart with items, UPI sheet open, empty cart, partner sound prompt and pill, reject sheet open, board;
   - write `screens/<surface>/<route>-<width>-<locale>.png` and a `screens/index.html` contact sheet grouped by surface;
   - call `blockMapTiles(page)` before map pages.
-- [ ] T009 Run `npm run screens` on the unchanged UI to produce the "before" set, and keep it outside the repo as `screens-before/` (git-ignored) for comparison during review
+- [ ] T009 Run `npm run screens` on the unchanged UI to produce the "before" set, and move it to `screens/before/` (git-ignored with `screens/`) for comparison during review
 
 ### Shared icons and illustrations (research R3)
 
@@ -186,7 +191,8 @@ three kitchens (four at 430 px) are visible (spec US1, SC-002, SC-004, SC-007a, 
   - no horizontal overflow;
   - no small targets;
   - no clipped text;
-  - at most one fixed bar at the top and one at the bottom, with total height ≤ 18% of 780 at 360×780.
+  - at most one fixed bar at the top and one at the bottom, with total height ≤ 18% of 780 at 360×780;
+  - no request to `fonts.googleapis.com` or `fonts.gstatic.com` during any page load (FR-007; analyze C3).
   Also assert at least 3 fully visible `kitchen-card` rows on home at 390×844 and at least 4 at 430×932, in both languages (SC-007a).
 - [ ] T027 [US1] Four-tap test in `e2e/visual-layout.spec.ts`, at 360×780 and 390×844, in both languages:
   - sign in as `demoCustomer()` (saved address and last payment preselected) and start on `/`;
@@ -200,11 +206,11 @@ three kitchens (four at 430 px) are visible (spec US1, SC-002, SC-004, SC-007a, 
   - pressing Enter still runs the existing search (URL `?q=`).
   Repeat the dish case with `knTerm`.
 - [ ] T029 [US1] **E1 (approved 2026-10-16)**: in `e2e/ordering-ongoing-strip.spec.ts` lines 25–29, replace the "strip above cart bar" assertion with "both `ongoing-strip` and `cart-bar` are visible and their boxes do not overlap". Name E1 in the commit message
-- [ ] T030 [US1] **E2: only after the owner approves** (research R15). In `e2e/ordering-ongoing-strip.spec.ts` lines 37–39:
+- [ ] T030 [US1] **E2 (approved 2026-10-16)** (research R15). In `e2e/ordering-ongoing-strip.spec.ts` lines 37–39:
   - clicking `ongoing-strip` opens `/orders`;
   - the first `order-card` there is the ongoing order, with its status;
   - clicking that card opens `/orders/<id>`, where `ongoing-strip` has count 0.
-  Name E2 in the commit message. If the owner declines, stop and raise the conflict with the plan-review edit instead.
+  Name E2 in the commit message.
 
 ### Implementation for User Story 1
 
@@ -437,15 +443,21 @@ no clipping or overflow, and every screen in the theme (spec US5).
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T082 [US5] Every-route sweep in `e2e/visual-routes.spec.ts`. For each surface, sign in through `e2e/catalogue.ts` flags and visit every route listed in [contracts/routes.md](./contracts/routes.md) "Screens" (detail routes with seeded ids; customer, partner and agent at 360×780, admin at 1280×800) in `kn` and `en`. Assert:
+- [ ] T082 [US5] Every-route sweep in `e2e/visual-routes.spec.ts`. For each surface, sign in through `e2e/catalogue.ts` flags and visit every route listed in [contracts/routes.md](./contracts/routes.md) "Screens" (detail routes with seeded ids; customer, partner and agent at 360×780, 430×932 and 768×1024, admin at 1280×800) in `kn` and `en` (analyze C2, C4). Assert:
   - no horizontal overflow;
   - no clipped text;
-  - no small targets.
+  - no small targets;
+  - at 768×1024, no text block wider than 720 px (readable line length; FR-011).
 - [ ] T083 [P] [US5] Reduced-motion test in `e2e/visual-routes.spec.ts`: with `page.emulateMedia({ reducedMotion: 'reduce' })`, opening the reject sheet and the UPI sheet shows them with a computed `transition-duration` and `animation-duration` of `0s`. Without reduced motion, no transition on those elements exceeds 200 ms (SC-010)
 
 ### Implementation for User Story 5
 
-- [ ] T084 [US5] Fix every finding from T082 and T083 in the component files involved. Then review the screens set for colour-only states (owner edit 2 and FR-009): every open/closed, veg/non-veg, status and error state has a word or icon. Fix any remaining coloured rails, rules or tints
+- [ ] T096 [US5] Use tablet widths sensibly on customer, partner and agent (FR-011, spec edge case; analyze C2):
+  - cap content at a readable maximum width (about 720 px, centred);
+  - from 768 px, show kitchen rows, order lists and partner and agent cards in two columns;
+  - keep the tab bar and the top bar full width with centred content.
+  Edit the three surface layouts and the list containers in `src/app/(customer)/page.tsx`, `src/app/(customer)/orders/page.tsx`, `src/app/(partner)/partner/(protected)/orders/page.tsx` and `src/app/(agent)/agent/(protected)/page.tsx`.
+- [ ] T084 [US5] Fix every finding from T082, T083 and T096 in the component files involved. Then review the screens set for colour-only states (owner edit 2 and FR-009): every open/closed, veg/non-veg, status and error state has a word or icon. Fix any remaining coloured rails, rules or tints
 - [ ] T085 [US5] Run `npm run test:e2e` and `npm run screens`, compare the Kannada screens of all four surfaces with the reference, and commit with task ids
 
 ---
@@ -488,7 +500,7 @@ Force an empty list and a not-found order on each surface (spec US6, SC-009).
   - the `layout` Playwright project.
 - [ ] T090 [P] Run a parity sweep: `grep` `src/` for hard-coded user-facing text in JSX text, `aria-label`, `alt`, `placeholder` and `title` (icon buttons, illustrations, the tab bar, suggestions, the pill); confirm every new key exists in both languages and every agent-drafted Kannada key is listed in `machine-drafted.json`
 - [ ] T091 [P] Remove dead code: components and CSS no longer used (old card markup, `layout="side"` branch, unused `RouteLoading` variants), commented-out code and debug logging. Confirm no client component imports a `server-only` module and that `src/app/globals.css` has no leftover Noto references
-- [ ] T092 Check that no existing e2e file changed beyond E1, E2 (if approved) and listed locator edits: `git diff main -- e2e/ ':!e2e/visual-*' ':!e2e/layout.ts' ':!e2e/screens'`. Record the list in the final report
+- [ ] T092 Check that no existing e2e file changed beyond E1, E2 and listed locator edits: `git diff main -- e2e/ ':!e2e/visual-*' ':!e2e/layout.ts' ':!e2e/screens'`. Record the list in the final report
 - [ ] T093 Run `npm run screens` and review every screen against `design/a-coast/` and the owner's edits (quickstart "Review walkthrough" steps 1–13). Fix what differs and record anything left with a reason
 - [ ] T094 Run the full gate (`npm run lint`, `npm run typecheck`, `npm test`, `npm run build`, `npm run test:e2e`) and record the counts (existing 350 unit and integration plus new; existing 31 e2e plus new)
 
@@ -498,12 +510,12 @@ Force an empty list and a not-found order on each surface (spec US6, SC-009).
 
 ### Phase dependencies
 
-- **Setup (Phase 1)**: T001–T003 in order (T003 uses T002's font variable); T004–T006 in parallel.
+- **Setup (Phase 1)**: T001, T002, then T095 (contrast test, fails first), then T003 (uses T002's font variable); T004–T006 in parallel.
 - **Foundational (Phase 2)**: depends on Setup and blocks every story.
   - Tools: T007 → T008 → T009 (the "before" set).
   - Icons T010–T012 and primitives T013–T019 in parallel.
   - T020 and T021 depend on T010 and T013. T022 comes after T010 and T018.
-- **US1 (Phase 3)**: needs Foundational. Tests T023–T028 first; T029 any time; T030 only after the owner approves E2.
+- **US1 (Phase 3)**: needs Foundational. Tests T023–T028 first; T029 and T030 any time before T053.
   - Then T031 (after T024) → T032 (after T025).
   - T033 (after T023) → T034 → T035 → T036.
   - T037 after T036. T039 → T040.
@@ -513,7 +525,7 @@ Force an empty list and a not-found order on each surface (spec US6, SC-009).
 - **US2 (Phase 4)**: needs Foundational. T056 → T057 → T058; T059 → T060; T061–T064 in parallel; T065, T066, T067 last. Its layout test T054 places nothing, so it does not need US1.
 - **US3 (Phase 5)**: needs Foundational (T021 for top navigation).
 - **US4 (Phase 6)**: needs Foundational and US2's partner card (T059) for the shared card layout.
-- **US5 (Phase 7)**: needs US1–US4 (it sweeps every route).
+- **US5 (Phase 7)**: needs US1–US4 (it sweeps every route). T082 and T083 → T096 → T084 → T085.
 - **US6 (Phase 8)**: needs US1–US4.
 - **Polish (Phase 9)**: needs all stories.
 

@@ -315,9 +315,9 @@ With that, one edit is expected:
 |---|---|---|---|---|---|
 | E1 | `e2e/ordering-ongoing-strip.spec.ts` | 25–29 | Asserts the ongoing strip sits **above** the cart bar | Asserts both are visible and do **not overlap** | The old assertion encodes the stacked layout this feature removes (spec FR-013); "both reachable, neither hiding the other" is the spec's edge case. This changes an assertion, not only a locator, so it needs the owner's agreement under FR-002 |
 
-| E2 | `e2e/ordering-ongoing-strip.spec.ts` | 37–39 | Clicking the ongoing strip opens `/orders/<id>` | Clicking the Orders tab's ongoing state opens `/orders`, whose first order card is that order with its status; clicking it opens `/orders/<id>`, where the state is not shown | Follows from the owner's plan-review edit (the Orders tab always opens the list). This changes an assertion, so it needs the owner's yes under FR-002 |
+| E2 | `e2e/ordering-ongoing-strip.spec.ts` | 37–39 | Clicking the ongoing strip opens `/orders/<id>` | Clicking the Orders tab's ongoing state opens `/orders`, whose first order card is that order with its status; clicking it opens `/orders/<id>`, where the state is not shown | Follows from the owner's plan-review edit (the Orders tab always opens the list). Approved by the owner 2026-10-16 |
 
-E1 was approved by the owner on 2026-10-16. E2 is awaiting the owner's answer.
+E1 and E2 were approved by the owner on 2026-10-16.
 
 Any further edit found during implementation is limited to how an element is found, listed in this
 table and in the commit that makes it.
