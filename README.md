@@ -112,6 +112,26 @@ Placed and rejected orders always use fabricated kitchens: a real business is ne
 unflattering reason (checked by `catalogue.int.test.ts`). A reset between midnight and about 01:30
 IST puts some of these orders on the previous day.
 
+## Deploying (Vercel + Neon)
+
+Production runs on Vercel (functions in `sin1`, see `vercel.json`) against a Neon Postgres project in
+Singapore (`neon.ts`, project `purple-butterfly-09592475`). Nothing else is needed: images and voice
+notes live in the database, and every setting has a default except `DATABASE_URL`.
+
+- Vercel project `navadhiti/honnavar-food-delivery`; production env vars: `DATABASE_URL` (Neon's
+  **pooled** connection string) and `DEMO_MODE=true`. The DB client turns off prepared statements
+  automatically on Neon's `-pooler` hosts.
+- Deploy from a checkout: `npx vercel deploy --prod`. Build happens on Vercel; `next/font` fetches
+  Anek Kannada at build time only.
+- Migrate and reset the demo data on Neon (destroys everything in that database):
+
+  ```bash
+  DATABASE_URL="$(npx neon connection-string production --project-id purple-butterfly-09592475)" npm run demo:reset
+  ```
+
+  (`npx neon login` once first.) Use the direct, non-pooled string for migrations.
+- The seeded "new" order auto-rejects 10 minutes after a reset; reset right before a demo.
+
 ## One sanctioned tool per concern
 
 | Concern | Tool |
