@@ -4,7 +4,7 @@
 
 **Created**: 2026-10-16
 
-**Status**: Draft
+**Status**: Approved (design direction picked 2026-10-16)
 
 **Input**: User description: "Feature 003, visual refresh of all four surfaces (customer, partner,
 agent, admin). No new business behaviour: every existing unit, integration and e2e test stays
@@ -38,6 +38,13 @@ keeps unchanged. Layout problems come from the owner's first walkthrough of 002.
 - Owner notes: the text app name as wordmark is fine for now; each direction may propose a simple
   mark beside it (a later feature needs an app icon), not required. Every direction shows at least
   two of its six mockup screens in Kannada, because the type pairing is the biggest risk.
+- Design pick: Direction A "Coast" (`design/a-coast/`) with five owner edits: (1) home kitchens as
+  list rows with a square photo of about 96 px, at least three kitchens visible at 390×844 and four
+  at 430 px wide; (2) no decorative colour rules (column top rules, card rails, accent bars): group
+  and status colour appears only in the status chip and group icon, with its word; (3) partner
+  cards keep the customer's name, landmark and rider note; (4) tab labels show the word plus the
+  state ("Orders · Preparing", "Cart · ₹620"); (5) partner amounts are the item total, as today.
+  Anek Kannada for both scripts and the Coast mark are kept.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -294,7 +301,8 @@ board screens; force an empty list and a not-found order on each surface.
 - **FR-013**: Customer screens MUST have one slim top bar (brand, language switch) and one bottom
   navigation bar with four tabs: Home; Orders, which shows the ongoing order's current status when
   there is one; Cart, which shows the item count and running ₹ total; and Account, which holds
-  Messages and Addresses. No other bar may be fixed to the screen at the same time; the in-page
+  Messages and Addresses. A tab with a live state shows its word and the state together
+  ("Orders · Preparing", "Cart · ₹620"); the word is never replaced by the state. No other bar may be fixed to the screen at the same time; the in-page
   cart bar and the ongoing-order strip are replaced by these tabs, including on the kitchen page.
 - **FR-013a**: On the cart screen the bottom navigation MUST be replaced by a fixed
   "Place order · ₹total" bar, with a back control that returns to browsing; this is the only
@@ -302,8 +310,9 @@ board screens; force an empty list and a not-found order on each surface.
 - **FR-014**: The kitchen page header MUST place the kitchen name, its badges and the delivery
   estimate together in a compact block; address and opening hours MUST be collapsible and
   collapsed by default; call and open/closed information stay visible.
-- **FR-015**: Kitchen cards on home and search MUST show photo, name, badges, open state and
-  delivery estimate in a layout that shows more than one card on a 390×844 screen.
+- **FR-015**: Kitchens on home and in search results MUST be shown as rows with a square photo,
+  name, type badge, open state and delivery estimate, so that at least three kitchens are fully
+  visible on a 390×844 screen and four on a 430 px wide screen of the same proportions.
 - **FR-016**: Cart, order page, orders list, messages, account, addresses and sign-in screens MUST
   be redesigned in the shared theme with clear section hierarchy and one obvious next step.
 
@@ -313,7 +322,8 @@ board screens; force an empty list and a not-found order on each surface.
   sounds on, remembered on that device; the pill shows whether sounds are on or need a tap.
 - **FR-018**: Partner order cards MUST show order number, status with icon, time left to answer
   (waiting orders) or time since placed, item count, item total (the amount partners see today,
-  not the grand total) and payment method; waiting orders MUST be visually distinct and listed
+  not the grand total), payment method, and the customer's display name, landmark and rider note
+  as today; waiting orders MUST be visually distinct and listed
   first, as today.
 - **FR-019**: The reject step MUST present reasons as compact choices and keep the reasons, the
   optional note and both actions within one 390×844 screen.
@@ -409,6 +419,8 @@ their visible demo labels in the new design). Map tiles and address lookup are u
   meaningful icons meet 3:1, across the palette.
 - **SC-007**: On the partner orders screen at 390×844, at least three order cards are fully visible
   without scrolling.
+- **SC-007a**: On the home screen, at least three kitchens are fully visible at 390×844 and four
+  at 430×932, in both languages.
 - **SC-008**: Search suggestions appear within 1 second of typing the second letter on an ordinary
   mobile connection.
 - **SC-009**: After a screen has displayed, its content does not jump when images, fonts or
