@@ -522,7 +522,9 @@
     "itemTotal": "ಐಟಂಗಳ ಮೊತ್ತ",
     "deliveryFee": "ಡೆಲಿವರಿ ಶುಲ್ಕ",
     "grandTotal": "ಒಟ್ಟು ಮೊತ್ತ",
-    "lineUnavailable": "ಈಗ ಸಿಗುವುದಿಲ್ಲ. ಇದನ್ನು ಆರ್ಡರ್ ಮಾಡಲಾಗುವುದಿಲ್ಲ."
+    "lineUnavailable": "ಈಗ ಸಿಗುವುದಿಲ್ಲ. ಇದನ್ನು ಆರ್ಡರ್ ಮಾಡಲಾಗುವುದಿಲ್ಲ.",
+    "viewCart": "ಕಾರ್ಟ್ ನೋಡಿ",
+    "addMoreFrom": "{kitchen}: ಇನ್ನಷ್ಟು ಸೇರಿಸಿ"
   },
   "checkout": {
     "deliverTo": "ಎಲ್ಲಿಗೆ ಡೆಲಿವರಿ",

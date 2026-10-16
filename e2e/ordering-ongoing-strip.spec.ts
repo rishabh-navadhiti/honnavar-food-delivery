@@ -24,6 +24,9 @@ test('signed-in customers see their current order in a strip on every screen but
   await page.goto(`/kitchens/${kitchen.id}`);
   await page.locator(`[data-dish-id="${availableDishesIn(kitchen.key)[0]!.id}"]`).getByRole('button', { name: 'Add', exact: true }).click();
   await expect(page.getByTestId('cart-bar')).toBeVisible();
+  // E3 (owner review 2026-10-16): the kitchen page has no tab bar; the order's status shows on tab pages.
+  await page.goto('/');
+  await expect(page.getByTestId('cart-bar')).toBeVisible();
   await expect(page.getByTestId('ongoing-strip')).toBeVisible();
   const strip = (await page.getByTestId('ongoing-strip').boundingBox())!;
   const bar = (await page.getByTestId('cart-bar').boundingBox())!;
@@ -38,7 +41,8 @@ test('signed-in customers see their current order in a strip on every screen but
   await expect(page).toHaveURL(`/kitchens/${kitchen.id}`);
 
   // It opens the orders list with this order first, showing its status; the order's own page does
-  // not show it (E2, approved 2026-10-16: the Orders tab always opens the list).
+  // not show it (E2, approved 2026-10-16: the Orders tab always opens the list; E3: from home).
+  await page.goto('/');
   await page.getByTestId('ongoing-strip').click();
   await expect(page).toHaveURL('/orders');
   const first = page.getByTestId('order-card').first();

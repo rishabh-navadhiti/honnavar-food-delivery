@@ -56,7 +56,9 @@ export function PartnerActions({ orderId, status }: { orderId: string; status: O
       <FormError message={stepErrors.form} />
 
       {status === 'placed' && rejectOpen ? (
-        <div className="fixed inset-0 z-[1000] flex animate-fade-in items-end justify-center bg-scrim">
+        <div className="fixed inset-0 z-[1000] flex items-end justify-center">
+          {/* The backdrop fades in on its own layer, below the sheet, which stays opaque (owner finding 4). */}
+          <div aria-hidden="true" className="absolute inset-0 animate-fade-in bg-scrim" onClick={() => setRejectOpen(false)} />
           <form
             action={rejectAction}
             onSubmit={() => acknowledge(orderId)}
@@ -64,7 +66,7 @@ export function PartnerActions({ orderId, status }: { orderId: string; status: O
             role="dialog"
             aria-modal="true"
             aria-labelledby={`reject-${orderId}`}
-            className="flex w-full max-w-md animate-sheet-up flex-col gap-3 rounded-t-xl bg-surface p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-3"
+            className="relative flex w-full max-w-md animate-sheet-up flex-col gap-3 rounded-t-xl bg-surface p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-3"
           >
             <input type="hidden" name="orderId" value={orderId} />
             <span aria-hidden="true" className="mx-auto h-1 w-10 rounded-full bg-line-strong/50" />

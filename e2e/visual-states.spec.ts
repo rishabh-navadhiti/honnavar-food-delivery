@@ -41,10 +41,10 @@ test("not-found pages keep each surface's theme, navigation and a way back (FR-0
   await adminContext.close();
 });
 
-test('the empty cart shows its illustration with the tab bar, not the place-order bar', async ({ page }) => {
+test('the empty cart shows its illustration with the tab bar, not the place-order bar or a cart button', async ({ page }) => {
   await page.goto('/cart');
   await expect(page.getByRole('navigation').last()).toBeVisible();
-  await expect(page.getByTestId('header-cart')).toBeVisible();
+  await expect(page.getByTestId('header-cart')).toHaveCount(0);
   await expect(page.getByTestId('place-order-bar')).toHaveCount(0);
   await expect(page.locator('main svg[aria-hidden="true"]').first()).toBeVisible();
 });

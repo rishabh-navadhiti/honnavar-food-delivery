@@ -522,7 +522,9 @@
     "itemTotal": "Item total",
     "deliveryFee": "Delivery fee",
     "grandTotal": "Grand total",
-    "lineUnavailable": "Not available now. It will not be ordered."
+    "lineUnavailable": "Not available now. It will not be ordered.",
+    "viewCart": "View cart",
+    "addMoreFrom": "Add more from {kitchen}"
   },
   "checkout": {
     "deliverTo": "Deliver to",

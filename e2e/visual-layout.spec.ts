@@ -71,6 +71,28 @@ test('customer reference screens keep the layout rules in both languages (FR-027
     }
   }
   expect(fontRequests, 'pages request an outside font service (FR-007)').toEqual([]);
+
+  // The floating cart button covers no other control, even at the end of a list (owner review).
+  for (const size of PHONES) {
+    await page.setViewportSize(size);
+    for (const route of ['/', '/orders', '/account']) {
+      await page.goto(route);
+      await page.waitForLoadState('networkidle');
+      await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+      const covered = await page.evaluate(() => {
+        const cart = document.querySelector('[data-testid="header-cart"]')!;
+        const button = cart.getBoundingClientRect();
+        return [...document.querySelectorAll<HTMLElement>('main a, main button, main input, main select')]
+          .filter((el) => {
+            if (cart.contains(el)) return false;
+            const box = el.getBoundingClientRect();
+            return box.width > 0 && box.right > button.left && box.left < button.right && box.bottom > button.top && box.top < button.bottom;
+          })
+          .map((el) => (el.textContent ?? el.getAttribute('aria-label') ?? '').trim().slice(0, 30));
+      });
+      expect(covered, `${route} ${size.width}: controls under the floating cart button`).toEqual([]);
+    }
+  }
 });
 
 test('home shows three kitchens at 390×844 and four at 430×932 (SC-007a)', async ({ page }) => {

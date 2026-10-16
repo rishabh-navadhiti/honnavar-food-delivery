@@ -48,7 +48,8 @@ Base styles: `:lang(kn)` raises line heights (body 1.62, headings 1.42). `font-s
 | `KitchenRow` (`browse`) | `data-testid="kitchen-card"`, `data-kitchen-id`, inner `kitchen-state` with `data-state` |
 | `DishRow` (`browse`) | `data-testid="dish-row"`, `data-dish-id`, new `id="dish-<id>"`, `not-available` |
 | `SearchBox` (`browse`, client) | Input keeps the `searchbox` role; buttons "Search" and "Clear search"; suggestions list `data-testid="search-suggestions"` |
-| `CustomerTabBar` (`cart`) | Cart tab link `data-testid="header-cart"` (count badge inside); its summary `data-testid="cart-bar"` (contains "{count} items" for screen readers and the total); Orders tab state `data-testid="ongoing-strip"` (contains `#<orderNo>` in its accessible text) |
+| `CustomerTabBar` (`cart`) | Orders tab state `data-testid="ongoing-strip"` (contains `#<orderNo>` in its accessible text) |
+| `FloatingCartButton`, `KitchenCartBar` (`cart`) | Link `data-testid="header-cart"`; its summary `data-testid="cart-bar"` (contains "{count} items" and the total) |
 | `PlaceOrderBar` (`cart`) | Holds the existing submit button and the "Sign in to check out" link unchanged |
 | `SoundPrompt` / `SoundPill` (`orders`) | `sound-prompt` (full prompt) and `sound-pill` |
 | `NewOrderBanner` (`orders`) | `new-order-banner` |

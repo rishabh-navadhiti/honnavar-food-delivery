@@ -22,7 +22,12 @@ keeps unchanged. Layout problems come from the owner's first walkthrough of 002.
 - Q: What goes in the customer's bottom navigation, and where do the cart and the ongoing order
   live? → A: Four tabs: Home, Orders (shows the ongoing order's status), Cart (count and running
   ₹ total), Account (with Messages and Addresses inside). The Cart tab shows the running total on
-  the kitchen page too, so no in-page cart bar is needed.
+  the kitchen page too, so no in-page cart bar is needed. **Amended after the owner's review
+  (2026-10-16):** three tabs, Home, Orders (with status) and Account; the Cart tab goes. On every
+  tab page a floating cart button sits bottom-right with the item count (hidden when the cart is
+  empty) and opens the cart; lists get bottom padding so it covers nothing. The kitchen page has
+  no tab bar; once the cart has items a full-width bottom bar shows count, ₹ total and
+  "View cart". The cart page keeps the place-order bar and adds an "Add more from <kitchen>" link.
 - Q: What happens when a customer chooses a search suggestion? → A: A kitchen suggestion opens
   that kitchen; a dish suggestion opens its kitchen scrolled to that dish.
 - Q: On the cart screen, how does "Place order" stay reachable with only one bottom bar? → A: On
@@ -76,9 +81,10 @@ most one, and that search suggests names while typing.
 1. **Given** a customer on the home screen with an empty cart and no ongoing order, **When** the
    screen loads, **Then** there is one slim top bar (brand and language) and one bottom
    navigation bar, and no other fixed bar.
-2. **Given** a customer with items in the cart, **When** they browse home or a kitchen page,
-   **Then** the Cart tab shows the item count and running total (updated as dishes are added),
-   there is no separate in-page cart bar, and one tap opens the cart.
+2. **Given** a customer with items in the cart, **When** they are on a tab page (home, orders,
+   account), **Then** a floating cart button bottom-right shows the item count and one tap opens
+   the cart; **when** they are on a kitchen page, **then** there is no tab bar and a full-width
+   bottom bar shows the count, running ₹ total and "View cart" (updated as dishes are added).
 3. **Given** a signed-in customer with an ongoing order, **When** they are on any customer screen
    other than that order's page and the cart while it has items, **Then** the Orders tab shows the
    order's current status, and one
@@ -232,10 +238,12 @@ board screens; force an empty list and a not-found order on each surface.
   design.
 - 360 px with the phone's text size raised one step: content reflows; nothing is cut off
   horizontally.
-- Cart and ongoing order at the same time: the Cart tab shows the cart and the Orders tab shows
-  the ongoing order, side by side, neither hiding the other.
-- Long totals or Kannada tab labels at 360 px: the four tabs keep their 48 px targets; the Cart
-  tab's total stays legible (labels may shorten, the total does not disappear).
+- Cart and ongoing order at the same time: the floating cart button and the Orders tab with its
+  status both show on tab pages, neither hiding the other.
+- Kannada tab labels at 360 px: the three tabs keep their 48 px targets; the kitchen cart bar's
+  total stays legible.
+- The floating cart button never covers content: tab pages leave room for it at the end of their
+  lists.
 - Empty cart screen: there is nothing to place, so it shows the empty state with the normal bottom
   navigation instead of the place-order bar.
 - The ongoing order finishes while the customer is browsing: the bottom navigation stops showing
@@ -304,14 +312,18 @@ board screens; force an empty list and a not-found order on each surface.
   suggestion runs the existing search. The existing search results, clear control and URL-kept
   query and filters MUST keep working.
 - **FR-013**: Customer screens MUST have one slim top bar (brand, language switch) and one bottom
-  navigation bar with four tabs: Home; Orders, which shows the ongoing order's current status when
-  there is one and always opens the orders list (the ongoing order is its first card); Cart, which shows the item count and running ₹ total; and Account, which holds
-  Messages and Addresses. A tab with a live state shows its word and the state together
-  ("Orders · Preparing", "Cart · ₹620"); the word is never replaced by the state. No other bar may be fixed to the screen at the same time; the in-page
-  cart bar and the ongoing-order strip are replaced by these tabs, including on the kitchen page.
+  navigation bar with three tabs: Home; Orders, which shows the ongoing order's current status when
+  there is one and always opens the orders list (the ongoing order is its first card); and
+  Account, which holds Messages and Addresses. A tab with a live state shows its word and the
+  state together ("Orders · Preparing"); the word is never replaced by the state. While the cart
+  has items, tab pages show a floating cart button bottom-right with the item count that opens the
+  cart (a button, not a bar; lists leave room for it). The kitchen page has no tab bar; once the
+  cart has items it shows a full-width bottom bar with the count, ₹ total and "View cart". No
+  other bar may be fixed to the screen at the same time; the ongoing-order strip is replaced by
+  the Orders tab.
 - **FR-013a**: On the cart screen the bottom navigation MUST be replaced by a fixed
-  "Place order · ₹total" bar, with a back control that returns to browsing; this is the only
-  screen where the bottom navigation is replaced.
+  "Place order · ₹total" bar, with a back control that returns to browsing and a clear
+  "Add more from <kitchen>" link to that kitchen.
 - **FR-014**: The kitchen page header MUST place the kitchen name, its badges and the delivery
   estimate together in a compact block; address and opening hours MUST be collapsible and
   collapsed by default; call and open/closed information stay visible.

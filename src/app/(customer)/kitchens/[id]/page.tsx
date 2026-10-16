@@ -159,7 +159,7 @@ export default async function KitchenPage({ params }: Props) {
           <EmptyState title={t('kitchen.menuComingSoon')} />
         )}
       </section>
-      <CustomerTabBar current="home" />
+      <CustomerTabBar current="kitchen" />
     </article>
   );
 }

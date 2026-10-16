@@ -32,7 +32,7 @@ export function SearchSuggestions({ suggestions, q }: { suggestions: Suggestions
       {suggestions ? (
         <div
           data-testid="search-suggestions"
-          className="absolute inset-x-0 top-[calc(100%+6px)] z-30 max-h-[60vh] animate-fade-in overflow-y-auto rounded-lg bg-surface pb-1 shadow-3"
+          className="absolute inset-x-0 top-[calc(100%+6px)] z-30 max-h-[60vh] animate-drop-in overflow-y-auto rounded-lg border border-line-strong/40 bg-surface pb-1 shadow-3"
         >
           {empty ? (
             <p data-testid="search-no-matches" className="px-4 py-4 text-base text-muted">

@@ -108,7 +108,10 @@ ongoing order (as the strip does today), and renders four fixed-position tabs:
 - **Orders**: always opens the orders list (`/orders`), whose first card is the ongoing order with
   its status (the list already orders ongoing before past). With an ongoing order, and not on that
   order's own page, the label reads "Orders · <status>".
-- **Cart**: with items, "Cart · ₹<item total>" and a count badge; otherwise "Cart".
+- **Cart** *(superseded by the owner's review, 2026-10-16)*: no Cart tab. With items, tab pages
+  show a floating cart button bottom-right (count badge; item count and total for screen readers)
+  and the kitchen page, which has no tab bar, shows a full-width bar with count, ₹ total and
+  "View cart". Both carry the `header-cart` link hook with the `cart-bar` summary inside.
 - **Account**: account, with Messages and Addresses reached from it.
 
 Labels are two lines (word above, state below) inside a fixed-height bar (`--spacing-tabbar`,
@@ -319,7 +322,12 @@ With that, one edit is expected:
 
 | L1 | `e2e/ordering-us6-messages.spec.ts` | 12 | `getByTestId('message-list')` | `getByRole('main').getByTestId('message-list')` | Locator only. After the language switch (a full page load), React briefly keeps a hidden streamed copy of the page outside `main` before revealing it; the strict locator could catch both copies |
 
-E1 and E2 were approved by the owner on 2026-10-16.
+| E3 | `e2e/ordering-ongoing-strip.spec.ts` | 23–29, 37 | Checks the ongoing state and the cart bar side by side, and clicks the ongoing state, on the kitchen page | Does the same on the home screen | Follows from the owner's review: the kitchen page no longer has a tab bar, so the ongoing order's status shows on tab pages only; what is checked is unchanged |
+
+| E4 | `e2e/ordering-us1-cart-checkout.spec.ts` | 77 | After placing, the cart link shows no number | After placing, there is no cart button | Follows from the owner's review: the floating cart button is hidden while the cart is empty, so "no count" becomes "no button"; what is checked (the cart emptied) is unchanged |
+
+E1 and E2 were approved by the owner on 2026-10-16; E3 and E4 follow directly from the owner's review
+finding 1 (cart navigation) and is listed in its commit.
 
 Any further edit found during implementation is limited to how an element is found, listed in this
 table and in the commit that makes it.

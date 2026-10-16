@@ -127,12 +127,13 @@ export function CheckoutForm({
       </PlaceOrderBar>
 
       {sheetOpen ? (
-        <div className="fixed inset-0 z-[1000] flex animate-fade-in items-end justify-center bg-scrim sm:items-center">
+        <div className="fixed inset-0 z-[1000] flex items-end justify-center sm:items-center">
+          <div aria-hidden="true" className="absolute inset-0 animate-fade-in bg-scrim" onClick={() => setSheetOpen(false)} />
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="upi-title"
-            className="flex w-full max-w-md animate-sheet-up flex-col gap-4 rounded-t-xl bg-surface p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-3 sm:rounded-md"
+            className="relative flex w-full max-w-md animate-sheet-up flex-col gap-4 rounded-t-xl bg-surface p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-3 sm:rounded-md"
           >
             <h2 id="upi-title" className="text-title font-bold">
               {t('upiSheet.title')}

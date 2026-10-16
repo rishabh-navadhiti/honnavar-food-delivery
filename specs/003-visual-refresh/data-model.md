@@ -13,7 +13,7 @@ Built by a pure function `tabBarState(input)` in `features/cart/tab-bar-state.ts
 
 | Input | Type | Source |
 |---|---|---|
-| `current` | `'home' \| 'orders' \| 'cart' \| 'account'` | the page |
+| `current` | `'home' \| 'orders' \| 'cart' \| 'account' \| 'kitchen'` | the page |
 | `cart` | `{ count: number; itemTotal: number } \| null` | `getCartView` (as the cart bar today) |
 | `ongoing` | `{ id; orderNo; status } \| null` | `getOngoingOrder` (as the strip today) |
 | `excludeOrderId` | `string \| undefined` | the order page passes its own id |
@@ -21,9 +21,10 @@ Built by a pure function `tabBarState(input)` in `features/cart/tab-bar-state.ts
 
 | Output | Rule |
 |---|---|
-| `visible` | `false` only when `onCartPage` and `cart.count > 0` (the place-order bar replaces the tabs) |
+| `visible` | `false` on the kitchen page, and on the cart page while `cart.count > 0` (the place-order bar replaces the tabs) |
 | `orders` | `{ href: '/orders', state: status }` when `ongoing` exists and `ongoing.id !== excludeOrderId`; otherwise `{ href: '/orders', state: null }` (the tab always opens the list) |
-| `cart` | `{ count, itemTotal }` when `count > 0`; otherwise `null` (label "Cart" only) |
+| `cartButton` | `{ count, itemTotal }` on tab pages when `count > 0`; otherwise `null` (owner review: no Cart tab) |
+| `kitchenBar` | `{ count, itemTotal }` on the kitchen page when `count > 0`; otherwise `null` |
 | `active` | `current` |
 
 ## Suggestions (search while typing, R7)

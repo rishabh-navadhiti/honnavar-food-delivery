@@ -16,9 +16,10 @@ does. The main changes, by surface:
 - **Type and icons**: Anek Kannada for both scripts, self-hosted through `next/font` (R2), and
   Lucide icons plus custom SVGs for veg marks, map pins, the mark and empty states (R3).
 - **Customer**:
-  - One slim top bar and one four-tab bottom bar (Home, Orders · status, Cart · ₹total, Account),
-    server-rendered per page like today's dock, so cart and order state stay fresh (R5).
-  - On the cart, a "Place order · ₹total" bar replaces the tabs (R6).
+  - One slim top bar and one three-tab bottom bar (Home, Orders · status, Account), server-rendered
+    per page like today's dock, so cart and order state stay fresh; a floating cart button with the
+    count on tab pages, and a full-width "View cart" bar on the kitchen page (R5, owner review).
+  - On the cart, a "Place order · ₹total" bar replaces the tabs, plus "Add more from <kitchen>" (R6).
   - Kitchens are list rows with 96 px photos (R12).
   - The kitchen page has a compact header with address and hours folded (R8).
   - Search suggests kitchens and dishes while typing, through one small route handler over the

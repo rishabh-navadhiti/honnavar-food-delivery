@@ -1,11 +1,11 @@
-import { House, ReceiptText, ShoppingBag, UserRound } from 'lucide-react';
+import { ArrowRight, House, ReceiptText, ShoppingBag, UserRound } from 'lucide-react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import type { ReactNode } from 'react';
 import { isLocale } from '@/shared/i18n/config';
 import { formatPrice } from '@/shared/i18n/format';
 import type { OrderStatus } from '@/features/orders/domain/lifecycle';
-import type { CustomerTab, TabBarState } from '../tab-bar-state';
+import type { CustomerPage, TabBarState } from '../tab-bar-state';
 
 const statusText: Record<OrderStatus, string> = {
   placed: 'text-status-placed',
@@ -19,19 +19,15 @@ const statusText: Record<OrderStatus, string> = {
 };
 
 /**
- * The customer tab bar (research R5): Home, Orders · status, Cart · ₹total, Account. Labels are two
+ * The customer tab bar (research R5, owner review): Home, Orders · status, Account. Labels are two
  * lines (word above, state below) in a fixed 72 px bar, so a state never moves the layout. Used by
- * CustomerTabBar (live state) and by loading, error and not-found pages (no state). Only the live bar
- * carries the test hooks, so a loading placeholder still on screen while a page streams in is never
- * mistaken for it.
+ * CustomerTabBar (live state) and by loading, error and not-found pages (no state).
  */
-export function TabBarView({ state, signedIn, live = false }: { state: TabBarState; signedIn: boolean; live?: boolean }) {
+export function TabBarView({ state, signedIn }: { state: TabBarState; signedIn: boolean }) {
   const t = useTranslations();
-  const current = useLocale();
-  const locale = isLocale(current) ? current : 'en';
   return (
     <nav aria-label={t('nav.mainNavigation')} className="fixed inset-x-0 bottom-0 z-20 bg-surface pb-[env(safe-area-inset-bottom)] shadow-bar">
-      <ul className="mx-auto grid h-tabbar max-w-3xl grid-cols-4 px-1">
+      <ul className="mx-auto grid h-tabbar max-w-3xl grid-cols-3 px-1">
         <Tab href="/" tab="home" active={state.active} icon={<House />} word={t('tabs.home')} />
         <Tab
           href={state.orders.href}
@@ -47,23 +43,6 @@ export function TabBarView({ state, signedIn, live = false }: { state: TabBarSta
                   {t('ongoing.label')} {t('orders.number', { orderNo: String(state.orders.state.orderNo) })}{' '}
                 </span>
                 {t(`orderStatus.${state.orders.state.status}`)}
-              </span>
-            ) : null
-          }
-        />
-        <Tab
-          href="/cart"
-          tab="cart"
-          active={state.active}
-          icon={<ShoppingBag />}
-          word={t('tabs.cart')}
-          testId={live ? 'header-cart' : undefined}
-          badge={state.cart ? state.cart.count : undefined}
-          state={
-            state.cart ? (
-              <span data-testid="cart-bar" className="stretch-head text-small font-bold text-primary-strong">
-                <span className="sr-only">{t('cart.itemCount', { count: state.cart.count })} </span>
-                {formatPrice(state.cart.itemTotal, locale)}
               </span>
             ) : null
           }
@@ -87,19 +66,15 @@ function Tab({
   icon,
   word,
   state,
-  badge,
   dot,
-  testId,
 }: {
   href: string;
-  tab: CustomerTab;
-  active: CustomerTab;
+  tab: CustomerPage;
+  active: CustomerPage;
   icon: ReactNode;
   word: string;
   state?: ReactNode;
-  badge?: number;
   dot?: string;
-  testId?: string;
 }) {
   const isActive = tab === active;
   return (
@@ -107,7 +82,6 @@ function Tab({
       <Link
         href={href}
         aria-current={isActive ? 'page' : undefined}
-        data-testid={testId}
         className={`flex h-full min-h-touch flex-col items-center pt-1.5 text-caption ${isActive ? 'font-bold text-primary-strong' : 'font-semibold text-muted'}`}
       >
         <span
@@ -115,11 +89,6 @@ function Tab({
           aria-hidden="true"
         >
           {icon}
-          {badge !== undefined ? (
-            <span className="absolute -top-1.5 end-1 min-w-5 rounded-full bg-primary px-1 text-center text-[0.75rem] font-bold leading-5 text-on-primary shadow-[0_0_0_2px_var(--color-surface)]">
-              {badge}
-            </span>
-          ) : null}
           {dot ? <span className={`absolute end-2.5 top-0.5 size-2 rounded-full bg-current shadow-[0_0_0_2px_var(--color-surface)] ${dot}`} /> : null}
         </span>
         <span className="stretch-dense flex max-w-full flex-col items-center leading-[var(--lh-snug)]">
@@ -133,5 +102,61 @@ function Tab({
 
 /** The same bar without live state, for error and not-found pages (client boundaries). */
 export function CustomerTabBarShell({ signedIn = false }: { signedIn?: boolean }) {
-  return <TabBarView state={{ visible: true, active: 'home', orders: { href: '/orders', state: null }, cart: null }} signedIn={signedIn} />;
+  return (
+    <TabBarView
+      state={{ visible: true, active: 'home', orders: { href: '/orders', state: null }, cartButton: null, kitchenBar: null }}
+      signedIn={signedIn}
+    />
+  );
+}
+
+/**
+ * The floating cart button on tab pages while the cart has items (owner review): bottom-right above
+ * the tab bar, the item count on it, opening the cart. Lists leave room for it.
+ */
+export function FloatingCartButton({ count, itemTotal }: { count: number; itemTotal: number }) {
+  const t = useTranslations();
+  const current = useLocale();
+  return (
+    <Link
+      href="/cart"
+      data-testid="header-cart"
+      aria-label={`${t('tabs.cart')}: ${t('cart.itemCount', { count })}, ${formatPrice(itemTotal, isLocale(current) ? current : 'en')}`}
+      className="fixed bottom-[calc(var(--spacing-tabbar)+0.75rem+env(safe-area-inset-bottom))] end-4 z-20 animate-sheet-up rounded-full bg-primary text-on-primary shadow-3 transition-transform duration-(--duration-fast) active:scale-95"
+    >
+      <span data-testid="cart-bar" className="flex h-14 min-w-14 items-center justify-center gap-2 px-4 text-heading font-bold">
+        <ShoppingBag aria-hidden="true" className="size-6" />
+        <span aria-hidden="true">{count}</span>
+        <span className="sr-only">
+          {t('cart.itemCount', { count })} {formatPrice(itemTotal, isLocale(current) ? current : 'en')}
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+/** The kitchen page's bottom bar while the cart has items (owner review): count, ₹ total, "View cart". */
+export function KitchenCartBar({ count, itemTotal }: { count: number; itemTotal: number }) {
+  const t = useTranslations();
+  const current = useLocale();
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-20 bg-surface px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 shadow-bar">
+      <Link
+        href="/cart"
+        data-testid="header-cart"
+        className="mx-auto flex min-h-[54px] max-w-[720px] animate-sheet-up items-center justify-between gap-3 rounded-md bg-primary px-4 text-on-primary shadow-2"
+      >
+        <span data-testid="cart-bar" className="flex items-center gap-2 text-base font-semibold">
+          <ShoppingBag aria-hidden="true" className="size-5 shrink-0" />
+          {t('cart.itemCount', { count })}
+          <span aria-hidden="true">·</span>
+          <span className="font-bold">{formatPrice(itemTotal, isLocale(current) ? current : 'en')}</span>
+        </span>
+        <span className="flex items-center gap-1 text-base font-bold">
+          {t('cart.viewCart')}
+          <ArrowRight aria-hidden="true" className="size-5" />
+        </span>
+      </Link>
+    </div>
+  );
 }

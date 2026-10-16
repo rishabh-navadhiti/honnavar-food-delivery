@@ -1,4 +1,5 @@
-import { Bike, Store } from 'lucide-react';
+import { Bike, Plus, Store } from 'lucide-react';
+import Link from 'next/link';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { getOptionalSession } from '@/features/auth/session';
 import { clearCartAction } from '@/features/cart/actions';
@@ -70,6 +71,14 @@ export default async function CartPage({ searchParams }: Props) {
         </p>
       ) : null}
       <CartLines lines={view.lines} />
+      <Link
+        href={`/kitchens/${view.kitchen.id}`}
+        data-testid="add-more"
+        className="inline-flex min-h-touch items-center gap-2 self-start rounded-md px-1 text-base font-semibold text-primary-strong"
+      >
+        <Plus aria-hidden="true" className="size-5 shrink-0" />
+        {t('cart.addMoreFrom', { kitchen: pickLocalized(view.kitchen.name, locale)?.text ?? '' })}
+      </Link>
       {view.removedCount > 0 ? <p className="text-small font-semibold text-warn">{t('cart.removedLines', { count: view.removedCount })}</p> : null}
       <BillSummary bill={view.bill} />
       <p className="flex items-center gap-2 text-base text-muted">
