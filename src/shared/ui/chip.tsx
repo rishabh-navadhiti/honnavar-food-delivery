@@ -33,9 +33,21 @@ export function Chip({
 }
 
 /** A chip that navigates (filters kept in the URL); `aria-current` marks the active one. */
-export function ChipLink({ href, pressed = false, icon, children }: { href: string; pressed?: boolean; icon?: ReactNode; children: ReactNode }) {
+export function ChipLink({
+  href,
+  pressed = false,
+  icon,
+  testId,
+  children,
+}: {
+  href: string;
+  pressed?: boolean;
+  icon?: ReactNode;
+  testId?: string;
+  children: ReactNode;
+}) {
   return (
-    <Link href={href} aria-current={pressed ? 'true' : undefined} className={box}>
+    <Link href={href} aria-current={pressed ? 'true' : undefined} data-testid={testId} data-active={pressed} className={box}>
       <span className={face(pressed)}>
         {icon}
         {children}

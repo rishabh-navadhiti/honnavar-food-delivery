@@ -15,10 +15,10 @@ export function HoursTable({ hours, now }: { hours: WeekHours; now: Date }) {
   const locale: Locale = isLocale(current) ? current : 'en';
   const today = toIst(now).weekday;
   return (
-    <table className="w-full text-base">
+    <table className="w-full text-small">
       <tbody>
         {WEEKDAYS.map((day) => (
-          <tr key={day} className={day === today ? 'font-bold' : ''}>
+          <tr key={day} className={day === today ? 'font-bold text-ink' : 'text-muted'}>
             <th scope="row" className="py-1 pe-4 text-start font-medium">
               {formatWeekday(day, locale)}
               {day === today ? <span className="sr-only">{t('today')}</span> : null}

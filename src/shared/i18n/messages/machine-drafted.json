@@ -65,6 +65,7 @@
     "messageLog",
     "reorder",
     "ongoing",
-    "backLinks"
+    "backLinks",
+    "tabs"
   ]
 }

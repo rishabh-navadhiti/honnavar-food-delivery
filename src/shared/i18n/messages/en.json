@@ -136,9 +136,6 @@
     "admin": "Admin panel"
   },
   "nav": {
-    "signIn": "Sign in",
-    "account": "My account",
-    "home": "Home",
     "dashboard": "Today",
     "menu": "Menu",
     "hours": "Hours",
@@ -148,9 +145,6 @@
     "partners": "Partners",
     "agents": "Delivery agents",
     "mainNavigation": "Main navigation",
-    "customerNavigation": "Orders and cart",
-    "orders": "My orders",
-    "cart": "Cart",
     "kitchenOrders": "Orders",
     "messages": "Messages"
   },
@@ -167,7 +161,9 @@
     "addressTitle": "Address",
     "menuComingSoon": "Menu coming soon",
     "allKitchens": "All kitchens",
-    "etaRange": "Delivery in about {from}–{to} min"
+    "etaRange": "Delivery in about {from}–{to} min",
+    "etaShort": "{from}–{to} min",
+    "addressAndHours": "Address and hours"
   },
   "menu": {
     "notAvailable": "Not available"
@@ -420,7 +416,9 @@
     "noResultsTitle": "Nothing found for “{q}”",
     "noResultsBody": "Try a shorter word, the other language, or clear the dish filter.",
     "tooShort": "Type at least 2 letters.",
-    "clear": "Clear search"
+    "clear": "Clear search",
+    "allResultsFor": "Search for “{q}”",
+    "suggestionsCount": "{kitchens, plural, =0 {No kitchens} one {# kitchen} other {# kitchens}} and {dishes, plural, =0 {no dishes} one {# dish} other {# dishes}} found"
   },
   "demo": {
     "title": "Demo only",
@@ -514,7 +512,6 @@
     "replaceConfirm": "Start a new cart",
     "replaceKeep": "Keep my cart",
     "itemCount": "{count, plural, one {# item} other {# items}}",
-    "viewCart": "View cart",
     "orderWhenOpen": "This kitchen is closed now. You can order when it opens.",
     "title": "Your cart",
     "empty": "Your cart is empty",
@@ -751,5 +748,12 @@
     "account": "My account",
     "orders": "My orders",
     "back": "Back"
+  },
+  "tabs": {
+    "home": "Home",
+    "orders": "Orders",
+    "cart": "Cart",
+    "account": "Account",
+    "signIn": "Sign in"
   }
 }

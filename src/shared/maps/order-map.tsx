@@ -56,5 +56,5 @@ export function OrderMap({
     // Coordinates, not objects: the page refreshes every 10 s and must not rebuild the map.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tiles.url, tiles.attribution, kitchen?.lat, kitchen?.lng, delivery.lat, delivery.lng, labels.kitchen, labels.delivery]);
-  return <div ref={container} role="region" aria-label={labels.map} className="h-56 w-full overflow-hidden rounded-2xl border border-line" data-testid="order-map" />;
+  return <div ref={container} role="region" aria-label={labels.map} className="h-56 w-full overflow-hidden rounded-lg bg-sea-soft shadow-1" data-testid="order-map" />;
 }

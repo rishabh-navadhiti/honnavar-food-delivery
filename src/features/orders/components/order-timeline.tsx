@@ -1,3 +1,4 @@
+import { Check, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { isLocale } from '@/shared/i18n/config';
 import { formatTime } from '@/shared/i18n/format';
@@ -21,30 +22,42 @@ export function OrderTimeline({ order }: { order: CustomerOrderView }) {
   const steps = ended ? STEPS.filter((s) => firstAt(s)) : STEPS;
 
   return (
-    <section aria-labelledby="timeline-title" className="flex flex-col gap-2">
-      <h2 id="timeline-title" className="text-lg font-bold">
+    <section aria-labelledby="timeline-title" className="flex flex-col gap-2 rounded-lg bg-surface p-4 shadow-1">
+      <h2 id="timeline-title" className="text-heading font-bold">
         {t('timeline.title')}
       </h2>
       <ol className="flex flex-col gap-0" data-testid="timeline">
         {steps.map((step) => {
           const at = firstAt(step);
           return (
-            <li key={step} data-step={step} data-done={Boolean(at)} className="flex items-center gap-3 py-1.5">
-              <span aria-hidden="true" className={`size-3 shrink-0 rounded-full ${at ? 'bg-open' : 'border-2 border-line bg-surface'}`} />
+            <li
+              key={step}
+              data-step={step}
+              data-done={Boolean(at)}
+              className="relative flex items-center gap-3 py-1.5 before:absolute before:start-[11px] before:top-0 before:-z-0 before:h-full before:w-0.5 before:bg-line first:before:top-1/2 last:before:h-1/2"
+            >
+              <span
+                aria-hidden="true"
+                className={`relative z-10 grid size-6 shrink-0 place-items-center rounded-full ${at ? 'bg-open text-surface' : 'border-2 border-line-strong/50 bg-surface'}`}
+              >
+                {at ? <Check className="size-3.5" strokeWidth={3} /> : null}
+              </span>
               <span className={`flex-1 text-base ${at ? 'font-semibold' : 'text-muted'}`}>{t(`orderEvent.${step}`)}</span>
-              <span className="text-sm text-muted">{at ? formatTime(at, locale) : t('timeline.pending')}</span>
+              <span className="text-small text-muted">{at ? formatTime(at, locale) : t('timeline.pending')}</span>
             </li>
           );
         })}
         {ended ? (
           <li data-step={ended} data-done="true" className="flex flex-col gap-1 py-1.5">
             <span className="flex items-center gap-3">
-              <span aria-hidden="true" className="size-3 shrink-0 rounded-full bg-closed" />
+              <span aria-hidden="true" className="grid size-6 shrink-0 place-items-center rounded-full bg-danger text-surface">
+                <X className="size-3.5" strokeWidth={3} />
+              </span>
               <span className="flex-1 text-base font-semibold text-closed">{t(`orderEvent.${ended === 'rejected' ? 'rejected' : 'cancelled'}`)}</span>
-              {endedAt ? <span className="text-sm text-muted">{formatTime(endedAt, locale)}</span> : null}
+              {endedAt ? <span className="text-small text-muted">{formatTime(endedAt, locale)}</span> : null}
             </span>
-            {order.reason ? <ReasonText reason={order.reason} note={order.reasonNote} className="ps-6 text-base" /> : null}
-            {order.paymentMethod === 'upi_demo' ? <p className="ps-6 text-base font-medium" data-testid="nothing-charged">{t('timeline.nothingCharged')}</p> : null}
+            {order.reason ? <ReasonText reason={order.reason} note={order.reasonNote} className="ps-9 text-base" /> : null}
+            {order.paymentMethod === 'upi_demo' ? <p className="ps-9 text-base font-medium" data-testid="nothing-charged">{t('timeline.nothingCharged')}</p> : null}
           </li>
         ) : null}
       </ol>

@@ -1,3 +1,4 @@
+import { Bike, Store } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { getOptionalSession } from '@/features/auth/session';
 import { clearCartAction } from '@/features/cart/actions';
@@ -12,7 +13,8 @@ import { pickLocalized } from '@/shared/i18n/localized';
 import { ButtonLink, buttonClasses } from '@/shared/ui/button';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { LocalizedText } from '@/shared/ui/localized-text';
-import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { CustomerTabBar } from '@/features/cart/components/customer-tab-bar';
+import { PlaceOrderBar } from '@/features/cart/components/place-order-bar';
 import { BackLink } from '@/shared/ui/back-link';
 
 /**
@@ -38,37 +40,45 @@ export default async function CartPage({ searchParams }: Props) {
     return (
       <div className="flex flex-col gap-4">
         <BackLink href="/" label={t('backLinks.home')} />
-        <h1 className="text-2xl font-bold">{t('cart.title')}</h1>
-        <EmptyState title={t('cart.empty')} action={<ButtonLink href="/">{t('cart.browse')}</ButtonLink>} />
-        <CustomerDock />
+        <h1 className="text-title font-bold">{t('cart.title')}</h1>
+        <EmptyState illustration="EmptyCart" title={t('cart.empty')} action={<ButtonLink href="/">{t('cart.browse')}</ButtonLink>} />
+        <CustomerTabBar current="cart" />
       </div>
     );
   }
 
   const orderable = view.lines.filter((l) => l.available);
   const open = view.kitchen.active && view.kitchen.state.kind === 'open';
+  // The place-order bar replaces the tabs whenever there is a next step to put in it (FR-013a).
+  const placeBar = open && (!session || view.addresses.length > 0);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4">
       <RefreshIfStale renderedAt={now.getTime()} />
       <BackLink href={`/kitchens/${view.kitchen.id}`} label={t('backLinks.kitchen')} />
-      <h1 className="text-2xl font-bold">{t('cart.title')}</h1>
-      <p className="text-base font-semibold">
-        <LocalizedText pair={view.kitchen.name} />
-      </p>
+      <div className="flex flex-col gap-1">
+        <h1 className="text-title font-bold">{t('cart.title')}</h1>
+        <p className="flex items-center gap-1.5 text-base font-semibold text-muted">
+          <Store aria-hidden="true" className="size-4 shrink-0" />
+          <LocalizedText pair={view.kitchen.name} />
+        </p>
+      </div>
 
       {leftOutCount > 0 ? (
-        <p role="status" className="rounded-xl border border-warn bg-amber-50 p-3 text-base font-medium" data-testid="reorder-left-out">
+        <p role="status" className="rounded-md bg-warn-soft p-3 text-base font-medium" data-testid="reorder-left-out">
           {t('reorder.leftOut', { count: leftOutCount })}
         </p>
       ) : null}
       <CartLines lines={view.lines} />
-      {view.removedCount > 0 ? <p className="text-sm font-medium text-warn">{t('cart.removedLines', { count: view.removedCount })}</p> : null}
+      {view.removedCount > 0 ? <p className="text-small font-semibold text-warn">{t('cart.removedLines', { count: view.removedCount })}</p> : null}
       <BillSummary bill={view.bill} />
-      <p className="text-base text-muted">{t('kitchen.etaRange', { from: view.kitchen.eta.from, to: view.kitchen.eta.to })}</p>
+      <p className="flex items-center gap-2 text-base text-muted">
+        <Bike aria-hidden="true" className="size-5 shrink-0 text-sea" />
+        {t('kitchen.etaRange', { from: view.kitchen.eta.from, to: view.kitchen.eta.to })}
+      </p>
 
       {!view.kitchen.active ? (
-        <div className="flex flex-col gap-3 rounded-xl border border-line bg-secondary p-4">
+        <div className="flex flex-col gap-3 rounded-lg bg-closed-soft p-4">
           <p className="text-base font-semibold">{t('errors.kitchenUnavailable')}</p>
           <form action={clearCartAction}>
             <button type="submit" className={buttonClasses('secondary')}>
@@ -77,15 +87,17 @@ export default async function CartPage({ searchParams }: Props) {
           </form>
         </div>
       ) : !open ? (
-        <p className="rounded-xl border border-line bg-secondary p-4 text-base font-semibold" data-testid="ordering-closed">
+        <p className="rounded-lg bg-closed-soft p-4 text-base font-semibold" data-testid="ordering-closed">
           {t('cart.orderWhenOpen')}
         </p>
       ) : !session ? (
-        <ButtonLink href="/login?next=/cart" className="w-full text-lg">
-          {t('cart.signInToCheckOut')}
-        </ButtonLink>
+        <PlaceOrderBar>
+          <ButtonLink href="/login?next=/cart" className="min-h-[54px] w-full text-[1.06rem]">
+            {t('cart.signInToCheckOut')}
+          </ButtonLink>
+        </PlaceOrderBar>
       ) : view.addresses.length === 0 ? (
-        <div className="flex flex-col gap-3 rounded-xl border border-line bg-surface p-4">
+        <div className="flex flex-col gap-3 rounded-lg bg-surface p-4 shadow-1">
           <p className="text-base font-semibold">{t('checkout.needAddress')}</p>
           <ButtonLink href="/addresses/new?next=/cart">{t('checkout.addFirstAddress')}</ButtonLink>
         </div>
@@ -99,7 +111,7 @@ export default async function CartPage({ searchParams }: Props) {
           dishNames={Object.fromEntries(view.lines.map((l) => [l.dishId, pickLocalized(l.name, locale)?.text ?? '']))}
         />
       )}
-      <CustomerDock />
+      <CustomerTabBar current="cart" onCartPage={placeBar} />
     </div>
   );
 }

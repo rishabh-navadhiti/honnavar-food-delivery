@@ -1,5 +1,6 @@
 'use client';
 
+import { Minus, Plus } from 'lucide-react';
 import { useActionState, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { MAX_QUANTITY } from '@/features/orders/domain/bill';
@@ -23,24 +24,25 @@ export function AddToCart({ dishId, qty }: { dishId: string; qty: number }) {
   const { form: errorText } = useErrorText(error);
 
   return (
-    <div className="flex flex-col items-end gap-2">
+    <div className="relative flex flex-col items-end gap-2">
       {qty === 0 ? (
         <form action={addAction}>
           <input type="hidden" name="dishId" value={dishId} />
-          <button type="submit" disabled={busy} className={buttonClasses('primary', 'min-w-24')}>
+          <button type="submit" disabled={busy} className={buttonClasses('secondary', 'min-w-24 border-primary/30 text-primary-strong shadow-2')}>
             {t('add')}
+            <Plus aria-hidden="true" />
           </button>
         </form>
       ) : (
-        <div className="flex items-center gap-1" role="group" aria-label={t('quantity')}>
+        <div className="flex h-12 items-center rounded-md bg-primary text-on-primary shadow-2" role="group" aria-label={t('quantity')}>
           <form action={qtyAction}>
             <input type="hidden" name="dishId" value={dishId} />
             <input type="hidden" name="qty" value={qty - 1} />
-            <button type="submit" disabled={busy} aria-label={t('oneLess')} className={buttonClasses('secondary', 'min-w-12 px-0 text-xl')}>
-              −
+            <button type="submit" disabled={busy} aria-label={t('oneLess')} className="grid size-12 place-items-center rounded-md active:scale-95 disabled:opacity-50">
+              <Minus aria-hidden="true" className="size-5" />
             </button>
           </form>
-          <span className="min-w-8 text-center text-lg font-bold" aria-live="polite" data-testid="cart-qty">
+          <span className="min-w-6 text-center text-heading font-bold" aria-live="polite" data-testid="cart-qty">
             {qty}
           </span>
           <form action={qtyAction}>
@@ -50,17 +52,17 @@ export function AddToCart({ dishId, qty }: { dishId: string; qty: number }) {
               type="submit"
               disabled={busy || qty >= MAX_QUANTITY}
               aria-label={t('oneMore')}
-              className={buttonClasses('secondary', 'min-w-12 px-0 text-xl')}
+              className="grid size-12 place-items-center rounded-md active:scale-95 disabled:opacity-50"
             >
-              +
+              <Plus aria-hidden="true" className="size-5" />
             </button>
           </form>
         </div>
       )}
-      {qty >= MAX_QUANTITY ? <p className="text-sm text-muted">{t('maxReached', { max: MAX_QUANTITY })}</p> : null}
+      {qty >= MAX_QUANTITY ? <p className="text-small text-muted">{t('maxReached', { max: MAX_QUANTITY })}</p> : null}
       {askReplace ? (
-        <div role="alertdialog" aria-labelledby={`replace-${dishId}`} className="flex w-64 flex-col gap-2 rounded-xl border border-warn bg-amber-50 p-3">
-          <p id={`replace-${dishId}`} className="text-sm font-semibold">
+        <div role="alertdialog" aria-labelledby={`replace-${dishId}`} className="absolute end-0 top-full z-10 mt-2 flex w-64 animate-fade-in flex-col gap-2 rounded-lg bg-warn-soft p-3 shadow-3">
+          <p id={`replace-${dishId}`} className="text-small font-semibold">
             {t('replaceQuestion')}
           </p>
           <form action={addAction}>
@@ -76,7 +78,7 @@ export function AddToCart({ dishId, qty }: { dishId: string; qty: number }) {
         </div>
       ) : null}
       {errorText ? (
-        <p role="alert" className="text-sm font-medium text-danger">
+        <p role="alert" className="text-small font-semibold text-danger">
           {errorText}
         </p>
       ) : null}

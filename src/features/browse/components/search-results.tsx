@@ -1,3 +1,4 @@
+import { Store } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import { EmptyState } from '@/shared/ui/empty-state';
@@ -10,17 +11,17 @@ import { KitchenCard } from './kitchen-card';
 export function SearchResults({ results, now }: { results: Results; now: Date }) {
   const t = useTranslations('search');
   if (results.kitchens.length === 0 && results.dishes.length === 0) {
-    return <EmptyState title={t('noResultsTitle', { q: results.q })} body={t('noResultsBody')} />;
+    return <EmptyState illustration="NoKitchens" title={t('noResultsTitle', { q: results.q })} body={t('noResultsBody')} />;
   }
   return (
     <>
-      <p className="text-base text-muted">{t('resultsFor', { q: results.q })}</p>
+      <p className="text-base font-semibold text-muted">{t('resultsFor', { q: results.q })}</p>
       {results.kitchens.length > 0 ? (
         <section aria-labelledby="kitchen-results" className="flex flex-col gap-2">
-          <h2 id="kitchen-results" className="text-lg font-bold">
+          <h2 id="kitchen-results" className="text-heading font-bold">
             {t('kitchens')}
           </h2>
-          <ul className="flex flex-col gap-3">
+          <ul className="flex flex-col rounded-lg bg-surface px-3 shadow-1">
             {results.kitchens.map((kitchen) => (
               <KitchenCard key={kitchen.id} kitchen={kitchen} now={now} />
             ))}
@@ -29,13 +30,14 @@ export function SearchResults({ results, now }: { results: Results; now: Date })
       ) : null}
       {results.dishes.length > 0 ? (
         <section aria-labelledby="dish-results" className="flex flex-col gap-2">
-          <h2 id="dish-results" className="text-lg font-bold">
+          <h2 id="dish-results" className="text-heading font-bold">
             {t('dishes')}
           </h2>
           <ul className="flex flex-col gap-2">
             {results.dishes.map(({ dish, kitchen }) => (
-              <li key={dish.id} data-testid="dish-result" className="rounded-2xl border border-line bg-surface px-3">
-                <Link href={`/kitchens/${kitchen.id}`} className="flex min-h-touch items-center text-sm font-semibold text-primary">
+              <li key={dish.id} data-testid="dish-result" className="rounded-lg bg-surface px-3 shadow-1">
+                <Link href={`/kitchens/${kitchen.id}`} className="flex min-h-touch items-center gap-1.5 text-small font-semibold text-primary-strong">
+                  <Store aria-hidden="true" className="size-4 shrink-0" />
                   <LocalizedText pair={kitchen.name} />
                 </Link>
                 <ul>

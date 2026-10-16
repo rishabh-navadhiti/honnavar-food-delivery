@@ -10,7 +10,7 @@ import { readDishFilter } from '@/features/browse/dish-filter-cookie';
 import { listKitchensForCustomer, searchForCustomer } from '@/features/browse/queries';
 import { isLocale } from '@/shared/i18n/config';
 import { EmptyState } from '@/shared/ui/empty-state';
-import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { CustomerTabBar } from '@/features/cart/components/customer-tab-bar';
 
 type Props = { searchParams: Promise<Record<string, string | string[] | undefined>> };
 
@@ -42,9 +42,9 @@ export default async function HomePage({ searchParams }: Props) {
   const anyFilter = Boolean(filters.type || filters.pureVeg || filters.openNow || dishFilter !== 'all');
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{t('home.title')}</h1>
-      <SearchBox filters={filters} />
+    <div className="flex flex-col gap-3">
+      <h1 className="stretch-head text-display font-bold leading-[var(--lh-tight)]">{t('home.title')}</h1>
+      <SearchBox key={filters.q ?? ''} filters={filters} />
       {filters.q ? null : <FilterBar filters={filters} />}
       <DishFilterControl current={dishFilter} returnTo={filtersToQuery(filters)} />
       {filters.q ? (
@@ -55,6 +55,7 @@ export default async function HomePage({ searchParams }: Props) {
         )
       ) : kitchens.length === 0 ? (
         <EmptyState
+          illustration="NoKitchens"
           title={anyFilter ? t('filters.noResultsTitle') : t('home.emptyTitle')}
           body={
             filters.pureVeg && dishFilter === 'nonveg'
@@ -66,13 +67,13 @@ export default async function HomePage({ searchParams }: Props) {
           action={anyFilter ? <ClearFilters /> : undefined}
         />
       ) : (
-        <ul className="flex flex-col gap-3">
+        <ul className="flex flex-col rounded-lg bg-surface px-3 shadow-1">
           {kitchens.map((kitchen, index) => (
-            <KitchenCard key={kitchen.id} kitchen={kitchen} now={now} priority={index < 2} />
+            <KitchenCard key={kitchen.id} kitchen={kitchen} now={now} priority={index < 3} />
           ))}
         </ul>
       )}
-      <CustomerDock showCart />
+      <CustomerTabBar current="home" />
     </div>
   );
 }

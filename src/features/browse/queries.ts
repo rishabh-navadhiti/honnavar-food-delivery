@@ -18,6 +18,8 @@ export type KitchenSummary = {
   pureVeg: boolean;
   photoImageId: string | null;
   landmark: string;
+  /** For the delivery estimate on the kitchen row (003, FR-015). */
+  prepMinutes: number;
   state: KitchenState;
 };
 
@@ -96,6 +98,7 @@ async function summarise(rows: (typeof kitchens.$inferSelect)[], now: Date): Pro
     pureVeg: k.pureVeg,
     photoImageId: k.photoImageId,
     landmark: k.landmark,
+    prepMinutes: k.prepMinutes,
     state: kitchenState({ closedAt: k.closedAt, reopensAt: k.reopensAt }, hours.get(k.id)!, now),
   }));
 }

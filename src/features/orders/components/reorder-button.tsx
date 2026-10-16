@@ -19,7 +19,7 @@ export function ReorderButton({ orderId }: { orderId: string }) {
       {askReplace ? (
         <>
           <input type="hidden" name="replace" value="true" />
-          <p className="text-sm font-semibold">{t('replaceQuestion')}</p>
+          <p className="text-small font-semibold">{t('replaceQuestion')}</p>
           <button type="submit" disabled={pending} className={buttonClasses('primary')}>
             {t('replaceConfirm')}
           </button>

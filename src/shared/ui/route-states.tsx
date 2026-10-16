@@ -35,7 +35,7 @@ export function SkeletonCard({ className = 'h-40' }: { className?: string }) {
 export function LoadingFrame({ children }: { children: ReactNode }) {
   const t = useTranslations('common');
   return (
-    <div role="status" aria-live="polite" className="flex flex-col gap-3 px-4 py-4">
+    <div role="status" aria-live="polite" className="flex flex-col gap-3">
       <span className="sr-only">{t('loading')}</span>
       {children}
     </div>

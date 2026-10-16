@@ -122,8 +122,9 @@ export async function truncatedWithoutFullText(page: Page): Promise<string[]> {
   return page.evaluate(() =>
     Array.from(document.querySelectorAll<HTMLElement>('[data-truncate]'))
       .filter((el) => {
+        // A title (the full name; a fallback marker may follow it in the text) or screen-reader text.
+        if (el.title.trim()) return false;
         const full = el.textContent?.trim() ?? '';
-        if (el.title && el.title.trim() === full) return false;
         const sr = el.parentElement?.querySelector('.sr-only');
         return !(sr && sr.textContent?.trim() === full);
       })

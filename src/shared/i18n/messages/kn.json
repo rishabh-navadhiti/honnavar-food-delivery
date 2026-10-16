@@ -136,9 +136,6 @@
     "admin": "ಅಡ್ಮಿನ್ ಪ್ಯಾನೆಲ್"
   },
   "nav": {
-    "signIn": "ಸೈನ್ ಇನ್",
-    "account": "ನನ್ನ ಖಾತೆ",
-    "home": "ಮುಖಪುಟ",
     "dashboard": "ಇಂದು",
     "menu": "ಮೆನು",
     "hours": "ಸಮಯ",
@@ -148,9 +145,6 @@
     "partners": "ಪಾರ್ಟ್ನರ್‌ಗಳು",
     "agents": "ಡೆಲಿವರಿಯವರು",
     "mainNavigation": "ಮುಖ್ಯ ಮೆನು",
-    "customerNavigation": "ಆರ್ಡರ್ ಮತ್ತು ಕಾರ್ಟ್",
-    "orders": "ನನ್ನ ಆರ್ಡರ್‌ಗಳು",
-    "cart": "ಕಾರ್ಟ್",
     "kitchenOrders": "ಆರ್ಡರ್‌ಗಳು",
     "messages": "ಸಂದೇಶಗಳು"
   },
@@ -167,7 +161,9 @@
     "addressTitle": "ವಿಳಾಸ",
     "menuComingSoon": "ಮೆನು ಸದ್ಯದಲ್ಲೇ ಬರಲಿದೆ",
     "allKitchens": "ಎಲ್ಲಾ ಕಿಚನ್‌ಗಳು",
-    "etaRange": "ಸುಮಾರು {from}–{to} ನಿಮಿಷದಲ್ಲಿ ಡೆಲಿವರಿ"
+    "etaRange": "ಸುಮಾರು {from}–{to} ನಿಮಿಷದಲ್ಲಿ ಡೆಲಿವರಿ",
+    "etaShort": "{from}–{to} ನಿಮಿಷ",
+    "addressAndHours": "ವಿಳಾಸ ಮತ್ತು ಸಮಯ"
   },
   "menu": {
     "notAvailable": "ಈಗ ಸಿಗುವುದಿಲ್ಲ"
@@ -420,7 +416,9 @@
     "noResultsTitle": "“{q}” ಹುಡುಕಿದಾಗ ಏನೂ ಸಿಗಲಿಲ್ಲ",
     "noResultsBody": "ಚಿಕ್ಕ ಪದ ಅಥವಾ ಇನ್ನೊಂದು ಭಾಷೆಯಲ್ಲಿ ಹುಡುಕಿ, ಇಲ್ಲವೇ ಐಟಂ ಫಿಲ್ಟರ್ ತೆಗೆದುಹಾಕಿ.",
     "tooShort": "ಕನಿಷ್ಠ 2 ಅಕ್ಷರ ಟೈಪ್ ಮಾಡಿ.",
-    "clear": "ಹುಡುಕಾಟ ತೆಗೆದುಹಾಕಿ"
+    "clear": "ಹುಡುಕಾಟ ತೆಗೆದುಹಾಕಿ",
+    "allResultsFor": "“{q}” ಹುಡುಕಿ",
+    "suggestionsCount": "{kitchens, plural, =0 {ಯಾವುದೇ ಕಿಚನ್ ಇಲ್ಲ} one {# ಕಿಚನ್} other {# ಕಿಚನ್‌ಗಳು}}, {dishes, plural, =0 {ಯಾವುದೇ ಐಟಂ ಇಲ್ಲ} one {# ಐಟಂ} other {# ಐಟಂಗಳು}} ಸಿಕ್ಕಿವೆ"
   },
   "demo": {
     "title": "ಡೆಮೊ ಮಾತ್ರ",
@@ -514,7 +512,6 @@
     "replaceConfirm": "ಹೊಸ ಕಾರ್ಟ್ ಶುರು ಮಾಡಿ",
     "replaceKeep": "ಹಳೆಯ ಕಾರ್ಟ್ ಇರಲಿ",
     "itemCount": "{count, plural, one {# ಐಟಂ} other {# ಐಟಂಗಳು}}",
-    "viewCart": "ಕಾರ್ಟ್ ನೋಡಿ",
     "orderWhenOpen": "ಈ ಕಿಚನ್ ಈಗ ಮುಚ್ಚಿದೆ. ತೆರೆದಾಗ ಆರ್ಡರ್ ಮಾಡಬಹುದು.",
     "title": "ನಿಮ್ಮ ಕಾರ್ಟ್",
     "empty": "ನಿಮ್ಮ ಕಾರ್ಟ್ ಖಾಲಿ ಇದೆ",
@@ -751,5 +748,12 @@
     "account": "ನನ್ನ ಖಾತೆ",
     "orders": "ನನ್ನ ಆರ್ಡರ್‌ಗಳು",
     "back": "ಹಿಂದೆ"
+  },
+  "tabs": {
+    "home": "ಮುಖಪುಟ",
+    "orders": "ಆರ್ಡರ್‌ಗಳು",
+    "cart": "ಕಾರ್ಟ್",
+    "account": "ಖಾತೆ",
+    "signIn": "ಸೈನ್ ಇನ್"
   }
 }

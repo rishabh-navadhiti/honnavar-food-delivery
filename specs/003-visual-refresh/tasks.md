@@ -171,42 +171,42 @@ three kitchens (four at 430 px) are visible (spec US1, SC-002, SC-004, SC-007a, 
 
 ### Tests for User Story 1 ⚠️ (write first; they must fail)
 
-- [ ] T023 [P] [US1] Unit tests for `tabBarState` in `src/features/cart/tab-bar-state.test.ts`, covering every rule in data-model.md "TabBarState":
+- [X] T023 [P] [US1] Unit tests for `tabBarState` in `src/features/cart/tab-bar-state.test.ts`, covering every rule in data-model.md "TabBarState":
   - `visible` is false only when `onCartPage` and `cart.count > 0`;
   - `orders.href` is always `/orders`;
   - `orders.state` is the ongoing status when `ongoing` exists and `ongoing.id !== excludeOrderId`, and null otherwise;
   - `cart` is null when the count is 0;
   - `active` equals `current`.
-- [ ] T024 [P] [US1] Unit tests for `toSuggestions` in `src/features/browse/suggestions.test.ts`:
+- [X] T024 [P] [US1] Unit tests for `toSuggestions` in `src/features/browse/suggestions.test.ts`:
   - at most 4 kitchens and 6 dishes, in the order given;
   - `total` holds the full counts;
   - fields as in data-model.md "Suggestions";
   - empty input gives empty lists.
-- [ ] T025 [P] [US1] Integration test for `GET /api/search/suggestions` in `src/app/api/search/suggestions/route.int.test.ts` (contracts/routes.md):
+- [X] T025 [P] [US1] Integration test for `GET /api/search/suggestions` in `src/app/api/search/suggestions/route.int.test.ts` (contracts/routes.md):
   - a valid query returns the same kitchens and dishes as `searchForCustomer` for the same input, capped;
   - `q` under 2 or over 80 characters, missing or not a string returns empty lists with status 200;
   - the dish-filter cookie is honoured;
   - `Cache-Control: no-store` is set.
-- [ ] T026 [US1] Customer layout checks in `e2e/visual-layout.spec.ts` (research R13), using T007's helpers. After `resetDemoData()` and `openAllDay(orderableKitchen().id)`, for home, kitchen (`orderableKitchen()`), cart with items, and the order page (`placedOrder()`, signed in as `demoCustomer()`), at 360×780 and 390×844 in `en` and `kn`, assert:
+- [X] T026 [US1] Customer layout checks in `e2e/visual-layout.spec.ts` (research R13), using T007's helpers. After `resetDemoData()` and `openAllDay(orderableKitchen().id)`, for home, kitchen (`orderableKitchen()`), cart with items, and the order page (`placedOrder()`, signed in as `demoCustomer()`), at 360×780 and 390×844 in `en` and `kn`, assert:
   - no horizontal overflow;
   - no small targets;
   - no clipped text;
   - at most one fixed bar at the top and one at the bottom, with total height ≤ 18% of 780 at 360×780;
   - no request to `fonts.googleapis.com` or `fonts.gstatic.com` during any page load (FR-007; analyze C3).
   Also assert at least 3 fully visible `kitchen-card` rows on home at 390×844 and at least 4 at 430×932, in both languages (SC-007a).
-- [ ] T027 [US1] Four-tap test in `e2e/visual-layout.spec.ts`, at 360×780 and 390×844, in both languages:
+- [X] T027 [US1] Four-tap test in `e2e/visual-layout.spec.ts`, at 360×780 and 390×844, in both languages:
   - sign in as `demoCustomer()` (saved address and last payment preselected) and start on `/`;
   - count exactly four taps: the kitchen row, Add on `availableDishesIn(kitchen.key)[0]`, the Cart tab (`header-cart`), and Place order with cash;
   - assert the order page shows `#<number>` (SC-002, FR-004).
-- [ ] T028 [P] [US1] End-to-end suggestions test in `e2e/visual-search-suggestions.spec.ts` (390×844), using `searchableDish()` and `orderableKitchen()` from `e2e/catalogue.ts`:
+- [X] T028 [P] [US1] End-to-end suggestions test in `e2e/visual-search-suggestions.spec.ts` (390×844), using `searchableDish()` and `orderableKitchen()` from `e2e/catalogue.ts`:
   - typing two letters of `enTerm` shows `search-suggestions` within 1 s, with the dish;
   - choosing the dish opens `/kitchens/<id>#dish-<dishId>` with that `dish-row` in view;
   - typing a kitchen name and choosing it opens the kitchen;
   - a no-match string shows one "no matches" line;
   - pressing Enter still runs the existing search (URL `?q=`).
   Repeat the dish case with `knTerm`.
-- [ ] T029 [US1] **E1 (approved 2026-10-16)**: in `e2e/ordering-ongoing-strip.spec.ts` lines 25–29, replace the "strip above cart bar" assertion with "both `ongoing-strip` and `cart-bar` are visible and their boxes do not overlap". Name E1 in the commit message
-- [ ] T030 [US1] **E2 (approved 2026-10-16)** (research R15). In `e2e/ordering-ongoing-strip.spec.ts` lines 37–39:
+- [X] T029 [US1] **E1 (approved 2026-10-16)**: in `e2e/ordering-ongoing-strip.spec.ts` lines 25–29, replace the "strip above cart bar" assertion with "both `ongoing-strip` and `cart-bar` are visible and their boxes do not overlap". Name E1 in the commit message
+- [X] T030 [US1] **E2 (approved 2026-10-16)** (research R15). In `e2e/ordering-ongoing-strip.spec.ts` lines 37–39:
   - clicking `ongoing-strip` opens `/orders`;
   - the first `order-card` there is the ongoing order, with its status;
   - clicking that card opens `/orders/<id>`, where `ongoing-strip` has count 0.
@@ -214,22 +214,22 @@ three kitchens (four at 430 px) are visible (spec US1, SC-002, SC-004, SC-007a, 
 
 ### Implementation for User Story 1
 
-- [ ] T031 [US1] Implement `toSuggestions(results)` in `src/features/browse/suggestions.ts` (pure, no `server-only`) to pass T024
-- [ ] T032 [US1] Implement `GET` in `src/app/api/search/suggestions/route.ts` to pass T025:
+- [X] T031 [US1] Implement `toSuggestions(results)` in `src/features/browse/suggestions.ts` (pure, no `server-only`) to pass T024
+- [X] T032 [US1] Implement `GET` in `src/app/api/search/suggestions/route.ts` to pass T025:
   - Zod-validate `q` (string, NFC-normalised, trimmed, 2–80 characters; otherwise empty lists);
   - read the dish filter and locale as the home page does;
   - call `searchForCustomer`, then `toSuggestions`;
   - return JSON with `Cache-Control: no-store`;
   - on an unexpected error, log with context via `src/shared/log.ts` and return 500 `{ error: 'unavailable' }`.
-- [ ] T033 [US1] Implement `tabBarState(input)` in `src/features/cart/tab-bar-state.ts` (pure) to pass T023
-- [ ] T034 [US1] Create the server component `src/features/cart/components/customer-tab-bar.tsx` (`CustomerTabBar`, research R5):
+- [X] T033 [US1] Implement `tabBarState(input)` in `src/features/cart/tab-bar-state.ts` (pure) to pass T023
+- [X] T034 [US1] Create the server component `src/features/cart/components/customer-tab-bar.tsx` (`CustomerTabBar`, research R5):
   - props `current`, `excludeOrderId?`, `onCartPage?`; reads `getCartView(await readCart(), …)` and `getOngoingOrder` for the signed-in customer; uses `tabBarState`;
   - fixed bottom bar of height `h-tabbar` (72 px) with four tabs, each with a Lucide icon and a two-line label (word above, state below): Home; Orders (always `/orders`, state "· <status>" when ongoing); Cart (state "· ₹<item total>" and a count badge when the cart has items); Account;
   - test hooks: the Cart link keeps `data-testid="header-cart"`; its count-and-total summary has `data-testid="cart-bar"` and includes `cart.itemCount` text for screen readers; the Orders tab's state has `data-testid="ongoing-strip"` with `#<orderNo>` in its accessible text;
   - `aria-current` on the active tab;
   - also export a static `CustomerTabBarShell` (no live state) for error and not-found pages.
-- [ ] T035 [US1] Make `src/app/(customer)/layout.tsx` render only the slim `AppHeader` (mark, wordmark, language switch, account or sign-in moved into the Account tab), removing the second navigation row. `main` gets bottom padding `pb-tabbar` plus a safe-area inset
-- [ ] T036 [US1] Replace `CustomerDock` with `CustomerTabBar` in every customer page that uses it, passing `current` and, on the order page, `excludeOrderId`:
+- [X] T035 [US1] Make `src/app/(customer)/layout.tsx` render only the slim `AppHeader` (mark, wordmark, language switch, account or sign-in moved into the Account tab), removing the second navigation row. `main` gets bottom padding `pb-tabbar` plus a safe-area inset
+- [X] T036 [US1] Replace `CustomerDock` with `CustomerTabBar` in every customer page that uses it, passing `current` and, on the order page, `excludeOrderId`:
   - `src/app/(customer)/page.tsx`
   - `kitchens/[id]/page.tsx`
   - `cart/page.tsx` (`onCartPage`)
@@ -241,66 +241,66 @@ three kitchens (four at 430 px) are visible (spec US1, SC-002, SC-004, SC-007a, 
   - `addresses/new/page.tsx`
   - `addresses/[id]/page.tsx`
   Add it to `search/page.tsx` and `login/page.tsx` too. Then delete `src/features/cart/components/customer-dock.tsx`, `src/features/cart/components/cart-bar.tsx` and `src/features/orders/components/ongoing-order-strip.tsx`.
-- [ ] T037 [US1] Create `src/features/cart/components/place-order-bar.tsx` and use it in `src/features/cart/components/checkout-form.tsx` (research R6):
+- [X] T037 [US1] Create `src/features/cart/components/place-order-bar.tsx` and use it in `src/features/cart/components/checkout-form.tsx` (research R6):
   - a fixed bottom bar of height `h-placebar`, holding the existing submit button with label "Place order · ₹<grand total>" for a signed-in customer, or the existing "Sign in to check out" link for a guest;
   - same form, same submit, same double-tap guard and UPI sheet;
   - `src/app/(customer)/cart/page.tsx` adds the matching bottom padding.
-- [ ] T038 [P] [US1] Restyle the cart sections in `src/features/cart/components/cart-lines.tsx`, `bill-summary.tsx`, `add-to-cart.tsx` (stepper) and the address and payment parts of `checkout-form.tsx`:
+- [X] T038 [P] [US1] Restyle the cart sections in `src/features/cart/components/cart-lines.tsx`, `bill-summary.tsx`, `add-to-cart.tsx` (stepper) and the address and payment parts of `checkout-form.tsx`:
   - cards with section headings;
   - the address card with a label icon;
   - payment choices as two selectable cards, "UPI (demo)" keeping its demo label;
   - the UPI sheet as a bottom sheet with a `duration-base` entrance.
-- [ ] T039 [US1] Make `src/features/browse/components/search-box.tsx` a client component (research R7):
+- [X] T039 [US1] Make `src/features/browse/components/search-box.tsx` a client component (research R7):
   - keep the GET form, hidden filter fields, the `searchbox` input, the "Search" submit (icon button with that accessible name) and the "Clear search" link;
   - from 2 characters, fetch `/api/search/suggestions?q=` 150 ms after the last keystroke, aborting the previous request;
   - render `SearchSuggestions` under the box;
   - Escape or clearing closes it.
-- [ ] T040 [P] [US1] Create `src/features/browse/components/search-suggestions.tsx` (`data-testid="search-suggestions"`):
+- [X] T040 [P] [US1] Create `src/features/browse/components/search-suggestions.tsx` (`data-testid="search-suggestions"`):
   - a "Kitchens" group of links to `/kitchens/<id>` with thumbnail, name (`LocalizedText`) and type;
   - a "Dishes" group of links to `/kitchens/<kitchenId>#dish-<dishId>` with photo, veg mark, name, kitchen name and price;
   - a final "Search for …" row submitting the form;
   - a single "no matches" line when both groups are empty;
   - a polite live region with the count.
-- [ ] T041 [US1] Replace the card markup in `src/features/browse/components/kitchen-card.tsx` with the kitchen row (research R12):
+- [X] T041 [US1] Replace the card markup in `src/features/browse/components/kitchen-card.tsx` with the kitchen row (research R12):
   - a 96 px square `Photo` (`rounded-md`), then name, the landmark as a one-line secondary text (`data-truncate`, full text for screen readers), type badge with icon, pure-veg badge where it applies, open state with icon and word (`kitchen-state` with `data-state`), and delivery estimate with icon;
   - fixed row height;
   - closed kitchens with a greyed photo and moon icon;
   - keep `data-testid="kitchen-card"` and `data-kitchen-id`.
   Restyle `kitchen-state-label.tsx` to match.
-- [ ] T042 [P] [US1] Restyle `src/features/browse/components/filter-bar.tsx`, `dish-filter-control.tsx` and `clear-filters.tsx` with `Chip` (T014): the filter chip row scrolls inside itself at 360 px; the dish filter is a segmented control with veg marks; links and query handling are unchanged
-- [ ] T043 [US1] Restyle `src/app/(customer)/page.tsx` (home) and `src/features/browse/components/search-results.tsx`:
+- [X] T042 [P] [US1] Restyle `src/features/browse/components/filter-bar.tsx`, `dish-filter-control.tsx` and `clear-filters.tsx` with `Chip` (T014): the filter chip row scrolls inside itself at 360 px; the dish filter is a segmented control with veg marks; links and query handling are unchanged
+- [X] T043 [US1] Restyle `src/app/(customer)/page.tsx` (home) and `src/features/browse/components/search-results.tsx`:
   - title "Kitchens in Honnavar" style heading;
   - search box, chips, dish filter, kitchen rows and the illustrated empty states (`NoKitchens`);
   - search results use the same kitchen rows and a dish row style.
-- [ ] T044 [US1] Restyle the kitchen page `src/app/(customer)/kitchens/[id]/page.tsx` with `src/features/kitchens/components/kitchen-profile.tsx`, `src/features/browse/components/call-button.tsx` and `hours-table.tsx` (research R8):
+- [X] T044 [US1] Restyle the kitchen page `src/app/(customer)/kitchens/[id]/page.tsx` with `src/features/kitchens/components/kitchen-profile.tsx`, `src/features/browse/components/call-button.tsx` and `hours-table.tsx` (research R8):
   - a short hero photo with the back link;
   - one header card with name, call, type and pure-veg badges, open state with closing time, and delivery estimate;
   - address and hours inside a native `<details>` ("Address and hours") closed by default.
   The content and the 001/002 data are unchanged.
-- [ ] T045 [P] [US1] Restyle `src/features/browse/components/dish-row.tsx` and `menu-section.tsx`:
+- [X] T045 [P] [US1] Restyle `src/features/browse/components/dish-row.tsx` and `menu-section.tsx`:
   - photo on the right with Add or the stepper overlapping its lower edge;
   - veg mark with word, name and price;
   - add `id="dish-<id>"` with `scroll-margin-top` (top bar plus 16 px) and a `:target` tint fading over `duration-base` (research R8);
   - keep `dish-row`, `data-dish-id` and `not-available`.
-- [ ] T046 [US1] Restyle the order page `src/app/(customer)/orders/[id]/page.tsx` with `src/features/orders/components/order-timeline.tsx`, `order-number.tsx`, `payment-label.tsx`, `customer-cancel.tsx`, `time-left.tsx` and `src/shared/maps/order-map.tsx`:
+- [X] T046 [US1] Restyle the order page `src/app/(customer)/orders/[id]/page.tsx` with `src/features/orders/components/order-timeline.tsx`, `order-number.tsx`, `payment-label.tsx`, `customer-cancel.tsx`, `time-left.tsx` and `src/shared/maps/order-map.tsx`:
   - status and "Expected by" first, in a status card;
   - the six-step progress strip and timeline;
   - a framed map with Coast pins and a labelled fallback when tiles fail;
   - items and bill;
   - payment label with icon;
   - call kitchen and cancel unchanged in behaviour.
-- [ ] T047 [P] [US1] Restyle `src/app/(customer)/orders/page.tsx` with `src/features/orders/components/reorder-button.tsx`: ongoing orders first as cards with `StatusChip` (the first card is the ongoing order the Orders tab points to), then past orders, with the `NoOrders` empty state. Keep `order-card` and "Order again"
-- [ ] T048 [P] [US1] Restyle the account, messages and addresses screens:
+- [X] T047 [P] [US1] Restyle `src/app/(customer)/orders/page.tsx` with `src/features/orders/components/reorder-button.tsx`: ongoing orders first as cards with `StatusChip` (the first card is the ongoing order the Orders tab points to), then past orders, with the `NoOrders` empty state. Keep `order-card` and "Order again"
+- [X] T048 [P] [US1] Restyle the account, messages and addresses screens:
   - `src/app/(customer)/account/page.tsx`: Messages and Addresses as icon rows at the top, then name, phone and sign out;
   - `src/app/(customer)/messages/page.tsx` with `src/features/notifications/components/message-list.tsx`: the demo label stays visible; `NoMessages` empty state;
   - `src/app/(customer)/addresses/page.tsx`: address cards with label icons; empty state.
-- [ ] T049 [P] [US1] Restyle the address flow: `src/app/(customer)/addresses/new/page.tsx`, `addresses/[id]/page.tsx`, `src/features/addresses/components/address-flow.tsx`, `address-details-form.tsx`, `address-label.tsx`, `voice-recorder.tsx`, `src/shared/audio/voice-note-player.tsx` and `src/shared/maps/pin-picker.tsx`. Use the tokens, icons on actions, and 48 px controls; fields, steps and validation are unchanged
-- [ ] T050 [P] [US1] Restyle the customer sign-in: `src/app/(customer)/login/page.tsx`, `src/features/auth/components/login-screen.tsx`, `sign-in-form.tsx`, `customer-name-form.tsx` and `src/features/demo/components/demo-panel.tsx`, keeping the demo panel's trimmed content ("Demo only", accounts, the fixed code). The login screen is shared by all four surfaces, so check each surface's login page renders correctly
-- [ ] T051 [US1] Add shaped loading skeletons (research R10, T019 blocks):
+- [X] T049 [P] [US1] Restyle the address flow: `src/app/(customer)/addresses/new/page.tsx`, `addresses/[id]/page.tsx`, `src/features/addresses/components/address-flow.tsx`, `address-details-form.tsx`, `address-label.tsx`, `voice-recorder.tsx`, `src/shared/audio/voice-note-player.tsx` and `src/shared/maps/pin-picker.tsx`. Use the tokens, icons on actions, and 48 px controls; fields, steps and validation are unchanged
+- [X] T050 [P] [US1] Restyle the customer sign-in: `src/app/(customer)/login/page.tsx`, `src/features/auth/components/login-screen.tsx`, `sign-in-form.tsx`, `customer-name-form.tsx` and `src/features/demo/components/demo-panel.tsx`, keeping the demo panel's trimmed content ("Demo only", accounts, the fixed code). The login screen is shared by all four surfaces, so check each surface's login page renders correctly
+- [X] T051 [US1] Add shaped loading skeletons (research R10, T019 blocks):
   - `src/app/(customer)/loading.tsx` for home (header, search, chips, three kitchen rows, tab bar placeholder);
   - new `kitchens/[id]/loading.tsx`, `cart/loading.tsx` and `orders/[id]/loading.tsx`, each reserving the real layout's boxes.
   Make `src/app/(customer)/error.tsx` and `not-found.tsx` render with `CustomerTabBarShell`.
-- [ ] T052 [US1] Add the US1 message keys to `en.json`, `kn.json` and `machine-drafted.json` (research R16):
+- [X] T052 [US1] Add the US1 message keys to `en.json`, `kn.json` and `machine-drafted.json` (research R16):
   - `tabs.{home,orders,cart,account,ordersWithStatus,cartWithTotal,cartCount}`;
   - `kitchen.addressAndHours` (and `closesAt`/`opensAt` if missing);
   - `search.{suggestionsKitchens,suggestionsDishes,noSuggestions,allResultsFor,suggestionsCount}`;
