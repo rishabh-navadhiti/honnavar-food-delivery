@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marigold · Kitchen</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  .khero { position: relative; height: 128px; }
+  .khero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .khero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(28,26,68,.35), rgba(28,26,68,0) 45%); }
+  .khead { position: relative; margin: -52px var(--s-4) 0; padding: 16px 16px 4px; z-index: 1; }
+  .name-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .name-row .h1 { flex: 1 1 auto; min-width: 0; padding-top: 4px; }
+  .callbtn { flex: none; width: 60px; min-height: 60px; border-radius: 16px; background: var(--c-leaf-700); color: #fff; text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; box-shadow: inset 0 -3px 0 #105C2F; }
+  .callbtn .lucide { width: 22px; height: 22px; }
+  .callbtn span { font: 700 12px/1.2 var(--font-body); text-align: center; padding: 0 2px; }
+  [lang="kn"] .callbtn span { font-size: 12px; line-height: 1.35; }
+  .khead .badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .khead .closes { font-size: 14px; color: var(--c-text-3); margin-top: 6px; }
+  .khead .eta-row { display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 10px 12px; border-radius: var(--r-md); background: var(--c-indigo-50); }
+  .khead .eta-row .eta { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-weight: 700; font-size: 17px; line-height: 1.3; flex: 1 1 auto; min-width: 0; padding-top: 2px; }
+  .khead .eta-row .eta .lucide { width: 22px; height: 22px; color: var(--c-ink-700); flex: none; }
+  .khead .eta-row .btn { padding: 0 16px; font-size: 16px; }
+  .expander { display: flex; align-items: center; gap: 10px; min-height: var(--tap); margin-top: 12px; border-top: 1px solid var(--c-line); padding-top: 4px; color: var(--c-ink-900); font-weight: 600; font-size: 15px; text-decoration: none; }
+  .expander .lucide { width: 20px; height: 20px; color: var(--c-ink-700); }
+  .expander .chev { margin-left: auto; transition: transform var(--t-base) var(--ease); }
+  .expander[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .exp-body { padding: 4px 0 12px 30px; font-size: 14.5px; color: var(--c-text-2); }
+  .exp-body dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; }
+  .exp-body dt { color: var(--c-text-3); }
+  .exp-body dd { margin: 0; color: var(--c-text); }
+  .exp-body h5 { margin: 8px 0 4px; font: 700 13px/1.4 var(--font-body); color: var(--c-text-3); }
+
+  .dfilter { padding: 16px var(--s-4) 0; }
+  .cat { padding: 0 var(--s-4); }
+  .cat .section-head { margin: 22px 2px 10px; }
+  .dishes { padding: 4px 0; }
+  .dish { display: grid; grid-template-columns: 88px 1fr; gap: 14px; padding: 12px 14px; }
+  .dish + .dish { border-top: 1px solid var(--c-line); }
+  .dish .photo { width: 88px; height: 88px; }
+  .dish .body { min-width: 0; display: flex; flex-direction: column; }
+  .dish .name { display: flex; gap: 8px; align-items: flex-start; }
+  .dish .name .vmark { margin-top: 3px; }
+  [lang="kn"] .dish .name .vmark { margin-top: 5px; }
+  .dish .foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 6px; }
+  .dish .foot .btn { min-width: 104px; padding: 0 14px; }
+  .dish.is-target { background: var(--c-marigold-50); box-shadow: inset 4px 0 0 var(--c-marigold-500); }
+</style>
+</head>
+<body class="board">
+<header class="board-head">
+  <img src="mark.svg" alt="">
+  <h1>C · Marigold <small>Kitchen page · English and Kannada</small></h1>
+  <nav>
+    <a href="index.html">Overview</a><a href="home.html">Home</a><a href="kitchen.html" aria-current="page">Kitchen</a><a href="cart.html">Cart</a><a href="order.html">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html">Admin board</a>
+  </nav>
+</header>
+
+<div class="frames" id="frames"></div>
+
+<section class="notes">
+  <h2>Design notes</h2>
+  <ul>
+    <li><b>Compact header</b>: a 128 px photo strip with the header card overlapping it; name with a chunky green Call button beside it, type and open badges, closing time, and the delivery estimate on an indigo-tint strip, all in one card. Address and hours are one collapsed row (third frame shows it open; chevron turns in 180 ms, body expands without moving the header).</li>
+    <li><b>Dish rows</b>: photo first, veg/non-veg mark (Indian square marks: circle = veg, triangle = non-veg) before the name, price in Baloo, a chunky marigold Add that becomes the − n + stepper in place. A dish opened from a search suggestion is scrolled into view and tinted marigold with a left rule, fading after 2 s (fourth frame).</li>
+    <li><b>Cart tab</b> shows count + running total (₹500 here) instead of an in-page cart bar.</li>
+    <li><b>Kannada</b>: same sizes as English, line height raised (1.42 headings, 1.68 body). Baloo Tamma 2 sets the kitchen and dish names, Noto Sans Kannada the badges and body; both share a round, open stroke. Conjuncts checked: ಢಾಬಾ, ಸ್ಪೆಷಲ್, ಮಸಾಲ, ಅರ್ಧ, ತಂದೂರಿ.</li>
+    <li>New strings drafted (not final): “Call” / “ಫೋನ್ ಮಾಡಿ”, “Address and opening hours” / “ವಿಳಾಸ ಮತ್ತು ತೆರೆದಿರುವ ಸಮಯ”, “4 dishes” / “4 ಐಟಂಗಳು”.</li>
+  </ul>
+</section>
+
+<script>
+const IMG = '../../../../seed/images/';
+const T = {
+  en: {
+    cap: 'English', back: 'All kitchens', lang: 'ಕನ್ನಡ', langLang: 'kn', langAria: 'Switch to Kannada',
+    name: "Udupi's Pingar Dhaba", type: 'Restaurant', open: 'Open now', closes: 'Closes 12:00 am',
+    eta: 'Delivery in about 35–45 min', call: 'Call', callAria: 'Call kitchen on 9000001003',
+    exp: 'Address and opening hours', addr: 'Address', addrVal: 'Karkinaka, NH-66, Honnavar 581334', lm: 'Karkinaka junction',
+    hours: 'Opening hours', everyday: 'Every day', hoursVal: '11:30 am – 12:00 am',
+    showDishes: 'Show dishes', all: 'All', veg: 'Veg only', nonveg: 'Non-veg only', vegAlt: 'Veg', nonvegAlt: 'Non-veg',
+    add: 'Add', less: 'One less', more: 'One more', count: n => n + ' dishes',
+    tabs: ['Home', 'Orders', 'Cart', 'Account'], prep: 'Preparing',
+    cats: [
+      ['Non-veg Specials', [
+        ['chicken-pingara-special', 'Chicken Pingara Special', 250, 0, 2],
+        ['mutton-ghee-roast', 'Mutton Ghee Roast', 340, 0],
+        ['tandoori-chicken-half', 'Tandoori Chicken (Half)', 250, 0],
+        ['chicken-biryani', 'Chicken Biryani', 200, 0]]],
+      ['Veg Specials', [
+        ['veg-pingara-special', 'Veg Pingara Special', 410, 1],
+        ['paneer-butter-masala', 'Paneer Butter Masala', 240, 1, 0, true],
+        ['gobi-manchurian', 'Gobi Manchurian', 120, 1],
+        ['butter-naan', 'Butter Naan', 50, 1]]]
+    ]
+  },
+  kn: {
+    cap: 'ಕನ್ನಡ', back: 'ಎಲ್ಲಾ ಕಿಚನ್‌ಗಳು', lang: 'English', langLang: 'en', langAria: 'ಇಂಗ್ಲಿಷ್‌ಗೆ ಬದಲಿಸಿ',
+    name: 'ಉಡುಪಿಯವರ ಪಿಂಗಾರ ಢಾಬಾ', type: 'ಹೋಟೆಲ್', open: 'ಈಗ ತೆರೆದಿದೆ', closes: 'ರಾತ್ರಿ 12:00ಕ್ಕೆ ಮುಚ್ಚುತ್ತದೆ',
+    eta: 'ಸುಮಾರು 35–45 ನಿಮಿಷದಲ್ಲಿ ಡೆಲಿವರಿ', call: 'ಫೋನ್ ಮಾಡಿ', callAria: 'ಕಿಚನ್‌ಗೆ ಫೋನ್ ಮಾಡಿ: 9000001003',
+    exp: 'ವಿಳಾಸ ಮತ್ತು ತೆರೆದಿರುವ ಸಮಯ', addr: 'ವಿಳಾಸ', addrVal: 'Karkinaka, NH-66, Honnavar 581334', lm: 'Karkinaka junction',
+    hours: 'ತೆರೆದಿರುವ ಸಮಯ', everyday: 'ಪ್ರತಿದಿನ', hoursVal: 'ಬೆಳಗ್ಗೆ 11:30 – ರಾತ್ರಿ 12:00',
+    showDishes: 'ಐಟಂಗಳನ್ನು ತೋರಿಸಿ', all: 'ಎಲ್ಲಾ', veg: 'ವೆಜ್ ಮಾತ್ರ', nonveg: 'ನಾನ್ ವೆಜ್ ಮಾತ್ರ', vegAlt: 'ವೆಜ್', nonvegAlt: 'ನಾನ್ ವೆಜ್',
+    add: 'ಸೇರಿಸಿ', less: 'ಒಂದು ಕಡಿಮೆ', more: 'ಇನ್ನೊಂದು', count: n => n + ' ಐಟಂಗಳು',
+    tabs: ['ಮುಖಪುಟ', 'ಆರ್ಡರ್', 'ಕಾರ್ಟ್', 'ಖಾತೆ'], prep: 'ತಯಾರಾಗುತ್ತಿದೆ',
+    cats: [
+      ['ನಾನ್ ವೆಜ್ ಸ್ಪೆಷಲ್', [
+        ['chicken-pingara-special', 'ಚಿಕನ್ ಪಿಂಗಾರ ಸ್ಪೆಷಲ್', 250, 0, 2],
+        ['mutton-ghee-roast', 'ಮಟನ್ ಘೀ ರೋಸ್ಟ್', 340, 0],
+        ['tandoori-chicken-half', 'ತಂದೂರಿ ಚಿಕನ್ (ಅರ್ಧ)', 250, 0],
+        ['chicken-biryani', 'ಚಿಕನ್ ಬಿರಿಯಾನಿ', 200, 0]]],
+      ['ವೆಜ್ ಸ್ಪೆಷಲ್', [
+        ['veg-pingara-special', 'ವೆಜ್ ಪಿಂಗಾರ ಸ್ಪೆಷಲ್', 410, 1],
+        ['paneer-butter-masala', 'ಪನೀರ್ ಬಟರ್ ಮಸಾಲ', 240, 1, 0, true],
+        ['gobi-manchurian', 'ಗೋಬಿ ಮಂಚೂರಿ', 120, 1],
+        ['butter-naan', 'ಬಟರ್ ನಾನ್', 50, 1]]]
+    ]
+  }
+};
+
+function dishRow(t, d, opts) {
+  const [key, name, price, veg, qty, target] = d;
+  const mark = veg ? `<img class="vmark" src="veg.svg" alt="${t.vegAlt}">` : `<img class="vmark" src="nonveg.svg" alt="${t.nonvegAlt}">`;
+  const action = qty
+    ? `<div class="stepper" role="group" aria-label="${name}"><button aria-label="${t.less}"><i data-lucide="minus"></i></button><output>${qty}</output><button aria-label="${t.more}"><i data-lucide="plus"></i></button></div>`
+    : `<button class="btn btn-primary"><i data-lucide="plus"></i><span>${t.add}</span></button>`;
+  return `<div class="dish${target && opts.target ? ' is-target' : ''}" id="dish-${key}">
+      <img class="photo" src="${IMG}pingar-dhaba--${key}.jpg" alt="">
+      <div class="body">
+        <div class="name">${mark}<h4 class="h3 clamp2">${name}</h4></div>
+        <div class="foot"><span class="price">₹${price}</span>${action}</div>
+      </div>
+    </div>`;
+}
+
+function screen(lang, opts) {
+  const t = T[lang];
+  const cats = t.cats.map(([cname, dishes]) => `
+      <section class="cat">
+        <div class="section-head"><h3 class="h2">${cname}</h3><span class="count">${t.count(dishes.length)}</span></div>
+        <div class="card dishes">${dishes.map(d => dishRow(t, d, opts)).join('')}</div>
+      </section>`).join('');
+  const exp = opts.expanded ? `
+          <div class="exp-body">
+            <h5>${t.addr}</h5>
+            <div>${t.addrVal}<br><span class="faint">${t.lm}</span></div>
+            <h5>${t.hours}</h5>
+            <dl><dt>${t.everyday}</dt><dd>${t.hoursVal}</dd></dl>
+          </div>` : '';
+  return `
+  <div class="phone"><div class="screen" lang="${lang}">
+    <header class="topbar has-back">
+      <a class="hit iconbtn-dark" href="home.html" aria-label="${t.back}"><i data-lucide="chevron-left"></i></a>
+      <a class="brand" href="home.html"><img src="mark.svg" alt=""><span class="wordmark">Honnavar Food</span></a>
+      <span class="spacer"></span>
+      <a class="hit lang" href="#" aria-label="${t.langAria}"><span class="pill"><i data-lucide="languages"></i><span lang="${t.langLang}">${t.lang}</span></span></a>
+    </header>
+    <main data-scroll="${opts.scroll || 0}">
+      <div class="khero"><img src="${IMG}pingar-dhaba.jpg" alt=""></div>
+      <section class="card khead">
+        <div class="name-row">
+          <h2 class="h1">${t.name}</h2>
+          <a class="callbtn" href="tel:9000001003" aria-label="${t.callAria}"><i data-lucide="phone"></i><span>${t.call}</span></a>
+        </div>
+        <div class="badges">
+          <span class="badge"><i data-lucide="utensils"></i>${t.type}</span>
+          <span class="badge badge-open"><span class="dot"></span>${t.open}</span>
+        </div>
+        <div class="closes">${t.closes}</div>
+        <div class="eta-row">
+          <span class="eta"><i data-lucide="bike"></i><span>${t.eta}</span></span>
+        </div>
+        <a class="expander" href="#" aria-expanded="${opts.expanded ? 'true' : 'false'}"><i data-lucide="map-pin"></i><span>${t.exp}</span><i class="chev" data-lucide="chevron-down"></i></a>
+        ${exp}
+      </section>
+      <div class="dfilter">
+        <div class="seg" role="radiogroup" aria-label="${t.showDishes}">
+          <button class="is-on" role="radio" aria-checked="true">${t.all}</button>
+          <button role="radio" aria-checked="false"><img src="veg.svg" alt="">${t.veg}</button>
+          <button role="radio" aria-checked="false"><img src="nonveg.svg" alt="">${t.nonveg}</button>
+        </div>
+      </div>
+      ${cats}
+      <div style="height:24px"></div>
+    </main>
+    <nav class="tabbar" aria-label="Main navigation">
+      <a class="tab" href="home.html"><span class="ic"><i data-lucide="house"></i></span><span class="lbl">${t.tabs[0]}</span></a>
+      <a class="tab" href="order.html"><span class="ic"><i data-lucide="receipt-text"></i></span><span class="lbl">${t.tabs[1]}</span><span class="sub live"><span class="dot"></span>${t.prep}</span></a>
+      <a class="tab" href="cart.html"><span class="ic"><i data-lucide="shopping-bag"></i><span class="count">2</span></span><span class="lbl">${t.tabs[2]}</span><span class="sub money">₹500</span></a>
+      <a class="tab" href="#"><span class="ic"><i data-lucide="circle-user-round"></i></span><span class="lbl">${t.tabs[3]}</span></a>
+    </nav>
+  </div></div>`;
+}
+
+const frames = [
+  ['Kitchen', '390 × 844 · English · stepper on one dish, Cart tab ₹500', 'en', {}],
+  ['ಕಿಚನ್', '390 × 844 · Kannada · same layout, same sizes', 'kn', {}],
+  ['Address and hours open', 'the collapsed row expanded in place', 'en', { expanded: true }],
+  ['Opened from a dish suggestion', 'scrolled to Paneer Butter Masala, row tinted for 2 s', 'en', { target: true, scroll: 'target' }],
+];
+document.getElementById('frames').innerHTML = frames.map(([cap, sub, lang, opts]) =>
+  `<figure class="frame-wrap"><figcaption${lang === 'kn' ? ' lang="kn"' : ''}>${cap} <span lang="en">${sub}</span></figcaption>${screen(lang, opts)}</figure>`).join('');
+</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  if (location.hash === '#360') document.documentElement.classList.add('w360');
+  lucide.createIcons();
+  document.querySelectorAll('main[data-scroll]').forEach(m => {
+    if (m.dataset.scroll === 'target') { const d = m.querySelector('.is-target'); m.scrollTop = d.offsetTop - m.offsetTop - 140; }
+    else m.scrollTop = +m.dataset.scroll;
+  });
+</script>
+</body>
+</html>

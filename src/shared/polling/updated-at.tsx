@@ -10,7 +10,7 @@ export async function UpdatedAt({ at }: { at: Date }) {
   const t = await getTranslations('polling');
   const locale = await getLocale();
   return (
-    <p className="text-sm text-muted" aria-live="polite">
+    <p className="text-caption text-muted" aria-live="polite">
       {t('updatedAt', { time: formatTime(at, isLocale(locale) ? locale : 'en') })}
     </p>
   );

@@ -20,7 +20,7 @@ export function StatusPanel({ kitchenId, status, reason }: { kitchenId: string; 
   const tone = status === 'active' ? 'open' : status === 'suspended' ? 'closed' : 'warn';
   return (
     <Card className="flex flex-col gap-3" data-testid="status-panel">
-      <h2 className="text-lg font-bold">{t('admin.statusTitle')}</h2>
+      <h2 className="text-heading font-bold">{t('admin.statusTitle')}</h2>
       <p className="flex items-center gap-2">
         <Badge tone={tone}>{t('admin.statusNow', { status: t(`status.${status}`) })}</Badge>
       </p>

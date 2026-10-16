@@ -1,3 +1,4 @@
+import { Pencil, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { AddressLabel } from '@/features/addresses/components/address-label';
 import { getTranslations } from 'next-intl/server';
@@ -6,7 +7,7 @@ import { requireSession } from '@/features/auth/session';
 import { ButtonLink } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
 import { EmptyState } from '@/shared/ui/empty-state';
-import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { CustomerTabBar } from '@/features/cart/components/customer-tab-bar';
 import { BackLink } from '@/shared/ui/back-link';
 
 export default async function AddressesPage() {
@@ -16,9 +17,9 @@ export default async function AddressesPage() {
   return (
     <div className="flex flex-col gap-4">
       <BackLink href="/account" label={t('backLinks.account')} />
-      <h1 className="text-2xl font-bold">{t('addresses.title')}</h1>
+      <h1 className="text-title font-bold">{t('addresses.title')}</h1>
       {addresses.length === 0 ? (
-        <EmptyState title={t('addresses.empty')} />
+        <EmptyState illustration="NoKitchens" title={t('addresses.empty')} />
       ) : (
         <ul className="flex flex-col gap-3">
           {addresses.map((a) => (
@@ -29,9 +30,10 @@ export default async function AddressesPage() {
                     <AddressLabel label={a.label} labelText={a.labelText} />
                   </p>
                   <p className="text-base">{a.house}</p>
-                  <p className="text-sm text-muted">{a.landmark}</p>
+                  <p className="text-small text-muted">{a.landmark}</p>
                 </div>
-                <Link href={`/addresses/${a.id}`} className="min-h-touch shrink-0 py-3 text-base font-semibold text-primary">
+                <Link href={`/addresses/${a.id}`} className="inline-flex min-h-touch shrink-0 items-center gap-1.5 px-1 text-base font-semibold text-primary-strong">
+                  <Pencil aria-hidden="true" className="size-4" />
                   {t('common.edit')}
                 </Link>
               </Card>
@@ -39,8 +41,10 @@ export default async function AddressesPage() {
           ))}
         </ul>
       )}
-      <ButtonLink href="/addresses/new">{t('addresses.add')}</ButtonLink>
-      <CustomerDock />
+      <ButtonLink href="/addresses/new" variant="tonal" icon={<Plus aria-hidden="true" />}>
+        {t('addresses.add')}
+      </ButtonLink>
+      <CustomerTabBar current="account" />
     </div>
   );
 }

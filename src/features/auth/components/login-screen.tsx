@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import type { ReactNode } from 'react';
 import { getOptionalSession } from '../session';
 import { safeNext, type Surface } from '../surfaces';
+import { CoastMark } from '@/shared/ui/icons/coast-mark';
 import { DemoPanel } from '../../demo/components/demo-panel';
 import { SignInForm } from './sign-in-form';
 
@@ -18,10 +19,15 @@ export async function LoginScreen({ surface, next, below }: { surface: Surface; 
   if (await getOptionalSession(surface)) redirect(safeNext(surface, next));
   const t = await getTranslations('auth');
   return (
-    <div className="mx-auto flex w-full max-w-md flex-col gap-4">
-      <h1 className="text-2xl font-bold">{t(titles[surface])}</h1>
-      <p className="text-base text-muted">{surface === 'customer' ? t('customerIntro') : t('staffIntro')}</p>
-      <SignInForm surface={surface} next={next} />
+    <div className="mx-auto flex w-full max-w-md flex-col gap-4 pt-2">
+      <div className="flex flex-col items-start gap-3">
+        <CoastMark className="size-12" />
+        <h1 className="stretch-head text-display font-bold leading-[var(--lh-tight)]">{t(titles[surface])}</h1>
+        <p className="text-base text-muted">{surface === 'customer' ? t('customerIntro') : t('staffIntro')}</p>
+      </div>
+      <div className="rounded-lg bg-surface p-4 shadow-2">
+        <SignInForm surface={surface} next={next} />
+      </div>
       <DemoPanel surface={surface} />
       {below}
     </div>

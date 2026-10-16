@@ -10,7 +10,7 @@ import { formatDayTime, formatPrice } from '@/shared/i18n/format';
 import { ButtonLink } from '@/shared/ui/button';
 import { EmptyState } from '@/shared/ui/empty-state';
 import { LocalizedText } from '@/shared/ui/localized-text';
-import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { CustomerTabBar } from '@/features/cart/components/customer-tab-bar';
 import { BackLink } from '@/shared/ui/back-link';
 
 export default async function OrdersPage() {
@@ -26,17 +26,17 @@ export default async function OrdersPage() {
     <li key={order.id} className="flex flex-col gap-2">
       <Link
         href={`/orders/${order.id}`}
-        className="flex min-h-touch flex-col gap-1 rounded-2xl border border-line bg-surface p-4"
+        className="flex min-h-touch flex-col gap-1.5 rounded-lg bg-surface p-4 shadow-1 transition-shadow duration-(--duration-fast) hover:shadow-2"
         data-testid="order-card"
       >
         <span className="flex items-center justify-between gap-2">
           <OrderNumber orderNo={order.orderNo} />
           <StatusBadge status={order.status} />
         </span>
-        <span className="text-base font-semibold">
+        <span className="stretch-head text-heading font-bold">
           <LocalizedText pair={order.kitchen.name} />
         </span>
-        <span className="text-sm text-muted">
+        <span className="text-small text-muted">
           {formatDayTime(order.placedAt, locale)}
           <span aria-hidden="true"> · </span>
           {formatPrice(order.grandTotal, locale)}
@@ -49,28 +49,28 @@ export default async function OrdersPage() {
   return (
     <div className="flex flex-col gap-5">
       <BackLink href="/" label={t('backLinks.home')} />
-      <h1 className="text-2xl font-bold">{t('orders.title')}</h1>
+      <h1 className="text-title font-bold">{t('orders.title')}</h1>
       {orders.length === 0 ? (
-        <EmptyState title={t('orders.empty')} action={<ButtonLink href="/">{t('cart.browse')}</ButtonLink>} />
+        <EmptyState illustration="NoOrders" title={t('orders.empty')} action={<ButtonLink href="/">{t('cart.browse')}</ButtonLink>} />
       ) : (
         <>
           <section aria-labelledby="ongoing-title" className="flex flex-col gap-3">
-            <h2 id="ongoing-title" className="text-lg font-bold">
+            <h2 id="ongoing-title" className="text-heading font-bold">
               {t('orders.ongoing')}
             </h2>
-            {ongoing.length === 0 ? <p className="text-base text-muted">{t('orders.noOngoing')}</p> : <ul className="flex flex-col gap-3">{ongoing.map(card)}</ul>}
+            {ongoing.length === 0 ? <p className="text-base text-muted">{t('orders.noOngoing')}</p> : <ul className="flex flex-col gap-3 md:grid md:grid-cols-2">{ongoing.map(card)}</ul>}
           </section>
           {past.length > 0 ? (
             <section aria-labelledby="past-title" className="flex flex-col gap-3">
-              <h2 id="past-title" className="text-lg font-bold">
+              <h2 id="past-title" className="text-heading font-bold">
                 {t('orders.past')}
               </h2>
-              <ul className="flex flex-col gap-3">{past.map(card)}</ul>
+              <ul className="flex flex-col gap-3 md:grid md:grid-cols-2">{past.map(card)}</ul>
             </section>
           ) : null}
         </>
       )}
-      <CustomerDock />
+      <CustomerTabBar current="orders" />
     </div>
   );
 }

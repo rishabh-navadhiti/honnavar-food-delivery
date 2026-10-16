@@ -28,7 +28,7 @@ export function CategoryForm({ surface, kitchenId, category }: Props) {
       <form action={formAction} key={JSON.stringify(values)} className="flex flex-col gap-4" noValidate>
         <ScopeFields surface={surface} kitchenId={kitchenId} />
         {category ? <input type="hidden" name="id" value={category.id} /> : null}
-        <p className="text-sm text-muted">{t('categoryForm.nameHint')}</p>
+        <p className="text-small text-muted">{t('categoryForm.nameHint')}</p>
         <TextField name="nameEn" lang="en" label={t('categoryForm.nameEn')} defaultValue={values.nameEn} maxLength={60} error={nameError ? t(`errors.${nameError}`) : undefined} />
         <TextField name="nameKn" lang="kn" label={t('categoryForm.nameKn')} defaultValue={values.nameKn} maxLength={60} />
         {formError ? (
@@ -36,7 +36,7 @@ export function CategoryForm({ surface, kitchenId, category }: Props) {
             {formError}
           </p>
         ) : null}
-        <Button type="submit" disabled={pending} className="text-lg">
+        <Button type="submit" disabled={pending} className="text-heading">
           {pending ? t('common.saving') : t('common.save')}
         </Button>
       </form>

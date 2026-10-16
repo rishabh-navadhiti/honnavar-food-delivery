@@ -9,7 +9,7 @@ test('customers, partners and agents read their updates in a demo message log, i
   // Customer (FR-046, FR-047).
   await signIn(page, '/login', demoCustomer().phone);
   await page.goto('/messages');
-  const list = page.getByTestId('message-list');
+  const list = page.getByRole('main').getByTestId('message-list');
   await expect(list).toContainText(`Order #${deliveredOrder().orderNo} delivered.`);
   await expect(list.locator('li').first()).toContainText('Demo: not sent by SMS or WhatsApp');
 

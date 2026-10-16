@@ -74,7 +74,8 @@ test('a guest builds a one-kitchen cart, signs in at checkout and pays by UPI (d
   await expect(page.getByRole('heading', { level: 1 })).toContainText(/#\d{4}/);
   await expect(page.getByTestId('payment')).toHaveText('Paid by UPI (demo)');
   await expect(page.getByTestId('expected-by')).toContainText('Expected by');
-  await expect(page.getByTestId('header-cart')).not.toContainText(/\d/);
+  // The cart is empty after placing (E4, owner review 2026-10-16: the cart button hides when empty).
+  await expect(page.getByTestId('header-cart')).toHaveCount(0);
 
   // Every ongoing order is reachable from "My orders" (FR-024).
   await page.getByRole('link', { name: 'My orders' }).first().click();

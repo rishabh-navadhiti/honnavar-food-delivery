@@ -14,8 +14,8 @@ export async function DemoPanel({ surface }: { surface: Surface }) {
   const t = await getTranslations('demo');
   const accounts = await getDemoAccounts(surface);
   return (
-    <aside data-testid="demo-panel" aria-labelledby="demo-panel-title" className="rounded-xl border border-line bg-secondary px-3 py-2 text-sm text-ink">
-      <h2 id="demo-panel-title" className="text-xs font-semibold uppercase tracking-wide text-muted">
+    <aside data-testid="demo-panel" aria-labelledby="demo-panel-title" className="rounded-md border border-dashed border-line-strong/60 bg-surface-sunk px-3.5 py-3 text-small text-ink">
+      <h2 id="demo-panel-title" className="text-caption font-semibold uppercase tracking-wide text-muted">
         {t('title')}
       </h2>
       <ul className="mt-1 flex flex-col gap-0.5">

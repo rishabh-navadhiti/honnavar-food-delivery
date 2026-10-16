@@ -19,14 +19,20 @@ test('signed-in customers see their current order in a strip on every screen but
     await expect(page.getByTestId('ongoing-strip'), path).toContainText(`#${latest.orderNo}`);
   }
 
-  // Above the cart bar when both show.
+  // Both show, neither hiding the other (E1, approved 2026-10-16: the tabs replace the stacked strip and bar).
   const kitchen = orderableKitchen();
   await page.goto(`/kitchens/${kitchen.id}`);
   await page.locator(`[data-dish-id="${availableDishesIn(kitchen.key)[0]!.id}"]`).getByRole('button', { name: 'Add', exact: true }).click();
   await expect(page.getByTestId('cart-bar')).toBeVisible();
-  const strip = await page.getByTestId('ongoing-strip').boundingBox();
-  const bar = await page.getByTestId('cart-bar').boundingBox();
-  expect(strip!.y + strip!.height).toBeLessThanOrEqual(bar!.y);
+  // E3 (owner review 2026-10-16): the kitchen page has no tab bar; the order's status shows on tab pages.
+  await page.goto('/');
+  await expect(page.getByTestId('cart-bar')).toBeVisible();
+  await expect(page.getByTestId('ongoing-strip')).toBeVisible();
+  const strip = (await page.getByTestId('ongoing-strip').boundingBox())!;
+  const bar = (await page.getByTestId('cart-bar').boundingBox())!;
+  const apart =
+    strip.x + strip.width <= bar.x || bar.x + bar.width <= strip.x || strip.y + strip.height <= bar.y || bar.y + bar.height <= strip.y;
+  expect(apart).toBe(true);
 
   // Back links go to fixed parents, never history: the cart back to its kitchen.
   await page.getByTestId('cart-bar').click();
@@ -34,8 +40,15 @@ test('signed-in customers see their current order in a strip on every screen but
   await page.getByTestId('back-link').click();
   await expect(page).toHaveURL(`/kitchens/${kitchen.id}`);
 
-  // It opens the order, and is not shown on that order's own page.
+  // It opens the orders list with this order first, showing its status; the order's own page does
+  // not show it (E2, approved 2026-10-16: the Orders tab always opens the list; E3: from home).
+  await page.goto('/');
   await page.getByTestId('ongoing-strip').click();
+  await expect(page).toHaveURL('/orders');
+  const first = page.getByTestId('order-card').first();
+  await expect(first).toContainText(`#${latest.orderNo}`);
+  await expect(first).toContainText('Placed');
+  await first.click();
   await expect(page).toHaveURL(`/orders/${latest.id}`);
   await expect(page.getByTestId('ongoing-strip')).toHaveCount(0);
   await expect(page.getByTestId('back-link')).toHaveAttribute('href', '/orders');

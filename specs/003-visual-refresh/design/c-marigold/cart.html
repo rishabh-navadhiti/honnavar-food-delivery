@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marigold · Cart</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  .step-head { display: flex; align-items: center; gap: 10px; margin: 22px 2px 10px; }
+  .step-head .n { width: 28px; height: 28px; border-radius: 50%; background: var(--c-ink-900); color: var(--c-marigold-500); display: grid; place-items: center; font: 800 15px/1 var(--font-display); padding-top: 2px; flex: none; }
+  .step-head .h2 { flex: 1 1 auto; }
+  .step-head .btn { min-height: 48px; padding: 0 8px; font-size: 14px; font-family: var(--font-body); font-weight: 600; color: var(--c-text-2); }
+  .step-head .btn .lucide { width: 18px; height: 18px; }
+
+  .kstrip { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--c-line); }
+  .kstrip img { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; }
+  .kstrip .h3 { font-size: 16px; }
+  .kstrip .faint { font-size: 13.5px; }
+
+  .line { display: grid; grid-template-columns: 56px 1fr; gap: 6px 12px; padding: 14px; }
+  .line + .line { border-top: 1px solid var(--c-line); }
+  .line .photo { width: 56px; height: 56px; grid-row: span 2; border-radius: 10px; }
+  .line .nm { display: flex; gap: 8px; align-items: flex-start; }
+  .line .nm .vmark { margin-top: 3px; }
+  .line .nm .h3 { font-size: 16px; }
+  .line .ctl { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .line .ctl .each { font-size: 13.5px; color: var(--c-text-3); }
+  .line .ctl .price { font-size: 18px; }
+  .line .ctl .right { display: flex; align-items: center; gap: 12px; }
+
+  .bill { padding: 14px 16px 16px; background: var(--c-sunken); border-radius: 0 0 var(--r-lg) var(--r-lg); border-top: 1px dashed var(--c-line-strong); }
+  .bill .r { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; color: var(--c-text-2); margin: 2px 0; }
+  .bill .r b { font: 700 16px/1.4 var(--font-display); color: var(--c-text); }
+  .bill .grand { margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--c-line-strong); color: var(--c-text); font-weight: 700; }
+  .bill .grand b { font-size: 24px; font-weight: 800; }
+
+  .addr { display: grid; grid-template-columns: 44px 1fr 28px; gap: 12px; align-items: start; padding: 14px; text-decoration: none; color: inherit; }
+  .addr + .addr { margin-top: 10px; }
+  .addr .ico { width: 44px; height: 44px; border-radius: 12px; background: var(--c-indigo-50); display: grid; place-items: center; color: var(--c-ink-700); }
+  .addr .ico .lucide { width: 22px; height: 22px; }
+  .addr .h3 { font-size: 17px; }
+  .addr .l1 { font-size: 14.5px; color: var(--c-text-2); line-height: 1.45; margin-top: 2px; }
+  .addr .l2 { font-size: 13.5px; color: var(--c-text-3); margin-top: 2px; display: flex; gap: 4px; align-items: center; }
+  .addr .l2 .lucide { width: 14px; height: 14px; }
+  .radio { width: 26px; height: 26px; border-radius: 50%; box-shadow: inset 0 0 0 2px var(--c-line-strong); display: grid; place-items: center; margin-top: 8px; background: #fff; }
+  .is-sel .radio { background: var(--c-ink-900); box-shadow: none; color: var(--c-marigold-500); }
+  .is-sel .radio .lucide { width: 16px; height: 16px; stroke-width: 3.2; }
+  .addr.is-sel, .pay.is-sel { box-shadow: inset 0 0 0 2px var(--c-ink-900), var(--e-1); }
+  .addr.is-sel .ico, .pay.is-sel .ico { background: var(--c-marigold-500); color: var(--c-ink-900); }
+  .add-new { margin-top: 10px; border: 2px dashed var(--c-line-strong); background: transparent; color: var(--c-ink-900); border-radius: var(--r-lg); width: 100%; font-size: 16px; }
+
+  .pays { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pay { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 14px; min-height: 120px; text-decoration: none; color: inherit; }
+  .pay .ico { width: 44px; height: 44px; border-radius: 12px; background: var(--c-indigo-50); display: grid; place-items: center; color: var(--c-ink-700); }
+  .pay .ico .lucide { width: 24px; height: 24px; }
+  .pay .h3 { font-size: 17px; }
+  .pay .radio { position: absolute; top: 6px; right: 12px; }
+  .pay .badge-demo { margin-top: -4px; }
+
+  .placebar { flex: none; background: var(--c-ink-900); padding: 12px 16px 16px; position: relative; z-index: 3; }
+  .placebar .btn { width: 100%; justify-content: space-between; padding: 0 18px 0 22px; }
+  .placebar .btn .amt { font-weight: 800; }
+  .placebar .meta { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 12.5px; color: var(--c-on-ink-2); margin-top: 6px; }
+
+  .empty { text-align: center; padding: 64px 28px 0; }
+  .empty img { width: 240px; height: 180px; }
+  .empty .h1 { margin: 20px 0 8px; }
+  .empty p { color: var(--c-text-2); margin: 0 0 24px; }
+</style>
+</head>
+<body class="board">
+<header class="board-head">
+  <img src="mark.svg" alt="">
+  <h1>C · Marigold <small>Cart and checkout</small></h1>
+  <nav>
+    <a href="index.html">Overview</a><a href="home.html">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html" aria-current="page">Cart</a><a href="order.html">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html">Admin board</a>
+  </nav>
+</header>
+
+<div class="frames">
+  <figure class="frame-wrap" id="f-cart">
+    <figcaption>Cart <span>390 × 844 · lines and bill · place-order bar replaces the tabs</span></figcaption>
+    <div class="phone"><div class="screen" lang="en">
+      <header class="topbar has-back">
+        <a class="hit iconbtn-dark" href="kitchen.html" aria-label="Back to the kitchen"><i data-lucide="chevron-left"></i></a>
+        <span class="topbar-title">Your cart</span>
+        <span class="spacer"></span>
+        <a class="hit lang" href="#" aria-label="Switch to Kannada"><span class="pill"><i data-lucide="languages"></i><span lang="kn">ಕನ್ನಡ</span></span></a>
+      </header>
+      <main>
+        <div class="section">
+          <div class="step-head"><span class="n">1</span><h2 class="h2">Items</h2>
+            <button class="btn btn-ghost"><i data-lucide="trash-2"></i><span>Empty the cart</span></button></div>
+          <div class="card">
+            <div class="kstrip">
+              <img src="../../../../seed/images/pingar-dhaba.jpg" alt="">
+              <div class="grow"><div class="h3 ellipsis">Udupi's Pingar Dhaba</div><div class="faint">Karkinaka junction · 35–45 min</div></div>
+            </div>
+            <div class="line">
+              <img class="photo" src="../../../../seed/images/pingar-dhaba--chicken-pingara-special.jpg" alt="">
+              <div class="nm"><img class="vmark" src="nonveg.svg" alt="Non-veg"><span class="h3">Chicken Pingara Special</span></div>
+              <div class="ctl">
+                <div class="stepper" role="group" aria-label="Quantity"><button aria-label="One less"><i data-lucide="minus"></i></button><output>2</output><button aria-label="One more"><i data-lucide="plus"></i></button></div>
+                <span class="price">₹500</span>
+              </div>
+            </div>
+            <div class="line">
+              <img class="photo" src="../../../../seed/images/pingar-dhaba--paneer-butter-masala.jpg" alt="">
+              <div class="nm"><img class="vmark" src="veg.svg" alt="Veg"><span class="h3">Paneer Butter Masala</span></div>
+              <div class="ctl">
+                <div class="stepper" role="group" aria-label="Quantity"><button aria-label="One less"><i data-lucide="minus"></i></button><output>1</output><button aria-label="One more"><i data-lucide="plus"></i></button></div>
+                <span class="price">₹240</span>
+              </div>
+            </div>
+            <div class="line">
+              <img class="photo" src="../../../../seed/images/pingar-dhaba--butter-naan.jpg" alt="">
+              <div class="nm"><img class="vmark" src="veg.svg" alt="Veg"><span class="h3">Butter Naan</span></div>
+              <div class="ctl">
+                <div class="stepper" role="group" aria-label="Quantity"><button aria-label="One less"><i data-lucide="minus"></i></button><output>2</output><button aria-label="One more"><i data-lucide="plus"></i></button></div>
+                <span class="price">₹100</span>
+              </div>
+            </div>
+            <div class="bill">
+              <div class="r"><span>Item total</span><b>₹840</b></div>
+              <div class="r"><span>Delivery fee</span><b>₹30</b></div>
+              <div class="r grand"><span>Grand total</span><b>₹870</b></div>
+            </div>
+          </div>
+
+          <div class="step-head"><span class="n">2</span><h2 class="h2">Deliver to</h2></div>
+          <a class="card addr is-sel" href="#" role="radio" aria-checked="true">
+            <span class="ico"><i data-lucide="house"></i></span>
+            <span><span class="h3">Home</span><div class="l1">Door 2-114, Nayak House, Prabhatnagar 2nd cross</div><div class="l2"><i data-lucide="map-pin"></i>Behind Prabhatnagar temple</div></span>
+            <span class="radio"><i data-lucide="check"></i></span>
+          </a>
+          <a class="card addr" href="#" role="radio" aria-checked="false">
+            <span class="ico"><i data-lucide="briefcase"></i></span>
+            <span><span class="h3">Work</span><div class="l1">Shop 7, Sagar Complex, Hospital Road</div><div class="l2"><i data-lucide="map-pin"></i>Opposite KSRTC bus stand</div></span>
+            <span class="radio"></span>
+          </a>
+          <button class="btn add-new"><i data-lucide="plus"></i><span>Add a new address</span></button>
+
+          <div class="step-head"><span class="n">3</span><h2 class="h2">Payment</h2></div>
+          <div class="pays" role="radiogroup" aria-label="Payment">
+            <a class="card pay" href="#" role="radio" aria-checked="false">
+              <span class="ico"><i data-lucide="smartphone"></i></span>
+              <span class="h3">UPI</span>
+              <span class="badge badge-demo">Demo</span>
+              <span class="radio"></span>
+            </a>
+            <a class="card pay is-sel" href="#" role="radio" aria-checked="true">
+              <span class="ico"><i data-lucide="banknote"></i></span>
+              <span class="h3">Cash on delivery</span>
+              <span class="radio"><i data-lucide="check"></i></span>
+            </a>
+          </div>
+          <div style="height:24px"></div>
+        </div>
+      </main>
+      <div class="placebar">
+        <button class="btn btn-primary btn-lg"><span>Place order · <span class="amt">₹870</span></span><i data-lucide="arrow-right"></i></button>
+      </div>
+    </div></div>
+  </figure>
+
+  <figure class="frame-wrap" id="f-cart2">
+    <figcaption>Cart, scrolled <span>address and payment chosen from last time</span></figcaption>
+  </figure>
+
+  <figure class="frame-wrap">
+    <figcaption>Empty cart <span>illustrated state · normal tabs, no place-order bar</span></figcaption>
+    <div class="phone"><div class="screen" lang="en">
+      <header class="topbar">
+        <a class="brand" href="home.html"><img src="mark.svg" alt=""><span class="wordmark">Honnavar Food</span></a>
+        <span class="spacer"></span>
+        <a class="hit lang" href="#" aria-label="Switch to Kannada"><span class="pill"><i data-lucide="languages"></i><span lang="kn">ಕನ್ನಡ</span></span></a>
+      </header>
+      <main>
+        <div class="empty">
+          <img src="empty-cart.svg" alt="">
+          <h2 class="h1">Your cart is empty</h2>
+          <p>Pick a kitchen and add a dish or two.</p>
+          <a class="btn btn-primary btn-lg" href="home.html"><i data-lucide="search"></i><span>Find food</span></a>
+        </div>
+      </main>
+      <nav class="tabbar" aria-label="Main navigation">
+        <a class="tab" href="home.html"><span class="ic"><i data-lucide="house"></i></span><span class="lbl">Home</span></a>
+        <a class="tab" href="order.html"><span class="ic"><i data-lucide="receipt-text"></i></span><span class="lbl">Orders</span></a>
+        <a class="tab is-active" href="cart.html" aria-current="page"><span class="ic"><i data-lucide="shopping-bag"></i></span><span class="lbl">Cart</span></a>
+        <a class="tab" href="#"><span class="ic"><i data-lucide="circle-user-round"></i></span><span class="lbl">Account</span></a>
+      </nav>
+    </div></div>
+  </figure>
+</div>
+
+<section class="notes">
+  <h2>Design notes</h2>
+  <ul>
+    <li><b>One bottom bar</b>: on the cart the tabs give way to the indigo place-order bar with one 56 px marigold button “Place order · ₹870”; the back chevron in the top bar returns to the kitchen. Chrome: 56 + 84 = 140 px.</li>
+    <li><b>Numbered steps</b> (1 Items · 2 Deliver to · 3 Payment) give first-time users an order to read in; the bill closes the Items card on a tinted, dashed-edge panel so it reads as the receipt.</li>
+    <li>Lines keep the dish photo and veg mark; the stepper and the line total share one row so long names get the full width.</li>
+    <li>Selected address and payment: ink outline, marigold icon tile, ink check disc. The UPI tile keeps a visible “Demo” tag; after paying, the order shows “Paid by UPI (demo)”.</li>
+    <li>“Pick a kitchen and add a dish or two.” is a drafted empty-state line (Kannada draft: “ಒಂದು ಕಿಚನ್ ಆರಿಸಿ, ಒಂದೆರಡು ಐಟಂ ಸೇರಿಸಿ.”), not final.</li>
+  </ul>
+</section>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  (function () {
+    var c = document.querySelector('#f-cart .phone').cloneNode(true);
+    document.getElementById('f-cart2').appendChild(c);
+    if (location.hash === '#360') document.documentElement.classList.add('w360');
+    lucide.createIcons();
+    var m = c.querySelector('main'); m.scrollTop = m.scrollHeight;
+  })();
+</script>
+</body>
+</html>

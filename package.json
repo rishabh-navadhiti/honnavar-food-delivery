@@ -17,6 +17,7 @@
     "test:unit": "vitest run --project unit",
     "test:int": "vitest run --project integration",
     "test:e2e": "NODE_OPTIONS=--conditions=react-server playwright test",
+    "screens": "NODE_OPTIONS=--conditions=react-server playwright test --config playwright.screens.config.ts",
     "db:generate": "drizzle-kit generate",
     "demo:reset": "tsx --env-file-if-exists=.env.local --conditions=react-server src/features/demo/reset.ts"
   },
@@ -25,6 +26,7 @@
     "@neon/env": "^1.6.3",
     "drizzle-orm": "^0.45.4",
     "leaflet": "^1.9.4",
+    "lucide-react": "^1.58.0",
     "next": "16.4",
     "next-intl": "^4.14.9",
     "postgres": "^3.4.9",

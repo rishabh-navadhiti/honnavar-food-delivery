@@ -57,3 +57,29 @@ export function rememberSoundOn(on: boolean): void {
     // Not remembered; the prompt shows again on the next page.
   }
 }
+
+const PROMPT_SEEN_KEY = 'hfd_alert_prompt_seen';
+
+/**
+ * Whether this device has turned order sounds on before (003, research R9): then the prompt shows
+ * as a compact pill. Stored in localStorage (device), while the unlock itself stays per tab.
+ */
+export function promptSeenRaw(): string {
+  try {
+    return localStorage.getItem(PROMPT_SEEN_KEY) === '1' ? 'seen' : 'new';
+  } catch {
+    return 'new';
+  }
+}
+
+export function rememberPromptSeen(): void {
+  try {
+    localStorage.setItem(PROMPT_SEEN_KEY, '1');
+    window.dispatchEvent(new Event(ALERT_STORAGE_EVENT));
+  } catch {
+    // Not remembered; the full prompt shows again next time.
+  }
+}
+
+/** The pill asks the alert to unlock sound; the alert owns the audio element. */
+export const SOUND_UNLOCK_EVENT = 'hfd-sound-unlock';

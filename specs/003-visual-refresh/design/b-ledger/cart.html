@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledger · Cart</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="ui.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  .page-title { display: flex; align-items: center; gap: var(--s2); padding: var(--s3) var(--gutter) 0; }
+  .page-title h1 { font-size: var(--fs-display); line-height: var(--lh-display); font-weight: var(--fw-bold); letter-spacing: -.01em; }
+  .from { display: flex; align-items: center; gap: 10px; padding: 6px var(--gutter) 0; font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-ink-2); }
+  .from img { width: 28px; height: 28px; border-radius: 6px; object-fit: cover; }
+  .from b { color: var(--c-ink); font-weight: var(--fw-semi); }
+  .from .count { margin-left: auto; color: var(--c-muted); font-feature-settings: var(--num); white-space: nowrap; }
+  .sec-n { display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 50%; background: var(--c-ink); color: #fff; font-size: 11px; font-weight: var(--fw-bold); margin-right: 8px; vertical-align: 2px; font-feature-settings: var(--num); }
+  .line { padding: 10px var(--s3) 10px var(--s3); }
+  .line .l1 { display: flex; align-items: flex-start; gap: 6px; }
+  .line .l1 .vm { margin-top: 4px; }
+  .line .l1 .n { flex: 1; min-width: 0; font-weight: var(--fw-semi); font-size: var(--fs-body); line-height: var(--lh-body); }
+  .line .l1 .t { font-weight: var(--fw-bold); font-feature-settings: var(--num); }
+  .line .l2 { display: flex; align-items: center; justify-content: space-between; padding-left: 20px; margin-top: 2px; }
+  .line .each { font-size: var(--fs-cap); color: var(--c-muted); font-feature-settings: var(--num); }
+  .line .stepper { height: 40px; }
+  .line .stepper button { height: 48px; margin: -4px 0; }
+  .bill { padding: var(--s3); display: grid; gap: 8px; }
+  .bill hr { border: 0; border-top: 1px dashed var(--c-line-strong); margin: 4px 0; }
+  .add-row { display: flex; align-items: center; gap: var(--s2); min-height: 52px; padding: 0 var(--s3); color: var(--c-primary-press); font-weight: var(--fw-semi); font-size: var(--fs-sm); text-decoration: none; }
+  .add-row svg.lucide { width: 20px; height: 20px; }
+  .radio .t svg.lucide { width: 18px; height: 18px; color: var(--c-muted); }
+  .clear { display: flex; justify-content: center; padding: var(--s2) 0 var(--s5); }
+  .clear .link { color: var(--c-danger); font-weight: var(--fw-medium); }
+
+  .placebar { flex: none; display: flex; align-items: center; gap: var(--s1); padding: 10px var(--s3) 12px var(--s1); background: var(--c-surface); box-shadow: var(--e1-up); position: relative; z-index: 3; }
+  .placebar .back { flex: none; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 0; width: 56px; height: 52px; border: 0; background: none; color: var(--c-ink-2); font-size: var(--fs-micro); line-height: var(--lh-micro); font-weight: var(--fw-medium); text-decoration: none; }
+  .placebar .btn { flex: 1; min-height: 52px; font-size: var(--fs-head); justify-content: space-between; padding: 0 var(--s3); }
+  .placebar .btn .amt { font-feature-settings: var(--num); font-weight: var(--fw-bold); display: inline-flex; align-items: center; gap: 6px; }
+</style>
+</head>
+<body class="canvas">
+<header class="canvas-head">
+  <div class="crumbs"><a href="index.html">B · Ledger</a> / Cart</div>
+  <h1>Cart</h1>
+  <p>Four numbered sections read in order: what you're getting, what it costs, where it goes, how you pay. The bottom navigation gives way to a single fixed “Place order · ₹620” bar with a Back control on its left (returns to the kitchen). The last-used address and payment are preselected, so the four-tap path is open kitchen → Add → Cart tab → Place order.</p>
+</header>
+
+<div class="frames">
+  <figure class="frame">
+    <figcaption class="frame-cap">Cart, top <span class="tag">390 × 844</span><span class="tag">EN</span></figcaption>
+    <div class="device"><div class="screen" id="cart" lang="en">
+      <header class="topbar">
+        <a class="brand" href="home.html"><svg class="mark" aria-hidden="true"><use href="#i-mark"/></svg><span class="wordmark">Honnavar Food</span></a>
+        <button class="lang-btn" aria-label="Switch to Kannada"><span class="face" lang="kn">ಕನ್ನಡ</span></button>
+      </header>
+      <main class="content">
+        <div class="page-title"><h1>Your cart</h1></div>
+        <div class="from"><img src="../../../../seed/images/pingar-dhaba.jpg" alt=""><span>from <b>Udupi's Pingar Dhaba</b></span><span class="count">4 items</span></div>
+
+        <div class="sec-head"><h2><span class="sec-n">1</span>Items</h2></div>
+        <div class="group">
+          <div class="line">
+            <div class="l1"><svg class="vm nonveg" role="img" aria-label="Non-veg"><use href="#i-nonveg"/></svg><span class="n">Chicken Pingara Special</span><span class="t">₹250</span></div>
+            <div class="l2"><span class="each">₹250 each</span><div class="stepper light" role="group" aria-label="Quantity"><button aria-label="One less"><i data-lucide="minus"></i></button><output>1</output><button aria-label="One more"><i data-lucide="plus"></i></button></div></div>
+          </div>
+          <div class="line">
+            <div class="l1"><svg class="vm veg" role="img" aria-label="Veg"><use href="#i-veg"/></svg><span class="n">Paneer Butter Masala</span><span class="t">₹240</span></div>
+            <div class="l2"><span class="each">₹240 each</span><div class="stepper light" role="group" aria-label="Quantity"><button aria-label="One less"><i data-lucide="minus"></i></button><output>1</output><button aria-label="One more"><i data-lucide="plus"></i></button></div></div>
+          </div>
+          <div class="line">
+            <div class="l1"><svg class="vm veg" role="img" aria-label="Veg"><use href="#i-veg"/></svg><span class="n">Butter Naan</span><span class="t">₹100</span></div>
+            <div class="l2"><span class="each">₹50 each</span><div class="stepper light" role="group" aria-label="Quantity"><button aria-label="One less"><i data-lucide="minus"></i></button><output>2</output><button aria-label="One more"><i data-lucide="plus"></i></button></div></div>
+          </div>
+        </div>
+
+        <div class="sec-head"><h2><span class="sec-n">2</span>Bill</h2></div>
+        <div class="group">
+          <div class="bill">
+            <div class="kv"><span>Item total</span><b>₹590</b></div>
+            <div class="kv"><span>Delivery fee</span><b>₹30</b></div>
+            <hr>
+            <div class="kv total"><span>Grand total</span><b>₹620</b></div>
+          </div>
+        </div>
+
+        <div class="sec-head"><h2><span class="sec-n">3</span>Deliver to</h2></div>
+        <div class="group" role="radiogroup" aria-label="Deliver to">
+          <div class="radio" role="radio" aria-checked="true">
+            <span class="rd"></span>
+            <div><p class="t"><i data-lucide="house"></i>Home</p><p class="d">Door 2-114, Nayak House, Prabhatnagar 2nd cross · Behind Prabhatnagar temple</p></div>
+          </div>
+          <div class="radio" role="radio" aria-checked="false">
+            <span class="rd"></span>
+            <div><p class="t"><i data-lucide="briefcase"></i>Work</p><p class="d">Shop 7, Sagar Complex, Hospital Road · Opposite KSRTC bus stand</p></div>
+          </div>
+          <a class="add-row" href="#"><i data-lucide="plus"></i>Add a new address</a>
+        </div>
+
+        <div class="sec-head"><h2><span class="sec-n">4</span>Payment</h2></div>
+        <div class="group" role="radiogroup" aria-label="Payment">
+          <div class="radio" role="radio" aria-checked="false">
+            <span class="rd"></span>
+            <div><p class="t"><i data-lucide="smartphone"></i>UPI <span class="demo-tag">DEMO</span></p><p class="d">This is a demo. Nothing will be charged.</p></div>
+          </div>
+          <div class="radio" role="radio" aria-checked="true">
+            <span class="rd"></span>
+            <div><p class="t"><i data-lucide="banknote"></i>Cash on delivery</p></div>
+          </div>
+        </div>
+        <div class="clear"><a class="link" href="#"><i data-lucide="trash-2"></i>Empty the cart</a></div>
+      </main>
+      <div class="placebar">
+        <a class="back" href="kitchen.html" aria-label="Back to the kitchen"><i data-lucide="arrow-left"></i>Back</a>
+        <button class="btn btn-primary"><span>Place order</span><span class="amt">₹620<i data-lucide="arrow-right"></i></span></button>
+      </div>
+    </div></div>
+  </figure>
+
+  <figure class="frame">
+    <figcaption class="frame-cap">Cart, scrolled to payment <span class="tag">390 × 844</span><span class="tag">EN</span></figcaption>
+    <div class="device"><div class="screen" id="cart-scrolled" lang="en" data-clone-of="cart"></div></div>
+    <p class="frame-note">Same screen scrolled: address and payment preselected from last time. Place-order bar is 74 px; with the 56 px top bar, chrome is 130 px (16.7% of 360×780).</p>
+  </figure>
+
+  <figure class="frame">
+    <figcaption class="frame-cap">Fit check <span class="tag">360 × 780</span><span class="tag">EN</span></figcaption>
+    <div class="device"><div class="screen w360" lang="en" data-clone-of="cart"></div></div>
+  </figure>
+</div>
+<script src="ledger.js"></script>
+<script>
+  // scroll the second frame to the address / payment sections
+  const c = document.querySelector('#cart-scrolled .content');
+  if (c) c.scrollTop = 420;
+</script>
+</body>
+</html>

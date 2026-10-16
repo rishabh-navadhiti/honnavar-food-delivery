@@ -9,8 +9,8 @@ export default async function AgentMessagesPage() {
   const messages = await listMessages({ kind: 'agent', agentId: session.subjectId });
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{t('title')}</h1>
-      <p className="text-sm text-muted">{t('intro')}</p>
+      <h1 className="text-title font-bold">{t('title')}</h1>
+      <p className="text-small text-muted">{t('intro')}</p>
       <MessageList messages={messages} orderHref={(id) => `/agent/orders/${id}`} />
     </div>
   );

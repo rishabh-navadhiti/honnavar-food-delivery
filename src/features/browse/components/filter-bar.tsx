@@ -1,5 +1,8 @@
-import Link from 'next/link';
+import { Clock, Cloud, House, Store } from 'lucide-react';
 import { useTranslations } from 'next-intl';
+import type { ReactNode } from 'react';
+import { ChipLink } from '@/shared/ui/chip';
+import { VegMarkIcon } from '@/shared/ui/icons/veg-marks';
 import type { KitchenType } from '../queries';
 
 /** Kitchen filters and the search query, all kept in the home URL (FR-042, FR-044). */
@@ -15,32 +18,32 @@ export function filtersToQuery(filters: KitchenFilters): string {
   return query ? `/?${query}` : '/';
 }
 
-/** Kitchen type, pure veg and open-now filters as links, so results can be shared (FR-042). */
+const typeIcons = { restaurant: Store, home_kitchen: House, cloud_kitchen: Cloud } as const;
+
+/** Open-now, pure veg and kitchen type filters as chip links, so results can be shared (FR-042). */
 export function FilterBar({ filters }: { filters: KitchenFilters }) {
   const t = useTranslations();
-  const chip = (label: string, active: boolean, next: KitchenFilters, testId: string) => (
-    <Link
-      key={testId}
-      href={filtersToQuery(next)}
-      data-testid={testId}
-      data-active={active}
-      aria-label={active ? `${label} (${t('filters.selected')})` : label}
-      className={`inline-flex min-h-touch items-center gap-1 rounded-full border px-4 text-sm ${
-        active ? 'border-primary bg-primary font-bold text-on-primary' : 'border-line bg-surface text-ink'
-      }`}
-    >
-      {active ? <span aria-hidden="true">✓</span> : null}
+  const chip = (label: string, active: boolean, next: KitchenFilters, testId: string, icon: ReactNode) => (
+    <ChipLink key={testId} href={filtersToQuery(next)} pressed={active} icon={icon} testId={testId}>
       {label}
-    </Link>
+      {active ? <span className="sr-only"> ({t('filters.selected')})</span> : null}
+    </ChipLink>
   );
   return (
-    <nav aria-label={t('filters.label')} className="-mx-4 overflow-x-auto px-4">
-      <div className="flex w-max gap-2">
-        {(['restaurant', 'home_kitchen', 'cloud_kitchen'] as const).map((type) =>
-          chip(t(`kitchenType.${type}`), filters.type === type, { ...filters, type: filters.type === type ? undefined : type }, `filter-${type}`),
-        )}
-        {chip(t('filters.pureVeg'), Boolean(filters.pureVeg), { ...filters, pureVeg: !filters.pureVeg }, 'filter-pure-veg')}
-        {chip(t('filters.openNow'), Boolean(filters.openNow), { ...filters, openNow: !filters.openNow }, 'filter-open-now')}
+    <nav aria-label={t('filters.label')} className="-mx-4 overflow-x-auto px-4 [scrollbar-width:none]">
+      <div className="flex w-max gap-1.5">
+        {chip(t('filters.openNow'), Boolean(filters.openNow), { ...filters, openNow: !filters.openNow }, 'filter-open-now', <Clock aria-hidden="true" />)}
+        {chip(t('filters.pureVeg'), Boolean(filters.pureVeg), { ...filters, pureVeg: !filters.pureVeg }, 'filter-pure-veg', <VegMarkIcon />)}
+        {(['restaurant', 'home_kitchen', 'cloud_kitchen'] as const).map((type) => {
+          const Icon = typeIcons[type];
+          return chip(
+            t(`kitchenType.${type}`),
+            filters.type === type,
+            { ...filters, type: filters.type === type ? undefined : type },
+            `filter-${type}`,
+            <Icon aria-hidden="true" />,
+          );
+        })}
       </div>
     </nav>
   );

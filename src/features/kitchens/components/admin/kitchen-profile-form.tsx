@@ -108,14 +108,14 @@ export function KitchenProfileForm({
 
       <fieldset className="flex flex-col gap-2 md:col-span-2">
         <legend className="text-base font-bold">{t('kitchenForm.location')}</legend>
-        <p className="text-sm text-muted">{t('kitchenForm.locationHelp')}</p>
+        <p className="text-small text-muted">{t('kitchenForm.locationHelp')}</p>
         <input type="hidden" name="locationLat" value={point?.lat ?? ''} />
         <input type="hidden" name="locationLng" value={point?.lng ?? ''} />
         <div className="max-w-xl">
           <PinPicker tiles={tiles} initial={savedPoint} onChange={(picked) => setPoint({ lat: picked.lat, lng: picked.lng })} />
         </div>
         {errors.field('location') ? (
-          <p role="alert" className="text-sm font-medium text-danger">
+          <p role="alert" className="text-small font-medium text-danger">
             {errors.field('location')}
           </p>
         ) : null}
@@ -123,7 +123,7 @@ export function KitchenProfileForm({
 
       <fieldset className="flex flex-col gap-2 md:col-span-2">
         <legend className="text-base font-bold">{t('admin.contactsTitle')}</legend>
-        <p className="text-sm text-muted">{t('admin.contactsHelp')}</p>
+        <p className="text-small text-muted">{t('admin.contactsHelp')}</p>
         {ROWS.map((n) => (
           <div key={n} className="flex items-end gap-3">
             <div className="flex-1">
@@ -142,7 +142,7 @@ export function KitchenProfileForm({
         <>
           <fieldset className="flex flex-col gap-2 md:col-span-2">
             <legend className="text-base font-bold">{t('admin.signinsTitle')}</legend>
-            <p className="text-sm text-muted">{t('admin.signinsHelp')}</p>
+            <p className="text-small text-muted">{t('admin.signinsHelp')}</p>
             {ROWS.map((n) => (
               <div key={n} className="grid gap-3 md:grid-cols-2">
                 <TextField name={`signin${n}`} type="tel" inputMode="numeric" label={t('admin.signinPhone', { n })} defaultValue={values[`signin${n}`]} />
@@ -153,7 +153,7 @@ export function KitchenProfileForm({
           </fieldset>
           <fieldset className="flex flex-col gap-2 md:col-span-2">
             <legend className="text-base font-bold">{t('admin.hoursTitle')}</legend>
-            <p className="text-sm text-muted">{t('admin.hoursHelp')}</p>
+            <p className="text-small text-muted">{t('admin.hoursHelp')}</p>
             {[1, 2].map((n) => (
               <div key={n} className="grid grid-cols-2 gap-3">
                 <TextField name={`opens${n}`} type="time" label={`${n === 1 ? t('hoursEditor.firstRange') : t('hoursEditor.secondRange')} · ${t('hoursEditor.opens')}`} defaultValue={values[`opens${n}`]} />

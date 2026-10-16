@@ -1,3 +1,4 @@
+import { MessageSquareText } from 'lucide-react';
 import Link from 'next/link';
 import { useLocale, useTranslations } from 'next-intl';
 import { ReasonText } from '@/features/orders/components/reason-text';
@@ -16,14 +17,17 @@ export function MessageList({ messages, orderHref }: { messages: MessageView[]; 
   const t = useTranslations();
   const current = useLocale();
   const locale = isLocale(current) ? current : 'en';
-  if (messages.length === 0) return <EmptyState title={t('messageLog.empty')} />;
+  if (messages.length === 0) return <EmptyState illustration="NoMessages" title={t('messageLog.empty')} />;
   return (
     <ul className="flex flex-col gap-2" data-testid="message-list">
       {messages.map((m) => (
-        <li key={m.id} data-kind={m.kind} className="flex flex-col gap-1 rounded-2xl border border-line bg-surface p-3">
-          <span className="flex flex-wrap items-baseline justify-between gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wide text-muted">{t('notifications.demoLabel')}</span>
-            <span className="text-sm text-muted">{formatDayTime(m.createdAt, locale)}</span>
+        <li key={m.id} data-kind={m.kind} className="flex flex-col gap-1 rounded-lg bg-surface p-3.5 shadow-1">
+          <span className="flex flex-wrap items-center justify-between gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-warn-soft px-2 py-0.5 text-caption font-semibold text-warn">
+              <MessageSquareText aria-hidden="true" className="size-3.5" />
+              {t('notifications.demoLabel')}
+            </span>
+            <span className="text-small text-muted">{formatDayTime(m.createdAt, locale)}</span>
           </span>
           <Link href={orderHref(m.orderId)} className="flex min-h-touch items-center text-base font-semibold text-ink underline-offset-4 hover:underline">
             {t(`notifications.${m.kind}`, {
@@ -32,8 +36,8 @@ export function MessageList({ messages, orderHref }: { messages: MessageView[]; 
               agentName: m.agentName ?? '',
             })}
           </Link>
-          {m.params.reason ? <ReasonText reason={m.params.reason as OrderReason} note={m.params.reasonNote} className="text-sm" /> : null}
-          <span className="text-sm text-muted">
+          {m.params.reason ? <ReasonText reason={m.params.reason as OrderReason} note={m.params.reasonNote} className="text-small" /> : null}
+          <span className="text-small text-muted">
             <LocalizedText pair={m.kitchenName} />
           </span>
         </li>

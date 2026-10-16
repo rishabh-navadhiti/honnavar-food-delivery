@@ -25,7 +25,7 @@ export function AgentSteps({ orderId, status, paymentMethod, grandTotal }: { ord
   return (
     <div className="flex flex-col gap-2">
       {status === 'accepted' || status === 'preparing' ? (
-        <p className="rounded-xl bg-secondary p-3 text-base font-semibold" data-testid="still-preparing">
+        <p className="rounded-md bg-surface-sunk p-3 text-base font-semibold" data-testid="still-preparing">
           {t('stillPreparing')}
         </p>
       ) : null}
@@ -33,14 +33,14 @@ export function AgentSteps({ orderId, status, paymentMethod, grandTotal }: { ord
         <form action={formAction}>
           <input type="hidden" name="orderId" value={orderId} />
           <input type="hidden" name="step" value="pickup" />
-          <button type="submit" disabled={pending} className={buttonClasses('primary', 'w-full text-lg')}>
+          <button type="submit" disabled={pending} className={buttonClasses('primary', 'w-full')}>
             {t('pickedUp')}
           </button>
         </form>
       ) : null}
       {status === 'picked_up' ? (
         paymentMethod === 'cod' && !confirming ? (
-          <button type="button" onClick={() => setConfirming(true)} className={buttonClasses('primary', 'w-full text-lg')}>
+          <button type="button" onClick={() => setConfirming(true)} className={buttonClasses('primary', 'w-full')}>
             {t('delivered')}
           </button>
         ) : (
@@ -51,7 +51,7 @@ export function AgentSteps({ orderId, status, paymentMethod, grandTotal }: { ord
               <>
                 <input type="hidden" name="cashCollected" value="true" />
                 <p className="text-base font-semibold">{t('confirmCashQuestion')}</p>
-                <button type="submit" disabled={pending} className={buttonClasses('primary', 'w-full text-lg')}>
+                <button type="submit" disabled={pending} className={buttonClasses('primary', 'w-full')}>
                   {t('confirmCash', { amount })}
                 </button>
                 <button type="button" onClick={() => setConfirming(false)} className={buttonClasses('ghost', 'w-full')}>
@@ -59,7 +59,7 @@ export function AgentSteps({ orderId, status, paymentMethod, grandTotal }: { ord
                 </button>
               </>
             ) : (
-              <button type="submit" disabled={pending} className={buttonClasses('primary', 'w-full text-lg')}>
+              <button type="submit" disabled={pending} className={buttonClasses('primary', 'w-full')}>
                 {t('delivered')}
               </button>
             )}

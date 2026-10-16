@@ -36,7 +36,7 @@ export function HoursEditor({ surface, kitchenId, week }: { surface: 'partner' |
     <form action={formAction} key={formKey} className="flex flex-col gap-4" noValidate>
       <ScopeFields surface={surface} kitchenId={kitchenId} />
       <p className="text-base text-muted">{t('hoursEditor.help')}</p>
-      <p className="text-sm text-muted">{t('hoursEditor.midnightHint')}</p>
+      <p className="text-small text-muted">{t('hoursEditor.midnightHint')}</p>
       {WEEKDAYS.map((day) => {
         const errorKey = state.error?.fieldErrors?.[`hours.${day}`];
         const dayName = formatWeekday(day, locale);
@@ -44,7 +44,7 @@ export function HoursEditor({ surface, kitchenId, week }: { surface: 'partner' |
           <fieldset
             key={day}
             aria-describedby={errorKey ? `hours-${day}-error` : undefined}
-            className={`flex flex-col gap-2 rounded-2xl border bg-surface p-3 ${errorKey ? 'border-danger' : 'border-line'}`}
+            className={`flex flex-col gap-2 rounded-lg border bg-surface p-3 ${errorKey ? 'border-danger' : 'border-line'}`}
             data-testid={`hours-day-${day}`}
           >
             <legend className="px-1 text-base font-bold">{dayName}</legend>
@@ -54,33 +54,33 @@ export function HoursEditor({ surface, kitchenId, week }: { surface: 'partner' |
             </label>
             {[1, 2].map((slot) => (
               <div key={slot} className="grid grid-cols-2 gap-2">
-                <span className="col-span-2 text-sm font-semibold text-muted">
+                <span className="col-span-2 text-small font-semibold text-muted">
                   {slot === 1 ? t('hoursEditor.firstRange') : t('hoursEditor.secondRange')}
                 </span>
-                <label className="flex flex-col gap-1 text-sm">
+                <label className="flex flex-col gap-1 text-small">
                   <span>{t('hoursEditor.opens')}</span>
                   <input
                     type="time"
                     name={`h${day}_${slot}_opens`}
                     defaultValue={values[`h${day}_${slot}_opens`] ?? ''}
                     aria-label={`${dayName} · ${slot === 1 ? t('hoursEditor.firstRange') : t('hoursEditor.secondRange')} · ${t('hoursEditor.opens')}`}
-                    className="min-h-touch rounded-xl border border-line px-2 text-base"
+                    className="min-h-touch rounded-md border border-line px-2 text-base"
                   />
                 </label>
-                <label className="flex flex-col gap-1 text-sm">
+                <label className="flex flex-col gap-1 text-small">
                   <span>{t('hoursEditor.closes')}</span>
                   <input
                     type="time"
                     name={`h${day}_${slot}_closes`}
                     defaultValue={values[`h${day}_${slot}_closes`] ?? ''}
                     aria-label={`${dayName} · ${slot === 1 ? t('hoursEditor.firstRange') : t('hoursEditor.secondRange')} · ${t('hoursEditor.closes')}`}
-                    className="min-h-touch rounded-xl border border-line px-2 text-base"
+                    className="min-h-touch rounded-md border border-line px-2 text-base"
                   />
                 </label>
               </div>
             ))}
             {errorKey ? (
-              <p id={`hours-${day}-error`} role="alert" className="text-sm font-medium text-danger">
+              <p id={`hours-${day}-error`} role="alert" className="text-small font-medium text-danger">
                 {t(`errors.${errorKey}`)}
               </p>
             ) : null}
@@ -93,7 +93,7 @@ export function HoursEditor({ surface, kitchenId, week }: { surface: 'partner' |
         </p>
       ) : null}
       <div className="sticky bottom-16 flex items-center gap-3 bg-page py-2">
-        <Button type="submit" disabled={pending} className="flex-1 text-lg">
+        <Button type="submit" disabled={pending} className="flex-1 text-heading">
           {pending ? t('common.saving') : t('hoursEditor.save')}
         </Button>
         {state.saved ? (

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" role="img" aria-label="Honnavar Food">
+  <!-- Marigold flower mark: eight rounded petals, ink centre ring, leaf below -->
+  <g transform="translate(20 19)">
+    <g fill="#FFB81C">
+      <ellipse rx="5.2" ry="8.4" transform="rotate(0) translate(0 -8)"/>
+      <ellipse rx="5.2" ry="8.4" transform="rotate(45) translate(0 -8)"/>
+      <ellipse rx="5.2" ry="8.4" transform="rotate(90) translate(0 -8)"/>
+      <ellipse rx="5.2" ry="8.4" transform="rotate(135) translate(0 -8)"/>
+      <ellipse rx="5.2" ry="8.4" transform="rotate(180) translate(0 -8)"/>
+      <ellipse rx="5.2" ry="8.4" transform="rotate(225) translate(0 -8)"/>
+      <ellipse rx="5.2" ry="8.4" transform="rotate(270) translate(0 -8)"/>
+      <ellipse rx="5.2" ry="8.4" transform="rotate(315) translate(0 -8)"/>
+    </g>
+    <g fill="#F0A500">
+      <ellipse rx="3.4" ry="5.4" transform="rotate(22.5) translate(0 -6)"/>
+      <ellipse rx="3.4" ry="5.4" transform="rotate(112.5) translate(0 -6)"/>
+      <ellipse rx="3.4" ry="5.4" transform="rotate(202.5) translate(0 -6)"/>
+      <ellipse rx="3.4" ry="5.4" transform="rotate(292.5) translate(0 -6)"/>
+    </g>
+    <circle r="5.6" fill="#1C1A44"/>
+    <circle r="2.4" fill="#FFB81C"/>
+  </g>
+</svg>

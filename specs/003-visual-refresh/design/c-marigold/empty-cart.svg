@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="An empty banana-leaf plate">
+  <!-- backdrop -->
+  <circle cx="120" cy="92" r="78" fill="#F3F2FA"/>
+  <circle cx="186" cy="40" r="16" fill="#FFB81C"/>
+  <!-- steam -->
+  <g fill="none" stroke="#C8C6E0" stroke-width="5" stroke-linecap="round">
+    <path d="M98 44c-8 10 8 16 0 26"/>
+    <path d="M120 36c-8 10 8 16 0 26"/>
+    <path d="M142 44c-8 10 8 16 0 26"/>
+  </g>
+  <!-- plate -->
+  <ellipse cx="120" cy="128" rx="86" ry="26" fill="#1C1A44"/>
+  <ellipse cx="120" cy="122" rx="86" ry="26" fill="#FFFFFF" stroke="#1C1A44" stroke-width="4"/>
+  <!-- banana leaf -->
+  <path d="M52 122 C70 100 170 98 190 116 C176 138 76 144 52 122 Z" fill="#1F9150"/>
+  <path d="M56 121 C96 116 150 114 186 116" stroke="#E3F4E8" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <g stroke="#17793F" stroke-width="2" stroke-linecap="round">
+    <path d="M80 119 l-6 8"/><path d="M100 118 l-6 10"/><path d="M120 117 l-6 10"/><path d="M140 117 l-6 10"/><path d="M160 116 l-6 9"/>
+  </g>
+  <!-- spoon -->
+  <g transform="rotate(-24 196 150)">
+    <rect x="180" y="146" width="44" height="7" rx="3.5" fill="#1C1A44"/>
+    <ellipse cx="176" cy="149.5" rx="11" ry="8" fill="#1C1A44"/>
+  </g>
+  <!-- little marigold -->
+  <g transform="translate(46 60)">
+    <g fill="#FFB81C"><circle cx="0" cy="-7" r="5"/><circle cx="7" cy="0" r="5"/><circle cx="0" cy="7" r="5"/><circle cx="-7" cy="0" r="5"/></g>
+    <circle r="4" fill="#1C1A44"/>
+  </g>
+</svg>

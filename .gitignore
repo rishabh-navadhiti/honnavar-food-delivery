@@ -42,3 +42,6 @@ AGENTS.md
 .neon
 .vercel
 .env*
+
+# 003 screenshot capture (npm run screens)
+/screens/

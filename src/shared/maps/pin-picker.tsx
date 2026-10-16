@@ -158,20 +158,20 @@ export function PinPicker({
           placeholder={t('searchPlaceholder')}
           minLength={3}
           maxLength={100}
-          className="min-h-touch w-full rounded-xl border border-line bg-surface px-3 text-base"
+          className="min-h-touch w-full rounded-md border border-line-strong bg-surface px-3.5 text-base"
         />
         <button type="submit" disabled={searching || query.trim().length < 3} className={buttonClasses('secondary', 'shrink-0')}>
           {searching ? t('searching') : t('search')}
         </button>
       </form>
       {searchFailed ? (
-        <p role="alert" className="text-sm font-medium text-danger">
+        <p role="alert" className="text-small font-medium text-danger">
           {t('searchFailed')}
         </p>
       ) : null}
       {places ? (
         places.length === 0 ? (
-          <p className="text-sm text-muted">{t('noPlaces')}</p>
+          <p className="text-small text-muted">{t('noPlaces')}</p>
         ) : (
           <ul className="flex flex-col gap-1" aria-label={t('results')}>
             {places.map((place) => (
@@ -182,7 +182,7 @@ export function PinPicker({
                     setPlaces(null);
                     moveTo(place.lat, place.lng);
                   }}
-                  className="min-h-touch w-full rounded-xl border border-line bg-surface px-3 py-2 text-left text-base"
+                  className="min-h-touch w-full rounded-md border border-line bg-surface px-3 py-2 text-start text-base"
                 >
                   {place.label}
                 </button>
@@ -196,13 +196,13 @@ export function PinPicker({
         {t('useCurrentLocation')}
       </button>
       {locationMessage ? (
-        <p role="status" className="text-sm font-medium text-warn">
+        <p role="status" className="text-small font-medium text-warn">
           {locationMessage}
         </p>
       ) : null}
 
       <div className="relative">
-        <div ref={container} className="h-72 w-full overflow-hidden rounded-2xl border border-line" role="application" aria-label={t('mapLabel')} />
+        <div ref={container} className="h-72 w-full overflow-hidden rounded-lg border border-line" role="application" aria-label={t('mapLabel')} />
         {/* The fixed pin: the map moves under it. */}
         <div
           className="pointer-events-none absolute left-1/2 top-1/2 z-[500] -translate-x-1/2 -translate-y-full"
@@ -211,8 +211,8 @@ export function PinPicker({
         />
       </div>
 
-      <div className="rounded-xl bg-secondary p-3" aria-live="polite" data-testid="pin-address">
-        <p className="text-sm font-semibold text-muted">{t('addressHere')}</p>
+      <div className="rounded-md bg-surface-sunk p-3" aria-live="polite" data-testid="pin-address">
+        <p className="text-small font-semibold text-muted">{t('addressHere')}</p>
         <p className="text-base">
           {lookup.state === 'found' ? (lookup.text ?? t('noAddress')) : lookup.state === 'failed' ? t('lookupFailed') : t('lookingUp')}
         </p>

@@ -1,3 +1,4 @@
+import { Bike, Clock, MapPin, Store } from 'lucide-react';
 import { AddressLabel } from '@/features/addresses/components/address-label';
 import { notFound } from 'next/navigation';
 import { getLocale, getTranslations } from 'next-intl/server';
@@ -20,7 +21,7 @@ import { UpdatedAt } from '@/shared/polling/updated-at';
 import { LocalizedText } from '@/shared/ui/localized-text';
 import { PhoneLink } from '@/shared/ui/phone-link';
 import { VegMark } from '@/shared/ui/veg-mark';
-import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { CustomerTabBar } from '@/features/cart/components/customer-tab-bar';
 import { BackLink } from '@/shared/ui/back-link';
 
 type Props = { params: Promise<{ id: string }> };
@@ -41,30 +42,32 @@ export default async function OrderPage({ params }: Props) {
 
   const kitchenName = (order.kitchen.name[locale] ?? order.kitchen.name.en ?? order.kitchen.name.kn) as string;
   return (
-    <article className="flex flex-col gap-5">
+    <article className="flex flex-col gap-4">
       <LiveRefresh enabled={!order.finished} />
       <BackLink href="/orders" label={t('backLinks.orders')} />
-      <header className="flex flex-col gap-2">
-        <h1 className="flex flex-wrap items-center gap-2 text-2xl font-bold">
-          {t('orderPage.title')} <OrderNumber orderNo={order.orderNo} />
+      <header className="flex flex-col gap-2 rounded-lg bg-surface p-4 shadow-2">
+        <h1 className="flex flex-wrap items-center gap-2 text-heading font-bold text-muted">
+          {t('orderPage.title')} <OrderNumber orderNo={order.orderNo} className="text-ink" />
         </h1>
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
           <StatusBadge status={order.status} />
           {order.finished ? null : (
-            <span className="text-base font-semibold" data-testid="expected-by">
+            <span className="inline-flex items-center gap-1.5 text-heading font-bold" data-testid="expected-by">
+              <Clock aria-hidden="true" className="size-5 shrink-0 text-sea" />
               {t('orderPage.expectedBy', { time: formatTime(order.expectedAt, locale) })}
             </span>
           )}
         </div>
         <UpdatedAt at={now} />
+        {order.status === 'placed' ? <CustomerCancel orderId={order.id} /> : null}
       </header>
 
       <OrderTimeline order={order} />
-      {order.status === 'placed' ? <CustomerCancel orderId={order.id} /> : null}
 
       {order.agent ? (
-        <section aria-labelledby="agent-title" className="flex flex-col gap-2">
-          <h2 id="agent-title" className="text-lg font-bold">
+        <section aria-labelledby="agent-title" className="flex flex-col gap-2 rounded-lg bg-surface p-4 shadow-1">
+          <h2 id="agent-title" className="flex items-center gap-2 text-heading font-bold">
+            <Bike aria-hidden="true" className="size-5 text-sea" />
             {t('orderPage.agentTitle')}
           </h2>
           <p className="text-base font-semibold" data-testid="order-agent">
@@ -80,20 +83,21 @@ export default async function OrderPage({ params }: Props) {
         delivery={order.address.location}
         labels={{ map: t('orderMap.label'), kitchen: t('orderMap.kitchen', { name: kitchenName }), delivery: t('orderMap.delivery') }}
       />
-      {order.kitchen.location ? null : <p className="text-sm text-muted">{t('orderMap.noKitchenLocation')}</p>}
+      {order.kitchen.location ? null : <p className="text-small text-muted">{t('orderMap.noKitchenLocation')}</p>}
 
-      <section aria-labelledby="kitchen-title" className="flex flex-col gap-2">
-        <h2 id="kitchen-title" className="text-lg font-bold">
+      <section aria-labelledby="kitchen-title" className="flex items-center justify-between gap-3 rounded-lg bg-surface p-4 shadow-1">
+        <h2 id="kitchen-title" className="flex min-w-0 items-center gap-2 text-heading font-bold">
+          <Store aria-hidden="true" className="size-5 shrink-0 text-muted" />
           <LocalizedText pair={order.kitchen.name} />
         </h2>
         {order.kitchen.phone ? <CallButton phone={order.kitchen.phone} /> : null}
       </section>
 
       <section aria-labelledby="items-title" className="flex flex-col gap-2">
-        <h2 id="items-title" className="text-lg font-bold">
+        <h2 id="items-title" className="text-heading font-bold">
           {t('orderPage.items')}
         </h2>
-        <ul className="flex flex-col divide-y divide-line rounded-2xl border border-line bg-surface px-4">
+        <ul className="flex flex-col divide-y divide-line rounded-lg bg-surface px-4 shadow-1">
           {order.items.map((item, index) => (
             <li key={index} className="flex items-start justify-between gap-3 py-3">
               <span className="flex flex-col gap-1">
@@ -116,8 +120,9 @@ export default async function OrderPage({ params }: Props) {
         </p>
       </section>
 
-      <section aria-labelledby="address-title" className="flex flex-col gap-1">
-        <h2 id="address-title" className="text-lg font-bold">
+      <section aria-labelledby="address-title" className="flex flex-col gap-1 rounded-lg bg-surface p-4 shadow-1">
+        <h2 id="address-title" className="flex items-center gap-2 text-heading font-bold">
+          <MapPin aria-hidden="true" className="size-5 text-sea" />
           {t('orderPage.deliverTo')}
         </h2>
         <p className="text-base font-semibold" data-testid="order-address-label">
@@ -126,9 +131,9 @@ export default async function OrderPage({ params }: Props) {
         <p className="text-base">{order.address.house}</p>
         {order.address.street ? <p className="text-base">{order.address.street}</p> : null}
         <p className="text-base text-muted">{order.address.landmark}</p>
-        {order.address.riderNote ? <p className="text-sm text-muted">{order.address.riderNote}</p> : null}
+        {order.address.riderNote ? <p className="text-small text-muted">{order.address.riderNote}</p> : null}
       </section>
-      <CustomerDock excludeOrderId={order.id} />
+      <CustomerTabBar current="orders" excludeOrderId={order.id} />
     </article>
   );
 }

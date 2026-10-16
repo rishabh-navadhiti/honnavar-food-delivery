@@ -1,3 +1,4 @@
+import { CustomerTabBar } from '@/features/cart/components/customer-tab-bar';
 import { LoginScreen } from '@/features/auth/components/login-screen';
 
 type Props = { searchParams: Promise<{ next?: string | string[] }> };
@@ -7,6 +8,7 @@ export default async function LoginPage({ searchParams }: Props) {
   return (
     <>
       <LoginScreen surface="customer" next={typeof next === 'string' ? next : undefined} />
+      <CustomerTabBar current="account" />
     </>
   );
 }

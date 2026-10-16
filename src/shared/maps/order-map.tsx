@@ -39,7 +39,7 @@ export function OrderMap({
       });
       L.tileLayer(tiles.url, { attribution: tiles.attribution, maxZoom: 19 }).addTo(map);
       const icon = (svg: string, label: string) =>
-        L.divIcon({ html: `<span role="img" aria-label="${label.replace(/"/g, '&quot;')}">${svg}</span>`, className: '', iconSize: [40, 40], iconAnchor: [20, 20] });
+        L.divIcon({ html: `<span role="img" aria-label="${label.replace(/"/g, '&quot;')}">${svg}</span>`, className: '', iconSize: [40, 52], iconAnchor: [20, 48] });
       const points: [number, number][] = [[delivery.lat, delivery.lng]];
       L.marker([delivery.lat, delivery.lng], { icon: icon(HOME_SVG, labels.delivery), keyboard: false }).addTo(map);
       if (kitchen) {
@@ -56,5 +56,5 @@ export function OrderMap({
     // Coordinates, not objects: the page refreshes every 10 s and must not rebuild the map.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tiles.url, tiles.attribution, kitchen?.lat, kitchen?.lng, delivery.lat, delivery.lng, labels.kitchen, labels.delivery]);
-  return <div ref={container} role="region" aria-label={labels.map} className="h-56 w-full overflow-hidden rounded-2xl border border-line" data-testid="order-map" />;
+  return <div ref={container} role="region" aria-label={labels.map} className="h-56 w-full overflow-hidden rounded-lg bg-sea-soft shadow-1" data-testid="order-map" />;
 }

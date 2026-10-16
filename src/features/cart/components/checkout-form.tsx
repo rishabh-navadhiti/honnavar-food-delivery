@@ -1,5 +1,6 @@
 'use client';
 
+import { Banknote, Plus, Smartphone } from 'lucide-react';
 import { useActionState, useRef, useState } from 'react';
 import Link from 'next/link';
 import { AddressLabel } from '@/features/addresses/components/address-label';
@@ -10,6 +11,7 @@ import { formatPrice } from '@/shared/i18n/format';
 import { buttonClasses } from '@/shared/ui/button';
 import { FormError } from '@/shared/ui/form-message';
 import { useErrorText } from '@/shared/ui/use-error-text';
+import { PlaceOrderBar } from './place-order-bar';
 
 export type CheckoutAddress = { id: string; label: 'home' | 'work' | 'other'; labelText: string | null; house: string; landmark: string };
 
@@ -42,7 +44,9 @@ export function CheckoutForm({
   const errors = useErrorText(state.error?.code === 'cart_changed' ? undefined : state.error);
   const price = (n: number) => formatPrice(n, isLocale(current) ? current : 'en');
   const choice =
-    'flex min-h-touch cursor-pointer items-center gap-3 rounded-xl border border-line bg-surface px-3 py-2 has-[:checked]:border-primary has-[:checked]:bg-orange-50';
+    'flex min-h-touch cursor-pointer items-center gap-3 rounded-lg border border-line bg-surface px-3.5 py-3 shadow-1 transition-colors duration-(--duration-fast) has-[:checked]:border-primary has-[:checked]:bg-primary-soft has-[:checked]:shadow-[0_0_0_1px_var(--color-primary)]';
+  const section = 'flex flex-col gap-2';
+  const heading = 'mb-1 text-heading font-bold';
 
   return (
     <form
@@ -60,8 +64,8 @@ export function CheckoutForm({
       <input type="hidden" name="seenPrices" value={JSON.stringify(seenPrices)} />
       <input ref={confirmed} type="hidden" name="upiConfirmed" defaultValue="" />
 
-      <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 text-lg font-bold">{t('checkout.deliverTo')}</legend>
+      <fieldset className={section}>
+        <legend className={heading}>{t('checkout.deliverTo')}</legend>
         {addresses.map((a) => (
           <label key={a.id} className={choice}>
             <input type="radio" name="addressId" value={a.id} defaultChecked={a.id === preselected.addressId} className="size-5 accent-primary" />
@@ -69,18 +73,19 @@ export function CheckoutForm({
               <span className="text-base font-bold">
                 <AddressLabel label={a.label} labelText={a.labelText} />
               </span>
-              <span className="text-sm">{a.house}</span>
-              <span className="text-sm text-muted">{a.landmark}</span>
+              <span className="text-small">{a.house}</span>
+              <span className="text-small text-muted">{a.landmark}</span>
             </span>
           </label>
         ))}
-        <Link href="/addresses/new?next=/cart" className="min-h-touch self-start py-3 text-base font-semibold text-primary">
+        <Link href="/addresses/new?next=/cart" className="inline-flex min-h-touch items-center gap-1.5 self-start text-base font-semibold text-primary-strong">
+          <Plus aria-hidden="true" className="size-5" />
           {t('checkout.addAddress')}
         </Link>
       </fieldset>
 
-      <fieldset className="flex flex-col gap-2">
-        <legend className="mb-1 text-lg font-bold">{t('checkout.payment')}</legend>
+      <fieldset className={section}>
+        <legend className={heading}>{t('checkout.payment')}</legend>
         {(['cod', 'upi_demo'] as const).map((method) => (
           <label key={method} className={choice}>
             <input
@@ -91,15 +96,16 @@ export function CheckoutForm({
               onChange={() => setPayment(method)}
               className="size-5 accent-primary"
             />
+            {method === 'cod' ? <Banknote aria-hidden="true" className="size-5 text-muted" /> : <Smartphone aria-hidden="true" className="size-5 text-muted" />}
             <span className="text-base font-semibold">{method === 'cod' ? t('paymentMethod.cod') : t('paymentMethod.upiChoice')}</span>
           </label>
         ))}
       </fieldset>
 
       {state.error?.code === 'cart_changed' ? (
-        <div role="alert" className="flex flex-col gap-1 rounded-xl border border-warn bg-amber-50 p-3" data-testid="cart-changed">
+        <div role="alert" className="flex flex-col gap-1 rounded-lg bg-warn-soft p-3 text-ink" data-testid="cart-changed">
           <p className="text-base font-semibold">{t('checkout.cartChanged')}</p>
-          <ul className="list-disc pl-5 text-sm">
+          <ul className="list-disc ps-5 text-small">
             {(state.changes ?? []).map((change) => (
               <li key={change.dishId}>
                 {change.kind === 'price'
@@ -114,18 +120,26 @@ export function CheckoutForm({
       ) : null}
       <FormError message={errors.form ?? errors.field('addressId', 'paymentMethod', 'placeKey', 'seenPrices', 'upiConfirmed')} />
 
-      <button type="submit" disabled={pending} className={buttonClasses('primary', 'w-full text-lg')}>
-        {pending ? t('checkout.placing') : t('checkout.placeOrder', { amount: price(grandTotal) })}
-      </button>
+      <PlaceOrderBar>
+        <button type="submit" disabled={pending} className={buttonClasses('primary', 'min-h-[54px] w-full text-[1.06rem]')}>
+          {pending ? t('checkout.placing') : t('checkout.placeOrder', { amount: price(grandTotal) })}
+        </button>
+      </PlaceOrderBar>
 
       {sheetOpen ? (
-        <div className="fixed inset-0 z-[1000] flex items-end justify-center bg-black/40 sm:items-center">
-          <div role="dialog" aria-modal="true" aria-labelledby="upi-title" className="flex w-full max-w-md flex-col gap-4 rounded-t-2xl bg-surface p-5 sm:rounded-2xl">
-            <h2 id="upi-title" className="text-xl font-bold">
+        <div className="fixed inset-0 z-[1000] flex items-end justify-center sm:items-center">
+          <div aria-hidden="true" className="absolute inset-0 animate-fade-in bg-scrim" onClick={() => setSheetOpen(false)} />
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="upi-title"
+            className="relative flex w-full max-w-md animate-sheet-up flex-col gap-4 rounded-t-xl bg-surface p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-3 sm:rounded-md"
+          >
+            <h2 id="upi-title" className="text-title font-bold">
               {t('upiSheet.title')}
             </h2>
-            <p className="text-3xl font-bold">{price(grandTotal)}</p>
-            <p className="rounded-xl bg-amber-50 p-3 text-base font-medium" data-testid="upi-demo-notice">
+            <p className="stretch-head text-display font-bold">{price(grandTotal)}</p>
+            <p className="rounded-md bg-warn-soft p-3 text-base font-medium" data-testid="upi-demo-notice">
               {t('upiSheet.demoNotice')}
             </p>
             <button
@@ -136,7 +150,7 @@ export function CheckoutForm({
                 setSheetOpen(false);
                 form.current?.requestSubmit();
               }}
-              className={buttonClasses('primary', 'w-full text-lg')}
+              className={buttonClasses('primary', 'w-full')}
             >
               {t('upiSheet.confirm')}
             </button>
