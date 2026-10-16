@@ -69,16 +69,16 @@ task"). What 003 adds:
 
 **Purpose**: Dependency, font, tokens and test configuration.
 
-- [ ] T001 Add `lucide-react` with `npm install lucide-react` (updates `package.json` and `package-lock.json`). Add a row for icons to the "one sanctioned tool per concern" table in `README.md`, with the one-line reason from research R3
-- [ ] T002 Replace Noto Sans and Noto Sans Kannada with Anek Kannada in `src/app/layout.tsx` (research R2):
+- [X] T001 Add `lucide-react` with `npm install lucide-react` (updates `package.json` and `package-lock.json`). Add a row for icons to the "one sanctioned tool per concern" table in `README.md`, with the one-line reason from research R3
+- [X] T002 Replace Noto Sans and Noto Sans Kannada with Anek Kannada in `src/app/layout.tsx` (research R2):
   - call `Anek_Kannada({ subsets: ['kannada', 'latin'], axes: ['wdth'], display: 'swap', variable: '--font-anek' })`;
   - set the `<html>` class to its variable;
   - set the viewport `themeColor` to the Coast primary `#b8461a`.
-- [ ] T095 Write the contrast unit test `src/app/theme-contrast.test.ts` (SC-006; analyze C1) before T003. It reads the `@theme` block of `src/app/globals.css`, computes WCAG contrast ratios, and asserts:
+- [X] T095 Write the contrast unit test `src/app/theme-contrast.test.ts` (SC-006; analyze C1) before T003. It reads the `@theme` block of `src/app/globals.css`, computes WCAG contrast ratios, and asserts:
   - at least 4.5:1 for every body-text pair: `ink`, `muted` and `subtle` on `page`, `surface` and `surface-sunk`; `on-primary` on `primary` and `primary-strong`; `primary` on `surface` (links); each `status-*` on its `status-*-soft`; `open`, `closed`, `warn` and `danger` on their `-soft` tints; `on-danger` on `danger`;
   - at least 3:1 for large text and meaningful icons: `sea`, `veg` and `nonveg` on `surface` and `page`, and `line-strong` on `surface` for control borders.
   It must fail until T003 defines the new tokens.
-- [ ] T003 Rewrite the `@theme` block and base styles in `src/app/globals.css` with the Coast tokens (research R1, contracts/ui.md, values from `design/a-coast/tokens.css`):
+- [X] T003 Rewrite the `@theme` block and base styles in `src/app/globals.css` with the Coast tokens (research R1, contracts/ui.md, values from `design/a-coast/tokens.css`):
   - keep the existing names (`primary`, `primary-strong`, `on-primary`, `secondary`, `on-secondary`, `danger`, `on-danger`, `veg`, `nonveg`, `surface`, `page`, `ink`, `muted`, `line`, `open`, `closed`, `warn`, `spacing-touch`) with Coast values;
   - add `sea` and `sea-soft`, `subtle`, `surface-sunk`, `line-strong`, `-soft` tints for open, closed, veg, nonveg, warn and danger, and `status-{placed,accepted,preparing,ready,picked,delivered,rejected,cancelled}` with `-soft` tints;
   - add `--text-{caption,small,body,heading,title,display}` (13/14/16/18/22/28 px) with line heights, `--radius-{xs,sm,md,lg,xl}` (6/10/14/18/24 px), `--shadow-{1,2,3,bar}`, `--spacing-{topbar,tabbar,placebar}` (56/72/76 px), and `--duration-{fast,base}` (120/180 ms) with `--ease-out-soft`;
@@ -86,9 +86,9 @@ task"). What 003 adds:
   - add `:lang(kn)` line heights (body 1.62, headings 1.42) and three `font-stretch` utility classes (`stretch-read` 100%, `stretch-head` 87.5%, `stretch-dense` 80%);
   - add a global `@media (prefers-reduced-motion: reduce)` rule setting the duration tokens to 0 ms and stopping `animate-pulse`;
   - restyle the Leaflet zoom-control block to the new tokens (keep 44 px controls).
-- [ ] T004 [P] Add `screens/` to `.gitignore`
-- [ ] T005 [P] Add a `layout` project to `playwright.config.ts` (Chromium, `isMobile: true`, `hasTouch: true`, `testMatch: /\/visual-.*\.spec\.ts/`; each test sets its own viewport) and keep the `mobile` and `desktop` projects' `testMatch` patterns from matching `visual-*` files
-- [ ] T006 [P] Create `playwright.screens.config.ts` (testDir `e2e/screens`, the same `webServer` and `use` settings as `playwright.config.ts`, one worker, no retries) and add the script `"screens": "NODE_OPTIONS=--conditions=react-server playwright test --config playwright.screens.config.ts"` to `package.json`
+- [X] T004 [P] Add `screens/` to `.gitignore`
+- [X] T005 [P] Add a `layout` project to `playwright.config.ts` (Chromium, `isMobile: true`, `hasTouch: true`, `testMatch: /\/visual-.*\.spec\.ts/`; each test sets its own viewport) and keep the `mobile` and `desktop` projects' `testMatch` patterns from matching `visual-*` files
+- [X] T006 [P] Create `playwright.screens.config.ts` (testDir `e2e/screens`, the same `webServer` and `use` settings as `playwright.config.ts`, one worker, no retries) and add the script `"screens": "NODE_OPTIONS=--conditions=react-server playwright test --config playwright.screens.config.ts"` to `package.json`
 
 ---
 
@@ -101,7 +101,7 @@ surface uses.
 
 ### Verification tools (research R13, R14)
 
-- [ ] T007 Write the layout helpers in `e2e/layout.ts`. Each takes a Playwright `page` and returns data for assertions:
+- [X] T007 Write the layout helpers in `e2e/layout.ts`. Each takes a Playwright `page` and returns data for assertions:
   - `setLocale(page, 'en' | 'kn')`: sets the existing `locale` cookie;
   - `horizontalOverflow(page)`: `scrollWidth - innerWidth` of the document;
   - `smallTargets(page)`: visible `a`, `button`, `summary`, `select`, `input:not([type=hidden])` and `[role=button]` elements whose box is under 48×48, excluding links inside `p` (WCAG inline exception); returns a short description of each;
@@ -109,14 +109,14 @@ surface uses.
   - `fullyVisibleCount(page, locator)`: how many matches lie fully inside the viewport, above the bottom fixed bar;
   - `clippedText(page)`: elements whose `scrollWidth > clientWidth` or `scrollHeight > clientHeight` while `overflow` is not `visible`, excluding intentional one-line truncation marked with `data-truncate`;
   - `truncatedWithoutFullText(page)`: `data-truncate` elements that expose neither a `title` nor screen-reader text holding the full value (every layout check asserts this list is empty; analyze U1).
-- [ ] T008 Write the screenshot capture `e2e/screens/capture.spec.ts` (research R14):
+- [X] T008 Write the screenshot capture `e2e/screens/capture.spec.ts` (research R14):
   - `resetDemoData()` first;
   - sign in per role with `e2e/sign-in.ts`, choosing subjects through `e2e/catalogue.ts` flags (demo customer, the kitchen of the placed order, the agent of the ready order, the admin);
   - visit every route of each surface: customer, partner and agent at 360×780 and 390×844, admin at 1280×800, in `en` and `kn`;
   - add these states: home with suggestions open, kitchen with "Address and hours" open, cart with items, UPI sheet open, empty cart, partner sound prompt and pill, reject sheet open, board;
   - write `screens/<surface>/<route>-<width>-<locale>.png` and a `screens/index.html` contact sheet grouped by surface;
   - call `blockMapTiles(page)` before map pages.
-- [ ] T009 Run `npm run screens` on the unchanged UI to produce the "before" set, and move it to `screens/before/` (git-ignored with `screens/`) for comparison during review
+- [X] T009 Run `npm run screens` on the unchanged UI to produce the "before" set, and move it to `screens/before/` (git-ignored with `screens/`) for comparison during review
 
 ### Shared icons and illustrations (research R3)
 

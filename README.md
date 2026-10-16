@@ -119,6 +119,8 @@ IST puts some of these orders on the previous day.
 | Framework | Next.js 16 (App Router) |
 | Language | TypeScript 6 (strict) |
 | Styling | Tailwind CSS 4 |
+| Icons | lucide-react (tree-shaken Lucide icon components), plus the app's own SVGs for veg marks, map pins and illustrations |
+| Font | Anek Kannada (one family for Kannada and Latin), self-hosted through `next/font` |
 | Database | PostgreSQL 17 |
 | ORM and migrations | Drizzle ORM + drizzle-kit |
 | Validation | Zod |
