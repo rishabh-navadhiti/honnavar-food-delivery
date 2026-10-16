@@ -9,7 +9,7 @@ export default function CustomerLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <AppHeader homeHref="/" />
-      <main className="mx-auto w-full max-w-3xl px-4 pb-[calc(var(--spacing-placebar)+2rem)] pt-4">{children}</main>
+      <main className="mx-auto w-full max-w-[752px] px-4 pb-[calc(var(--spacing-placebar)+2rem)] pt-4">{children}</main>
     </>
   );
 }

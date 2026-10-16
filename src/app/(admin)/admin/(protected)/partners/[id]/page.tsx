@@ -35,7 +35,7 @@ export default async function AdminPartnerPage({ params, searchParams }: Props) 
 
   return (
     <div className="flex flex-col gap-4">
-      <Link href="/admin/partners" className="text-primary">
+      <Link href="/admin/partners" className="inline-flex min-h-touch items-center gap-1 self-start text-base font-semibold text-primary-strong">
         <span aria-hidden="true">← </span>
         {t('backToPartners')}
       </Link>
@@ -43,7 +43,7 @@ export default async function AdminPartnerPage({ params, searchParams }: Props) 
         <LocalizedText pair={{ en: kitchen.nameEn, kn: kitchen.nameKn }} />
       </h1>
       {created ? (
-        <p role="status" className="rounded-md border border-green-200 bg-open-soft p-3">
+        <p role="status" className="rounded-md border border-transparent bg-open-soft p-3">
           {t('created')}
         </p>
       ) : null}

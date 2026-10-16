@@ -93,7 +93,7 @@ export function HoursEditor({ surface, kitchenId, week }: { surface: 'partner' |
         </p>
       ) : null}
       <div className="sticky bottom-16 flex items-center gap-3 bg-page py-2">
-        <Button type="submit" disabled={pending} className="flex-1 text-lg">
+        <Button type="submit" disabled={pending} className="flex-1 text-heading">
           {pending ? t('common.saving') : t('hoursEditor.save')}
         </Button>
         {state.saved ? (

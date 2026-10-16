@@ -50,8 +50,8 @@ export default async function AgentHomePage() {
       {orders.length === 0 ? (
         <EmptyState illustration="NoOrders" title={t('agent.noDeliveriesTitle')} body={t('agent.noDeliveriesBody')} />
       ) : (
-        <div className="flex flex-col gap-3">
-          <h2 className="text-heading font-bold">{t('agentHome.assigned')}</h2>
+        <div className="flex flex-col gap-3 md:grid md:grid-cols-2">
+          <h2 className="text-heading font-bold md:col-span-2">{t('agentHome.assigned')}</h2>
           {orders.map((order) => (
             <AgentOrderCard key={order.id} order={order} />
           ))}

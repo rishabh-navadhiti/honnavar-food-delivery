@@ -132,7 +132,7 @@ export function CheckoutForm({
             role="dialog"
             aria-modal="true"
             aria-labelledby="upi-title"
-            className="flex w-full max-w-md animate-sheet-up flex-col gap-4 rounded-t-xl bg-surface p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-3 sm:rounded-xl"
+            className="flex w-full max-w-md animate-sheet-up flex-col gap-4 rounded-t-xl bg-surface p-5 pb-[calc(1.25rem+env(safe-area-inset-bottom))] shadow-3 sm:rounded-md"
           >
             <h2 id="upi-title" className="text-title font-bold">
               {t('upiSheet.title')}
@@ -149,7 +149,7 @@ export function CheckoutForm({
                 setSheetOpen(false);
                 form.current?.requestSubmit();
               }}
-              className={buttonClasses('primary', 'w-full text-lg')}
+              className={buttonClasses('primary', 'w-full')}
             >
               {t('upiSheet.confirm')}
             </button>

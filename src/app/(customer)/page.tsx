@@ -67,7 +67,7 @@ export default async function HomePage({ searchParams }: Props) {
           action={anyFilter ? <ClearFilters /> : undefined}
         />
       ) : (
-        <ul className="flex flex-col rounded-lg bg-surface px-3 shadow-1">
+        <ul className="flex flex-col rounded-lg bg-surface px-3 shadow-1 md:grid md:grid-cols-2 md:gap-x-6">
           {kitchens.map((kitchen, index) => (
             <KitchenCard key={kitchen.id} kitchen={kitchen} now={now} priority={index < 3} />
           ))}

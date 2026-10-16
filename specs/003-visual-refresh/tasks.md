@@ -443,22 +443,22 @@ no clipping or overflow, and every screen in the theme (spec US5).
 
 ### Tests for User Story 5 ⚠️
 
-- [ ] T082 [US5] Every-route sweep in `e2e/visual-routes.spec.ts`. For each surface, sign in through `e2e/catalogue.ts` flags and visit every route listed in [contracts/routes.md](./contracts/routes.md) "Screens" (detail routes with seeded ids; customer, partner and agent at 360×780, 430×932 and 768×1024, admin at 1280×800) in `kn` and `en` (analyze C2, C4). Assert:
+- [X] T082 [US5] Every-route sweep in `e2e/visual-routes.spec.ts`. For each surface, sign in through `e2e/catalogue.ts` flags and visit every route listed in [contracts/routes.md](./contracts/routes.md) "Screens" (detail routes with seeded ids; customer, partner and agent at 360×780, 430×932 and 768×1024, admin at 1280×800) in `kn` and `en` (analyze C2, C4). Assert:
   - no horizontal overflow;
   - no clipped text;
   - no small targets;
   - at 768×1024, no text block wider than 720 px (readable line length; FR-011).
-- [ ] T083 [P] [US5] Reduced-motion test in `e2e/visual-routes.spec.ts`: with `page.emulateMedia({ reducedMotion: 'reduce' })`, opening the reject sheet and the UPI sheet shows them with a computed `transition-duration` and `animation-duration` of `0s`. Without reduced motion, no transition on those elements exceeds 200 ms (SC-010)
+- [X] T083 [P] [US5] Reduced-motion test in `e2e/visual-routes.spec.ts`: with `page.emulateMedia({ reducedMotion: 'reduce' })`, opening the reject sheet and the UPI sheet shows them with a computed `transition-duration` and `animation-duration` of `0s`. Without reduced motion, no transition on those elements exceeds 200 ms (SC-010)
 
 ### Implementation for User Story 5
 
-- [ ] T096 [US5] Use tablet widths sensibly on customer, partner and agent (FR-011, spec edge case; analyze C2):
+- [X] T096 [US5] Use tablet widths sensibly on customer, partner and agent (FR-011, spec edge case; analyze C2):
   - cap content at a readable maximum width (about 720 px, centred);
   - from 768 px, show kitchen rows, order lists and partner and agent cards in two columns;
   - keep the tab bar and the top bar full width with centred content.
   Edit the three surface layouts and the list containers in `src/app/(customer)/page.tsx`, `src/app/(customer)/orders/page.tsx`, `src/app/(partner)/partner/(protected)/orders/page.tsx` and `src/app/(agent)/agent/(protected)/page.tsx`.
-- [ ] T084 [US5] Fix every finding from T082, T083 and T096 in the component files involved. Then review the screens set for colour-only states (owner edit 2 and FR-009): every open/closed, veg/non-veg, status and error state has a word or icon. Fix any remaining coloured rails, rules or tints
-- [ ] T085 [US5] Run `npm run test:e2e` and `npm run screens`, compare the Kannada screens of all four surfaces with the reference, and commit with task ids
+- [X] T084 [US5] Fix every finding from T082, T083 and T096 in the component files involved. Then review the screens set for colour-only states (owner edit 2 and FR-009): every open/closed, veg/non-veg, status and error state has a word or icon. Fix any remaining coloured rails, rules or tints
+- [X] T085 [US5] Run `npm run test:e2e` and `npm run screens`, compare the Kannada screens of all four surfaces with the reference, and commit with task ids
 
 ---
 

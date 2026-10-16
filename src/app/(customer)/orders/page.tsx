@@ -58,14 +58,14 @@ export default async function OrdersPage() {
             <h2 id="ongoing-title" className="text-heading font-bold">
               {t('orders.ongoing')}
             </h2>
-            {ongoing.length === 0 ? <p className="text-base text-muted">{t('orders.noOngoing')}</p> : <ul className="flex flex-col gap-3">{ongoing.map(card)}</ul>}
+            {ongoing.length === 0 ? <p className="text-base text-muted">{t('orders.noOngoing')}</p> : <ul className="flex flex-col gap-3 md:grid md:grid-cols-2">{ongoing.map(card)}</ul>}
           </section>
           {past.length > 0 ? (
             <section aria-labelledby="past-title" className="flex flex-col gap-3">
               <h2 id="past-title" className="text-heading font-bold">
                 {t('orders.past')}
               </h2>
-              <ul className="flex flex-col gap-3">{past.map(card)}</ul>
+              <ul className="flex flex-col gap-3 md:grid md:grid-cols-2">{past.map(card)}</ul>
             </section>
           ) : null}
         </>

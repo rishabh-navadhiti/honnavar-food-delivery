@@ -9,7 +9,7 @@ export default async function AdminNewPartnerPage() {
   const t = await getTranslations('admin');
   return (
     <div className="flex flex-col gap-4">
-      <Link href="/admin/partners" className="text-primary">
+      <Link href="/admin/partners" className="inline-flex min-h-touch items-center gap-1 self-start text-base font-semibold text-primary-strong">
         <span aria-hidden="true">← </span>
         {t('backToPartners')}
       </Link>

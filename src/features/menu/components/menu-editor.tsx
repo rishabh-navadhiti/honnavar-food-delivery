@@ -39,7 +39,7 @@ function MoveButtons({ scope, id, name, action, first, last }: { scope: Scope; i
             type="submit"
             disabled={direction === 'up' ? first : last}
             aria-label={direction === 'up' ? t('moveUp', { name }) : t('moveDown', { name })}
-            className="flex size-touch items-center justify-center rounded-md bg-surface shadow-1 text-lg disabled:opacity-30"
+            className="flex size-touch items-center justify-center rounded-md bg-surface shadow-1 text-heading disabled:opacity-30"
           >
             <span aria-hidden="true">{direction === 'up' ? '↑' : '↓'}</span>
           </button>

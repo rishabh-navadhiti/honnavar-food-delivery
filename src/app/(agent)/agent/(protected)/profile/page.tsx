@@ -24,7 +24,7 @@ export default async function AgentProfilePage() {
           {rows.map(([label, value]) => (
             <div key={label}>
               <dt className="text-small font-semibold text-muted">{label}</dt>
-              <dd className="text-lg font-semibold">{value}</dd>
+              <dd className="text-heading font-semibold">{value}</dd>
             </div>
           ))}
         </dl>

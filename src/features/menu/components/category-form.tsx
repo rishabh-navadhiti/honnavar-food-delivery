@@ -36,7 +36,7 @@ export function CategoryForm({ surface, kitchenId, category }: Props) {
             {formError}
           </p>
         ) : null}
-        <Button type="submit" disabled={pending} className="text-lg">
+        <Button type="submit" disabled={pending} className="text-heading">
           {pending ? t('common.saving') : t('common.save')}
         </Button>
       </form>

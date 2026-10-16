@@ -127,7 +127,7 @@ export function DishForm({ surface, kitchenId, pureVeg, categories, defaultCateg
             {formError}
           </p>
         ) : null}
-        <Button type="submit" disabled={pending} className="text-lg">
+        <Button type="submit" disabled={pending} className="text-heading">
           {pending ? t('common.saving') : t('dishForm.save')}
         </Button>
       </form>

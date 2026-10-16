@@ -131,3 +131,14 @@ export async function truncatedWithoutFullText(page: Page): Promise<string[]> {
       .map((el) => `"${(el.textContent ?? '').trim().slice(0, 40)}"`),
   );
 }
+
+/** Text blocks wider than `max` px, for readable line lengths at tablet widths (FR-011). */
+export async function wideTextBlocks(page: Page, max: number): Promise<string[]> {
+  return page.evaluate(
+    (limit) =>
+      Array.from(document.querySelectorAll<HTMLElement>('main p, main li, main h1, main h2, main dd'))
+        .filter((el) => el.offsetParent && el.getBoundingClientRect().width > limit && (el.textContent ?? '').trim().length > 40)
+        .map((el) => `${el.tagName.toLowerCase()} ${Math.round(el.getBoundingClientRect().width)} "${(el.textContent ?? '').trim().slice(0, 30)}"`),
+    max,
+  );
+}

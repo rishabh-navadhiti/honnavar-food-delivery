@@ -12,7 +12,7 @@ export default async function PartnerProtectedLayout({ children }: { children: R
   const t = await getTranslations('nav');
   return (
     <>
-      <main className="mx-auto w-full max-w-3xl px-4 pb-28 pt-4">
+      <main className="mx-auto w-full max-w-[752px] px-4 pb-28 pt-4">
         {/* The new-order alert runs on every partner screen (FR-029). */}
         <NewOrderAlert />
         {children}

@@ -26,7 +26,7 @@ export async function MenuEditorPage({ surface, kitchenId, basePath, saved, miss
     <div className="flex flex-col gap-4">
       <h1 className="text-title font-bold">{t('title')}</h1>
       {saved ? (
-        <div role="status" data-testid="saved-notice" className="rounded-lg border border-green-200 bg-open-soft p-3 text-base">
+        <div role="status" data-testid="saved-notice" className="rounded-lg border border-transparent bg-open-soft p-3 text-base">
           <p className="font-semibold">{t('savedNotice')}</p>
           {missing === 'kn' ? <p>{t('missingKnReminder')}</p> : null}
           {missing === 'en' ? <p>{t('missingEnReminder')}</p> : null}

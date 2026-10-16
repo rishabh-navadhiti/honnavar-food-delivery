@@ -39,7 +39,7 @@ export function ClosureControl({
         </p>
         <form action={reopenAction}>
           <ScopeFields surface={surface} kitchenId={kitchenId} />
-          <button type="submit" className={buttonClasses('primary', 'w-full text-lg')}>
+          <button type="submit" className={buttonClasses('primary', 'w-full')}>
             {t('closure.reopen')}
           </button>
         </form>
@@ -51,7 +51,7 @@ export function ClosureControl({
       <p className="text-base text-muted">{t('closure.closeHelp')}</p>
       <form action={closeTemporarilyAction}>
         <ScopeFields surface={surface} kitchenId={kitchenId} />
-        <button type="submit" className={buttonClasses('danger', 'w-full text-lg')}>
+        <button type="submit" className={buttonClasses('danger', 'w-full')}>
           {t('closure.closeNow')}
         </button>
       </form>
