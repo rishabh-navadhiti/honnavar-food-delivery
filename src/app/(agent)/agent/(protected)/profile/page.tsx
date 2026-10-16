@@ -18,12 +18,12 @@ export default async function AgentProfilePage() {
   if (agent.vehicleReg) rows.push([t('agent.vehicleReg'), agent.vehicleReg]);
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{t('agent.profileTitle')}</h1>
+      <h1 className="text-title font-bold">{t('agent.profileTitle')}</h1>
       <Card>
         <dl className="flex flex-col gap-3">
           {rows.map(([label, value]) => (
             <div key={label}>
-              <dt className="text-sm font-semibold text-muted">{label}</dt>
+              <dt className="text-small font-semibold text-muted">{label}</dt>
               <dd className="text-lg font-semibold">{value}</dd>
             </div>
           ))}

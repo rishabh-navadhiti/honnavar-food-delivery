@@ -414,20 +414,20 @@ location in maps, then mark it picked up and delivered with cash confirmed (spec
 
 ### Tests for User Story 4 ⚠️
 
-- [ ] T076 [US4] Agent layout checks in `e2e/visual-layout.spec.ts`. Signed in as `readyOrder().agent` on `/agent` and on the order page of `readyOrder()`, at 360×780 and 390×844 in `en` and `kn`, assert no horizontal overflow, small targets or clipped text, and that the next-step button is the only primary-variant button on the order page
+- [X] T076 [US4] Agent layout checks in `e2e/visual-layout.spec.ts`. Signed in as `readyOrder().agent` on `/agent` and on the order page of `readyOrder()`, at 360×780 and 390×844 in `en` and `kn`, assert no horizontal overflow, small targets or clipped text, and that the next-step button is the only primary-variant button on the order page
 
 ### Implementation for User Story 4
 
-- [ ] T077 [US4] Restyle `src/app/(agent)/agent/(protected)/page.tsx` (greeting, then today's deliveries and cash as two figure cards, then order cards) and `src/features/orders/components/agent-order-card.tsx`, using the partner card layout and `StatusChip` (FR-022)
-- [ ] T078 [US4] Restyle `src/app/(agent)/agent/(protected)/orders/[id]/page.tsx` with `src/features/orders/components/agent-order-detail.tsx` and `agent-steps.tsx` (FR-023):
+- [X] T077 [US4] Restyle `src/app/(agent)/agent/(protected)/page.tsx` (greeting, then today's deliveries and cash as two figure cards, then order cards) and `src/features/orders/components/agent-order-card.tsx`, using the partner card layout and `StatusChip` (FR-022)
+- [X] T078 [US4] Restyle `src/app/(agent)/agent/(protected)/orders/[id]/page.tsx` with `src/features/orders/components/agent-order-detail.tsx` and `agent-steps.tsx` (FR-023):
   - a "Pick up from" section (kitchen, call, open in maps, items);
   - a "Deliver to" section (customer name, address, landmark, rider note, voice note, call, open in maps);
   - the next step as the single primary button;
   - the cash confirmation as a bottom sheet.
   Behaviour is unchanged.
-- [ ] T079 [P] [US4] Restyle `src/app/(agent)/agent/(protected)/layout.tsx` (top bar and bottom `NavLinks` with icons, labels unchanged), `messages/page.tsx`, `profile/page.tsx` and `src/app/(agent)/agent/login/page.tsx`
-- [ ] T080 [US4] Add the skeleton `src/app/(agent)/agent/(protected)/loading.tsx` (two figures and two order cards). Restyle `src/app/(agent)/agent/error.tsx`, `not-found.tsx` and `loading.tsx`
-- [ ] T081 [US4] Add any US4 message keys (`en.json`, `kn.json`, `machine-drafted.json`). Run the parity test, `npm test`, `npm run test:e2e` and `npm run screens`; commit with task ids
+- [X] T079 [P] [US4] Restyle `src/app/(agent)/agent/(protected)/layout.tsx` (top bar and bottom `NavLinks` with icons, labels unchanged), `messages/page.tsx`, `profile/page.tsx` and `src/app/(agent)/agent/login/page.tsx`
+- [X] T080 [US4] Add the skeleton `src/app/(agent)/agent/(protected)/loading.tsx` (two figures and two order cards). Restyle `src/app/(agent)/agent/error.tsx`, `not-found.tsx` and `loading.tsx`
+- [X] T081 [US4] Add any US4 message keys (`en.json`, `kn.json`, `machine-drafted.json`). Run the parity test, `npm test`, `npm run test:e2e` and `npm run screens`; commit with task ids
 
 **Checkpoint**: All four surfaces are refreshed; the demo path runs end to end in Coast.
 

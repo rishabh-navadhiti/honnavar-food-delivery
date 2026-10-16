@@ -4,7 +4,7 @@
  * and the four-tap cash order. Subjects come from catalogue flags.
  */
 import { expect, test, type Page } from '@playwright/test';
-import { admin, availableDishesIn, demoCustomer, orderableKitchen, placedOrder, type KitchenRef } from './catalogue';
+import { admin, availableDishesIn, demoCustomer, orderableKitchen, placedOrder, readyOrder, type KitchenRef } from './catalogue';
 import { blockMapTiles, openAllDay } from './fixtures';
 import {
   clippedText,
@@ -184,5 +184,28 @@ test('the admin board shows every group side by side at 1280 px, in both languag
     await page.setViewportSize({ width: 1024, height: 768 });
     expect(await horizontalOverflow(page), `page scrolls sideways at 1024 (${locale})`).toBeLessThanOrEqual(0);
     expect((await page.getByTestId('group-finished').boundingBox())!.width).toBeGreaterThanOrEqual(199);
+  }
+});
+
+test('agent home and order page keep the layout rules with one primary next step (FR-022, FR-023)', async ({ page }) => {
+  test.setTimeout(180_000);
+  await blockMapTiles(page);
+  const order = readyOrder();
+  await setLocale(page, 'en');
+  await signIn(page, '/agent/login', order.agent!.phone);
+  for (const locale of LOCALES) {
+    await setLocale(page, locale);
+    for (const size of PHONES) {
+      await page.setViewportSize(size);
+      for (const route of ['/agent', `/agent/orders/${order.id}`]) {
+        await page.goto(route);
+        await page.waitForLoadState('networkidle');
+        await expectLayoutRules(page, `${route} ${size.width} ${locale}`);
+      }
+      const primaries = await page.evaluate(
+        () => [...document.querySelectorAll<HTMLElement>('main a, main button')].filter((e) => e.offsetParent && e.classList.contains('bg-primary')).length,
+      );
+      expect(primaries, `one primary action on the agent order page (${size.width} ${locale})`).toBe(1);
+    }
   }
 });

@@ -25,7 +25,7 @@ export function AgentSteps({ orderId, status, paymentMethod, grandTotal }: { ord
   return (
     <div className="flex flex-col gap-2">
       {status === 'accepted' || status === 'preparing' ? (
-        <p className="rounded-xl bg-secondary p-3 text-base font-semibold" data-testid="still-preparing">
+        <p className="rounded-md bg-surface-sunk p-3 text-base font-semibold" data-testid="still-preparing">
           {t('stillPreparing')}
         </p>
       ) : null}

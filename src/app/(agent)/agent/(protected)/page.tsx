@@ -1,3 +1,4 @@
+import { Banknote, PackageCheck } from 'lucide-react';
 import { getLocale, getTranslations } from 'next-intl/server';
 import { getAgentProfile } from '@/features/agents/queries';
 import { requireSession } from '@/features/auth/session';
@@ -24,27 +25,33 @@ export default async function AgentHomePage() {
   return (
     <div className="flex flex-col gap-4">
       <LiveRefresh />
-      <h1 className="text-2xl font-bold">{t('agent.greeting', { name: agent?.name ?? '' })}</h1>
+      <h1 className="stretch-head text-title font-bold">{t('agent.greeting', { name: agent?.name ?? '' })}</h1>
       <dl className="grid grid-cols-2 gap-2">
-        <div className="flex flex-col rounded-xl border border-line bg-surface p-3">
-          <dt className="text-sm text-muted">{t('agentHome.deliveriesToday')}</dt>
-          <dd className="text-2xl font-bold" data-testid="today-deliveries">
+        <div className="flex flex-col gap-1 rounded-lg bg-surface p-3.5 shadow-1">
+          <dt className="inline-flex items-center gap-1.5 text-small text-muted">
+            <PackageCheck aria-hidden="true" className="size-4" />
+            {t('agentHome.deliveriesToday')}
+          </dt>
+          <dd className="stretch-head text-display font-bold" data-testid="today-deliveries">
             {today.deliveries}
           </dd>
         </div>
-        <div className="flex flex-col rounded-xl border border-line bg-surface p-3">
-          <dt className="text-sm text-muted">{t('agentHome.cashToday')}</dt>
-          <dd className="text-2xl font-bold" data-testid="today-cash">
+        <div className="flex flex-col gap-1 rounded-lg bg-surface p-3.5 shadow-1">
+          <dt className="inline-flex items-center gap-1.5 text-small text-muted">
+            <Banknote aria-hidden="true" className="size-4" />
+            {t('agentHome.cashToday')}
+          </dt>
+          <dd className="stretch-head text-display font-bold" data-testid="today-cash">
             {formatPrice(today.cashCollected, locale)}
           </dd>
         </div>
       </dl>
       <UpdatedAt at={now} />
       {orders.length === 0 ? (
-        <EmptyState title={t('agent.noDeliveriesTitle')} body={t('agent.noDeliveriesBody')} />
+        <EmptyState illustration="NoOrders" title={t('agent.noDeliveriesTitle')} body={t('agent.noDeliveriesBody')} />
       ) : (
         <div className="flex flex-col gap-3">
-          <h2 className="text-lg font-bold">{t('agentHome.assigned')}</h2>
+          <h2 className="text-heading font-bold">{t('agentHome.assigned')}</h2>
           {orders.map((order) => (
             <AgentOrderCard key={order.id} order={order} />
           ))}
