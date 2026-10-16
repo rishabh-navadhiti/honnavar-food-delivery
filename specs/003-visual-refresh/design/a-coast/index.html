@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A · Coast — Direction overview</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="coast.css">
+<style>
+  .review { max-width: 1240px; }
+  .hero-ov { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: start; margin-bottom: 40px; }
+  .lockup { display: flex; align-items: center; gap: 16px; margin-top: 14px; }
+  .lockup svg { width: 64px; height: 64px; }
+  .lockup span { font-size: 44px; font-weight: 760; font-stretch: 87.5%; letter-spacing: -0.02em; line-height: 1; padding-top: 6px; }
+  .lockup .food { color: var(--tile-600); }
+  .rationale { font-size: 16.5px; line-height: 1.6; color: var(--ink); margin-top: 20px; max-width: 64ch; }
+  .rationale b { font-weight: 700; }
+  .facts { display: grid; gap: 10px; }
+  .fact { background: var(--surface); border-radius: var(--r-lg); padding: 16px 18px; box-shadow: var(--e-1); }
+  .fact .k { font-size: 12.5px; font-weight: 750; letter-spacing: 0.07em; text-transform: uppercase; color: var(--ink-3); }
+  .fact .v { font-size: 17px; font-weight: 650; margin-top: 2px; }
+  .fact .v code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14.5px; background: var(--tile-50); color: var(--tile-700); padding: 2px 6px; border-radius: 6px; }
+
+  .screens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 48px; }
+  .scr { display: flex; align-items: center; gap: 14px; background: var(--surface); border-radius: var(--r-lg); padding: 14px 16px; box-shadow: var(--e-2); min-height: 72px; transition: transform var(--t-fast) var(--ease); }
+  .scr:hover { transform: translateY(-2px); }
+  .scr .ic { width: 44px; height: 44px; border-radius: 12px; background: var(--tile-50); color: var(--tile-600); display: grid; place-items: center; flex: none; }
+  .scr b { display: block; font-size: 16.5px; font-weight: 720; }
+  .scr small { font-size: 13.5px; color: var(--ink-2); }
+  .scr .lucide.go { margin-left: auto; color: var(--ink-3); }
+
+  section.sheet-sec { margin-bottom: 44px; }
+  .sec-title { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid #d8d1c9; padding-bottom: 10px; }
+  .sec-title h2 { font-size: 24px; font-weight: 780; font-stretch: 87.5%; letter-spacing: -0.01em; }
+  .sec-title p { font-size: 14px; color: var(--ink-2); }
+
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+  .sw { background: var(--surface); border-radius: 14px; overflow: hidden; box-shadow: var(--e-1); }
+  .sw .c { height: 64px; }
+  .sw .t { padding: 8px 10px 10px; }
+  .sw .t b { display: block; font-size: 14px; font-weight: 720; line-height: 1.25; }
+  .sw .t span { font-size: 12.5px; color: var(--ink-2); font-family: ui-monospace, Menlo, monospace; }
+  .sw .t small { display: block; font-size: 12px; color: var(--ink-3); line-height: 1.3; margin-top: 2px; }
+  .grp-label { font-size: 13px; font-weight: 750; color: var(--ink-2); margin: 18px 0 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .chips-demo { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .type-table { background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--e-1); overflow: hidden; }
+  .trow { display: grid; grid-template-columns: 170px 1fr 1fr; gap: 20px; align-items: baseline; padding: 14px 20px; border-bottom: 1px solid var(--line); }
+  .trow:last-child { border-bottom: 0; }
+  .trow .spec { font-size: 12.5px; color: var(--ink-3); line-height: 1.4; }
+  .trow .spec b { display: block; font-size: 14px; color: var(--ink); font-weight: 720; }
+  .widths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+  .widths > div { background: var(--surface); border-radius: 14px; padding: 14px 16px; box-shadow: var(--e-1); }
+  .widths .lbl { font-size: 12.5px; color: var(--ink-3); font-weight: 650; }
+  .widths .smp { font-size: 24px; font-weight: 740; line-height: 1.5; }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .row3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .panel { background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--e-1); padding: 18px 20px; }
+  .panel h3 { font-size: 16px; font-weight: 740; margin-bottom: 12px; font-stretch: 87.5%; }
+  .space-row { display: flex; align-items: center; gap: 12px; margin: 6px 0; font-size: 13px; color: var(--ink-2); font-family: ui-monospace, Menlo, monospace; }
+  .space-row i { display: block; height: 14px; background: var(--tile-200); border-radius: 3px; }
+  .radii { display: flex; flex-wrap: wrap; gap: 14px; }
+  .radii div { width: 72px; height: 60px; background: var(--tile-50); border: 1.5px solid var(--tile-200); display: grid; place-items: end center; padding-bottom: 4px; font-size: 12px; color: var(--tile-700); font-weight: 700; }
+  .elev { display: flex; gap: 18px; flex-wrap: wrap; }
+  .elev div { width: 110px; height: 72px; border-radius: 14px; background: var(--surface); display: grid; place-items: center; font-size: 13px; font-weight: 700; color: var(--ink-2); }
+  .elev-wrap { background: var(--page); border-radius: 14px; padding: 18px; }
+  .icons { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .icons div { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 4px; border-radius: 12px; background: var(--surface-2); font-size: 11.5px; color: var(--ink-2); text-align: center; }
+  .icons .lucide { width: 24px; height: 24px; color: var(--ink); stroke-width: 1.9; }
+  .marks { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+  .marks figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 13px; color: var(--ink-2); }
+  .big-mark { width: 56px; height: 56px; background-size: 56px 56px !important; }
+  .pins svg { width: 64px; height: 83px; }
+  .empty { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 10px 10px 4px; }
+  .empty > svg { width: 220px; height: 160px; }
+  .empty h4 { font-size: 19px; font-weight: 760; font-stretch: 87.5%; margin-top: 8px; }
+  .empty p { font-size: 14.5px; color: var(--ink-2); margin-top: 2px; }
+  .empty .btn { margin-top: 14px; }
+  table.str { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.str th, table.str td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  table.str th { font-size: 12.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.05em; }
+  table.str td:nth-child(3) { font-size: 15px; line-height: 1.6; }
+  table.str code { font-size: 12.5px; color: var(--tile-700); }
+  .mini-tabbar { position: relative; height: 66px; border-radius: 16px; overflow: hidden; box-shadow: var(--e-2); }
+  .mini-tabbar .tabbar { position: absolute; }
+  .motion li { font-size: 14.5px; color: var(--ink-2); line-height: 1.5; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+  .motion li b { color: var(--ink); }
+  .edits { background: var(--surface); border-radius: var(--r-lg); box-shadow: var(--e-1); padding: 16px 20px; margin-bottom: 28px; }
+  .edits h2 { font-size: 17px; font-weight: 760; font-stretch: 87.5%; }
+  .edits ol { list-style: none; margin-top: 8px; display: grid; gap: 6px; }
+  .edits li { font-size: 14.5px; line-height: 1.5; color: var(--ink-2); display: flex; gap: 10px; }
+  .edits li b { color: var(--ink); }
+  .edits .tag { flex: none; font-size: 12px; font-weight: 750; padding: 2px 8px; border-radius: var(--r-pill); height: 22px; display: inline-flex; align-items: center; }
+  .edits .tag.done { background: var(--open-bg); color: var(--open); }
+  .edits .tag.plan { background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-2); }
+  .mini-tabbar.stated { height: 72px; }
+</style>
+</head>
+<body>
+<div class="review">
+  <div class="review-head" style="margin-bottom:20px">
+    <div>
+      <div class="kicker">003 visual refresh · design direction</div>
+    </div>
+    <nav class="review-nav">
+      <a href="index.html" aria-current="page">Overview</a><a href="home.html">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html">Cart</a><a href="order.html">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html">Admin board</a>
+    </nav>
+  </div>
+
+  <section class="edits" aria-labelledby="edits-h">
+    <h2 id="edits-h">Owner edits applied (2026-10-16)</h2>
+    <ol>
+      <li><span class="tag done">Drawn</span><span><b>1 · Kitchen list rows on Home.</b> The big photo cards are now list rows in B·Ledger's rhythm: 96 px square photo (14 px radius) left; name, type badge, open state and delivery estimate right. Three full kitchens at 390 × 844 (four when no name wraps), four at 430 × 932, 360 fits with no sideways scroll; closed kitchens keep moon + “Closed · opens …”.</span></li>
+      <li><span class="tag done">Drawn</span><span><b>2 · No decorative colour rules.</b> Removed the 4 px board column top rules, the coloured rail and amber ring on the waiting partner card, the tinted “Needs agent” column and the 5 px rule on the order status hero. Group and status colour now lives only in the status chip and the group / status icon, always with its word (rule written into <code>tokens.css</code> and <code>coast.css</code>). The partner countdown bar stays: its fill is the share of the answer window left.</span></li>
+      <li><span class="tag plan">Decided, not drawn</span><span><b>3 · Partner cards keep</b> the customer name, delivery landmark and rider note (handled in the plan).</span></li>
+      <li><span class="tag done">Drawn</span><span><b>4 · Tabs read word + state.</b> “Orders · Preparing” and “Cart · ₹620” as two-line labels (word above, state below); Kannada uses the existing nav strings (<span lang="kn">ಆರ್ಡರ್‌ಗಳು</span>, <span lang="kn">ಕಾರ್ಟ್</span>) plus the state. 48 px targets at 360; the customer bar is 72 px on Home.</span></li>
+      <li><span class="tag plan">Decided, not drawn</span><span><b>5 · Partner amounts</b> are the item total (handled in the plan).</span></li>
+    </ol>
+  </section>
+
+  <div class="hero-ov">
+    <div>
+      <div class="kicker" style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--tile-700);font-weight:750">Direction A · Coast</div>
+      <div class="lockup">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#b8461a"/><path d="M6.5 15.5h19a9.5 9.5 0 0 1-19 0Z" fill="#fff6ea"/><path d="M7 10.5c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0" fill="none" stroke="#f8c97f" stroke-width="2" stroke-linecap="round"/><path d="M10.5 19.5c1.2.9 2.4.9 3.6 0s2.4-.9 3.6 0 2.4.9 3.6 0" stroke="#0e6e67" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+        <span>Honnavar <span class="food">Food</span></span>
+      </div>
+      <p class="rationale"><b>Rationale.</b> Coast takes today's brand orange and settles it into the colour of a Mangalore-tile roof (<b>#B8461A</b>), on a coconut-cream page with tamarind-brown ink and one Sharavathi-teal accent kept for call, map and delivery cues, so the food photographs carry the warmth. One family, <b>Anek Kannada</b>, sets both scripts — its Kannada and Latin were drawn together, so they match in weight and colour — and its width axis does the hierarchy work: 87.5% for headings and prices, 80% for dense tab and board labels, 100% for reading. Kannada keeps the same pixel size as English with taller line boxes (1.42 headings, 1.62 body) so vowel signs and ottaksharas never clip. Customer screens are warm and photo-led but compact (kitchens as list rows with a 96 px square photo, 18 px card radii, soft layered warm shadows, pill chips; colour for status only in chips and icons, never as rules or rails); operations screens keep the palette but tighten to a card that scans in one second (number · status icon + word · age / items · total · payment / one action), giving three full partner cards at 390 × 844 and five equal columns at 1280. The known layout problems are solved structurally: one 56 px top bar and one 72 px four-tab bar (16.4% of 360 × 780) whose tabs read word + state, “Orders · Preparing” and “Cart · ₹620” (with the count on the icon), so the cart bar and ongoing-order strip disappear; the kitchen header folds name, badges, estimate and call into one card with address and hours collapsed; the cart swaps the tab bar for a single “Place order · ₹total” bar; the partner sound prompt becomes a pill and reject becomes a 2 × 2 sheet that fits one screen; and the board puts assign and reassign on every card.</p>
+    </div>
+    <div class="facts">
+      <div class="fact"><div class="k">Type family</div><div class="v">Anek Kannada (variable: wght 100–800, wdth 75–100) — self-hosted in the product</div></div>
+      <div class="fact"><div class="k">Primary</div><div class="v">Mangalore tile <code>#B8461A</code> · 5.3 : 1 on white</div></div>
+      <div class="fact"><div class="k">Secondary accent</div><div class="v">Sharavathi teal <code>#0E6E67</code> · call, map, delivery</div></div>
+      <div class="fact"><div class="k">Page / ink</div><div class="v">Coconut cream <code>#FAF4EA</code> · Tamarind <code>#2B1B12</code> (15 : 1)</div></div>
+      <div class="fact"><div class="k">Fixed chrome (customer)</div><div class="v">56 px top + 72 px two-line tabs = 128 px · cart: 56 + 76 = 132 px</div></div>
+      <div class="fact"><div class="k">Icons</div><div class="v">Lucide, 2 px stroke; custom veg marks, map pins, empty states</div></div>
+    </div>
+  </div>
+
+  <div class="screens">
+    <a class="scr" href="home.html"><span class="ic"><i data-lucide="house"></i></span><span><b>Home</b><small>List rows · 390 · 430 · suggestions · 360</small></span><i data-lucide="arrow-right" class="go"></i></a>
+    <a class="scr" href="kitchen.html"><span class="ic"><i data-lucide="store"></i></span><span><b>Kitchen</b><small>English + ಕನ್ನಡ</small></span><i data-lucide="arrow-right" class="go"></i></a>
+    <a class="scr" href="cart.html"><span class="ic"><i data-lucide="shopping-bag"></i></span><span><b>Cart</b><small>Place-order bar replaces tabs</small></span><i data-lucide="arrow-right" class="go"></i></a>
+    <a class="scr" href="order.html"><span class="ic"><i data-lucide="map"></i></span><span><b>Order</b><small>Status first · drawn map</small></span><i data-lucide="arrow-right" class="go"></i></a>
+    <a class="scr" href="partner-orders.html"><span class="ic"><i data-lucide="receipt-text"></i></span><span><b>Partner orders</b><small>Pill · prompt · reject · English + ಕನ್ನಡ</small></span><i data-lucide="arrow-right" class="go"></i></a>
+    <a class="scr" href="admin-board.html"><span class="ic"><i data-lucide="layout-dashboard"></i></span><span><b>Admin board</b><small>1280 · five groups</small></span><i data-lucide="arrow-right" class="go"></i></a>
+  </div>
+
+  <!-- ============================ PALETTE ============================ -->
+  <section class="sheet-sec">
+    <div class="sec-title"><h2>Palette</h2><p>All pairs used for text meet 4.5 : 1; icons and marks meet 3 : 1. Colour never stands alone.</p></div>
+    <div class="grp-label">Brand</div>
+    <div class="swatches">
+      <div class="sw"><div class="c" style="background:#b8461a"></div><div class="t"><b>Mangalore tile</b><span>#B8461A</span><small>Primary buttons, active tab, prices on stepper</small></div></div>
+      <div class="sw"><div class="c" style="background:#9c3512"></div><div class="t"><b>Tile deep</b><span>#9C3512</span><small>Links, active labels, pressed</small></div></div>
+      <div class="sw"><div class="c" style="background:#fbe3d4"></div><div class="t"><b>Tile wash</b><span>#FBE3D4</span><small>Active tab pill</small></div></div>
+      <div class="sw"><div class="c" style="background:#fdf1e8"></div><div class="t"><b>Tile mist</b><span>#FDF1E8</span><small>Selected cards, tonal buttons</small></div></div>
+      <div class="sw"><div class="c" style="background:#f2a541"></div><div class="t"><b>Marigold</b><span>#F2A541</span><small>Illustration only; never text</small></div></div>
+      <div class="sw"><div class="c" style="background:#0e6e67"></div><div class="t"><b>Sharavathi teal</b><span>#0E6E67</span><small>Call, map, delivery pin, sound pill</small></div></div>
+      <div class="sw"><div class="c" style="background:#dff2ef"></div><div class="t"><b>Teal wash</b><span>#DFF2EF</span><small>Call button, map water</small></div></div>
+    </div>
+    <div class="grp-label">Neutrals (warm)</div>
+    <div class="swatches">
+      <div class="sw"><div class="c" style="background:#2b1b12"></div><div class="t"><b>Tamarind ink</b><span>#2B1B12</span><small>Text 15 : 1</small></div></div>
+      <div class="sw"><div class="c" style="background:#5c4a3e"></div><div class="t"><b>Ink 2</b><span>#5C4A3E</span><small>Secondary text 7.6 : 1</small></div></div>
+      <div class="sw"><div class="c" style="background:#7a675a"></div><div class="t"><b>Ink 3</b><span>#7A675A</span><small>Hints, placeholders 4.9 : 1</small></div></div>
+      <div class="sw"><div class="c" style="background:#dccdbb"></div><div class="t"><b>Line strong</b><span>#DCCDBB</span><small>Input and chip borders</small></div></div>
+      <div class="sw"><div class="c" style="background:#ece2d5"></div><div class="t"><b>Line</b><span>#ECE2D5</span><small>Dividers</small></div></div>
+      <div class="sw"><div class="c" style="background:#faf4ea"></div><div class="t"><b>Coconut cream</b><span>#FAF4EA</span><small>Page</small></div></div>
+      <div class="sw"><div class="c" style="background:#ffffff;box-shadow:inset 0 -1px 0 var(--line)"></div><div class="t"><b>Surface</b><span>#FFFFFF</span><small>Cards, bars, sheets</small></div></div>
+    </div>
+    <div class="grp-label">Meaning</div>
+    <div class="swatches">
+      <div class="sw"><div class="c" style="background:#18794e"></div><div class="t"><b>Open / success</b><span>#18794E on #E3F4EA</span><small>Dot + “Open now”</small></div></div>
+      <div class="sw"><div class="c" style="background:#6a5d54"></div><div class="t"><b>Closed</b><span>#6A5D54 on #F0EBE5</span><small>Moon + “Closed · opens…”, greyed photo</small></div></div>
+      <div class="sw"><div class="c" style="background:#1a7f47"></div><div class="t"><b>Veg</b><span>#1A7F47</span><small>Square + circle</small></div></div>
+      <div class="sw"><div class="c" style="background:#8f3b1b"></div><div class="t"><b>Non-veg</b><span>#8F3B1B</span><small>Square + triangle</small></div></div>
+      <div class="sw"><div class="c" style="background:#9a5507"></div><div class="t"><b>Warning</b><span>#9A5507 on #FFF3D9</span><small>Time left, needs agent, demo tag</small></div></div>
+      <div class="sw"><div class="c" style="background:#b42318"></div><div class="t"><b>Danger</b><span>#B42318 on #FDE8E6</span><small>Reject, errors</small></div></div>
+    </div>
+    <div class="grp-label">Order status — colour + icon + word (the only place status colour appears)</div>
+    <div class="chips-demo">
+      <span class="status st-placed"><i data-lucide="bell-ring"></i>Placed</span>
+      <span class="status st-accepted"><i data-lucide="circle-check"></i>Accepted</span>
+      <span class="status st-preparing"><i data-lucide="chef-hat"></i>Preparing</span>
+      <span class="status st-ready"><i data-lucide="package-check"></i>Ready</span>
+      <span class="status st-picked"><i data-lucide="bike"></i>Picked up</span>
+      <span class="status st-delivered"><i data-lucide="check-check"></i>Delivered</span>
+      <span class="status st-rejected"><i data-lucide="circle-x"></i>Rejected</span>
+      <span class="status st-cancelled"><i data-lucide="ban"></i>Cancelled</span>
+    </div>
+    <div class="chips-demo" lang="kn" style="margin-top:8px">
+      <span class="status st-placed"><i data-lucide="bell-ring"></i>ಆರ್ಡರ್ ಆಗಿದೆ</span>
+      <span class="status st-accepted"><i data-lucide="circle-check"></i>ಒಪ್ಪಿಕೊಂಡಿದೆ</span>
+      <span class="status st-preparing"><i data-lucide="chef-hat"></i>ತಯಾರಾಗುತ್ತಿದೆ</span>
+      <span class="status st-ready"><i data-lucide="package-check"></i>ರೆಡಿ ಆಗಿದೆ</span>
+      <span class="status st-picked"><i data-lucide="bike"></i>ಪಿಕಪ್ ಆಗಿದೆ</span>
+      <span class="status st-delivered"><i data-lucide="check-check"></i>ಡೆಲಿವರಿ ಆಗಿದೆ</span>
+      <span class="status st-rejected"><i data-lucide="circle-x"></i>ಒಪ್ಪಿಕೊಂಡಿಲ್ಲ</span>
+      <span class="status st-cancelled"><i data-lucide="ban"></i>ರದ್ದಾಗಿದೆ</span>
+    </div>
+  </section>
+
+  <!-- ============================ TYPE ============================ -->
+  <section class="sheet-sec">
+    <div class="sec-title"><h2>Type scale</h2><p>Anek Kannada for everything. Same pixel size in both scripts; Kannada gets the taller line height.</p></div>
+    <div class="type-table">
+      <div class="trow"><div class="spec"><b>Display</b>28 / wght 780 / wdth 87.5<br>lh 1.18 · kn 1.42</div><div style="font-size:28px;font-weight:780;font-stretch:87.5%;line-height:1.18">Kitchens in Honnavar</div><div lang="kn" style="font-size:28px;font-weight:780;font-stretch:87.5%;line-height:1.42">ಹೊನ್ನಾವರದ ಊಟ-ತಿಂಡಿ</div></div>
+      <div class="trow"><div class="spec"><b>Title</b>22 / 760 / 87.5<br>lh 1.18 · kn 1.42</div><div style="font-size:22px;font-weight:760;font-stretch:87.5%;line-height:1.18">Udupi's Pingar Dhaba</div><div lang="kn" style="font-size:22px;font-weight:760;font-stretch:87.5%;line-height:1.42">ಉಡುಪಿಯವರ ಪಿಂಗಾರ ಢಾಬಾ</div></div>
+      <div class="trow"><div class="spec"><b>Heading</b>18 / 720 / 87.5<br>lh 1.3 · kn 1.5</div><div style="font-size:18px;font-weight:720;font-stretch:87.5%;line-height:1.3">Non-veg Specials</div><div lang="kn" style="font-size:18px;font-weight:720;font-stretch:87.5%;line-height:1.5">ನಾನ್ ವೆಜ್ ಸ್ಪೆಷಲ್</div></div>
+      <div class="trow"><div class="spec"><b>Body</b>16 / 400–650 / 100<br>lh 1.45 · kn 1.62</div><div style="font-size:16px;line-height:1.45">Seafood specialist by the Sharavathi: fish thalis, fresh catch fried to order, ghee roasts.</div><div lang="kn" style="font-size:16px;line-height:1.62">ಶರಾವತಿ ತೀರದ ಸೀಫುಡ್ ಹೋಟೆಲ್: ಮೀನೂಟ, ಆರ್ಡರ್ ಮಾಡಿದಾಗಲೇ ಮಾಡುವ ತಾಜಾ ಮೀನು ಫ್ರೈ, ಘೀ ರೋಸ್ಟ್.</div></div>
+      <div class="trow"><div class="spec"><b>Small</b>14 / 500–700 / 100<br>lh 1.45 · kn 1.62</div><div style="font-size:14px;line-height:1.45">Delivery in about 40–50 min · Closes 12:00 am</div><div lang="kn" style="font-size:14px;line-height:1.62">ಸುಮಾರು 40–50 ನಿಮಿಷದಲ್ಲಿ ಡೆಲಿವರಿ · ರಾತ್ರಿ 12:00ಕ್ಕೆ ಮುಚ್ಚುತ್ತದೆ</div></div>
+      <div class="trow"><div class="spec"><b>Caption / tab</b>13 / 600–720 / 80<br>lh 1.6 (both)</div><div style="font-size:13px;font-weight:650;font-stretch:80%;line-height:1.6">Home · Preparing · ₹620 · Account</div><div lang="kn" style="font-size:13px;font-weight:650;font-stretch:80%;line-height:1.6">ಮುಖಪುಟ · ತಯಾರಾಗುತ್ತಿದೆ · ₹620 · ಖಾತೆ</div></div>
+    </div>
+    <div class="widths">
+      <div><div class="lbl">wdth 100 — reading</div><div class="smp" style="font-stretch:100%">Prawns Ghee Roast <span lang="kn">ಸಿಗಡಿ ಘೀ ರೋಸ್ಟ್</span></div></div>
+      <div><div class="lbl">wdth 87.5 — headings, prices</div><div class="smp" style="font-stretch:87.5%">Prawns Ghee Roast <span lang="kn">ಸಿಗಡಿ ಘೀ ರೋಸ್ಟ್</span></div></div>
+      <div><div class="lbl">wdth 80 — dense labels</div><div class="smp" style="font-stretch:80%">Prawns Ghee Roast <span lang="kn">ಸಿಗಡಿ ಘೀ ರೋಸ್ಟ್</span></div></div>
+    </div>
+  </section>
+
+  <!-- ============================ SPACE, RADII, ELEVATION ============================ -->
+  <section class="sheet-sec">
+    <div class="sec-title"><h2>Spacing, radii, elevation</h2><p>4-based spacing; 16 px phone gutter; every tap target ≥ 48 × 48.</p></div>
+    <div class="row3">
+      <div class="panel"><h3>Spacing</h3>
+        <div class="space-row"><i style="width:4px"></i>s-1 · 4</div>
+        <div class="space-row"><i style="width:8px"></i>s-2 · 8</div>
+        <div class="space-row"><i style="width:12px"></i>s-3 · 12</div>
+        <div class="space-row"><i style="width:16px"></i>s-4 · 16 (gutter)</div>
+        <div class="space-row"><i style="width:20px"></i>s-5 · 20</div>
+        <div class="space-row"><i style="width:24px"></i>s-6 · 24</div>
+        <div class="space-row"><i style="width:32px"></i>s-8 · 32</div>
+        <div class="space-row"><i style="width:40px"></i>s-10 · 40</div>
+        <div class="space-row"><i style="width:48px"></i>s-12 · 48 (tap)</div>
+      </div>
+      <div class="panel"><h3>Radii</h3>
+        <div class="radii">
+          <div style="border-radius:6px">6 xs</div><div style="border-radius:10px">10 sm</div><div style="border-radius:14px">14 md</div>
+          <div style="border-radius:18px">18 lg</div><div style="border-radius:24px">24 xl</div><div style="border-radius:999px">pill</div>
+        </div>
+        <p style="font-size:13px;color:var(--ink-2);margin-top:12px">Cards 18 · buttons, inputs, dish photos 14 · sheets 24 · chips, badges, status 999.</p>
+      </div>
+      <div class="panel"><h3>Elevation (warm, layered)</h3>
+        <div class="elev-wrap"><div class="elev">
+          <div style="box-shadow:var(--e-1)">e-1 rows</div><div style="box-shadow:var(--e-2)">e-2 cards</div><div style="box-shadow:var(--e-3)">e-3 sheets</div><div style="box-shadow:var(--e-bar)">bar</div>
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ COMPONENTS ============================ -->
+  <section class="sheet-sec">
+    <div class="sec-title"><h2>Components</h2><p>Buttons, chips, badges, stepper, sound pill, countdown and the customer tab bar. No decorative colour rules, rails or accent bars on any component.</p></div>
+    <div class="row2">
+      <div class="panel">
+        <h3>Buttons</h3>
+        <div class="chips-demo">
+          <button class="btn btn-primary">Place order</button>
+          <button class="btn btn-tonal"><i data-lucide="chef-hat"></i>Start preparing</button>
+          <button class="btn btn-secondary">Back</button>
+          <button class="btn btn-sea"><i data-lucide="phone"></i>Call kitchen</button>
+          <button class="btn btn-danger">Reject order</button>
+        </div>
+        <h3 style="margin-top:18px">Chips and badges</h3>
+        <div class="chips-demo" style="align-items:center">
+          <button class="chip" aria-pressed="true"><span class="face"><i data-lucide="clock"></i>Open now</span></button>
+          <button class="chip" aria-pressed="false"><span class="face"><span class="vmark veg"></span>Pure veg</span></button>
+          <span class="badge"><i data-lucide="house"></i>Home kitchen</span>
+          <span class="badge open"><span class="dot"></span>Open now</span>
+          <span class="badge closed"><i data-lucide="moon"></i>Temporarily closed</span>
+          <span class="demo-tag">Demo</span>
+        </div>
+        <h3 style="margin-top:18px">Stepper · sound pill states</h3>
+        <div class="chips-demo" style="align-items:center">
+          <div class="stepper"><button aria-label="One less"><i data-lucide="minus"></i></button><output>2</output><button aria-label="One more"><i data-lucide="plus"></i></button></div>
+          <div class="stepper light"><button aria-label="One less"><i data-lucide="minus"></i></button><output>1</output><button aria-label="One more"><i data-lucide="plus"></i></button></div>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:2px 12px 0 10px;border-radius:999px;background:var(--sea-50);color:var(--sea-700);font-weight:700;font-size:14px;box-shadow:inset 0 0 0 1px var(--sea-200)"><i data-lucide="bell-ring" style="width:17px;height:17px"></i>Sounds on</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:2px 12px 0 10px;border-radius:999px;background:var(--warning-bg);color:var(--warning);font-weight:700;font-size:14px;box-shadow:inset 0 0 0 1px #efcf8f"><i data-lucide="bell-off" style="width:17px;height:17px"></i>Tap for sound</span>
+        </div>
+        <h3 style="margin-top:18px">Countdown (functional, not decorative)</h3>
+        <div style="max-width:320px">
+          <div style="display:flex;align-items:center;gap:8px;color:var(--warning);font-weight:760;font-size:15px"><i data-lucide="timer" style="width:18px;height:18px"></i>Accept or reject within 9:12</div>
+          <div class="countdown" style="--left:92%;margin-top:8px" aria-hidden="true"><span></span></div>
+        </div>
+        <p style="font-size:13px;color:var(--ink-2);margin-top:8px">Only on the waiting partner order. Fill = share of the answer window left (9:12 of 10:00), shrinking to empty; always under the words. The card itself is marked by a neutral ink outline, not a coloured rail.</p>
+      </div>
+      <div class="panel">
+        <h3>Customer tab bar — word + state on each stateful tab (owner edit 4)</h3>
+        <div class="mini-tabbar stated" style="width:390px;max-width:100%">
+          <nav class="tabbar stated" aria-label="Main navigation">
+            <a class="tab active" href="#"><span class="pill"><i data-lucide="house"></i></span><span class="lbl"><span>Home</span></span></a>
+            <a class="tab ongoing" href="#" aria-label="Orders · Preparing"><span class="pill"><i data-lucide="chef-hat"></i></span><span class="lbl"><span>Orders</span><span class="st">Preparing</span></span></a>
+            <a class="tab cart-full" href="#" aria-label="Cart · ₹620, 3 items"><span class="pill"><i data-lucide="shopping-bag"></i><span class="count">3</span></span><span class="lbl"><span>Cart</span><span class="st">₹620</span></span></a>
+            <a class="tab" href="#"><span class="pill"><i data-lucide="user-round"></i></span><span class="lbl"><span>Account</span></span></a>
+          </nav>
+        </div>
+        <div class="mini-tabbar stated" style="width:360px;max-width:100%;margin-top:12px" lang="kn">
+          <nav class="tabbar stated" aria-label="ಮುಖ್ಯ ಮೆನು">
+            <a class="tab" href="#"><span class="pill"><i data-lucide="house"></i></span><span class="lbl"><span>ಮುಖಪುಟ</span></span></a>
+            <a class="tab ongoing" href="#" aria-label="ಆರ್ಡರ್‌ಗಳು · ತಯಾರಾಗುತ್ತಿದೆ"><span class="pill"><i data-lucide="chef-hat"></i></span><span class="lbl"><span>ಆರ್ಡರ್‌ಗಳು</span><span class="st">ತಯಾರಾಗುತ್ತಿದೆ</span></span></a>
+            <a class="tab cart-full active" href="#" aria-label="ಕಾರ್ಟ್ · ₹620, 3 ಐಟಂಗಳು"><span class="pill"><i data-lucide="shopping-bag"></i><span class="count">3</span></span><span class="lbl"><span>ಕಾರ್ಟ್</span><span class="st">₹620</span></span></a>
+            <a class="tab" href="#"><span class="pill"><i data-lucide="user-round"></i></span><span class="lbl"><span>ಖಾತೆ</span></span></a>
+          </nav>
+        </div>
+        <p style="font-size:13px;color:var(--ink-2);margin-top:10px">Top: 390 px English. Bottom: 360 px Kannada (each tab 88 px wide, 72 px tall). Each stateful tab reads its word above and its state below — “Orders / Preparing”, “Cart / ₹620”; screen readers hear “Orders · Preparing”. Kannada reuses <code>nav.kitchenOrders</code> ಆರ್ಡರ್‌ಗಳು and <code>nav.cart</code> ಕಾರ್ಟ್ plus the state. The status word uses the 80% width so it fits; the ₹ total never truncates. With no cart the third tab reads “Cart” alone; with no ongoing order the second reads “Orders” alone. The bar is 72 px (was 66) so both lines keep Kannada line height.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ ICONS, MARKS, PINS, EMPTY ============================ -->
+  <section class="sheet-sec">
+    <div class="sec-title"><h2>Icons, marks, pins, illustration</h2><p>Lucide for UI; custom drawings where no standard icon fits.</p></div>
+    <div class="row2">
+      <div class="panel"><h3>Icon set (Lucide)</h3>
+        <div class="icons">
+          <div><i data-lucide="house"></i>Home</div><div><i data-lucide="receipt-text"></i>Orders</div><div><i data-lucide="shopping-bag"></i>Cart</div><div><i data-lucide="user-round"></i>Account</div><div><i data-lucide="search"></i>Search</div><div><i data-lucide="languages"></i>Language</div>
+          <div><i data-lucide="phone"></i>Call</div><div><i data-lucide="map-pin"></i>Landmark</div><div><i data-lucide="bike"></i>Delivery</div><div><i data-lucide="clock"></i>Time</div><div><i data-lucide="timer"></i>Time left</div><div><i data-lucide="store"></i>Restaurant</div>
+          <div><i data-lucide="cloud"></i>Cloud kitchen</div><div><i data-lucide="banknote"></i>Cash</div><div><i data-lucide="smartphone"></i>UPI</div><div><i data-lucide="bell-ring"></i>Sound / new</div><div><i data-lucide="chef-hat"></i>Preparing</div><div><i data-lucide="package-check"></i>Ready</div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Veg / non-veg marks</h3>
+        <div class="marks">
+          <figure><span class="vmark veg big-mark"></span>Veg</figure>
+          <figure><span class="vmark nonveg big-mark"></span>Non-veg</figure>
+          <figure><span style="display:flex;gap:8px;align-items:center"><span class="vmark veg"></span><span class="vmark nonveg"></span></span>16 px in rows</figure>
+        </div>
+        <h3 style="margin-top:20px">Map pins</h3>
+        <div class="marks pins">
+          <figure>
+            <svg viewBox="0 0 40 52" aria-hidden="true"><ellipse cx="20" cy="49" rx="8" ry="2.6" fill="rgb(43 27 18 / .22)"/><path d="M20 1.5C9.8 1.5 1.8 9.4 1.8 19.4c0 13 18.2 28.2 18.2 28.2s18.2-15.2 18.2-28.2C38.2 9.4 30.2 1.5 20 1.5Z" fill="#b8461a" stroke="#fff" stroke-width="2.4"/><circle cx="20" cy="19" r="11.5" fill="#fff6ea"/><path d="M12.6 18.4h14.8a7.4 7.4 0 0 1-14.8 0Z" fill="#b8461a"/><path d="M11 18.4h18" stroke="#b8461a" stroke-width="1.8" stroke-linecap="round"/><path d="M16.6 15.2c-.9-1 .9-1.8 0-3M20 15.2c-.9-1 .9-1.8 0-3M23.4 15.2c-.9-1 .9-1.8 0-3" stroke="#f2a541" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+            Kitchen (tile, bowl)
+          </figure>
+          <figure>
+            <svg viewBox="0 0 40 52" aria-hidden="true"><ellipse cx="20" cy="49" rx="8" ry="2.6" fill="rgb(43 27 18 / .22)"/><path d="M20 1.5C9.8 1.5 1.8 9.4 1.8 19.4c0 13 18.2 28.2 18.2 28.2s18.2-15.2 18.2-28.2C38.2 9.4 30.2 1.5 20 1.5Z" fill="#0e6e67" stroke="#fff" stroke-width="2.4"/><circle cx="20" cy="19" r="11.5" fill="#eef8f6"/><path d="M13.2 19.2 20 13l6.8 6.2v6.6a.9.9 0 0 1-.9.9h-3.6v-4.4h-4.6v4.4h-3.6a.9.9 0 0 1-.9-.9Z" fill="#0e6e67"/></svg>
+            Delivery (teal, house)
+          </figure>
+        </div>
+      </div>
+    </div>
+    <div class="row2" style="margin-top:24px">
+      <div class="panel">
+        <h3>Empty state — empty cart</h3>
+        <div class="empty">
+          <svg viewBox="0 0 220 160" role="img" aria-label="An empty bowl on a banana leaf">
+            <ellipse cx="110" cy="92" rx="96" ry="62" fill="#fdf1e8"/>
+            <path d="M24 128c22-6 42-6 64 0s42 6 64 0 34-6 46 0" fill="none" stroke="#b9e1db" stroke-width="3" stroke-linecap="round"/>
+            <path d="M40 140c18-5 34-5 52 0s34 5 52 0 30-5 46 0" fill="none" stroke="#dff2ef" stroke-width="3" stroke-linecap="round"/>
+            <path d="M30 112C58 74 132 52 196 66c-20 30-86 64-166 46Z" fill="#3f8f5a"/>
+            <path d="M30 112C58 74 132 52 196 66c-30 6-110 24-166 46Z" fill="#5aa86f"/>
+            <path d="M30 112C80 92 140 74 196 66" fill="none" stroke="#2f7347" stroke-width="2.2" stroke-linecap="round"/>
+            <g stroke="#2f7347" stroke-width="1.1" opacity=".55" stroke-linecap="round"><path d="M70 98l-8-12M92 90l-8-13M114 83l-7-13M136 77l-6-12M158 72l-5-11M76 96l6 10M100 88l7 11M124 80l7 10M148 74l6 9"/></g>
+            <path d="M74 86h72c0 22-16 34-36 34S74 108 74 86Z" fill="#b8461a"/>
+            <ellipse cx="110" cy="86" rx="36" ry="9" fill="#fff6ea" stroke="#b8461a" stroke-width="3"/>
+            <ellipse cx="110" cy="87" rx="28" ry="5.5" fill="#f6cdb4"/>
+            <path d="M84 104c8 6 44 6 52 0" fill="none" stroke="#9c3512" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+            <g fill="none" stroke="#f2a541" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="2 6"><path d="M98 70c-6-8 6-12 0-22"/><path d="M110 66c-6-8 6-12 0-22"/><path d="M122 70c-6-8 6-12 0-22"/></g>
+          </svg>
+          <h4>Your cart is empty</h4>
+          <p>Add a dish from any open kitchen.</p>
+          <a class="btn btn-primary" href="home.html"><i data-lucide="search"></i>Find food</a>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Motion (all under 200 ms, none under reduced motion)</h3>
+        <ul class="motion">
+          <li><b>Press feedback</b> — buttons scale to 0.98, chips and tabs tint, 120 ms.</li>
+          <li><b>Add → stepper</b> — width morphs in place, 160 ms; the Cart tab total counts up, no badge bounce.</li>
+          <li><b>Suggestions</b> — panel fades and slides 6 px, 140 ms; typing is never blocked.</li>
+          <li><b>Address and hours</b> — chevron rotates and panel opens, 180 ms, pushing the list (no overlap).</li>
+          <li><b>Sound prompt → pill</b> — height + fade, 180 ms; remembered on the device.</li>
+          <li><b>Reject sheet</b> — slides up with scrim fade, 180 ms.</li>
+          <li><b>Status change</b> — order hero and board cards crossfade, 160 ms; surrounding content does not move.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ DRAFT STRINGS ============================ -->
+  <section class="sheet-sec">
+    <div class="sec-title"><h2>New interface strings (drafts)</h2><p>Everything else on the mockups uses existing en/kn keys. Kannada drafts are not final.</p></div>
+    <div class="panel">
+      <table class="str">
+        <thead><tr><th>Where</th><th>English</th><th>Kannada (draft)</th></tr></thead>
+        <tbody>
+          <tr><td>Customer tab (Orders) — reuses <code>nav.kitchenOrders</code>; state line under it</td><td>Orders · {status}</td><td lang="kn">ಆರ್ಡರ್‌ಗಳು · {status}</td></tr>
+          <tr><td>Customer tab (Cart) — reuses <code>nav.cart</code>; total line under it</td><td>Cart · {total}</td><td lang="kn">ಕಾರ್ಟ್ · {total}</td></tr>
+          <tr><td>Customer tab (Account, short)</td><td>Account</td><td lang="kn">ಖಾತೆ</td></tr>
+          <tr><td>Kitchen card delivery estimate</td><td>{from}–{to} min</td><td lang="kn">{from}–{to} ನಿಮಿಷ</td></tr>
+          <tr><td>Kitchen address + hours expander</td><td>Address and hours</td><td lang="kn">ವಿಳಾಸ ಮತ್ತು ಸಮಯ</td></tr>
+          <tr><td>Suggestions: run full search</td><td>Search for “{q}”</td><td lang="kn">“{q}” ಹುಡುಕಿ</td></tr>
+          <tr><td>Cart line unit price</td><td>{price} each</td><td lang="kn">ಒಂದಕ್ಕೆ {price}</td></tr>
+          <tr><td>UPI choice tag</td><td>Demo</td><td lang="kn">ಡೆಮೊ</td></tr>
+          <tr><td>Sound pill (on / blocked)</td><td>Sounds on · Tap for sound</td><td lang="kn">ಸದ್ದು ಆನ್ · ಸದ್ದಿಗೆ ಒತ್ತಿ</td></tr>
+          <tr><td>Sound prompt body / button</td><td>A new order rings on this phone so you never miss one. You only do this once here. · Turn on sounds</td><td lang="kn">ಹೊಸ ಆರ್ಡರ್ ಬಂದಾಗ ಈ ಫೋನ್ ಸದ್ದು ಮಾಡುತ್ತದೆ. ಇಲ್ಲಿ ಒಮ್ಮೆ ಮಾಡಿದರೆ ಸಾಕು. · ಸದ್ದು ಆನ್ ಮಾಡಿ</td></tr>
+          <tr><td>Board: time in status</td><td>{n} min</td><td lang="kn">{n} ನಿಮಿಷ</td></tr>
+          <tr><td>Empty cart helper line</td><td>Add a dish from any open kitchen.</td><td lang="kn">ತೆರೆದಿರುವ ಯಾವುದಾದರೂ ಕಿಚನ್‌ನಿಂದ ಐಟಂ ಸೇರಿಸಿ.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

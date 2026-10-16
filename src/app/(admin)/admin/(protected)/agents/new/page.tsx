@@ -7,7 +7,7 @@ export default async function AdminNewAgentPage() {
   const t = await getTranslations('agentAdmin');
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{t('newTitle')}</h1>
+      <h1 className="text-title font-bold">{t('newTitle')}</h1>
       <AgentForm />
     </div>
   );

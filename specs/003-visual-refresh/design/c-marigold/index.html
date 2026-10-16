@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marigold · Overview</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  body.board { background: #EFEEF3; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 32px 40px 64px; }
+  .hero { display: grid; grid-template-columns: 1.35fr 1fr; gap: 28px; align-items: stretch; }
+  .lockups { display: grid; gap: 14px; align-content: start; }
+  .lockup { display: flex; align-items: center; gap: 14px; padding: 22px 24px; border-radius: 20px; }
+  .lockup img { width: 52px; height: 52px; }
+  .lockup .wordmark { font-size: 34px; padding-top: 6px; }
+  .lockup.dark { background: var(--c-ink-900); color: #fff; }
+  .lockup.light { background: var(--c-page); color: var(--c-ink-900); box-shadow: inset 0 0 0 1px var(--c-line); }
+  .lockup .tag { margin-left: auto; font-size: 13px; color: var(--c-text-3); }
+  .lockup.dark .tag { color: var(--c-on-ink-2); }
+  .appicon { width: 64px; height: 64px; border-radius: 16px; background: var(--c-ink-900); display: grid; place-items: center; flex: none; }
+  .appicon img { width: 44px; height: 44px; }
+  .rationale { background: #fff; border-radius: 20px; padding: 24px 28px; box-shadow: var(--e-1); }
+  .rationale h2 { font-family: var(--font-display); font-size: 22px; margin: 0 0 10px; }
+  .rationale p { margin: 0; font-size: 15.5px; line-height: 1.65; color: var(--c-text-2); }
+  .rationale p b { color: var(--c-text); }
+
+  .screens { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-top: 28px; }
+  .screens a { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 16px; background: #fff; text-decoration: none; color: var(--c-ink-900); box-shadow: var(--e-1); min-height: 112px; transition: transform var(--t-fast) var(--ease); }
+  .screens a:hover { transform: translateY(-2px); }
+  .screens .si { width: 40px; height: 40px; border-radius: 12px; background: var(--c-marigold-500); display: grid; place-items: center; }
+  .screens .si .lucide { width: 22px; height: 22px; }
+  .screens b { font-family: var(--font-display); font-size: 17px; line-height: 1.2; }
+  .screens span.s { font-size: 12.5px; color: var(--c-text-3); line-height: 1.35; }
+
+  section.blk { margin-top: 40px; }
+  section.blk > h2 { font-family: var(--font-display); font-size: 24px; margin: 0 0 4px; }
+  section.blk > p.lead { margin: 0 0 16px; color: var(--c-text-2); font-size: 14.5px; max-width: 860px; }
+  .panel { background: #fff; border-radius: 20px; padding: 22px 24px; box-shadow: var(--e-1); }
+
+  .swgroup { margin-bottom: 18px; }
+  .swgroup h3 { font: 700 13px/1.4 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--c-text-3); margin: 0 0 10px; }
+  .sws { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .sw { border-radius: 14px; overflow: hidden; box-shadow: inset 0 0 0 1px var(--c-line); background: #fff; }
+  .sw .c { height: 64px; display: flex; align-items: flex-end; padding: 8px 10px; font: 800 18px/1 var(--font-display); }
+  .sw .m { padding: 8px 10px 10px; font-size: 12.5px; line-height: 1.45; }
+  .sw .m b { display: block; font-size: 13.5px; color: var(--c-text); }
+  .sw .m code { font-family: ui-monospace, Menlo, monospace; font-size: 12px; color: var(--c-text-2); }
+  .sw .m em { font-style: normal; color: var(--c-text-3); }
+
+  .statusrow { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .tscale { display: grid; grid-template-columns: 150px 1fr 1fr; gap: 0; }
+  .tscale > div { padding: 12px 8px; border-bottom: 1px solid var(--c-line); display: flex; align-items: center; }
+  .tscale .lab { font-size: 12.5px; color: var(--c-text-3); line-height: 1.4; display: block; }
+  .tscale .lab b { color: var(--c-text); display: block; font-size: 13.5px; }
+  .tscale .hd { font: 700 12px/1.4 var(--font-body); letter-spacing: .06em; text-transform: uppercase; color: var(--c-text-3); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 18px; }
+  .pair .card { padding: 18px 20px; }
+  .pair .kick { font-size: 12px; color: var(--c-text-3); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 8px; }
+  .conj { font-family: var(--font-display); font-size: 28px; line-height: 1.5; font-weight: 700; }
+  .conj2 { font-family: "Noto Sans Kannada", sans-serif; font-size: 20px; line-height: 1.7; }
+  .lhdemo { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .lhdemo div { padding: 12px 14px; border-radius: 12px; background: var(--c-page); box-shadow: inset 3px 0 0 var(--c-marigold-500); }
+
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .spacing .bar { display: flex; align-items: center; gap: 12px; margin: 6px 0; font-size: 13px; color: var(--c-text-2); }
+  .spacing .bar i { display: block; height: 16px; background: var(--c-marigold-500); border-radius: 3px; box-shadow: inset 0 0 0 1px var(--c-marigold-600); }
+  .spacing .bar code { width: 76px; flex: none; font-family: ui-monospace, Menlo, monospace; font-size: 12px; }
+  .radii { display: flex; gap: 14px; flex-wrap: wrap; }
+  .radii div { width: 76px; height: 76px; background: var(--c-indigo-50); box-shadow: inset 0 0 0 2px var(--c-ink-700); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; font-size: 12px; font-weight: 600; color: var(--c-ink-700); }
+  .elev { display: grid; gap: 16px; padding: 18px; background: var(--c-page); border-radius: 16px; }
+  .elev .e { background: #fff; border-radius: 16px; padding: 16px; font-size: 13.5px; color: var(--c-text-2); }
+  .elev .e b { display: block; color: var(--c-text); font-family: var(--font-display); font-size: 16px; }
+
+  .comp { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 14px; }
+  .icons { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 10px; }
+  .icons div { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 6px 10px; border-radius: 14px; background: var(--c-page); font-size: 12.5px; color: var(--c-text-2); text-align: center; }
+  .icons .lucide { width: 28px; height: 28px; color: var(--c-ink-900); }
+  .marks { display: flex; gap: 28px; align-items: flex-end; flex-wrap: wrap; }
+  .marks figure { margin: 0; text-align: center; font-size: 12.5px; color: var(--c-text-2); }
+  .marks figure img { display: block; margin: 0 auto 8px; }
+  .mini { display: flex; gap: 6px; align-items: center; justify-content: center; }
+  .emptydemo { text-align: center; padding: 20px; background: var(--c-page); border-radius: 16px; }
+  .emptydemo img { width: 240px; height: 180px; }
+  .emptydemo .h2 { margin: 12px 0 6px; }
+  .emptydemo p { margin: 0 0 16px; color: var(--c-text-2); font-size: 14.5px; }
+  ul.tight { margin: 0; padding-left: 18px; font-size: 14px; color: var(--c-text-2); }
+  ul.tight li { margin: 5px 0; }
+  ul.tight b { color: var(--c-text); }
+</style>
+</head>
+<body class="board">
+<header class="board-head">
+  <img src="mark.svg" alt="">
+  <h1>C · Marigold <small>Bold, friendly, icon-led</small></h1>
+  <nav>
+    <a href="index.html" aria-current="page">Overview</a><a href="home.html">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html">Cart</a><a href="order.html">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html">Admin board</a>
+  </nav>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="rationale">
+      <h2>Rationale</h2>
+      <p><b>Marigold is the loud, friendly direction, built for people ordering on a phone for the first time.</b> Deep indigo ink frames every screen with one slim top bar and one bottom bar, so the warm-white page between them holds only content. Marigold <b>#FFB81C</b> is kept for the one thing to do next (Add, Place order, Accept, Assign) and always carries ink text (9.5:1). Leaf green means good news (open, call, delivered), and every order status has its own colour, icon and words. <b>Baloo Tamma 2</b>, one rounded family drawn for Kannada and Latin together, sets names, prices and buttons at the same size in both scripts. <b>Noto Sans</b> and <b>Noto Sans Kannada</b> carry body text, with Kannada given taller lines (1.68 against 1.5), so neither script looks borrowed. <b>Density is medium</b>: 48 px chips and buttons, 16 px card radius, photo-beside-text kitchen cards that show three per screen, and operations screens tightened to show three partner cards and five board columns. <b>The known layout problems are solved by structure.</b> The two header rows, cart bar and ongoing-order strip become one four-tab bottom bar: the Cart tab shows the count and ₹ total, and the Orders tab shows the live status, for 136 px of chrome at 360×780. The cart swaps the tabs for a single Place order bar. The kitchen header is one card, with address and hours folded away. Search suggests kitchens and dishes from the second letter. The partner sound prompt shrinks to a pill, and rejecting an order fits in one sheet. Admin navigation moves to the top, so the five dispatch columns get the full width.</p>
+    </div>
+    <div class="lockups">
+      <div class="lockup dark"><img src="mark.svg" alt=""><span class="wordmark">Honnavar Food</span><span class="tag">on chrome</span></div>
+      <div class="lockup light"><img src="mark.svg" alt=""><span class="wordmark">Honnavar Food</span><span class="tag">on page</span></div>
+      <div class="lockup light" style="gap:18px">
+        <span class="appicon"><img src="mark.svg" alt=""></span>
+        <div style="font-size:14px;color:var(--c-text-2);line-height:1.5"><b style="color:var(--c-text);font-family:var(--font-display);font-size:17px">Optional mark: a marigold</b><br>Eight round petals around an ink centre. The flower is strung over doorways for every Karnataka festival. It works at 16 px and makes a ready app icon on indigo.</div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="screens" aria-label="Screens">
+    <a href="home.html"><span class="si"><i data-lucide="house"></i></span><b>Home</b><span class="s">Kitchens, filters, search suggestions, 360 px check</span></a>
+    <a href="kitchen.html"><span class="si"><i data-lucide="utensils"></i></span><b>Kitchen</b><span class="s">English + Kannada, stepper, expander</span></a>
+    <a href="cart.html"><span class="si"><i data-lucide="shopping-bag"></i></span><b>Cart</b><span class="s">Bill, address, payment, place-order bar, empty</span></a>
+    <a href="order.html"><span class="si"><i data-lucide="receipt-text"></i></span><b>Order</b><span class="s">Status first, timeline, drawn map</span></a>
+    <a href="partner-orders.html"><span class="si"><i data-lucide="clipboard-list"></i></span><b>Partner orders</b><span class="s">English + Kannada, sound pill, reject sheet</span></a>
+    <a href="admin-board.html"><span class="si"><i data-lucide="layout-dashboard"></i></span><b>Admin board</b><span class="s">Five groups at 1280 px, assign on card</span></a>
+  </nav>
+
+  <!-- ================= Palette ================= -->
+  <section class="blk">
+    <h2>Palette</h2>
+    <p class="lead">Contrast is measured against the surface each colour sits on. Marigold never appears as text or as a thin icon on a light ground (1.7:1); it is always a fill with ink on top. Meaning colours always come with an icon, a shape or words.</p>
+    <div class="panel">
+      <div class="swgroup"><h3>Chrome and action</h3>
+        <div class="sws">
+          <div class="sw"><div class="c" style="background:#1C1A44;color:#fff">Aa</div><div class="m"><b>Ink 900</b><code>#1C1A44</code><br><em>bars, text · 16.4:1 with white</em></div></div>
+          <div class="sw"><div class="c" style="background:#28255C;color:#fff">Aa</div><div class="m"><b>Ink 800</b><code>#28255C</code><br><em>raised on chrome</em></div></div>
+          <div class="sw"><div class="c" style="background:#3A3680;color:#fff">Aa</div><div class="m"><b>Ink 700</b><code>#3A3680</code><br><em>icons, outlines</em></div></div>
+          <div class="sw"><div class="c" style="background:#1C1A44;color:#C8C6E0">Aa</div><div class="m"><b>On-ink 2</b><code>#C8C6E0</code><br><em>quiet text on bars · 9.9:1</em></div></div>
+          <div class="sw"><div class="c" style="background:#FFB81C;color:#1C1A44">Aa</div><div class="m"><b>Marigold 500</b><code>#FFB81C</code><br><em>primary · ink text 9.5:1</em></div></div>
+          <div class="sw"><div class="c" style="background:#F0A500;color:#1C1A44">Aa</div><div class="m"><b>Marigold 600</b><code>#F0A500</code><br><em>button lip, pressed</em></div></div>
+          <div class="sw"><div class="c" style="background:#FFF1CC;color:#8A4B00">Aa</div><div class="m"><b>Marigold 100</b><code>#FFF1CC</code><br><em>warning tint</em></div></div>
+          <div class="sw"><div class="c" style="background:#FFF8E5;color:#1C1A44">Aa</div><div class="m"><b>Marigold 50</b><code>#FFF8E5</code><br><em>new-order card, highlight</em></div></div>
+          <div class="sw"><div class="c" style="background:#17793F;color:#fff">Aa</div><div class="m"><b>Leaf 700</b><code>#17793F</code><br><em>positive · 5.5:1 on white</em></div></div>
+          <div class="sw"><div class="c" style="background:#E3F4E8;color:#17793F">Aa</div><div class="m"><b>Leaf 100</b><code>#E3F4E8</code><br><em>open, sound on · 4.8:1</em></div></div>
+        </div>
+      </div>
+      <div class="swgroup"><h3>Page and text</h3>
+        <div class="sws">
+          <div class="sw"><div class="c" style="background:#FFFBF3;color:#1C1A44;box-shadow:inset 0 -1px 0 #ECE6D8">Aa</div><div class="m"><b>Page</b><code>#FFFBF3</code><br><em>warm white</em></div></div>
+          <div class="sw"><div class="c" style="background:#FFFFFF;color:#1C1A44;box-shadow:inset 0 -1px 0 #ECE6D8">Aa</div><div class="m"><b>Surface</b><code>#FFFFFF</code><br><em>cards, sheets</em></div></div>
+          <div class="sw"><div class="c" style="background:#F6F1E6;color:#1C1A44">Aa</div><div class="m"><b>Sunken</b><code>#F6F1E6</code><br><em>bill, board columns</em></div></div>
+          <div class="sw"><div class="c" style="background:#D9D1BF;color:#1C1A44">Aa</div><div class="m"><b>Line strong</b><code>#D9D1BF</code><br><em>input and chip edges</em></div></div>
+          <div class="sw"><div class="c" style="background:#fff;color:#4B4868">Aa</div><div class="m"><b>Text 2</b><code>#4B4868</code><br><em>8.4:1 on page</em></div></div>
+          <div class="sw"><div class="c" style="background:#fff;color:#615D7C">Aa</div><div class="m"><b>Text 3</b><code>#615D7C</code><br><em>6.0:1 · lightest text</em></div></div>
+        </div>
+      </div>
+      <div class="swgroup"><h3>Meaning</h3>
+        <div class="sws">
+          <div class="sw"><div class="c" style="background:#E3F4E8;color:#17793F"><span class="badge badge-open"><span class="dot"></span>Open now</span></div><div class="m"><b>Open</b><code>#17793F / #E3F4E8</code></div></div>
+          <div class="sw"><div class="c" style="background:#EEEDF2;color:#5A5770"><span class="badge badge-closed"><i data-lucide="moon"></i>Closed</span></div><div class="m"><b>Closed</b><code>#5A5770 / #EEEDF2</code><br><em>photo also greyed</em></div></div>
+          <div class="sw"><div class="c" style="background:#fff"><img src="veg.svg" alt="" width="28" height="28"></div><div class="m"><b>Veg</b><code>#178A3C</code><br><em>square + circle</em></div></div>
+          <div class="sw"><div class="c" style="background:#fff"><img src="nonveg.svg" alt="" width="28" height="28"></div><div class="m"><b>Non-veg</b><code>#9C3D10</code><br><em>square + triangle</em></div></div>
+          <div class="sw"><div class="c" style="background:#FFF1CC;color:#8A4B00"><span class="badge badge-warn"><i data-lucide="triangle-alert"></i>Needs agent</span></div><div class="m"><b>Warning</b><code>#8A4B00 / #FFF1CC</code><br><em>6.1:1</em></div></div>
+          <div class="sw"><div class="c" style="background:#B42318;color:#fff">Aa</div><div class="m"><b>Danger</b><code>#B42318</code><br><em>6.6:1 · reject, errors</em></div></div>
+        </div>
+      </div>
+      <div class="swgroup" style="margin-bottom:0"><h3>Order status (chip = colour + icon + words, each ≥ 4.8:1)</h3>
+        <div class="statusrow">
+          <span class="status st-placed"><i data-lucide="bell-ring"></i>Placed</span>
+          <span class="status st-accepted"><i data-lucide="thumbs-up"></i>Accepted</span>
+          <span class="status st-preparing"><i data-lucide="chef-hat"></i>Preparing</span>
+          <span class="status st-ready"><i data-lucide="package-check"></i>Ready</span>
+          <span class="status st-picked"><i data-lucide="bike"></i>Picked up</span>
+          <span class="status st-delivered"><i data-lucide="check-check"></i>Delivered</span>
+          <span class="status st-rejected"><i data-lucide="circle-x"></i>Rejected</span>
+          <span class="status st-cancelled"><i data-lucide="ban"></i>Cancelled</span>
+        </div>
+        <div class="statusrow" lang="kn" style="margin-top:10px">
+          <span class="status st-placed"><i data-lucide="bell-ring"></i>ಆರ್ಡರ್ ಆಗಿದೆ</span>
+          <span class="status st-accepted"><i data-lucide="thumbs-up"></i>ಒಪ್ಪಿಕೊಂಡಿದೆ</span>
+          <span class="status st-preparing"><i data-lucide="chef-hat"></i>ತಯಾರಾಗುತ್ತಿದೆ</span>
+          <span class="status st-ready"><i data-lucide="package-check"></i>ರೆಡಿ ಆಗಿದೆ</span>
+          <span class="status st-picked"><i data-lucide="bike"></i>ಪಿಕಪ್ ಆಗಿದೆ</span>
+          <span class="status st-delivered"><i data-lucide="check-check"></i>ಡೆಲಿವರಿ ಆಗಿದೆ</span>
+          <span class="status st-rejected"><i data-lucide="circle-x"></i>ಒಪ್ಪಿಕೊಂಡಿಲ್ಲ</span>
+          <span class="status st-cancelled"><i data-lucide="ban"></i>ರದ್ದಾಗಿದೆ</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Type ================= -->
+  <section class="blk">
+    <h2>Type</h2>
+    <p class="lead">Baloo Tamma 2 (500–800) for headings, names, prices and buttons; Noto Sans and Noto Sans Kannada (400–700) for body, meta and inputs. Both scripts use the same pixel size at every step; only line height changes (Kannada headings 1.42, body 1.68). Kannada is never set smaller than the Latin beside it. Digits are Latin in both languages.</p>
+    <div class="panel">
+      <div class="tscale">
+        <div class="hd">Step</div><div class="hd">English</div><div class="hd">ಕನ್ನಡ</div>
+        <div><span class="lab"><b>Display</b>Baloo 800 · 30</span></div><div><span class="display">Preparing</span></div><div lang="kn"><span class="display">ತಯಾರಾಗುತ್ತಿದೆ</span></div>
+        <div><span class="lab"><b>H1</b>Baloo 800 · 24</span></div><div><span class="h1">Udupi's Pingar Dhaba</span></div><div lang="kn"><span class="h1">ಉಡುಪಿಯವರ ಪಿಂಗಾರ ಢಾಬಾ</span></div>
+        <div><span class="lab"><b>H2</b>Baloo 700 · 20</span></div><div><span class="h2">Non-veg Specials</span></div><div lang="kn"><span class="h2">ನಾನ್ ವೆಜ್ ಸ್ಪೆಷಲ್</span></div>
+        <div><span class="lab"><b>H3 / button</b>Baloo 700 · 17</span></div><div><span class="h3">Chicken Pingara Special · Place order</span></div><div lang="kn"><span class="h3">ಚಿಕನ್ ಪಿಂಗಾರ ಸ್ಪೆಷಲ್ · ಆರ್ಡರ್ ಮಾಡಿ</span></div>
+        <div><span class="lab"><b>Price</b>Baloo 800 · 18</span></div><div><span class="price">₹250 · ₹870</span></div><div lang="kn"><span class="price">₹250 · ₹870</span></div>
+        <div><span class="lab"><b>Body</b>Noto Sans 400 · 16</span></div><div style="line-height:1.5">Seafood specialist by the Sharavathi: fish thalis, fresh catch fried to order.</div><div lang="kn" style="line-height:1.68">ಶರಾವತಿ ತೀರದ ಸೀಫುಡ್ ಹೋಟೆಲ್: ಮೀನೂಟ, ಆರ್ಡರ್ ಮಾಡಿದಾಗಲೇ ಮಾಡುವ ತಾಜಾ ಮೀನು ಫ್ರೈ.</div>
+        <div><span class="lab"><b>Small / meta</b>Noto Sans 600 · 14</span></div><div class="small" style="font-weight:600">6 min ago · 2 items · Cash</div><div lang="kn" class="small" style="font-weight:600">6 ನಿಮಿಷದ ಹಿಂದೆ · 2 ಐಟಂಗಳು · ಕ್ಯಾಶ್</div>
+        <div style="border-bottom:0"><span class="lab"><b>Tab label</b>Noto Sans 600 · 12 / 12.5 kn</span></div><div style="border-bottom:0;font-size:12px;font-weight:600">Home · Orders · Cart · Account</div><div lang="kn" style="border-bottom:0;font-size:12.5px;font-weight:600">ಮುಖಪುಟ · ಆರ್ಡರ್ · ಕಾರ್ಟ್ · ಖಾತೆ</div>
+      </div>
+      <div class="pair">
+        <div class="card" lang="kn">
+          <div class="kick" lang="en">The two Kannada faces together</div>
+          <div class="h2" style="font-size:22px">ಮಸಾಲೆ ದೋಸೆ</div>
+          <div style="font-size:16px;line-height:1.68;color:var(--c-text-2)">ನ್ಯೂ ರಾಮೇಶ್ವರಂ ರೆಸ್ಟೋರೆಂಟ್ · ಸುಮಾರು 35–45 ನಿಮಿಷದಲ್ಲಿ ಡೆಲಿವರಿ</div>
+          <div style="margin-top:10px;display:flex;gap:10px;align-items:center"><span class="price">₹80</span><button class="btn btn-primary"><i data-lucide="plus"></i><span>ಸೇರಿಸಿ</span></button></div>
+          <p lang="en" style="font-size:13px;color:var(--c-text-3);margin:12px 0 0">Baloo's Kannada is drawn on the same rounded skeleton as Noto Sans Kannada, with a heavier, softer terminal. Side by side they read as heading and body of one family, not two scripts that don't match.</p>
+        </div>
+        <div class="card" lang="kn">
+          <div class="kick" lang="en">Conjuncts and stacked vowel signs, checked at size</div>
+          <div class="conj">ಢಾಬಾ · ಸ್ಪೆಷಲ್ · ಅರ್ಧ · ಕ್ಯಾಶ್ · ಸ್ಟ್ರೀಟ್</div>
+          <div class="conj2">ಘೀ ರೋಸ್ಟ್ · ತಂದೂರಿ · ಮಸಾಲ · ಪ್ರಮೀಳಾ · ಕೊಟ್ಟೆ ಕಡುಬು</div>
+          <div class="lhdemo" lang="en">
+            <div style="line-height:24px;font-size:16px">Latin body, 16 / 24<br>Ordered at 7:51 pm</div>
+            <div lang="kn" style="line-height:27px;font-size:16px">ಕನ್ನಡ 16 / 27: ಸಂಜೆ 7:51 ಕ್ಕೆ ಆರ್ಡರ್<br>ಪಿಕಪ್‌ಗೆ ರೆಡಿ · ಗ್ರಾಹಕರು</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Space, shape, depth ================= -->
+  <section class="blk">
+    <h2>Spacing, radii, elevation</h2>
+    <p class="lead">A 4-point scale; 16 px screen gutters; 48 px is the smallest tap target everywhere, including chips, steppers, tabs and the language switch.</p>
+    <div class="grid3">
+      <div class="panel spacing">
+        <div class="bar"><code>--s-1 4</code><i style="width:4px"></i></div>
+        <div class="bar"><code>--s-2 8</code><i style="width:8px"></i></div>
+        <div class="bar"><code>--s-3 12</code><i style="width:12px"></i></div>
+        <div class="bar"><code>--s-4 16</code><i style="width:16px"></i>gutter, card padding</div>
+        <div class="bar"><code>--s-5 20</code><i style="width:20px"></i></div>
+        <div class="bar"><code>--s-6 24</code><i style="width:24px"></i>section gap</div>
+        <div class="bar"><code>--s-8 32</code><i style="width:32px"></i></div>
+        <div class="bar"><code>--s-10 40</code><i style="width:40px"></i></div>
+        <div class="bar"><code>--tap 48</code><i style="width:48px;background:var(--c-ink-900);box-shadow:none"></i>min target</div>
+      </div>
+      <div class="panel">
+        <div class="radii">
+          <div style="border-radius:8px">8 · tags</div>
+          <div style="border-radius:12px">12 · buttons</div>
+          <div style="border-radius:16px">16 · cards</div>
+          <div style="border-radius:24px 24px 0 0">24 · sheets</div>
+          <div style="border-radius:999px;width:110px">pill · chips</div>
+        </div>
+        <p style="font-size:13.5px;color:var(--c-text-2);margin:16px 0 0">Buttons have a 3 px darker lip at the bottom (inset shadow) so they look pressable without a drop shadow. Pressing moves them down 1 px in 120 ms.</p>
+      </div>
+      <div class="panel">
+        <div class="elev">
+          <div class="e" style="box-shadow:var(--e-1)"><b>e-1 · cards</b>0 2 10 at 7% ink, plus a 1 px hairline</div>
+          <div class="e" style="box-shadow:var(--e-2)"><b>e-2 · sheets, suggestions</b>0 18 48 at 28% ink, with a scrim behind sheets</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Components ================= -->
+  <section class="blk">
+    <h2>Controls</h2>
+    <div class="panel">
+      <div class="comp">
+        <button class="btn btn-primary btn-lg"><span>Place order · ₹870</span><i data-lucide="arrow-right"></i></button>
+        <button class="btn btn-primary"><i data-lucide="plus"></i><span>Add</span></button>
+        <div class="stepper"><button aria-label="One less"><i data-lucide="minus"></i></button><output>2</output><button aria-label="One more"><i data-lucide="plus"></i></button></div>
+        <button class="btn btn-secondary"><i data-lucide="x"></i><span>Reject</span></button>
+        <button class="btn btn-positive"><i data-lucide="phone"></i><span>Call</span></button>
+        <button class="btn btn-danger"><i data-lucide="x"></i><span>Reject order</span></button>
+        <button class="btn btn-quiet"><span>Back</span></button>
+      </div>
+      <div class="comp">
+        <span class="chip is-on"><i data-lucide="clock-4"></i>Open now</span>
+        <span class="chip"><img src="veg.svg" alt="">Pure veg</span>
+        <span class="chip"><i data-lucide="cooking-pot"></i>Home kitchen</span>
+        <div class="seg" style="width:360px"><button class="is-on">All</button><button><img src="veg.svg" alt="">Veg only</button><button><img src="nonveg.svg" alt="">Non-veg only</button></div>
+      </div>
+      <div class="comp">
+        <span class="badge"><i data-lucide="utensils"></i>Restaurant</span>
+        <span class="badge badge-veg"><img src="veg.svg" alt="">Pure veg</span>
+        <span class="badge badge-open"><span class="dot"></span>Open now</span>
+        <span class="badge badge-closed"><i data-lucide="moon"></i>Closed · opens 11:30 am</span>
+        <span class="badge badge-demo">Demo</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px 0 10px;border-radius:999px;background:var(--c-leaf-100);color:var(--c-leaf-700);font-weight:700;font-size:14px;box-shadow:inset 0 0 0 1.5px rgba(23,121,63,.25)"><i data-lucide="bell-ring" style="width:18px;height:18px"></i>Sound on</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 12px 0 10px;border-radius:999px;background:var(--c-warn-bg);color:var(--c-warn-fg);font-weight:700;font-size:14px;box-shadow:inset 0 0 0 1.5px rgba(138,75,0,.3)"><i data-lucide="bell-off" style="width:18px;height:18px"></i>Tap for sound</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Icons, marks, pins, illustration ================= -->
+  <section class="blk">
+    <h2>Icons, marks, pins, empty state</h2>
+    <p class="lead">Lucide at 2 px stroke, 20–24 px in controls and 22 px in the tabs, always with a label or an accessible name. Custom drawings only where no standard icon fits: veg marks, the two map pins, empty-state art (flat, three colours, no outlines thinner than 2 px).</p>
+    <div class="grid3" style="grid-template-columns:1.3fr 1fr 1fr">
+      <div class="panel">
+        <div class="icons">
+          <div><i data-lucide="house"></i>Home</div>
+          <div><i data-lucide="receipt-text"></i>Orders</div>
+          <div><i data-lucide="shopping-bag"></i>Cart</div>
+          <div><i data-lucide="circle-user-round"></i>Account</div>
+          <div><i data-lucide="search"></i>Search</div>
+          <div><i data-lucide="bike"></i>Delivery time</div>
+          <div><i data-lucide="phone"></i>Call</div>
+          <div><i data-lucide="map-pin"></i>Address</div>
+          <div><i data-lucide="banknote"></i>Cash</div>
+          <div><i data-lucide="smartphone"></i>UPI (demo)</div>
+          <div><i data-lucide="timer"></i>Time left</div>
+          <div><i data-lucide="bell-ring"></i>Sound</div>
+          <div><i data-lucide="utensils"></i>Restaurant</div>
+          <div><i data-lucide="cooking-pot"></i>Home kitchen</div>
+          <div><i data-lucide="cloud"></i>Cloud kitchen</div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="marks" style="margin-bottom:22px">
+          <figure><span class="mini"><img src="veg.svg" alt="" width="16"><img src="veg.svg" alt="" width="24"><img src="veg.svg" alt="" width="32"></span>Veg</figure>
+          <figure><span class="mini"><img src="nonveg.svg" alt="" width="16"><img src="nonveg.svg" alt="" width="24"><img src="nonveg.svg" alt="" width="32"></span>Non-veg</figure>
+        </div>
+        <div class="marks">
+          <figure><img src="pin-kitchen.svg" alt="" width="66" height="84">Kitchen pin</figure>
+          <figure><img src="pin-delivery.svg" alt="" width="66" height="84">Delivery pin</figure>
+        </div>
+      </div>
+      <div class="panel emptydemo">
+        <img src="empty-cart.svg" alt="">
+        <div class="h2">Your cart is empty</div>
+        <p>Pick a kitchen and add a dish or two.</p>
+        <span class="btn btn-primary"><i data-lucide="search"></i><span>Find food</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= Motion + rules ================= -->
+  <section class="blk">
+    <h2>Motion and checks</h2>
+    <div class="grid3" style="grid-template-columns:1fr 1fr">
+      <div class="panel">
+        <ul class="tight">
+          <li><b>Press</b>: buttons sink 1 px and lose their lip (120 ms).</li>
+          <li><b>Add → stepper</b>: cross-fade in place (120 ms); the Cart tab total ticks to the new value and its count badge pops to 1.15× and back (150 ms).</li>
+          <li><b>Suggestions, expander, sheets</b>: fade + 4–8 px rise (150–180 ms); the expander chevron rotates 180°.</li>
+          <li><b>Sound pill</b>: the full prompt collapses into the pill (height + fade, 180 ms), with no layout jump below because the cards slide up in the same transition.</li>
+          <li>All motion is off under <code>prefers-reduced-motion</code>; nothing loops except the new-order countdown text.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <ul class="tight">
+          <li><b>Chrome</b>: top bar 56 + tab bar 80 = 136 px (17.4% of 360×780); cart 56 + place bar 84 = 140 px.</li>
+          <li><b>360 px</b>: every phone page was rendered at 360 (<code>#360</code> on the URL) with an automated check for sideways overflow and clipped text: none.</li>
+          <li><b>Tap targets</b>: every link and button in the frames measures at least 48×48 (checked automatically).</li>
+          <li><b>Partner density</b>: three full order cards at 390×844 in English and in Kannada; the reject sheet fits without scrolling.</li>
+          <li><b>Board</b>: five columns at 1280 px, ~236 px each, no sideways scroll.</li>
+          <li>New interface strings are drafts in both languages and are marked as drafts on each screen's notes.</li>
+          <li><b>Open point</b>: Noto Sans Kannada looks about 6% smaller than Noto Sans at the same pixel size (see the meta row above). The build could add +1 px to Kannada body and meta (17 / 15) for optical parity; the frames here keep sizes equal, as the rule asks.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

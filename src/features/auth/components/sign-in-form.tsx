@@ -41,11 +41,11 @@ export function SignInForm({ surface, next }: { surface: Surface; next?: string 
             required
           />
           {formError ? (
-            <p role="alert" className="text-base font-medium text-danger">
+            <p role="alert" className="rounded-md bg-danger-soft px-3 py-2 text-base font-semibold text-danger">
               {formError}
             </p>
           ) : null}
-          <Button type="submit" disabled={pending} className="w-full text-lg">
+          <Button type="submit" disabled={pending} className="min-h-[54px] w-full text-[1.06rem]">
             {pending ? t('common.loading') : t('auth.getCode')}
           </Button>
         </form>
@@ -67,11 +67,11 @@ export function SignInForm({ surface, next }: { surface: Surface; next?: string 
             autoFocus
           />
           {formError ? (
-            <p role="alert" className="text-base font-medium text-danger">
+            <p role="alert" className="rounded-md bg-danger-soft px-3 py-2 text-base font-semibold text-danger">
               {formError}
             </p>
           ) : null}
-          <Button type="submit" disabled={pending} className="w-full text-lg">
+          <Button type="submit" disabled={pending} className="min-h-[54px] w-full text-[1.06rem]">
             {pending ? t('common.loading') : t('auth.signIn')}
           </Button>
           <Button

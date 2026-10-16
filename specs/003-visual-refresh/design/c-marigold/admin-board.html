@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marigold · Dispatch board</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  .app { width: 1280px; height: 832px; display: flex; flex-direction: column; background: var(--c-page); font-family: var(--font-body); color: var(--c-text); font-size: 15px; line-height: 1.45; }
+  .atop { flex: none; height: 64px; display: flex; align-items: center; gap: 20px; padding: 0 20px 0 24px; background: var(--c-ink-900); color: #fff; }
+  .atop .brand img { width: 32px; height: 32px; }
+  .atop .brand .stack { display: flex; flex-direction: column; }
+  .atop .brand .wordmark { font-size: 19px; }
+  .anav { display: flex; gap: 4px; margin-left: 12px; }
+  .anav a { display: inline-flex; align-items: center; gap: 8px; height: 48px; padding: 0 16px; border-radius: 12px; color: var(--c-on-ink-2); text-decoration: none; font-weight: 600; font-size: 15px; }
+  .anav a .lucide { width: 20px; height: 20px; }
+  .anav a[aria-current] { background: var(--c-marigold-500); color: var(--c-ink-900); }
+  .atop .spacer { flex: 1; }
+  .find { display: flex; align-items: center; gap: 8px; }
+  .find label { font-size: 13px; color: var(--c-on-ink-2); white-space: nowrap; }
+  .find .in { display: flex; align-items: center; gap: 8px; height: 48px; width: 150px; padding: 0 12px; border-radius: 12px; background: #fff; color: var(--c-text-3); font-size: 15px; }
+  .find .in .lucide { width: 18px; height: 18px; color: var(--c-ink-700); }
+  .find .btn { min-height: 48px; padding: 0 16px; font-size: 16px; }
+  .atop .lang .pill { height: 40px; }
+
+  .ahead { flex: none; display: flex; align-items: flex-end; gap: 16px; padding: 18px 24px 14px; }
+  .ahead .h1 { font-size: 28px; }
+  .ahead .upd { display: flex; align-items: center; gap: 6px; font-size: 13.5px; color: var(--c-text-3); padding-bottom: 5px; }
+  .ahead .upd .lucide { width: 14px; height: 14px; }
+  .ahead .sum { margin-left: auto; display: flex; gap: 8px; }
+  .ahead .sum .badge { height: 32px; font-size: 14px; }
+
+  .boardg { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; padding: 0 24px 20px; }
+  .col { min-height: 0; display: flex; flex-direction: column; background: var(--c-sunken); border-radius: var(--r-lg); box-shadow: inset 0 0 0 1px var(--c-line); overflow: hidden; }
+  .col .ch { flex: none; display: flex; align-items: center; gap: 8px; padding: 12px 10px 10px; border-top: 4px solid var(--g); }
+  .col .ch .gi { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--gbg); color: var(--g); flex: none; }
+  .col .ch .gi .lucide { width: 18px; height: 18px; }
+  .col .ch .h3 { font-size: 15.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.45; flex: 1 1 auto; min-width: 0; }
+  .col .ch .n { min-width: 28px; height: 26px; padding: 0 8px; border-radius: 13px; background: var(--c-ink-900); color: #fff; font: 800 14px/26px var(--font-display); text-align: center; }
+  .col .cards { flex: 1 1 auto; overflow-y: auto; overflow-x: hidden; padding: 2px 10px 12px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; align-content: start; scrollbar-width: thin; }
+  .col.is-alert { background: #FFF6E0; box-shadow: inset 0 0 0 1.5px rgba(240,165,0,.45); }
+
+  .bc { min-width: 0; background: #fff; border-radius: var(--r-md); box-shadow: var(--e-1); border: 1px solid rgba(28,26,68,.06); padding: 12px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 7px; }
+  .bc .r1 { display: flex; align-items: center; gap: 8px; }
+  .bc .no { font: 800 19px/1.2 var(--font-display); padding-top: 2px; }
+  .bc .el { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 600; color: var(--c-text-2); white-space: nowrap; }
+  .bc .el .lucide { width: 15px; height: 15px; }
+  .bc .el.late { color: var(--c-danger); }
+  .bc .status { height: 28px; font-size: 13px; padding: 0 9px 0 7px; justify-self: start; }
+  .bc .status .lucide { width: 15px; height: 15px; }
+  .bc .kn { font-weight: 700; font-size: 14.5px; line-height: 1.3; display: flex; gap: 6px; align-items: flex-start; }
+  .bc .kn .lucide { width: 16px; height: 16px; margin-top: 2px; color: var(--c-ink-700); flex: none; }
+  .bc .ar { display: flex; gap: 6px; align-items: flex-start; font-size: 13.5px; color: var(--c-text-2); line-height: 1.35; }
+  .bc .ar .lucide { width: 16px; height: 16px; margin-top: 1px; color: var(--c-text-3); flex: none; }
+  .bc .money { display: flex; align-items: center; gap: 8px; }
+  .bc .money b { font: 800 18px/1.2 var(--font-display); padding-top: 2px; }
+  .paytag { display: inline-flex; align-items: center; gap: 5px; height: 26px; padding: 0 8px; border-radius: var(--r-sm); background: var(--c-sunken); color: var(--c-ink-900); font-size: 12.5px; font-weight: 600; white-space: nowrap; }
+  .paytag .lucide { width: 14px; height: 14px; }
+  .paytag.upi { background: var(--c-indigo-50); }
+  .bc .agent { display: flex; align-items: center; gap: 8px; padding-top: 8px; border-top: 1px solid var(--c-line); font-size: 14px; font-weight: 600; }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--c-ink-900); color: var(--c-marigold-500); display: grid; place-items: center; font: 800 11.5px/1 var(--font-display); padding-top: 1px; flex: none; }
+  .needs { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 9px; border-radius: var(--r-sm); background: var(--c-warn-bg); color: var(--c-warn-fg); font-size: 13px; font-weight: 700; justify-self: start; }
+  .needs .lucide { width: 15px; height: 15px; }
+  .assign { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; padding-top: 8px; border-top: 1px solid var(--c-line); }
+  .assign .lbl { font-size: 12.5px; font-weight: 600; color: var(--c-text-3); }
+  .assign .ctl { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .sel { flex: 1 1 auto; min-width: 0; height: 48px; display: flex; align-items: center; gap: 2px; padding: 0 6px 0 10px; border-radius: 10px; background: #fff; box-shadow: inset 0 0 0 1.5px var(--c-line-strong); font-size: 13px; font-weight: 600; color: var(--c-text); }
+  .sel span { flex: 1; min-width: 0; line-height: 1.3; }
+  .sel .lucide { width: 16px; height: 16px; color: var(--c-text-3); flex: none; }
+  .assign .btn { min-height: 48px; padding: 0 12px; font-size: 15px; }
+  .bc.is-done { background: #FDFCF8; }
+  .bc.is-done .no { color: var(--c-text-2); }
+</style>
+</head>
+<body class="board">
+<header class="board-head">
+  <img src="mark.svg" alt="">
+  <h1>C · Marigold <small>Admin dispatch board · 1280 px</small></h1>
+  <nav>
+    <a href="index.html">Overview</a><a href="home.html">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html">Cart</a><a href="order.html">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html" aria-current="page">Admin board</a>
+  </nav>
+</header>
+
+<div class="frames">
+  <figure class="frame-wrap">
+    <figcaption>Dispatch board <span>1280 × 832 · English · five groups side by side, no sideways scroll</span></figcaption>
+    <div class="desktop">
+      <div class="chrome"><i></i><i></i><i></i><b>honnavarfood.in/admin/orders</b></div>
+      <div class="app" lang="en">
+        <header class="atop">
+          <a class="brand" href="#"><img src="mark.svg" alt=""><span class="stack"><span class="wordmark">Honnavar Food</span><span class="brand-sub">Admin panel</span></span></a>
+          <nav class="anav" aria-label="Main navigation">
+            <a href="#" aria-current="page"><i data-lucide="clipboard-list"></i>Orders</a>
+            <a href="#"><i data-lucide="store"></i>Partners</a>
+            <a href="#"><i data-lucide="bike"></i>Delivery agents</a>
+          </nav>
+          <span class="spacer"></span>
+          <form class="find" onsubmit="return false"><label for="fno">Find order by number</label><span class="in"><i data-lucide="hash"></i><span>1042</span></span><button class="btn btn-primary"><span>Find</span></button></form>
+          <a class="hit lang" href="#" aria-label="Switch to Kannada"><span class="pill"><i data-lucide="languages"></i><span lang="kn">ಕನ್ನಡ</span></span></a>
+          <a class="hit iconbtn-dark" href="#" aria-label="Sign out"><i data-lucide="log-out"></i></a>
+        </header>
+        <div class="ahead">
+          <h1 class="h1">Dispatch board</h1>
+          <span class="upd"><i data-lucide="refresh-cw"></i>Updated 7:52 pm</span>
+        </div>
+        <div class="boardg" id="boardg"></div>
+      </div>
+    </div>
+  </figure>
+</div>
+
+<section class="notes">
+  <h2>Design notes</h2>
+  <ul>
+    <li><b>Top navigation</b> instead of the old left column gives the board the full 1232 px: five equal columns of ~236 px, each with a coloured top rule, group icon and a count pill. The group that needs action (Needs agent) is tinted amber.</li>
+    <li><b>Cards</b> carry what dispatch needs without opening: number, elapsed time in the current status (red past 20 min while waiting on someone), status chip, kitchen, delivery landmark, total with payment tag, then the agent or an amber “Needs agent” with the assign select and a marigold Assign button on the card. Assigned cards keep a Reassign control.</li>
+    <li>Columns scroll on their own when long; the page never scrolls sideways at 1280 px (and stays usable to 1024 px with columns scrolling sideways, per spec).</li>
+    <li>Finished cards are quieter (off-white, grey number) so live work stands out. Order numbers are Baloo for fast scanning; everything else is Noto Sans at 13–15 px.</li>
+  </ul>
+</section>
+
+<script>
+const G = [
+  { key: 'waiting_kitchen', name: 'Waiting for kitchen', icon: 'hourglass', g: '#8A4B00', gbg: '#FFF1CC' },
+  { key: 'needs_agent', name: 'Needs agent', icon: 'user-plus', g: '#B42318', gbg: '#FDECEA', alert: true },
+  { key: 'assigned', name: 'Assigned', icon: 'user-check', g: '#3446A8', gbg: '#E8EBFA' },
+  { key: 'out_for_delivery', name: 'Out for delivery', icon: 'bike', g: '#6D3BC4', gbg: '#EFE8FB' },
+  { key: 'finished', name: 'Finished', icon: 'flag', g: '#17793F', gbg: '#E3F4E8' },
+];
+const ST = {
+  placed: ['st-placed', 'bell-ring', 'Placed'], accepted: ['st-accepted', 'thumbs-up', 'Accepted'],
+  preparing: ['st-preparing', 'chef-hat', 'Preparing'], ready: ['st-ready', 'package-check', 'Ready'],
+  picked_up: ['st-picked', 'bike', 'Picked up'], delivered: ['st-delivered', 'check-check', 'Delivered'],
+  cancelled: ['st-cancelled', 'ban', 'Cancelled'], rejected: ['st-rejected', 'circle-x', 'Rejected'],
+};
+const HOME = 'Behind Prabhatnagar temple', WORK = 'Opposite KSRTC bus stand';
+const O = {
+  waiting_kitchen: [
+    [1046, 'Samrat Sea Food', HOME, 'placed', 1, 470, 'cod'],
+    [1045, 'Ammana Adige', WORK, 'placed', 4, 190, 'upi'],
+  ],
+  needs_agent: [
+    [1044, 'Samrat Sea Food', WORK, 'accepted', 6, 450, 'upi', null, 'assign'],
+    [1043, 'New Rameshwaram Restaurant', WORK, 'accepted', 9, 250, 'upi', null, 'assign'],
+    [1042, 'Prameela Restaurant', HOME, 'preparing', 12, 430, 'cod', null, 'assign'],
+    [1041, 'Samrat Sea Food', HOME, 'preparing', 14, 440, 'cod', null, 'assign'],
+  ],
+  assigned: [
+    [1039, 'Samrat Sea Food', HOME, 'ready', 22, 610, 'cod', 'Ravi Naik', 'reassign'],
+  ],
+  out_for_delivery: [
+    [1040, 'Romansiah Halal Family Restaurant', WORK, 'picked_up', 31, 430, 'upi', 'Suresh Gouda'],
+  ],
+  finished: [
+    [1038, "BaBa's Cafe", HOME, 'delivered', 70, 450, 'cod', 'Ravi Naik', null, true],
+    [1037, "Udupi's Pingar Dhaba", WORK, 'cancelled', 45, 280, 'cod', null, null, true],
+    [1036, 'Karavali Shailiya Mane Oota', HOME, 'rejected', 50, 330, 'upi', null, null, true],
+  ],
+};
+const ini = n => n.split(' ').map(w => w[0]).join('');
+function cardHtml([no, kitchen, area, st, mins, tot, pay, agent, ctl, done]) {
+  const [cls, ic, label] = ST[st];
+  const late = !done && mins >= 20;
+  const payTag = pay === 'cod' ? '<span class="paytag"><i data-lucide="banknote"></i>Cash on delivery</span>' : '<span class="paytag upi"><i data-lucide="smartphone"></i>Paid by UPI (demo)</span>';
+  let foot = '';
+  if (ctl === 'assign') foot = `<span class="needs"><i data-lucide="triangle-alert"></i>Needs agent</span>
+      <div class="assign"><span class="lbl">Assign to</span><div class="ctl"><span class="sel" role="combobox" aria-label="Assign to"><span>Ravi Naik · 1 undelivered</span><i data-lucide="chevron-down"></i></span><button class="btn btn-primary"><span>Assign</span></button></div></div>`;
+  else if (ctl === 'reassign') foot = `<div class="agent"><span class="avatar">${ini(agent)}</span>${agent}</div>
+      <div class="assign" style="border-top:0;padding-top:0"><span class="lbl">Reassign to</span><div class="ctl"><span class="sel" role="combobox" aria-label="Reassign to"><span>Suresh Gouda · 1 undelivered</span><i data-lucide="chevron-down"></i></span><button class="btn btn-secondary"><span>Reassign</span></button></div></div>`;
+  else if (agent) foot = `<div class="agent"><span class="avatar">${ini(agent)}</span>${agent}</div>`;
+  return `<article class="bc${done ? ' is-done' : ''}">
+    <div class="r1"><span class="no">#${no}</span><span class="el${late ? ' late' : ''}"><i data-lucide="timer"></i>${mins} min ago</span></div>
+    <span class="status ${cls}"><i data-lucide="${ic}"></i>${label}</span>
+    <div class="kn"><i data-lucide="store"></i><span>${kitchen}</span></div>
+    <div class="ar"><i data-lucide="map-pin"></i><span>${area}</span></div>
+    <div class="money"><b>₹${tot}</b>${payTag}</div>
+    ${foot}
+  </article>`;
+}
+document.getElementById('boardg').innerHTML = G.map(g => `
+  <section class="col${g.alert ? ' is-alert' : ''}" style="--g:${g.g};--gbg:${g.gbg}" aria-label="${g.name}">
+    <header class="ch"><span class="gi"><i data-lucide="${g.icon}"></i></span><h2 class="h3">${g.name}</h2><span class="n">${O[g.key].length}</span></header>
+    <div class="cards">${O[g.key].map(cardHtml).join('')}</div>
+  </section>`).join('');
+</script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

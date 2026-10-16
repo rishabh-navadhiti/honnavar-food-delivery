@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A · Coast — Partner orders</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="coast.css">
+<style>
+  .phone { --tabs: 5; }
+  .topbar .wordmark { font-size: 17.5px; }
+  .topbar .wordmark .two { display: flex; flex-direction: column; }
+  .topbar .wordmark small:lang(kn) { line-height: 1.3; margin-top: 2px; font-size: 13px; }
+  .lang-switch.plain > span { padding: 0 12px; }
+
+  .p-head { display: flex; align-items: center; gap: 4px; padding: 10px 4px 2px var(--gutter); }
+  .p-head .grow { flex: 1; min-width: 0; }
+  .p-head h1 { font-size: 23px; font-weight: 780; font-stretch: var(--wdth-head); line-height: 1.15; letter-spacing: -0.01em; }
+  .p-head h1:lang(kn) { line-height: 1.4; }
+  .p-head .upd { font-size: 13px; color: var(--ink-3); display: flex; align-items: center; gap: 4px; line-height: 1.3; }
+  .p-head .upd .lucide { width: 13px; height: 13px; }
+  .soundpill { height: var(--tap); border: 0; background: transparent; padding: 0; display: inline-flex; align-items: center; flex: none; }
+  .soundpill > span {
+    display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 2px 12px 0 10px; border-radius: var(--r-pill);
+    background: var(--sea-50); color: var(--sea-700); font-weight: 700; font-size: 14px; line-height: 1;
+    box-shadow: inset 0 0 0 1px var(--sea-200);
+  }
+  .soundpill > span:lang(kn) { line-height: 1.4; padding-top: 1px; }
+  .soundpill .lucide { width: 17px; height: 17px; stroke-width: 2.3; }
+
+  .olist { display: flex; flex-direction: column; gap: 12px; padding: 8px var(--gutter) 24px; }
+  .ocard { padding: 14px 14px 14px 16px; position: relative; }
+  .ocard .r1 { display: flex; align-items: center; gap: 10px; }
+  .ocard .no { font-size: 23px; font-weight: 800; font-stretch: var(--wdth-head); font-variant-numeric: tabular-nums; letter-spacing: -0.01em; line-height: 1; padding-top: 3px; }
+  .ocard .age { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font-size: 14px; color: var(--ink-2); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .ocard .age .lucide { width: 16px; height: 16px; color: var(--ink-3); }
+  .ocard .r2 { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 10px; font-size: 15px; color: var(--ink-2); }
+  .ocard .r2 > span { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+  .ocard .r2 .lucide { width: 16px; height: 16px; color: var(--ink-3); }
+  .ocard .r2 .tot { font-size: 17px; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .ocard .r2 .pay { font-weight: 650; color: var(--ink); }
+  .ocard .r2:lang(kn) > span { white-space: normal; }
+  .ocard .act { margin-top: 12px; display: flex; gap: 8px; }
+  .ocard .act .btn { flex: 1; }
+  .ocard .act .btn .lucide { width: 18px; height: 18px; }
+  .ocard .wait-agent {
+    margin-top: 12px; min-height: 44px; border-radius: var(--r-md); padding: 4px 12px 2px;
+    display: flex; align-items: center; gap: 8px; background: var(--st-ready-bg); color: var(--st-ready); font-weight: 680; font-size: 14.5px; line-height: 1.3;
+  }
+  .ocard .wait-agent .lucide { width: 18px; height: 18px; }
+
+  /* Waiting (new) order — first and distinct, without colour rules (owner edit 2):
+     shared .card.attention (neutral ink outline) + time left in words + shared .countdown */
+  .tleft { display: flex; align-items: center; gap: 8px; margin-top: 10px; color: var(--warning); font-weight: 760; font-size: 15.5px; line-height: 1.3; }
+  .tleft .lucide { width: 18px; height: 18px; stroke-width: 2.4; }
+  .tleft b { font-variant-numeric: tabular-nums; font-weight: 820; }
+  .ocard .countdown { margin-top: 8px; }
+  .ilist { margin-top: 8px; font-size: 14.5px; color: var(--ink-2); line-height: 1.4; }
+  .ilist:lang(kn) { line-height: 1.6; }
+  .btn-reject { background: var(--surface); color: var(--danger); border-color: #f2c4bf; }
+
+  /* First-time sound prompt */
+  .sound-prompt {
+    margin: 10px var(--gutter) 4px; padding: 18px; border-radius: var(--r-lg);
+    background: linear-gradient(160deg, #0e6e67, #0b5a54); color: #fff; box-shadow: var(--e-3); position: relative; overflow: hidden;
+  }
+  .sound-prompt::after {
+    content: ""; position: absolute; right: -30px; top: -30px; width: 140px; height: 140px; border-radius: 50%;
+    background: radial-gradient(circle, rgb(255 255 255 / 0.14), transparent 70%);
+  }
+  .sound-prompt .ic { width: 52px; height: 52px; border-radius: 16px; background: rgb(255 255 255 / 0.14); display: grid; place-items: center; }
+  .sound-prompt .ic .lucide { width: 28px; height: 28px; color: #fff; }
+  .sound-prompt h2 { font-size: 21px; font-weight: 780; font-stretch: var(--wdth-head); line-height: 1.2; margin-top: 12px; }
+  .sound-prompt h2:lang(kn) { line-height: 1.45; }
+  .sound-prompt p { font-size: 15px; line-height: 1.45; color: rgb(255 255 255 / 0.86); margin-top: 6px; }
+  .sound-prompt p:lang(kn) { line-height: 1.62; }
+  .sound-prompt .btn { margin-top: 14px; background: #fff; color: var(--sea-700); width: 100%; }
+
+  /* Reject sheet */
+  .scrim { position: absolute; inset: 0; background: var(--scrim); z-index: 30; }
+  .sheet {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 31;
+    background: var(--surface); border-radius: var(--r-xl) var(--r-xl) 0 0; box-shadow: var(--e-3);
+    padding: 8px var(--gutter) 18px;
+  }
+  .sheet .grab { width: 40px; height: 4px; border-radius: 2px; background: var(--line-2); margin: 0 auto 12px; }
+  .sheet .sum { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-2); font-weight: 600; }
+  .sheet .sum b { color: var(--ink); font-size: 16px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .sheet .sum .tl { margin-left: auto; color: var(--warning); display: inline-flex; align-items: center; gap: 4px; font-weight: 750; font-variant-numeric: tabular-nums; }
+  .sheet .sum .tl .lucide { width: 15px; height: 15px; }
+  .sheet h2 { font-size: 20px; font-weight: 780; font-stretch: var(--wdth-head); line-height: 1.25; margin-top: 10px; }
+  .sheet h2:lang(kn) { line-height: 1.5; }
+  .reasons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+  .reason {
+    min-height: var(--tap); padding: 6px 12px 4px; border-radius: var(--r-md); border: 1.5px solid var(--line-2); background: var(--surface);
+    display: flex; align-items: center; gap: 8px; text-align: left; font-size: 15px; font-weight: 620; line-height: 1.25;
+  }
+  .reason:lang(kn) { line-height: 1.45; }
+  .reason .lucide { width: 18px; height: 18px; color: var(--ink-3); }
+  .reason[aria-checked="true"] { border-color: var(--danger); background: var(--danger-bg); color: var(--danger); font-weight: 720; }
+  .reason[aria-checked="true"] .lucide { color: var(--danger); }
+  .fld { margin-top: 14px; }
+  .fld label { display: block; font-size: 14.5px; font-weight: 650; margin-bottom: 6px; }
+  .fld label span { color: var(--ink-3); font-weight: 500; }
+  .fld textarea {
+    width: 100%; min-height: 72px; resize: none; border-radius: var(--r-md); border: 1.5px solid var(--line-2);
+    padding: 10px 12px; font-size: 16px; line-height: 1.4; background: var(--surface);
+  }
+  .sheet .act { display: flex; gap: 8px; margin-top: 16px; }
+  .sheet .act .btn { flex: 1; }
+  .sheet .act .btn-danger { flex: 1.6; }
+</style>
+</head>
+<body>
+<div class="review">
+  <div class="review-head">
+    <div>
+      <div class="kicker">A · Coast</div>
+      <h1>Partner orders</h1>
+      <p>Same warmth, tighter rhythm. Each card reads left to right in one glance: number, status (icon + word), age, then items · total · payment, then the one next action. The waiting order is first, outlined in ink (no colour rails or rules — owner edit 2, 2026-10-16), with its time left as words and as a countdown bar whose fill is the share of the answer window still left (9:12 of 10:00 = 92%), shrinking to empty. Sounds collapse into a pill beside the title. Kitchen: Karavali Shailiya Mane Oota.</p>
+    </div>
+    <nav class="review-nav">
+      <a href="index.html">Overview</a><a href="home.html">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html">Cart</a><a href="order.html">Order</a><a href="partner-orders.html" aria-current="page">Partner orders</a><a href="admin-board.html">Admin board</a>
+    </nav>
+  </div>
+  <div class="frames" id="frames"></div>
+</div>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+const T = {
+  en: {
+    lang: 'en', tag: 'English', partnerApp: 'Partner app', switchTo: 'ಕನ್ನಡ', switchLang: 'kn', switchAria: 'Switch to Kannada',
+    orders: 'Orders', updated: 'Updated 1:12 pm', soundOn: 'Sounds on', messages: 'Messages',
+    placed: 'Placed', accepted: 'Accepted', preparing: 'Preparing', ready: 'Ready',
+    timeLeft: t => `Accept or reject within <b>${t}</b>`,
+    items: n => `${n} items`, ago: m => `${m} min ago`, justNow: 'just now',
+    cod: 'Cash on delivery', upi: 'Paid by UPI (demo)',
+    accept: 'Accept order', reject: 'Reject', startPreparing: 'Start preparing', markReady: 'Ready for pickup',
+    waitingPickup: 'Waiting for the delivery agent',
+    i1047: 'Fish Meals × 1 · Prawn Sukka × 1',
+    nav: ['Orders', 'Today', 'Menu', 'Hours', 'My kitchen'],
+    promptTitle: 'Tap to turn on order sounds',
+    promptBody: 'A new order rings on this phone so you never miss one. You only do this once here.',
+    promptBtn: 'Turn on sounds',
+    rejectTitle: "Why can't you take this order?",
+    reasons: ['Kitchen too busy', 'Item not available', 'Kitchen closing', 'Other'],
+    noteLabel: 'Short note for the customer', optional: '(optional)', noteVal: 'Prawns are over for today, sorry.',
+    back: 'Back', confirmReject: 'Reject order', itemsShort: '2 items'
+  },
+  kn: {
+    lang: 'kn', tag: 'ಕನ್ನಡ', partnerApp: 'ಪಾರ್ಟ್ನರ್ ಆ್ಯಪ್', switchTo: 'English', switchLang: 'en', switchAria: 'ಇಂಗ್ಲಿಷ್‌ಗೆ ಬದಲಿಸಿ',
+    orders: 'ಆರ್ಡರ್‌ಗಳು', updated: 'ಅಪ್‌ಡೇಟ್: ಮಧ್ಯಾಹ್ನ 1:12', soundOn: 'ಸದ್ದು ಆನ್', messages: 'ಸಂದೇಶಗಳು',
+    placed: 'ಆರ್ಡರ್ ಆಗಿದೆ', accepted: 'ಒಪ್ಪಿಕೊಂಡಿದೆ', preparing: 'ತಯಾರಾಗುತ್ತಿದೆ', ready: 'ರೆಡಿ ಆಗಿದೆ',
+    timeLeft: t => `<b>${t}</b> ಒಳಗೆ ಒಪ್ಪಿ ಅಥವಾ ಬೇಡ ಎನ್ನಿ`,
+    items: n => `${n} ಐಟಂಗಳು`, ago: m => `${m} ನಿಮಿಷದ ಹಿಂದೆ`, justNow: 'ಈಗಷ್ಟೇ',
+    cod: 'ಡೆಲಿವರಿ ಆದಾಗ ಕ್ಯಾಶ್', upi: 'UPI ಮೂಲಕ ಪಾವತಿ (ಡೆಮೊ)',
+    accept: 'ಆರ್ಡರ್ ಒಪ್ಪಿಕೊಳ್ಳಿ', reject: 'ಬೇಡ ಎನ್ನಿ', startPreparing: 'ತಯಾರಿಸಲು ಶುರು ಮಾಡಿ', markReady: 'ಪಿಕಪ್‌ಗೆ ರೆಡಿ',
+    waitingPickup: 'ಡೆಲಿವರಿಯವರಿಗಾಗಿ ಕಾಯುತ್ತಿದೆ',
+    i1047: 'ಮೀನೂಟ × 1 · ಸಿಗಡಿ ಸುಕ್ಕ × 1',
+    nav: ['ಆರ್ಡರ್‌ಗಳು', 'ಇಂದು', 'ಮೆನು', 'ಸಮಯ', 'ನನ್ನ ಕಿಚನ್'],
+    promptTitle: 'ಆರ್ಡರ್ ಸದ್ದು ಆನ್ ಮಾಡಲು ಒತ್ತಿ',
+    promptBody: 'ಹೊಸ ಆರ್ಡರ್ ಬಂದಾಗ ಈ ಫೋನ್ ಸದ್ದು ಮಾಡುತ್ತದೆ. ಇಲ್ಲಿ ಒಮ್ಮೆ ಮಾಡಿದರೆ ಸಾಕು.',
+    promptBtn: 'ಸದ್ದು ಆನ್ ಮಾಡಿ',
+    rejectTitle: 'ಈ ಆರ್ಡರ್ ಯಾಕೆ ತೆಗೆದುಕೊಳ್ಳಲು ಆಗುವುದಿಲ್ಲ?',
+    reasons: ['ಕಿಚನ್ ತುಂಬಾ ಬ್ಯುಸಿ ಇದೆ', 'ಐಟಂ ಸಿಗುವುದಿಲ್ಲ', 'ಕಿಚನ್ ಮುಚ್ಚುವ ಸಮಯ', 'ಬೇರೆ'],
+    noteLabel: 'ಗ್ರಾಹಕರಿಗೆ ಚಿಕ್ಕ ಸೂಚನೆ', optional: '(ಬೇಕಿದ್ದರೆ)', noteVal: 'ಇವತ್ತಿಗೆ ಸಿಗಡಿ ಮುಗಿದಿದೆ, ಕ್ಷಮಿಸಿ.',
+    back: 'ಹಿಂದೆ', confirmReject: 'ಆರ್ಡರ್ ಬೇಡ ಎನ್ನಿ', itemsShort: '2 ಐಟಂಗಳು'
+  }
+};
+
+const mark = `<svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#b8461a"/><path d="M6.5 15.5h19a9.5 9.5 0 0 1-19 0Z" fill="#fff6ea"/><path d="M7 10.5c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0" fill="none" stroke="#f8c97f" stroke-width="2" stroke-linecap="round"/><path d="M10.5 19.5c1.2.9 2.4.9 3.6 0s2.4-.9 3.6 0 2.4.9 3.6 0" stroke="#0e6e67" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>`;
+
+const topbar = t => `
+  <header class="topbar">
+    <a class="wordmark" href="#" aria-label="Honnavar Food, ${t.partnerApp}">${mark}<span class="two"><span lang="en">Honnavar <span class="food">Food</span></span><small>${t.partnerApp}</small></span></a>
+    <span class="spacer"></span>
+    <button class="lang-switch plain" aria-label="${t.switchAria}"><span lang="${t.switchLang}" ${t.switchLang==='kn'?'class="kn-label"':''}>${t.switchTo}</span></button>
+  </header>`;
+
+const tabbar = t => `
+  <nav class="tabbar" aria-label="Main navigation">
+    <a class="tab active" href="#" aria-current="page"><span class="pill"><i data-lucide="receipt-text"></i><span class="count">1</span></span><span class="lbl">${t.nav[0]}</span></a>
+    <a class="tab" href="#"><span class="pill"><i data-lucide="chart-no-axes-column"></i></span><span class="lbl">${t.nav[1]}</span></a>
+    <a class="tab" href="#"><span class="pill"><i data-lucide="book-open"></i></span><span class="lbl">${t.nav[2]}</span></a>
+    <a class="tab" href="#"><span class="pill"><i data-lucide="clock"></i></span><span class="lbl">${t.nav[3]}</span></a>
+    <a class="tab" href="#"><span class="pill"><i data-lucide="store"></i></span><span class="lbl">${t.nav[4]}</span></a>
+  </nav>`;
+
+const head = (t, withPill = true) => `
+  <div class="p-head">
+    <div class="grow"><h1>${t.orders}</h1><div class="upd"><i data-lucide="refresh-cw"></i>${t.updated}</div></div>
+    ${withPill ? `<button class="soundpill" aria-pressed="true" aria-label="${t.soundOn}"><span><i data-lucide="bell-ring"></i>${t.soundOn}</span></button>` : ''}
+    <a class="icon-btn" href="#" aria-label="${t.messages}"><i data-lucide="message-square-text"></i></a>
+  </div>`;
+
+const cards = t => `
+  <div class="olist">
+    <article class="card ocard waiting attention" aria-label="#1047, ${t.placed}">
+      <div class="r1"><span class="no">#1047</span><span class="status st-placed"><i data-lucide="bell-ring"></i>${t.placed}</span><span class="age"><i data-lucide="clock"></i>${t.justNow}</span></div>
+      <div class="tleft"><i data-lucide="timer"></i><span>${t.timeLeft('9:12')}</span></div>
+      <div class="countdown" style="--left:92%" aria-hidden="true"><span></span></div>
+      <div class="r2"><span><i data-lucide="package"></i>${t.items(2)}</span><span class="tot">₹360</span><span class="pay"><i data-lucide="banknote"></i>${t.cod}</span></div>
+      <div class="ilist">${t.i1047}</div>
+      <div class="act"><button class="btn btn-reject">${t.reject}</button><button class="btn btn-primary" style="flex:1.7"><i data-lucide="check"></i>${t.accept}</button></div>
+    </article>
+
+    <article class="card ocard" aria-label="#1045, ${t.accepted}">
+      <div class="r1"><span class="no">#1045</span><span class="status st-accepted"><i data-lucide="circle-check"></i>${t.accepted}</span><span class="age"><i data-lucide="clock"></i>${t.ago(6)}</span></div>
+      <div class="r2"><span><i data-lucide="package"></i>${t.items(4)}</span><span class="tot">₹450</span><span class="pay"><i data-lucide="smartphone"></i>${t.upi}</span></div>
+      <div class="act"><button class="btn btn-tonal"><i data-lucide="chef-hat"></i>${t.startPreparing}</button></div>
+    </article>
+
+    <article class="card ocard" aria-label="#1044, ${t.preparing}">
+      <div class="r1"><span class="no">#1044</span><span class="status st-preparing"><i data-lucide="chef-hat"></i>${t.preparing}</span><span class="age"><i data-lucide="clock"></i>${t.ago(14)}</span></div>
+      <div class="r2"><span><i data-lucide="package"></i>${t.items(3)}</span><span class="tot">₹480</span><span class="pay"><i data-lucide="banknote"></i>${t.cod}</span></div>
+      <div class="act"><button class="btn btn-tonal"><i data-lucide="package-check"></i>${t.markReady}</button></div>
+    </article>
+
+    <article class="card ocard" aria-label="#1041, ${t.ready}">
+      <div class="r1"><span class="no">#1041</span><span class="status st-ready"><i data-lucide="package-check"></i>${t.ready}</span><span class="age"><i data-lucide="clock"></i>${t.ago(27)}</span></div>
+      <div class="r2"><span><i data-lucide="package"></i>${t.items(4)}</span><span class="tot">₹330</span><span class="pay"><i data-lucide="smartphone"></i>${t.upi}</span></div>
+      <div class="wait-agent"><i data-lucide="bike"></i>${t.waitingPickup}</div>
+    </article>
+  </div>`;
+
+const listScreen = t => `
+  <div class="phone" lang="${t.lang}">
+    ${topbar(t)}
+    <main class="scroll">${head(t)}${cards(t)}</main>
+    ${tabbar(t)}
+  </div>`;
+
+const promptScreen = t => `
+  <div class="phone" lang="${t.lang}">
+    ${topbar(t)}
+    <main class="scroll">
+      <section class="sound-prompt" aria-label="${t.promptTitle}">
+        <span class="ic"><i data-lucide="volume-2"></i></span>
+        <h2>${t.promptTitle}</h2>
+        <p>${t.promptBody}</p>
+        <button class="btn btn-lg"><i data-lucide="bell-ring"></i>${t.promptBtn}</button>
+      </section>
+      ${head(t, false)}${cards(t)}
+    </main>
+    ${tabbar(t)}
+  </div>`;
+
+const rejectScreen = t => `
+  <div class="phone" lang="${t.lang}">
+    ${topbar(t)}
+    <main class="scroll" aria-hidden="true">${head(t)}${cards(t)}</main>
+    ${tabbar(t)}
+    <div class="scrim"></div>
+    <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="rj-${t.lang}">
+      <div class="grab"></div>
+      <div class="sum"><b>#1047</b><span>${t.itemsShort} · ₹360</span><span class="tl"><i data-lucide="timer"></i>8:40</span></div>
+      <h2 id="rj-${t.lang}">${t.rejectTitle}</h2>
+      <div class="reasons" role="radiogroup" aria-labelledby="rj-${t.lang}">
+        <button class="reason" role="radio" aria-checked="false"><i data-lucide="flame"></i>${t.reasons[0]}</button>
+        <button class="reason" role="radio" aria-checked="true"><i data-lucide="circle-check"></i>${t.reasons[1]}</button>
+        <button class="reason" role="radio" aria-checked="false"><i data-lucide="door-closed"></i>${t.reasons[2]}</button>
+        <button class="reason" role="radio" aria-checked="false"><i data-lucide="ellipsis"></i>${t.reasons[3]}</button>
+      </div>
+      <div class="fld">
+        <label for="note-${t.lang}">${t.noteLabel} <span>${t.optional}</span></label>
+        <textarea id="note-${t.lang}" rows="2">${t.noteVal}</textarea>
+      </div>
+      <div class="act">
+        <button class="btn btn-secondary"><i data-lucide="arrow-left"></i>${t.back}</button>
+        <button class="btn btn-danger"><i data-lucide="circle-x"></i>${t.confirmReject}</button>
+      </div>
+    </section>
+  </div>`;
+
+const frame = (title, tags, screen, note) => `
+  <div class="frame">
+    <div class="frame-cap"><b>${title}</b>${tags.map(x => `<span class="tag">${x}</span>`).join('')}</div>
+    ${screen}
+    <p class="frame-note">${note}</p>
+  </div>`;
+
+document.getElementById('frames').innerHTML = [
+  frame('Orders list', ['390 × 844', 'English', 'sounds on'], listScreen(T.en),
+    '<b>Three cards fully visible</b> above the tab bar, a fourth peeking. The sound pill shows the state; if the browser blocks sound again after a reload it reads “Tap for sound” with a muted-bell icon (amber), still a pill. Updates arrive in place; a new waiting card slides in from the top in 160 ms.'),
+  frame('Orders list', ['390 × 844', 'ಕನ್ನಡ'], listScreen(T.kn),
+    '<b>Kannada</b>: same card, labels wrap inside the row instead of shrinking. Status words stay beside their icons. Draft strings: pill “ಸದ್ದು ಆನ್”.'),
+  frame('Sound prompt', ['first visit', 'English'], promptScreen(T.en),
+    '<b>Only until the first tap.</b> After “Turn on sounds” the card collapses (height + fade, 180 ms) into the pill beside “Orders”, remembered on this device. Body text and button label are drafts.'),
+  frame('Reject step', ['390 × 844', 'English'], rejectScreen(T.en),
+    '<b>Bottom sheet</b> from the waiting card or the order page: four compact reasons in a 2 × 2 grid, the optional note, and Back / Reject order side by side — all inside 390 × 844 with no scrolling.'),
+  frame('Reject step', ['390 × 844', 'ಕನ್ನಡ'], rejectScreen(T.kn),
+    '<b>Kannada</b> reasons wrap to two lines inside their 48 px tiles; the sheet still fits without scrolling.')
+].join('');
+lucide.createIcons();
+</script>
+</body>
+</html>

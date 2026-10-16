@@ -21,7 +21,7 @@ export function CustomerCancel({ orderId }: { orderId: string }) {
     );
   }
   return (
-    <form action={formAction} className="flex flex-col gap-2 rounded-xl border border-line p-3">
+    <form action={formAction} className="flex animate-fade-in flex-col gap-2 rounded-lg bg-danger-soft p-3">
       <input type="hidden" name="orderId" value={orderId} />
       <p className="text-base font-semibold">{t('question')}</p>
       <button type="submit" disabled={pending} className={buttonClasses('danger', 'w-full')}>

@@ -91,9 +91,9 @@ export function VoiceRecorder({ existingUrl }: { existingUrl?: string | null }) 
   const showExisting = existingUrl && !removeExisting && state.kind !== 'recorded';
 
   return (
-    <fieldset className="flex flex-col gap-2 rounded-xl border border-line p-3">
-      <legend className="px-1 text-sm font-semibold">{t('title')}</legend>
-      <p className="text-sm text-muted">{t('hint', { seconds: MAX_RECORDING_SECONDS })}</p>
+    <fieldset className="flex flex-col gap-2 rounded-md border border-line p-3">
+      <legend className="px-1 text-small font-semibold">{t('title')}</legend>
+      <p className="text-small text-muted">{t('hint', { seconds: MAX_RECORDING_SECONDS })}</p>
       <input ref={fileInput} type="file" name="voiceNote" accept="audio/*" className="hidden" tabIndex={-1} aria-hidden="true" />
       <input type="hidden" name="removeVoiceNote" value={removeExisting && state.kind !== 'recorded' ? 'on' : ''} />
 
@@ -107,7 +107,7 @@ export function VoiceRecorder({ existingUrl }: { existingUrl?: string | null }) 
       ) : null}
 
       {state.kind === 'unavailable' ? (
-        <p role="status" className="text-sm font-medium text-warn">
+        <p role="status" className="text-small font-medium text-warn">
           {t('unavailable')}
         </p>
       ) : null}

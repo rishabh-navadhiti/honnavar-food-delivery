@@ -37,6 +37,12 @@ export default defineConfig({
       },
     },
     {
+      // 003 layout checks, suggestions, sound pill, routes and states; each test sets its own viewport.
+      name: 'layout',
+      testMatch: [/\/visual-.*\.spec\.ts/],
+      use: { browserName: 'chromium', isMobile: true, hasTouch: true },
+    },
+    {
       name: 'desktop',
       testMatch: [/\/us4-.*\.spec\.ts/, /ordering-us3-.*\.spec\.ts/],
       use: { browserName: 'chromium', viewport: { width: 1280, height: 800 } },

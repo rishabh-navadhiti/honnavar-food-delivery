@@ -12,7 +12,7 @@ export function CartLines({ lines }: { lines: CartLineView[] }) {
   const current = useLocale();
   const price = (n: number) => formatPrice(n, isLocale(current) ? current : 'en');
   return (
-    <ul className="flex flex-col divide-y divide-line rounded-2xl border border-line bg-surface px-4">
+    <ul className="flex flex-col divide-y divide-line rounded-lg bg-surface px-4 shadow-1">
       {lines.map((line) => (
         <li key={line.dishId} className={`flex items-start justify-between gap-3 py-3 ${line.available ? '' : 'opacity-60'}`} data-testid="cart-line">
           <div className="flex min-w-0 flex-col gap-1">
@@ -20,14 +20,14 @@ export function CartLines({ lines }: { lines: CartLineView[] }) {
             <p className="text-base font-semibold">
               <LocalizedText pair={line.name} />
             </p>
-            <p className="text-sm text-muted">
+            <p className="text-small text-muted">
               {price(line.priceRupees)}
               <span aria-hidden="true"> × </span>
               {line.qty}
               <span aria-hidden="true"> = </span>
               <span className="font-semibold text-ink">{price(line.lineTotal)}</span>
             </p>
-            {line.available ? null : <p className="text-sm font-medium text-danger">{t('cart.lineUnavailable')}</p>}
+            {line.available ? null : <p className="text-small font-semibold text-danger">{t('cart.lineUnavailable')}</p>}
           </div>
           <AddToCart dishId={line.dishId} qty={line.qty} />
         </li>

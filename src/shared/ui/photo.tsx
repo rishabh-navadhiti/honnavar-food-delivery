@@ -33,7 +33,7 @@ type PhotoProps = {
  */
 export function Photo({ imageId, alt, placeholder, sizes, className = '', priority = false }: PhotoProps) {
   const t = useTranslations('placeholder');
-  const frame = `relative overflow-hidden bg-secondary ${className}`;
+  const frame = `relative overflow-hidden bg-primary-soft ${className}`;
   if (imageId) {
     return (
       <div className={frame}>

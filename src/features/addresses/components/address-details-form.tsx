@@ -47,7 +47,7 @@ export function AddressDetailsForm({
       <input type="hidden" name="lng" value={location.lng} />
       <input type="hidden" name="geocodedText" value={location.geocodedText ?? ''} />
 
-      <div className="flex items-start justify-between gap-3 rounded-xl bg-secondary p-3">
+      <div className="flex items-start justify-between gap-3 rounded-md bg-surface-sunk p-3">
         <p className="text-base">{location.geocodedText ?? t('pinPicker.pinPlaced')}</p>
         <button type="button" onClick={onChangeLocation} className="min-h-touch shrink-0 text-base font-semibold text-primary">
           {t('addresses.changeLocation')}
@@ -89,18 +89,18 @@ export function AddressDetailsForm({
       />
       <VoiceRecorder existingUrl={values?.voiceNoteId ? `/voice-notes/${values.voiceNoteId}` : null} />
       {errors.field('voiceNote') ? (
-        <p role="alert" className="text-sm font-medium text-danger">
+        <p role="alert" className="text-small font-medium text-danger">
           {errors.field('voiceNote')}
         </p>
       ) : null}
 
       <fieldset className="flex flex-col gap-2">
-        <legend className="text-sm font-semibold">{t('addresses.labelTitle')}</legend>
+        <legend className="text-small font-semibold">{t('addresses.labelTitle')}</legend>
         <div className="grid grid-cols-3 gap-2">
           {LABELS.map((option) => (
             <label
               key={option}
-              className="flex min-h-touch cursor-pointer items-center justify-center rounded-xl border border-line bg-surface px-2 text-base font-semibold has-[:checked]:border-primary has-[:checked]:bg-orange-50"
+              className="flex min-h-touch cursor-pointer items-center justify-center rounded-md border border-line bg-surface px-2 text-base font-semibold has-[:checked]:border-primary has-[:checked]:bg-primary-soft"
             >
               <input type="radio" name="label" value={option} checked={label === option} onChange={() => setLabel(option)} className="sr-only" />
               {t(`addressLabel.${option}`)}

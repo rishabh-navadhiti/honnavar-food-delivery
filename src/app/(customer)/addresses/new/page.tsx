@@ -3,7 +3,7 @@ import { AddressFlow } from '@/features/addresses/components/address-flow';
 import { requireSession } from '@/features/auth/session';
 import { safeNext } from '@/features/auth/surfaces';
 import { mapTiles } from '@/shared/maps/tiles';
-import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { CustomerTabBar } from '@/features/cart/components/customer-tab-bar';
 import { addressBackHref } from '@/features/addresses/back-href';
 import { BackLink } from '@/shared/ui/back-link';
 
@@ -17,9 +17,9 @@ export default async function NewAddressPage({ searchParams }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <BackLink href={addressBackHref(nextPath)} label={t('backLinks.back')} />
-      <h1 className="text-2xl font-bold">{t('addresses.newTitle')}</h1>
+      <h1 className="text-title font-bold">{t('addresses.newTitle')}</h1>
       <AddressFlow tiles={mapTiles()} next={safeNext('customer', nextPath ?? '/addresses')} />
-      <CustomerDock />
+      <CustomerTabBar current="account" />
     </div>
   );
 }

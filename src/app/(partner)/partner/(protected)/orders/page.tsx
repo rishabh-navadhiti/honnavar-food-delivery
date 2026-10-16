@@ -1,3 +1,4 @@
+import { CalendarDays, MessageSquareText } from 'lucide-react';
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { requireSession } from '@/features/auth/session';
@@ -14,24 +15,28 @@ export default async function PartnerOrdersPage() {
   const now = new Date();
   const orders = await listPartnerOrders(session.kitchenId!, now);
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
       <LiveRefresh />
-      <div className="flex flex-wrap items-end justify-between gap-2">
-        <h1 className="text-2xl font-bold">{t('title')}</h1>
-        <UpdatedAt at={now} />
-      </div>
-      <div className="flex flex-wrap gap-x-6">
-        <Link href="/partner/day" className="min-h-touch py-2 text-base font-semibold text-primary">
-          {t('dayLink')}
+      <div className="flex items-center gap-1">
+        <div className="flex min-w-0 flex-1 flex-col">
+          <h1 className="text-title font-bold leading-[var(--lh-tight)]">{t('title')}</h1>
+          <UpdatedAt at={now} />
+        </div>
+        <Link href="/partner/day" aria-label={t('dayLink')} className="grid size-12 shrink-0 place-items-center text-primary-strong">
+          <CalendarDays aria-hidden="true" className="size-5" />
         </Link>
-        <Link href="/partner/messages" className="min-h-touch py-2 text-base font-semibold text-primary">
-          {t('messagesLink')}
+        <Link
+          href="/partner/messages"
+          aria-label={t('messagesLink')}
+          className="grid size-12 shrink-0 place-items-center text-primary-strong"
+        >
+          <MessageSquareText aria-hidden="true" className="size-5" />
         </Link>
       </div>
       {orders.length === 0 ? (
-        <EmptyState title={t('empty')} />
+        <EmptyState illustration="NoOrders" title={t('empty')} />
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2 md:grid md:grid-cols-2">
           {orders.map((order) => (
             <PartnerOrderCard key={order.id} order={order} />
           ))}

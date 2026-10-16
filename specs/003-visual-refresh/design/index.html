@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>003 Design Directions</title>
+<style>
+  :root { --ink:#1b1d21; --muted:#5b6068; --line:#dfe2e6; --page:#f4f5f7; --card:#fff; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--page); color:var(--ink); font:15px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width:1280px; margin:0 auto; padding:32px 16px 64px; }
+  h1 { font-size:28px; margin:0 0 4px; }
+  h2 { font-size:20px; margin:0 0 8px; }
+  p.lead { color:var(--muted); max-width:820px; margin:0 0 24px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(330px, 1fr)); gap:16px; }
+  .dir { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; border-top:6px solid var(--accent); }
+  .dir p { margin:0 0 12px; }
+  .swatches { display:flex; gap:6px; margin:0 0 12px; }
+  .swatches span { width:28px; height:28px; border-radius:6px; border:1px solid rgba(0,0,0,.12); }
+  ul { margin:0 0 12px; padding-left:18px; }
+  li { margin:2px 0; }
+  .links a { display:inline-block; margin:0 6px 6px 0; padding:6px 10px; border:1px solid var(--line); border-radius:999px; color:var(--ink); text-decoration:none; font-size:14px; }
+  .links a.main { background:var(--ink); color:#fff; border-color:var(--ink); }
+  table { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:24px 0; font-size:14px; }
+  th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { background:#eef0f3; }
+  section.notes { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; }
+  .muted { color:var(--muted); }
+</style>
+</head>
+<body>
+<main>
+  <h1>003 Visual refresh: three design directions</h1>
+  <p class="lead">Static mockups of the six reference screens (home, kitchen, cart, order page, partner orders, admin board) per
+    <code>brief.md</code> and the clarified spec. Phone frames are 390 px with 360 px fit checks; the board is 1280 px. Kitchen
+    and partner orders are shown in English and Kannada in every direction. Photos and names are the real seed catalogue;
+    amounts are illustrative. Pick one, optionally with edits (for example one direction's tab bar in another's style); planning
+    starts after the pick.</p>
+
+  <div class="grid">
+    <article class="dir" style="--accent:#B8461A">
+      <h2>A · Coast</h2>
+      <div class="swatches" aria-hidden="true"><span style="background:#B8461A"></span><span style="background:#0E6E67"></span><span style="background:#FBF5EC"></span><span style="background:#2B1D14"></span></div>
+      <p>Warm and photo-forward: today's orange evolved to Mangalore-tile terracotta on a coconut-cream page, Sharavathi teal only
+        for call, map and delivery cues. One family, <b>Anek Kannada</b>, sets both scripts and uses its width axis for hierarchy.
+        Generous customer screens (wide photo cards, 18 px radii, soft shadows); operations screens tighten to one-glance cards.</p>
+      <div class="links"><a class="main" href="a-coast/index.html">Overview and tokens</a><a href="a-coast/home.html">Home</a><a href="a-coast/kitchen.html">Kitchen</a><a href="a-coast/cart.html">Cart</a><a href="a-coast/order.html">Order</a><a href="a-coast/partner-orders.html">Partner orders</a><a href="a-coast/admin-board.html">Admin board</a></div>
+    </article>
+    <article class="dir" style="--accent:#0B6B57">
+      <h2>B · Ledger</h2>
+      <div class="swatches" aria-hidden="true"><span style="background:#0B6B57"></span><span style="background:#E8A13A"></span><span style="background:#F3F5F6"></span><span style="background:#14191F"></span></div>
+      <p>Calm and dense, like a well-kept shop register: white rows on pale grey, one deep leaf-teal for every action, turmeric
+        only for what needs attention now. <b>Noto Sans + Noto Sans Kannada</b> (one superfamily), tabular figures. List rows
+        with 72 px thumbnails, hairlines, 8–12 px radii, nearly flat.</p>
+      <div class="links"><a class="main" href="b-ledger/index.html">Overview and tokens</a><a href="b-ledger/home.html">Home</a><a href="b-ledger/kitchen.html">Kitchen</a><a href="b-ledger/cart.html">Cart</a><a href="b-ledger/order.html">Order</a><a href="b-ledger/partner-orders.html">Partner orders</a><a href="b-ledger/admin-board.html">Admin board</a></div>
+    </article>
+    <article class="dir" style="--accent:#FFB81C">
+      <h2>C · Marigold</h2>
+      <div class="swatches" aria-hidden="true"><span style="background:#FFB81C"></span><span style="background:#1C1A44"></span><span style="background:#17793F"></span><span style="background:#FFFBF3"></span></div>
+      <p>Bold and icon-led for first-time smartphone users: deep indigo top and bottom bars, marigold only for the single next
+        action (always with ink text), leaf green for good news. <b>Baloo Tamma 2</b> for names, prices and buttons,
+        <b>Noto Sans / Noto Sans Kannada</b> for body. Chunky 48 px controls, photo beside text, illustrated empty states.</p>
+      <div class="links"><a class="main" href="c-marigold/index.html">Overview and tokens</a><a href="c-marigold/home.html">Home</a><a href="c-marigold/kitchen.html">Kitchen</a><a href="c-marigold/cart.html">Cart</a><a href="c-marigold/order.html">Order</a><a href="c-marigold/partner-orders.html">Partner orders</a><a href="c-marigold/admin-board.html">Admin board</a></div>
+    </article>
+  </div>
+
+  <table>
+    <thead><tr><th></th><th>A · Coast</th><th>B · Ledger</th><th>C · Marigold</th></tr></thead>
+    <tbody>
+      <tr><th>Type pairing</th><td>One family for both scripts (lowest pairing risk)</td><td>Matched superfamily (low risk)</td><td>Two Kannada faces (Baloo + Noto); Noto Kannada reads ~6% small, suggests +1 px</td></tr>
+      <tr><th>Primary</th><td>#B8461A, 5.3:1 with white</td><td>#0B6B57, 6.45:1 with white</td><td>#FFB81C fill with ink text, 9.47:1; never text on white</td></tr>
+      <tr><th>Customer fixed bars at 360×780</th><td>122 px (15.6%)</td><td>120 px (15.4%)</td><td>136 px (17.4%, near the 18% limit)</td></tr>
+      <tr><th>Kitchens visible at 390×844</th><td>About 1.5 (large photo cards)</td><td>More than 4 (list rows)</td><td>About 2.5 (photo beside text)</td></tr>
+      <tr><th>Bottom tabs</th><td>Active state replaces the label ("Preparing", "₹620")</td><td>Same as A</td><td>Label kept with state ("Orders · Preparing", "Cart · ₹840")</td></tr>
+      <tr><th>Partner cards at 390×844</th><td>3 visible; shows dishes, not customer name or landmark</td><td>3 visible; keeps dishes, customer name and landmark</td><td>3 visible; shows dishes, not customer name or landmark</td></tr>
+      <tr><th>Admin navigation</th><td>Top bar; five equal columns</td><td>Top bar; five 237 px columns; reassign is an icon button</td><td>Top bar; five ~236 px columns</td></tr>
+      <tr><th>Mark</th><td>Terracotta tile beside the wordmark</td><td>Leaf-teal tile beside the wordmark</td><td>Marigold flower beside the wordmark</td></tr>
+    </tbody>
+  </table>
+
+  <section class="notes">
+    <h2>Coordinator's review notes</h2>
+    <ul>
+      <li>Each direction's own Playwright checks report the brief's hard rules met: no sideways overflow, 48 px targets, three
+        partner cards at 390×844, five board columns at 1280, Kannada not clipped. A fresh render of every page by the
+        coordinator found no broken images or failed loads, and the screens reviewed by eye agree.</li>
+      <li><b>Data kept (FR-001):</b> today's partner list card shows the customer's display name, landmark and rider note.
+        Only B keeps them on the list card; A and C would need them added back (or your agreement that they appear only on the
+        order page).</li>
+      <li><b>Tab labels:</b> A and B replace the "Orders" and "Cart" words with the live state; C keeps both. Worth deciding
+        whichever direction you pick.</li>
+      <li>Partner cards show the item total (as today); board cards show the grand total (as today). A's partner amounts are
+        illustrative and unlabelled.</li>
+      <li>All new strings in the mockups are drafts in both languages, listed on each direction's overview page.</li>
+      <li class="muted">Mockups load fonts from Google Fonts and icons from unpkg for convenience; the product will self-host
+        fonts and bundle icons (FR-007).</li>
+    </ul>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Marigold · Order</title>
+<link rel="stylesheet" href="tokens.css">
+<style>
+  .pad { padding: 0 var(--s-4); }
+  .hero-st { margin-top: 16px; padding: 18px 16px 16px; position: relative; overflow: hidden; }
+  .hero-st::before { content: ""; position: absolute; right: -40px; top: -40px; width: 150px; height: 150px; border-radius: 50%; background: var(--st-preparing-bg); }
+  .hero-st > * { position: relative; }
+  .hero-st .top { display: flex; align-items: center; gap: 14px; }
+  .hero-st .big { width: 60px; height: 60px; border-radius: 18px; background: var(--st-preparing-fg); color: #fff; display: grid; place-items: center; flex: none; }
+  .hero-st .big .lucide { width: 32px; height: 32px; }
+  .hero-st .kicker { font-size: 13.5px; font-weight: 600; color: var(--c-text-3); }
+  .hero-st .display { color: var(--st-preparing-fg); font-size: 30px; }
+  .hero-st .exp { display: flex; align-items: center; gap: 10px; margin-top: 14px; padding: 10px 12px; border-radius: var(--r-md); background: var(--c-indigo-50); }
+  .hero-st .exp .lucide { width: 22px; height: 22px; color: var(--c-ink-700); }
+  .hero-st .exp b { font: 800 19px/1.3 var(--font-display); padding-top: 2px; }
+  .progress { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-top: 14px; }
+  .progress i { height: 8px; border-radius: 4px; background: var(--c-line); display: block; }
+  .progress i.done { background: var(--c-leaf-700); }
+  .progress i.now { background: var(--c-marigold-500); box-shadow: inset 0 0 0 1.5px var(--c-marigold-700); }
+  .upd { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 13px; color: var(--c-text-3); }
+  .upd .lucide { width: 14px; height: 14px; }
+
+  .mapcard { margin-top: 12px; overflow: hidden; }
+  .map { position: relative; aspect-ratio: 358 / 200; }
+  .map svg { display: block; width: 100%; height: 100%; }
+  .map .pin { position: absolute; width: 36px; height: 46px; transform: translate(-50%, -100%); }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 14px; padding: 10px 14px 12px; font-size: 13.5px; color: var(--c-text-2); border-top: 1px solid var(--c-line); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend img { width: 16px; height: 20px; }
+
+  .kcall { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 12px; padding: 12px 14px 14px; }
+  .kcall .btn { flex: 1 1 100%; }
+  .kcall img { width: 48px; height: 48px; border-radius: 12px; object-fit: cover; }
+  .kcall .h3 { font-size: 17px; }
+
+  .card-title { padding: 14px 16px 4px; }
+  .tl { list-style: none; margin: 0; padding: 8px 16px 12px; }
+  .tl li { display: grid; grid-template-columns: 32px 1fr auto; gap: 12px; align-items: center; min-height: 44px; position: relative; }
+  .tl li::before { content: ""; position: absolute; left: 15px; top: 34px; bottom: -10px; width: 2px; background: var(--c-line); }
+  .tl li:last-child::before { display: none; }
+  .tl li.done::before { background: var(--c-leaf-700); }
+  .tl .node { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: #fff; box-shadow: inset 0 0 0 2px var(--c-line-strong); color: var(--c-text-3); z-index: 1; }
+  .tl .node .lucide { width: 16px; height: 16px; }
+  .tl .done .node { background: var(--c-leaf-700); box-shadow: none; color: #fff; }
+  .tl .now .node { background: var(--c-marigold-500); box-shadow: 0 0 0 4px var(--c-marigold-100); color: var(--c-ink-900); }
+  .tl .lab { font-size: 15px; }
+  .tl .now .lab { font-weight: 700; }
+  .tl .pend .lab { color: var(--c-text-3); }
+  .tl .tm { font-size: 13.5px; color: var(--c-text-3); font-variant-numeric: tabular-nums; }
+  .tl .done .tm, .tl .now .tm { color: var(--c-text-2); font-weight: 600; }
+
+  .items .it { display: flex; align-items: flex-start; gap: 10px; padding: 10px 16px; }
+  .items .it .vmark { margin-top: 3px; }
+  .items .it .q { color: var(--c-text-3); font-weight: 600; white-space: nowrap; }
+  .items .it .p { margin-left: auto; font: 700 16px/1.4 var(--font-display); }
+  .bill { margin-top: 6px; padding: 12px 16px 14px; background: var(--c-sunken); border-top: 1px dashed var(--c-line-strong); border-radius: 0 0 var(--r-lg) var(--r-lg); }
+  .bill .r { display: flex; justify-content: space-between; font-size: 15px; color: var(--c-text-2); }
+  .bill .r b { font: 700 16px/1.5 var(--font-display); color: var(--c-text); }
+  .bill .grand { margin-top: 6px; padding-top: 8px; border-top: 1px solid var(--c-line-strong); color: var(--c-text); font-weight: 700; }
+  .bill .grand b { font-size: 22px; font-weight: 800; }
+  .payrow { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-top: 1px solid var(--c-line); font-weight: 600; }
+  .payrow .lucide { width: 22px; height: 22px; color: var(--c-leaf-700); }
+  .addrcard { padding: 14px 16px; margin-top: 12px; display: grid; grid-template-columns: 44px 1fr; gap: 12px; }
+  .addrcard .ico { width: 44px; height: 44px; border-radius: 12px; background: var(--c-indigo-50); display: grid; place-items: center; color: var(--c-ink-700); }
+  .addrcard .l { font-size: 14.5px; color: var(--c-text-2); }
+  .gap12 { height: 12px; }
+</style>
+</head>
+<body class="board">
+<header class="board-head">
+  <img src="mark.svg" alt="">
+  <h1>C · Marigold <small>Ongoing order</small></h1>
+  <nav>
+    <a href="index.html">Overview</a><a href="home.html">Home</a><a href="kitchen.html">Kitchen</a><a href="cart.html">Cart</a><a href="order.html" aria-current="page">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html">Admin board</a>
+  </nav>
+</header>
+
+<div class="frames">
+  <figure class="frame-wrap" id="f-order">
+    <figcaption>Order #1042 <span>390 × 844 · status first, then map and call</span></figcaption>
+    <div class="phone"><div class="screen" lang="en">
+      <header class="topbar has-back">
+        <a class="hit iconbtn-dark" href="#" aria-label="My orders"><i data-lucide="chevron-left"></i></a>
+        <span class="topbar-title">Order #1042</span>
+        <span class="spacer"></span>
+        <a class="hit lang" href="#" aria-label="Switch to Kannada"><span class="pill"><i data-lucide="languages"></i><span lang="kn">ಕನ್ನಡ</span></span></a>
+      </header>
+      <main>
+        <div class="pad">
+          <section class="card hero-st" aria-live="polite">
+            <div class="top">
+              <span class="big"><i data-lucide="chef-hat"></i></span>
+              <div><div class="kicker">Order status</div><h1 class="display">Preparing</h1></div>
+            </div>
+            <div class="exp"><i data-lucide="clock-4"></i><b>Expected by 8:25 pm</b></div>
+            <div class="progress" aria-hidden="true"><i class="done"></i><i class="done"></i><i class="now"></i><i></i><i></i><i></i><i></i></div>
+            <div class="upd"><i data-lucide="refresh-cw"></i>Updated 7:52 pm</div>
+          </section>
+
+          <section class="card mapcard" aria-label="Map with the kitchen and your delivery location">
+            <div class="map">
+              <svg viewBox="0 0 358 200" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <defs>
+                  <pattern id="waves" width="22" height="12" patternUnits="userSpaceOnUse"><path d="M2 8 q4 -4 8 0 t8 0" fill="none" stroke="#FFFFFF" stroke-opacity=".7" stroke-width="1.4" stroke-linecap="round"/></pattern>
+                </defs>
+                <rect width="358" height="200" fill="#F4EEDF"/>
+                <!-- parks / paddy -->
+                <path d="M222 150 q30 -18 70 -6 q24 10 16 40 l-90 16 q-14 -30 4 -50z" fill="#DDEBD2"/>
+                <path d="M300 60 q30 -8 58 4 v46 q-36 6 -56 -10 q-10 -20 -2 -40z" fill="#DDEBD2"/>
+                <ellipse cx="96" cy="176" rx="22" ry="12" fill="#DDEBD2"/>
+                <!-- sea -->
+                <path d="M0 0 H66 C54 36 72 70 58 104 C46 134 64 166 52 200 H0 Z" fill="#CFE4EF"/>
+                <path d="M0 0 H66 C54 36 72 70 58 104 C46 134 64 166 52 200 H0 Z" fill="url(#waves)"/>
+                <path d="M66 0 C54 36 72 70 58 104 C46 134 64 166 52 200" fill="none" stroke="#E9DFC4" stroke-width="5"/>
+                <!-- river -->
+                <path d="M358 30 C306 44 262 14 206 30 C156 44 112 26 58 40" fill="none" stroke="#CFE4EF" stroke-width="24" stroke-linecap="round"/>
+                <path d="M358 30 C306 44 262 14 206 30 C156 44 112 26 58 40" fill="none" stroke="url(#waves)" stroke-width="22"/>
+                <!-- roads: casing then fill -->
+                <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <g stroke="#E2D6B8" stroke-width="9">
+                    <path d="M132 118 C186 116 236 140 300 132 C326 129 346 136 358 138"/>
+                    <path d="M206 64 C210 110 198 160 214 200"/>
+                    <path d="M64 150 H132"/>
+                    <path d="M132 76 C166 74 188 70 206 64 C250 56 300 70 358 66"/>
+                    <path d="M292 132 V200"/>
+                  </g>
+                  <g stroke="#FFFFFF" stroke-width="6">
+                    <path d="M132 118 C186 116 236 140 300 132 C326 129 346 136 358 138"/>
+                    <path d="M206 64 C210 110 198 160 214 200"/>
+                    <path d="M64 150 H132"/>
+                    <path d="M132 76 C166 74 188 70 206 64 C250 56 300 70 358 66"/>
+                    <path d="M292 132 V200"/>
+                  </g>
+                  <!-- NH 66 -->
+                  <path d="M126 0 C132 60 122 120 140 200" stroke="#D9B86A" stroke-width="13"/>
+                  <path d="M126 0 C132 60 122 120 140 200" stroke="#FFE7A8" stroke-width="9"/>
+                  <!-- bridge -->
+                  <path d="M128.6 20 L129.6 56" stroke="#1C1A44" stroke-opacity=".55" stroke-width="15" stroke-linecap="butt"/>
+                  <path d="M128.6 20 L129.6 56" stroke="#FFE7A8" stroke-width="9" stroke-linecap="butt"/>
+                  <!-- route -->
+                  <path d="M130 92 C129 104 129 112 132 118 C186 116 236 140 292 133" stroke="#3A3680" stroke-width="4" stroke-dasharray="1 8"/>
+                </g>
+                <!-- labels -->
+                <g font-family="Noto Sans, sans-serif" font-size="10" fill="#615D7C">
+                  <text x="24" y="120" transform="rotate(-90 24 120)" font-style="italic" fill="#4D7A93" letter-spacing="1.5">ARABIAN SEA</text>
+                  <text x="236" y="22" font-style="italic" fill="#4D7A93">Sharavathi</text>
+                  <text x="150" y="104">Bus stand</text>
+                  <text x="226" y="176">Prabhatnagar</text>
+                </g>
+                <g transform="translate(110 150)">
+                  <rect x="-15" y="-8" width="30" height="16" rx="4" fill="#1C1A44"/>
+                  <text x="0" y="4" text-anchor="middle" font-family="Noto Sans, sans-serif" font-size="9" font-weight="700" fill="#FFB81C">NH 66</text>
+                </g>
+              </svg>
+              <img class="pin" src="pin-kitchen.svg" alt="Kitchen: Prameela Restaurant" style="left:36.3%;top:46%">
+              <img class="pin" src="pin-delivery.svg" alt="Your delivery location" style="left:81.6%;top:66.5%">
+            </div>
+            <div class="legend"><span><img src="pin-kitchen.svg" alt="">Kitchen: Prameela Restaurant</span><span><img src="pin-delivery.svg" alt="">Your delivery location</span></div>
+          </section>
+
+          <section class="card kcall">
+            <img src="../../../../seed/images/prameela.jpg" alt="">
+            <div class="grow"><div class="h3">Prameela Restaurant</div><div class="faint small">Near Bangalore Circle · Restaurant</div></div>
+            <a class="btn btn-primary" href="tel:9000001002" aria-label="Call kitchen on 9000001002"><i data-lucide="phone"></i><span>Call kitchen</span></a>
+          </section>
+
+          <section class="card" style="margin-top:12px">
+            <h2 class="h2 card-title">Order status</h2>
+            <ol class="tl">
+              <li class="done"><span class="node"><i data-lucide="check"></i></span><span class="lab">Order placed</span><span class="tm">7:40 pm</span></li>
+              <li class="done"><span class="node"><i data-lucide="check"></i></span><span class="lab">Accepted by the kitchen</span><span class="tm">7:42 pm</span></li>
+              <li class="now"><span class="node"><i data-lucide="chef-hat"></i></span><span class="lab">Preparing</span><span class="tm">7:46 pm</span></li>
+              <li class="pend"><span class="node"><i data-lucide="package-check"></i></span><span class="lab">Ready for pickup</span><span class="tm">Waiting</span></li>
+              <li class="pend"><span class="node"><i data-lucide="user-check"></i></span><span class="lab">Delivery agent assigned</span><span class="tm">Waiting</span></li>
+              <li class="pend"><span class="node"><i data-lucide="bike"></i></span><span class="lab">Picked up</span><span class="tm">Waiting</span></li>
+              <li class="pend"><span class="node"><i data-lucide="house"></i></span><span class="lab">Delivered</span><span class="tm">Waiting</span></li>
+            </ol>
+          </section>
+
+          <section class="card items" style="margin-top:12px">
+            <h2 class="h2 card-title">Items</h2>
+            <div class="it"><img class="vmark" src="nonveg.svg" alt="Non-veg"><span>Fish Thali <span class="q">× 1</span></span><span class="p">₹120</span></div>
+            <div class="it"><img class="vmark" src="nonveg.svg" alt="Non-veg"><span>Chicken Ghee Roast <span class="q">× 1</span></span><span class="p">₹280</span></div>
+            <div class="bill" style="border-radius:0">
+              <div class="r"><span>Item total</span><b>₹400</b></div>
+              <div class="r"><span>Delivery fee</span><b>₹30</b></div>
+              <div class="r grand"><span>Grand total</span><b>₹430</b></div>
+            </div>
+            <div class="payrow"><i data-lucide="banknote"></i>Cash on delivery</div>
+          </section>
+
+          <section class="card addrcard">
+            <span class="ico"><i data-lucide="house"></i></span>
+            <div><div class="h3">Delivery address</div><div class="l">Home · Door 2-114, Nayak House, Prabhatnagar 2nd cross</div><div class="l faint">Behind Prabhatnagar temple · Blue gate, ring the bell twice</div></div>
+          </section>
+          <div style="height:20px"></div>
+        </div>
+      </main>
+      <nav class="tabbar" aria-label="Main navigation">
+        <a class="tab" href="home.html"><span class="ic"><i data-lucide="house"></i></span><span class="lbl">Home</span></a>
+        <a class="tab is-active" href="#" aria-current="page"><span class="ic"><i data-lucide="receipt-text"></i></span><span class="lbl">Orders</span></a>
+        <a class="tab" href="cart.html"><span class="ic"><i data-lucide="shopping-bag"></i></span><span class="lbl">Cart</span></a>
+        <a class="tab" href="#"><span class="ic"><i data-lucide="circle-user-round"></i></span><span class="lbl">Account</span></a>
+      </nav>
+    </div></div>
+  </figure>
+
+  <figure class="frame-wrap" id="f-order2">
+    <figcaption>Order, scrolled <span>timeline, items and bill, payment, address</span></figcaption>
+  </figure>
+</div>
+
+<section class="notes">
+  <h2>Design notes</h2>
+  <ul>
+    <li><b>Status first</b>: the hero card names the current status in its own colour and icon (Preparing = terracotta + chef hat), then “Expected by 8:25 pm” on an indigo-tint strip, a seven-step progress bar and the refresh time. When the status changes the card cross-fades its colour and label in 150 ms.</li>
+    <li><b>Map</b>: drawn as a calm, stylised frame (sea, Sharavathi estuary, NH 66 in marigold with the bridge, side roads, paddy), with the custom kitchen pin (marigold, ink fork and spoon) and delivery pin (leaf green, house) and a dotted indigo route. The product keeps its real map tiles; this is the framing, pins and legend. If tiles fail, the same frame shows with pins and labels.</li>
+    <li><b>Call kitchen</b> is the primary action, next to the kitchen's photo and landmark.</li>
+    <li>On this order's own page the Orders tab drops the status line (the order is on screen); the Cart tab is plain because the cart is empty.</li>
+    <li>Timeline: filled leaf nodes for done, a marigold node with a halo for now, outlined nodes with “Waiting” for later; each step has its own icon.</li>
+  </ul>
+</section>
+
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+  (function () {
+    var c = document.querySelector('#f-order .phone').cloneNode(true);
+    document.getElementById('f-order2').appendChild(c);
+    if (location.hash === '#360') document.documentElement.classList.add('w360');
+    lucide.createIcons();
+    var m = c.querySelector('main'); m.scrollTop = 560;
+  })();
+</script>
+</body>
+</html>

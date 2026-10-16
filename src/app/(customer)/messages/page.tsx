@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import { requireSession } from '@/features/auth/session';
 import { MessageList } from '@/features/notifications/components/message-list';
 import { listMessages } from '@/features/notifications/queries';
-import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { CustomerTabBar } from '@/features/cart/components/customer-tab-bar';
 import { BackLink } from '@/shared/ui/back-link';
 
 export default async function CustomerMessagesPage() {
@@ -12,10 +12,10 @@ export default async function CustomerMessagesPage() {
   return (
     <div className="flex flex-col gap-4">
       <BackLink href="/account" label={t('backLinks.account')} />
-      <h1 className="text-2xl font-bold">{t('messageLog.title')}</h1>
-      <p className="text-sm text-muted">{t('messageLog.intro')}</p>
+      <h1 className="text-title font-bold">{t('messageLog.title')}</h1>
+      <p className="text-small text-muted">{t('messageLog.intro')}</p>
       <MessageList messages={messages} orderHref={(id) => `/orders/${id}`} />
-      <CustomerDock />
+      <CustomerTabBar current="account" />
     </div>
   );
 }

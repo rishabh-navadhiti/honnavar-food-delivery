@@ -11,17 +11,17 @@ type FieldShellProps = {
 export function FieldShell({ id, label, hint, error, children }: FieldShellProps) {
   return (
     <div className="flex flex-col gap-1">
-      <label htmlFor={id} className="text-sm font-semibold text-ink">
+      <label htmlFor={id} className="text-small font-semibold text-ink">
         {label}
       </label>
       {children}
       {hint && !error ? (
-        <p id={`${id}-hint`} className="text-sm text-muted">
+        <p id={`${id}-hint`} className="text-small text-muted">
           {hint}
         </p>
       ) : null}
       {error ? (
-        <p id={`${id}-error`} role="alert" className="text-sm font-medium text-danger">
+        <p id={`${id}-error`} role="alert" className="text-small font-semibold text-danger">
           {error}
         </p>
       ) : null}
@@ -30,8 +30,8 @@ export function FieldShell({ id, label, hint, error, children }: FieldShellProps
 }
 
 const control =
-  'min-h-touch w-full rounded-xl border border-line bg-surface px-3 py-2 text-base text-ink ' +
-  'focus:border-primary focus:outline-2 focus:outline-primary aria-invalid:border-danger';
+  'min-h-touch w-full rounded-md border border-line-strong bg-surface px-3.5 py-2 text-base text-ink placeholder:text-subtle ' +
+  'focus:border-sea focus:outline-2 focus:outline-offset-1 focus:outline-sea aria-invalid:border-danger';
 
 type CommonProps = { name: string; label: ReactNode; hint?: ReactNode; error?: string; id?: string };
 
@@ -111,7 +111,7 @@ export function CheckboxField({
   const fieldId = id ?? `field-${name}`;
   return (
     <label htmlFor={fieldId} className="flex min-h-touch cursor-pointer items-center gap-3 text-base">
-      <input id={fieldId} name={name} type="checkbox" className="size-6 accent-primary" {...props} />
+      <input id={fieldId} name={name} type="checkbox" className="size-6 shrink-0 accent-primary" {...props} />
       <span>{label}</span>
     </label>
   );

@@ -1,15 +1,18 @@
 import { useTranslations } from 'next-intl';
+import { NonVegMarkIcon, VegMarkIcon } from '@/shared/ui/icons/veg-marks';
 import { setDishFilter } from '../actions';
 import { DISH_FILTERS, type DishFilter } from '../domain/dish-filter';
 
-/** Three-state dish filter (FR-043). The active state is shown with a tick and weight, not colour alone. */
+const marks: Record<DishFilter, React.ReactNode> = { all: null, veg: <VegMarkIcon />, nonveg: <NonVegMarkIcon /> };
+
+/** Three-state dish filter (FR-043) as a segmented control; the active state is raised and pressed, not colour alone. */
 export function DishFilterControl({ current, returnTo }: { current: DishFilter; returnTo: string }) {
   const t = useTranslations('dishFilter');
   return (
-    <form action={setDishFilter} className="flex flex-col gap-1" data-testid="dish-filter" data-current={current}>
+    <form action={setDishFilter} className="flex items-center gap-2" data-testid="dish-filter" data-current={current}>
       <input type="hidden" name="returnTo" value={returnTo} />
-      <span className="text-sm font-semibold text-muted">{t('label')}</span>
-      <div role="group" aria-label={t('label')} className="grid grid-cols-3 gap-1 rounded-xl border border-line bg-surface p-1">
+      <span className="sr-only">{t('label')}</span>
+      <div role="group" aria-label={t('label')} className="grid flex-1 grid-cols-3 gap-0.5 rounded-full bg-line/70 p-0.5">
         {DISH_FILTERS.map((filter) => {
           const active = filter === current;
           return (
@@ -19,9 +22,11 @@ export function DishFilterControl({ current, returnTo }: { current: DishFilter; 
               name="filter"
               value={filter}
               aria-pressed={active}
-              className={`min-h-touch rounded-lg px-2 text-sm ${active ? 'bg-primary font-bold text-on-primary' : 'text-ink hover:bg-secondary'}`}
+              className={`inline-flex min-h-touch items-center justify-center gap-1.5 rounded-full px-2 text-small transition-colors duration-(--duration-fast) ${
+                active ? 'bg-surface font-bold text-ink shadow-1' : 'font-semibold text-muted'
+              }`}
             >
-              {active ? <span aria-hidden="true" className="me-1">✓</span> : null}
+              {marks[filter]}
               {t(filter)}
             </button>
           );

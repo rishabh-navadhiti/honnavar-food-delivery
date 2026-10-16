@@ -26,7 +26,7 @@ export function AddressFlow({
   if (step === 'map' || !location) {
     return (
       <section className="flex flex-col gap-3" aria-labelledby="map-step-title">
-        <h2 id="map-step-title" className="text-lg font-bold">
+        <h2 id="map-step-title" className="text-heading font-bold">
           {t('mapStepTitle')}
         </h2>
         <p className="text-base text-muted">{t('mapStepHint')}</p>
@@ -43,7 +43,7 @@ export function AddressFlow({
   }
   return (
     <section className="flex flex-col gap-3" aria-labelledby="details-step-title">
-      <h2 id="details-step-title" className="text-lg font-bold">
+      <h2 id="details-step-title" className="text-heading font-bold">
         {t('detailsStepTitle')}
       </h2>
       <AddressDetailsForm location={location} values={saved?.values} next={next} onChangeLocation={() => setStep('map')} />

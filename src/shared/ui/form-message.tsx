@@ -1,7 +1,7 @@
 export function FormError({ message }: { message?: string }) {
   if (!message) return null;
   return (
-    <p role="alert" className="text-base font-medium text-danger">
+    <p role="alert" className="rounded-md bg-danger-soft px-3 py-2 text-base font-semibold text-danger">
       {message}
     </p>
   );

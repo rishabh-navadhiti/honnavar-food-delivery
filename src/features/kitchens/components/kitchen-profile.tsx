@@ -29,7 +29,7 @@ export function KitchenProfile({
   const t = useTranslations();
   const row = (label: string, value: React.ReactNode) => (
     <div>
-      <dt className="text-sm font-semibold text-muted">{label}</dt>
+      <dt className="text-small font-semibold text-muted">{label}</dt>
       <dd className="text-base">{value}</dd>
     </div>
   );
@@ -54,7 +54,7 @@ export function KitchenProfile({
             {contacts.map((c) => (
               <li key={c.phone}>
                 {formatPhone(c.phone)}
-                {c.isPrimary ? <span className="ms-2 text-sm text-muted">{t('kitchenProfile.primary')}</span> : null}
+                {c.isPrimary ? <span className="ms-2 text-small text-muted">{t('kitchenProfile.primary')}</span> : null}
               </li>
             ))}
           </ul>,
@@ -65,7 +65,7 @@ export function KitchenProfile({
             {signins.map((s) => (
               <li key={s.phone}>
                 {formatPhone(s.phone)}
-                <span className="ms-2 text-sm text-muted">{s.personName}</span>
+                <span className="ms-2 text-small text-muted">{s.personName}</span>
               </li>
             ))}
           </ul>,

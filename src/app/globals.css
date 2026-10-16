@@ -1,32 +1,157 @@
 @import 'tailwindcss';
 
+/*
+ * Coast theme (003, research R1). Values come from specs/003-visual-refresh/design/a-coast/tokens.css.
+ * Status and group colours are used only in the status chip and group icons, always with their
+ * word: never as rails, rules, bars or tinted columns (owner edit 2).
+ */
 @theme {
-  --font-sans: var(--font-noto-sans), var(--font-noto-sans-kannada), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-anek), ui-sans-serif, system-ui, sans-serif;
 
-  /* Colour-coded actions (Principle IV) */
-  --color-primary: #c2410c;
-  --color-primary-strong: #9a3412;
+  /* Brand: Mangalore-tile terracotta; one primary action per screen (Principle IV) */
+  --color-primary: #b8461a;
+  --color-primary-strong: #9c3512;
   --color-on-primary: #ffffff;
-  --color-secondary: #f5f5f4;
-  --color-on-secondary: #1c1917;
-  --color-danger: #b91c1c;
+  --color-primary-soft: #fdf1e8;
+  --color-primary-tint: #fbe3d4;
+  --color-secondary: #fdf1e8;
+  --color-on-secondary: #9c3512;
+  --color-danger: #b42318;
   --color-on-danger: #ffffff;
+  --color-danger-soft: #fde8e6;
+
+  /* Sharavathi teal: call, map and delivery cues only */
+  --color-sea: #0e6e67;
+  --color-sea-strong: #0b5a54;
+  --color-sea-soft: #dff2ef;
 
   /* Food marks: Indian veg (green) and non-veg (brown-red) symbols */
-  --color-veg: #15803d;
-  --color-nonveg: #8b2b1a;
+  --color-veg: #1a7f47;
+  --color-veg-soft: #e3f4ea;
+  --color-nonveg: #8f3b1b;
+  --color-nonveg-soft: #fbe3d4;
 
+  /* Warm neutrals */
   --color-surface: #ffffff;
-  --color-page: #fafaf9;
-  --color-ink: #1c1917;
-  --color-muted: #57534e;
-  --color-line: #e7e5e4;
-  --color-open: #15803d;
-  --color-closed: #b91c1c;
-  --color-warn: #a16207;
+  --color-surface-sunk: #fdf9f3;
+  --color-page: #faf4ea;
+  --color-ink: #2b1b12;
+  --color-muted: #5c4a3e;
+  --color-subtle: #6f5c4f;
+  --color-line: #ece2d5;
+  --color-line-strong: #a08a77;
+  --color-scrim: rgb(43 27 18 / 0.42);
 
-  /* Minimum touch target */
+  /* Meaning colours, always beside a word or icon */
+  --color-open: #18794e;
+  --color-open-soft: #e3f4ea;
+  --color-closed: #6a5d54;
+  --color-closed-soft: #f0ebe5;
+  --color-warn: #9a5507;
+  --color-warn-soft: #fff3d9;
+
+  /* Order statuses: text on its own tint, only inside StatusChip and group icons */
+  --color-status-placed: #9a5507;
+  --color-status-placed-soft: #fff3d9;
+  --color-status-accepted: #1e5bb0;
+  --color-status-accepted-soft: #e6effa;
+  --color-status-preparing: #b4430f;
+  --color-status-preparing-soft: #fdebdd;
+  --color-status-ready: #6b3fa0;
+  --color-status-ready-soft: #f1e9fa;
+  --color-status-picked: #0e6e67;
+  --color-status-picked-soft: #dff2ef;
+  --color-status-delivered: #18794e;
+  --color-status-delivered-soft: #e3f4ea;
+  --color-status-rejected: #b42318;
+  --color-status-rejected-soft: #fde8e6;
+  --color-status-cancelled: #5f5550;
+  --color-status-cancelled-soft: #efebe7;
+
+  /* Type scale: the same sizes for both scripts; Kannada gets taller lines (see :lang(kn) below) */
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: var(--lh-snug);
+  --text-small: 0.875rem;
+  --text-small--line-height: var(--lh-body);
+  --text-body: 1rem;
+  --text-body--line-height: var(--lh-body);
+  --text-heading: 1.125rem;
+  --text-heading--line-height: var(--lh-snug);
+  --text-title: 1.375rem;
+  --text-title--line-height: var(--lh-tight);
+  --text-display: 1.75rem;
+  --text-display--line-height: var(--lh-tight);
+
+  /* Radii: 6 / 10 / 14 / 18 / 24 px; pills use rounded-full */
+  --radius-xs: 0.375rem;
+  --radius-sm: 0.625rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.125rem;
+  --radius-xl: 1.5rem;
+
+  /* Elevation: warm, layered */
+  --shadow-1: 0 1px 2px rgb(92 52 24 / 0.06), 0 1px 1px rgb(92 52 24 / 0.04);
+  --shadow-2: 0 1px 2px rgb(92 52 24 / 0.06), 0 4px 12px -2px rgb(120 60 20 / 0.1), 0 12px 28px -12px rgb(120 60 20 / 0.16);
+  --shadow-3: 0 2px 6px rgb(92 52 24 / 0.08), 0 16px 40px -8px rgb(92 40 12 / 0.24);
+  --shadow-bar: 0 -1px 0 #ece2d5, 0 -8px 24px -12px rgb(92 52 24 / 0.18);
+
+  /* Sizes: minimum touch target and the fixed bars */
   --spacing-touch: 3rem;
+  --spacing-topbar: 3.5rem;
+  --spacing-tabbar: 4.5rem;
+  --spacing-placebar: 4.75rem;
+
+  --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Sheet and panel entrances (FR-010): under 200 ms, transform and opacity only. */
+  --animate-sheet-up: sheet-up 180ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  --animate-drop-in: drop-in 140ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  --animate-fade-in: fade-in 140ms ease-out;
+  /* Skeletons appear only if a page takes longer than 300 ms, so fast pages never flash them. */
+  --animate-delayed-reveal: delayed-reveal 1ms linear 300ms both;
+  --animate-target-tint: target-tint 1.2s ease-out;
+
+  /* Sheets and panels move in; they stay fully opaque, so nothing behind them shows through. */
+  @keyframes sheet-up {
+    from {
+      transform: translateY(32px);
+    }
+  }
+  @keyframes drop-in {
+    from {
+      transform: translateY(-6px);
+    }
+  }
+  @keyframes delayed-reveal {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+:root {
+  /* Line heights; Kannada needs room for vowel signs above and conjuncts below the baseline. */
+  --lh-tight: 1.18;
+  --lh-snug: 1.3;
+  --lh-body: 1.45;
+
+  /* Motion: every transition under 200 ms (FR-010); use as duration-(--duration-fast). */
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+}
+
+:root:lang(kn) {
+  --lh-tight: 1.42;
+  --lh-snug: 1.5;
+  --lh-body: 1.62;
 }
 
 html {
@@ -36,6 +161,44 @@ html {
 body {
   background: var(--color-page);
   color: var(--color-ink);
+  line-height: var(--lh-body);
+}
+
+/* Width axis of Anek Kannada as a hierarchy tool: reading, headings and prices, dense labels. */
+@utility stretch-read {
+  font-stretch: 100%;
+}
+@utility stretch-head {
+  font-stretch: 87.5%;
+}
+@utility stretch-dense {
+  font-stretch: 80%;
+}
+
+/* A dish opened from a search suggestion is tinted briefly (research R8). */
+@keyframes target-tint {
+  from {
+    background-color: var(--color-primary-soft);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+
+/* Reduced motion: nothing animates (FR-010, SC-010). */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+  }
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* 002: Leaflet's zoom buttons as large touch targets (Principle IV). */
@@ -45,4 +208,5 @@ body {
   height: 44px;
   line-height: 44px;
   font-size: 22px;
+  color: var(--color-ink);
 }

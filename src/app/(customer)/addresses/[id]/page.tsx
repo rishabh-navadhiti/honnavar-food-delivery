@@ -7,7 +7,7 @@ import { getAddress } from '@/features/addresses/queries';
 import { requireSession } from '@/features/auth/session';
 import { mapTiles } from '@/shared/maps/tiles';
 import { buttonClasses } from '@/shared/ui/button';
-import { CustomerDock } from '@/features/cart/components/customer-dock';
+import { CustomerTabBar } from '@/features/cart/components/customer-tab-bar';
 import { BackLink } from '@/shared/ui/back-link';
 
 type Props = { params: Promise<{ id: string }> };
@@ -21,7 +21,7 @@ export default async function EditAddressPage({ params }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <BackLink href="/addresses" label={t('backLabel')} />
-      <h1 className="text-2xl font-bold">{t('editTitle')}</h1>
+      <h1 className="text-title font-bold">{t('editTitle')}</h1>
       <AddressFlow
         tiles={mapTiles()}
         next="/addresses"
@@ -45,7 +45,7 @@ export default async function EditAddressPage({ params }: Props) {
           {t('delete')}
         </button>
       </form>
-      <CustomerDock />
+      <CustomerTabBar current="account" />
     </div>
   );
 }

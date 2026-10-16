@@ -12,21 +12,21 @@ export function OrderHistory({ events }: { events: AdminOrderView['events'] }) {
   return (
     <ol className="flex flex-col gap-2" data-testid="order-history">
       {events.map((event, index) => (
-        <li key={index} className="flex flex-col rounded-xl border border-line bg-surface px-3 py-2">
+        <li key={index} className="flex flex-col rounded-md bg-surface shadow-1 px-3 py-2">
           <span className="flex flex-wrap items-baseline justify-between gap-2">
             <span className="font-semibold">{t(`orderEvent.${event.kind}`)}</span>
-            <span className="text-sm text-muted">{formatDayTime(event.at, locale)}</span>
+            <span className="text-small text-muted">{formatDayTime(event.at, locale)}</span>
           </span>
-          <span className="text-sm">
+          <span className="text-small">
             {t(`adminOrder.actor.${event.actor}`)}
             {event.actorPhone ? <span className="ms-2 text-muted">{formatPhone(event.actorPhone)}</span> : null}
           </span>
           {event.agentName ? (
-            <span className="text-sm">
+            <span className="text-small">
               {event.previousAgentName ? t('adminOrder.agentChange', { from: event.previousAgentName, to: event.agentName }) : event.agentName}
             </span>
           ) : null}
-          {event.reason ? <ReasonText reason={event.reason} note={event.reasonNote} className="text-sm" /> : null}
+          {event.reason ? <ReasonText reason={event.reason} note={event.reasonNote} className="text-small" /> : null}
         </li>
       ))}
     </ol>

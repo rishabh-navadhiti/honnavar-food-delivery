@@ -24,12 +24,12 @@ export function AdminCancelForm({ orderId }: { orderId: string }) {
     );
   }
   return (
-    <form action={formAction} className="flex max-w-md flex-col gap-3 rounded-xl border border-line p-3" data-testid="cancel-form">
+    <form action={formAction} className="flex max-w-md flex-col gap-3 rounded-md border border-line p-3" data-testid="cancel-form">
       <input type="hidden" name="orderId" value={orderId} />
       <fieldset className="flex flex-col gap-2">
         <legend className="mb-1 text-base font-bold">{t('adminOrder.cancelReason')}</legend>
         {ADMIN_REASONS.map((r) => (
-          <label key={r} className="flex min-h-touch cursor-pointer items-center gap-3 rounded-xl border border-line px-3 has-[:checked]:border-primary">
+          <label key={r} className="flex min-h-touch cursor-pointer items-center gap-3 rounded-md border border-line px-3 has-[:checked]:border-primary">
             <input type="radio" name="reason" value={r} onChange={() => setReason(r)} className="size-5 accent-primary" />
             <span>{t(`orderReason.${r}`)}</span>
           </label>

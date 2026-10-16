@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B · Ledger</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="ui.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body.canvas { padding: 40px 48px 80px; }
+  .wrap { max-width: 1240px; }
+  .lockup { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .lockup .mark { width: 44px; height: 44px; }
+  .lockup .wordmark { font-size: 26px; line-height: 30px; }
+  .lockup .dir { margin-left: 10px; padding: 3px 10px; border-radius: 999px; background: var(--c-ink); color: #fff; font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+  h1.big { font-size: 34px; line-height: 40px; font-weight: 700; letter-spacing: -.02em; }
+  .lede { font-size: 16px; line-height: 26px; color: var(--c-ink-2); max-width: 900px; margin-top: 12px; }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .facts span { display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 8px; background: var(--c-surface); border: 1px solid var(--c-line); font-size: 13px; color: var(--c-ink-2); }
+  .facts b { color: var(--c-ink); }
+  .facts i.sw { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
+
+  section.blk { margin-top: 44px; }
+  section.blk > h2 { font-size: 13px; line-height: 18px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--c-muted); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+  section.blk > h2::after { content: ''; flex: 1; height: 1px; background: #CDD3D8; }
+  .panel { background: var(--c-surface); border: 1px solid var(--c-line); border-radius: 12px; padding: 20px; }
+
+  .screens { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .scr { display: grid; grid-template-columns: 44px 1fr 20px; gap: 14px; align-items: center; padding: 16px; background: var(--c-surface); border: 1px solid var(--c-line); border-radius: 12px; text-decoration: none; color: inherit; min-height: 88px; }
+  .scr:hover { border-color: var(--c-primary); }
+  .scr .ib { width: 44px; height: 44px; border-radius: 10px; background: var(--c-primary-tint); color: var(--c-primary); display: grid; place-items: center; }
+  .scr b { display: block; font-size: 15px; }
+  .scr span { display: block; font-size: 13px; line-height: 18px; color: var(--c-muted); margin-top: 2px; }
+  .scr > svg.lucide:last-child { color: var(--c-faint); }
+
+  .sw-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .sw { border: 1px solid var(--c-line); border-radius: 10px; overflow: hidden; background: var(--c-surface); }
+  .sw .c { height: 64px; display: flex; align-items: flex-end; justify-content: flex-end; padding: 6px 8px; font-size: 11px; font-weight: 700; }
+  .sw .m { padding: 8px 10px 10px; }
+  .sw .m b { display: block; font-size: 13px; }
+  .sw .m code { font-size: 12px; color: var(--c-muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .sw .m em { display: block; font-style: normal; font-size: 11.5px; color: var(--c-muted); margin-top: 2px; }
+  .sub-h { font-size: 14px; font-weight: 700; margin: 18px 0 10px; color: var(--c-ink); }
+  .sub-h:first-child { margin-top: 0; }
+
+  .status-tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .status-tbl th { text-align: left; font-size: 12px; color: var(--c-muted); font-weight: 600; padding: 0 10px 8px; border-bottom: 1px solid var(--c-line); }
+  .status-tbl td { padding: 10px; border-bottom: 1px solid var(--c-line); vertical-align: middle; }
+  .status-tbl tr:last-child td { border-bottom: 0; }
+  .status-tbl code { font-size: 12px; color: var(--c-muted); font-family: ui-monospace, Menlo, monospace; }
+  .status-tbl .kn { font-size: 14px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .tscale { width: 100%; border-collapse: collapse; }
+  .tscale td { padding: 12px 10px; border-bottom: 1px solid var(--c-line); vertical-align: baseline; }
+  .tscale tr:last-child td { border-bottom: 0; }
+  .tscale .tk { width: 150px; font-size: 12px; color: var(--c-muted); font-family: ui-monospace, Menlo, monospace; line-height: 18px; }
+  .tscale .tk b { display: block; font-family: var(--font); color: var(--c-ink); font-size: 13px; }
+  .figs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .figs .col { font-size: 15px; border: 1px solid var(--c-line); border-radius: 10px; padding: 12px 14px; }
+  .figs .col p { display: flex; justify-content: space-between; line-height: 26px; }
+  .figs .col h4 { font-size: 12px; color: var(--c-muted); font-weight: 600; margin-bottom: 4px; }
+
+  .sp-row { display: flex; align-items: flex-end; gap: 18px; }
+  .sp { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 12px; color: var(--c-muted); font-feature-settings: var(--num); }
+  .sp i { display: block; background: var(--c-primary); opacity: .85; border-radius: 2px; }
+  .rad-row, .el-row { display: flex; gap: 18px; flex-wrap: wrap; }
+  .rad { width: 96px; text-align: center; font-size: 12px; color: var(--c-muted); }
+  .rad i { display: block; width: 96px; height: 64px; border: 1.5px solid var(--c-primary); background: var(--c-primary-tint); margin-bottom: 6px; }
+  .el { width: 220px; font-size: 12px; color: var(--c-muted); line-height: 17px; }
+  .el i { display: block; height: 72px; border-radius: 10px; background: var(--c-surface); margin-bottom: 10px; }
+  .el b { color: var(--c-ink); display: block; font-size: 13px; }
+  .el-bg { background: var(--c-page); padding: 20px; border-radius: 10px; }
+
+  .icons { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+  .icons div { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 4px; border: 1px solid var(--c-line); border-radius: 10px; font-size: 11.5px; color: var(--c-muted); text-align: center; }
+  .icons svg.lucide { width: 22px; height: 22px; color: var(--c-ink); }
+  .three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .marks { display: flex; gap: 28px; align-items: flex-end; }
+  .marks figure { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 12px; color: var(--c-muted); }
+  .pins { display: flex; gap: 32px; align-items: flex-end; }
+  .pins svg { display: block; }
+  .appicon { width: 96px; height: 96px; border-radius: 22px; overflow: hidden; box-shadow: 0 6px 18px -8px rgba(20,25,31,.4); }
+  .draft { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .draft td, .draft th { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--c-line); vertical-align: top; }
+  .draft th { font-size: 12px; color: var(--c-muted); font-weight: 600; }
+  .draft code { font-size: 12px; font-family: ui-monospace, Menlo, monospace; color: var(--c-ink-2); }
+  .draft tr:last-child td { border-bottom: 0; }
+  .motion li { font-size: 14px; line-height: 22px; color: var(--c-ink-2); padding: 4px 0; display: flex; gap: 10px; }
+  .motion li b { color: var(--c-ink); min-width: 170px; }
+  .motion code { font-family: ui-monospace, Menlo, monospace; font-size: 12.5px; }
+</style>
+</head>
+<body class="canvas">
+<div class="wrap">
+  <div class="lockup"><svg class="mark" aria-hidden="true"><use href="#i-mark"/></svg><span class="wordmark">Honnavar Food</span><span class="dir">DIRECTION B · LEDGER</span></div>
+  <h1 class="big">Calm, crisp, built for scanning.</h1>
+  <p class="lede">Ledger treats Honnavar Food like a well-kept shop register: cool white rows on a pale grey page, near-black ink, and one deep leaf-teal, <b>“Sharavathi” #0B6B57</b> (6.45:1 with white text), for every action. <b>Turmeric #E8A13A</b> is the only warm accent, kept for things that need attention now: the cart count, the new-order card, the countdown. Type is the Noto superfamily: <b>Noto Sans</b> for Latin and figures and <b>Noto Sans Kannada</b> for Kannada, drawn together so weights and stroke contrast match. Kannada is set at the same size as English with 3–6 px more line height, and every price, total, time and count uses tabular figures so columns line up. Density comes from list rows instead of big cards: 72 px square photos, hairline dividers, 8–12 px radii, and borders instead of shadows (one shadow level, kept for the bottom bar, dropdowns and sheets). That fits more than four kitchens or four dishes on a 390 × 844 screen with no text below 12 px and no target below 48 px. The known layout problems are fixed by structure. There is one 56 px top bar and one 64 px bottom bar (120 px, 15.4% of 360 × 780). The Orders tab carries the live status and the Cart tab the count and ₹ total, so the strip and the cart bar are gone. The kitchen header shrinks to photo, name, badges, ETA and Call, with address and hours in one expander. The cart swaps the tab bar for a single Place-order bar. The partner sound prompt becomes a pill and the reject form a short sheet. Admin moves to a top nav so the five dispatch columns get the full 1232 px. Every order status has its own colour, Lucide icon and word, so colour is never the only signal.</p>
+  <div class="facts">
+    <span><i class="sw" style="background:var(--c-primary)"></i>Primary <b>#0B6B57</b> · white text 6.45:1</span>
+    <span><i class="sw" style="background:var(--c-accent)"></i>Accent <b>#E8A13A</b> · fills only, ink text 8.1:1</span>
+    <span>Fonts <b>Noto Sans + Noto Sans Kannada</b></span>
+    <span>Chrome <b>56 + 64 px</b> = 15.4% of 360 × 780</span>
+    <span>Targets <b>≥ 48 × 48</b></span>
+  </div>
+
+  <section class="blk"><h2>Screens</h2>
+    <div class="screens">
+      <a class="scr" href="home.html"><span class="ib"><i data-lucide="house"></i></span><span><b>Home</b><span>Kitchen rows, filters, tab bar with live order and cart total, search suggestions after two letters, 360 fit check</span></span><i data-lucide="arrow-right"></i></a>
+      <a class="scr" href="kitchen.html"><span class="ib"><i data-lucide="utensils-crossed"></i></span><span><b>Kitchen · EN + ಕನ್ನಡ</b><span>Compact header, address and hours expander (closed and open), dish rows, Add and stepper</span></span><i data-lucide="arrow-right"></i></a>
+      <a class="scr" href="cart.html"><span class="ib"><i data-lucide="shopping-bag"></i></span><span><b>Cart</b><span>Four numbered sections, preselected address and payment, fixed Place-order bar with Back</span></span><i data-lucide="arrow-right"></i></a>
+      <a class="scr" href="order.html"><span class="ib"><i data-lucide="receipt-text"></i></span><span><b>Order</b><span>Status first, Expected by, progress, drawn map with both pins, timeline, items and bill</span></span><i data-lucide="arrow-right"></i></a>
+      <a class="scr" href="partner-orders.html"><span class="ib"><i data-lucide="inbox"></i></span><span><b>Partner orders · EN + ಕನ್ನಡ</b><span>Sound pill and first-visit prompt, one-glance cards, reject sheet within 390 × 844</span></span><i data-lucide="arrow-right"></i></a>
+      <a class="scr" href="admin-board.html"><span class="ib"><i data-lucide="columns-3"></i></span><span><b>Admin dispatch board</b><span>Top nav, five columns at 1280, assign on the card, agent picker open</span></span><i data-lucide="arrow-right"></i></a>
+    </div>
+  </section>
+
+  <section class="blk"><h2>Palette</h2>
+    <div class="panel">
+      <p class="sub-h">Neutrals (cool)</p>
+      <div class="sw-grid">
+        <div class="sw"><div class="c" style="background:#F3F5F6"></div><div class="m"><b>Page</b><code>#F3F5F6</code><em>behind surfaces</em></div></div>
+        <div class="sw"><div class="c" style="background:#FFFFFF"></div><div class="m"><b>Surface</b><code>#FFFFFF</code><em>rows, cards, bars</em></div></div>
+        <div class="sw"><div class="c" style="background:#EEF1F3"></div><div class="m"><b>Sunken</b><code>#EEF1F3</code><em>tracks, insets</em></div></div>
+        <div class="sw"><div class="c" style="background:#E3E7EA"></div><div class="m"><b>Line</b><code>#E3E7EA</code><em>hairlines</em></div></div>
+        <div class="sw"><div class="c" style="background:#CDD3D8"></div><div class="m"><b>Line strong</b><code>#CDD3D8</code><em>inputs, outlines</em></div></div>
+        <div class="sw"><div class="c" style="background:#8A939B;color:#fff">3.1</div><div class="m"><b>Faint</b><code>#8A939B</code><em>icons only, never text</em></div></div>
+        <div class="sw"><div class="c" style="background:#5A646E;color:#fff">6.0</div><div class="m"><b>Muted</b><code>#5A646E</code><em>smallest text colour</em></div></div>
+        <div class="sw"><div class="c" style="background:#3D4650;color:#fff">9.6</div><div class="m"><b>Ink 2</b><code>#3D4650</code><em>secondary text</em></div></div>
+        <div class="sw"><div class="c" style="background:#14191F;color:#fff">17.7</div><div class="m"><b>Ink</b><code>#14191F</code><em>text, headings</em></div></div>
+      </div>
+      <p class="sub-h">Brand</p>
+      <div class="sw-grid">
+        <div class="sw"><div class="c" style="background:#0B6B57;color:#fff">6.45</div><div class="m"><b>Sharavathi (primary)</b><code>#0B6B57</code><em>buttons, active tab, links</em></div></div>
+        <div class="sw"><div class="c" style="background:#08533F;color:#fff">9.0</div><div class="m"><b>Primary pressed</b><code>#08533F</code><em>pressed, text on tint</em></div></div>
+        <div class="sw"><div class="c" style="background:#E7F3EF"></div><div class="m"><b>Primary tint</b><code>#E7F3EF</code><em>selected chip / row</em></div></div>
+        <div class="sw"><div class="c" style="background:#E8A13A;color:#14191F">8.1</div><div class="m"><b>Turmeric (accent)</b><code>#E8A13A</code><em>badges, new order, timer</em></div></div>
+        <div class="sw"><div class="c" style="background:#FFF6E6"></div><div class="m"><b>Turmeric tint</b><code>#FFF6E6</code><em>waiting card</em></div></div>
+      </div>
+      <p class="sub-h">Meaning</p>
+      <div class="sw-grid">
+        <div class="sw"><div class="c" style="background:#18713A;color:#fff">6.1</div><div class="m"><b>Open · Veg · Success</b><code>#18713A</code><em>with dot / mark / text</em></div></div>
+        <div class="sw"><div class="c" style="background:#5A646E;color:#fff">6.0</div><div class="m"><b>Closed</b><code>#5A646E</code><em>hollow dot + “Closed”</em></div></div>
+        <div class="sw"><div class="c" style="background:#8B2B1A;color:#fff">8.5</div><div class="m"><b>Non-veg</b><code>#8B2B1A</code><em>triangle mark</em></div></div>
+        <div class="sw"><div class="c" style="background:#9A5200;color:#fff">5.9</div><div class="m"><b>Warning</b><code>#9A5200</code><em>needs agent, time left</em></div></div>
+        <div class="sw"><div class="c" style="background:#B42318;color:#fff">6.6</div><div class="m"><b>Danger</b><code>#B42318</code><em>reject, errors</em></div></div>
+        <div class="sw"><div class="c" style="background:#CFE3EC"></div><div class="m"><b>Map water</b><code>#CFE3EC</code><em>sea, river</em></div></div>
+      </div>
+      <p class="frame-note" style="margin-top:12px; max-width:none">Numbers on swatches are contrast ratios against white. Every status colour below also passes 4.5:1 on its own tint.</p>
+    </div>
+  </section>
+
+  <section class="blk"><h2>Order status system</h2>
+    <div class="two">
+      <div class="panel">
+        <table class="status-tbl">
+          <tr><th>Status</th><th>ಕನ್ನಡ</th><th>Icon</th><th>Ink / tint</th></tr>
+          <tr><td><span class="st st-placed"><i data-lucide="bell-ring"></i>Placed</span></td><td lang="kn"><span class="st st-placed"><i data-lucide="bell-ring"></i>ಆರ್ಡರ್ ಆಗಿದೆ</span></td><td><code>bell-ring</code></td><td><code>#A64B00 / #FFF3E0</code></td></tr>
+          <tr><td><span class="st st-accepted"><i data-lucide="circle-check"></i>Accepted</span></td><td lang="kn"><span class="st st-accepted"><i data-lucide="circle-check"></i>ಒಪ್ಪಿಕೊಂಡಿದೆ</span></td><td><code>circle-check</code></td><td><code>#1D5BB5 / #EAF1FC</code></td></tr>
+          <tr><td><span class="st st-preparing"><i data-lucide="chef-hat"></i>Preparing</span></td><td lang="kn"><span class="st st-preparing"><i data-lucide="chef-hat"></i>ತಯಾರಾಗುತ್ತಿದೆ</span></td><td><code>chef-hat</code></td><td><code>#6A3DB0 / #F2EDFB</code></td></tr>
+          <tr><td><span class="st st-ready"><i data-lucide="package-check"></i>Ready</span></td><td lang="kn"><span class="st st-ready"><i data-lucide="package-check"></i>ರೆಡಿ ಆಗಿದೆ</span></td><td><code>package-check</code></td><td><code>#0B6F80 / #E2F4F6</code></td></tr>
+          <tr><td><span class="st st-picked"><i data-lucide="bike"></i>Picked up</span></td><td lang="kn"><span class="st st-picked"><i data-lucide="bike"></i>ಪಿಕಪ್ ಆಗಿದೆ</span></td><td><code>bike</code></td><td><code>#A3306B / #FBEAF3</code></td></tr>
+          <tr><td><span class="st st-delivered"><i data-lucide="check-check"></i>Delivered</span></td><td lang="kn"><span class="st st-delivered"><i data-lucide="check-check"></i>ಡೆಲಿವರಿ ಆಗಿದೆ</span></td><td><code>check-check</code></td><td><code>#18713A / #E6F4EB</code></td></tr>
+          <tr><td><span class="st st-rejected"><i data-lucide="circle-x"></i>Rejected</span></td><td lang="kn"><span class="st st-rejected"><i data-lucide="circle-x"></i>ಒಪ್ಪಿಕೊಂಡಿಲ್ಲ</span></td><td><code>circle-x</code></td><td><code>#B42318 / #FDECEA</code></td></tr>
+          <tr><td><span class="st st-cancelled"><i data-lucide="ban"></i>Cancelled</span></td><td lang="kn"><span class="st st-cancelled"><i data-lucide="ban"></i>ರದ್ದಾಗಿದೆ</span></td><td><code>ban</code></td><td><code>#58616B / #EEF0F2</code></td></tr>
+        </table>
+      </div>
+      <div class="panel">
+        <p class="sub-h">Kitchen and dish states</p>
+        <div style="display:grid; gap:14px; font-size:14px">
+          <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap"><span class="state open"><span class="dot"></span>Open now</span><span class="state closed"><span class="dot"></span>Closed · opens tomorrow 11:30 am</span></div>
+          <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap" lang="kn"><span class="state open"><span class="dot"></span>ಈಗ ತೆರೆದಿದೆ</span><span class="state closed"><span class="dot"></span>ಮುಚ್ಚಿದೆ · ತೆರೆಯುವುದು ನಾಳೆ ಬೆಳಗ್ಗೆ 11:30</span></div>
+          <div class="tagline"><span class="badge-k">Restaurant</span><span class="badge-k">Home kitchen</span><span class="badge-k">Cloud kitchen</span><span class="badge-k pv"><svg class="vm veg"><use href="#i-veg"/></svg>Pure veg</span><span class="demo-tag">DEMO</span></div>
+          <div style="display:flex; gap:10px; align-items:center; padding:10px 12px; border-radius:8px; background:var(--c-warning-bg); color:var(--c-warning); font-weight:600"><i data-lucide="triangle-alert"></i>Needs agent · warning: text + icon on amber tint</div>
+          <div style="display:flex; gap:10px; align-items:center; padding:10px 12px; border-radius:8px; background:var(--c-danger-bg); color:var(--c-danger); font-weight:600"><i data-lucide="circle-alert"></i>Something went wrong · danger: text + icon</div>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap"><button class="pill-demo" style="all:unset"><span style="display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 10px 0 8px;border-radius:999px;background:var(--c-open-bg);color:var(--c-open);font-size:13px;font-weight:600"><i data-lucide="volume-2" class="ic-16"></i>Sounds on</span></button><span style="display:inline-flex;align-items:center;gap:4px;height:32px;padding:0 10px 0 8px;border-radius:999px;background:var(--c-warning-bg);color:var(--c-warning);box-shadow:inset 0 0 0 1px var(--c-warning-line);font-size:13px;font-weight:600"><i data-lucide="volume-x" class="ic-16"></i>Tap for sound</span><span style="font-size:12px;color:var(--c-muted)">partner sound pill: on / blocked again</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk"><h2>Type · Noto Sans + Noto Sans Kannada</h2>
+    <div class="panel">
+      <table class="tscale">
+        <tr><td class="tk"><b>Display</b>22 / 28 · kn 34 · 700</td><td style="font-size:22px;line-height:28px;font-weight:700">Your cart</td><td lang="kn" style="font-size:22px;line-height:34px;font-weight:700">ನಿಮ್ಮ ಕಾರ್ಟ್</td></tr>
+        <tr><td class="tk"><b>Kitchen name</b>20 / 26 · kn 30 · 700</td><td style="font-size:20px;line-height:26px;font-weight:700">Udupi's Pingar Dhaba</td><td lang="kn" style="font-size:20px;line-height:30px;font-weight:700">ಉಡುಪಿಯವರ ಪಿಂಗಾರ ಢಾಬಾ</td></tr>
+        <tr><td class="tk"><b>Title</b>18 / 24 · kn 28 · 700</td><td style="font-size:18px;line-height:24px;font-weight:700">Why can't you take this order?</td><td lang="kn" style="font-size:18px;line-height:28px;font-weight:700">ಈ ಆರ್ಡರ್ ಯಾಕೆ ತೆಗೆದುಕೊಳ್ಳಲು ಆಗುವುದಿಲ್ಲ?</td></tr>
+        <tr><td class="tk"><b>Head</b>16 / 22 · kn 26 · 600–700</td><td style="font-size:16px;line-height:22px;font-weight:600">Non-veg Specials · Nagvekar's Restaurant</td><td lang="kn" style="font-size:16px;line-height:26px;font-weight:600">ನಾನ್ ವೆಜ್ ಸ್ಪೆಷಲ್ · ನಾಗ್ವೇಕರ್ಸ್ ರೆಸ್ಟೋರೆಂಟ್</td></tr>
+        <tr><td class="tk"><b>Body</b>15 / 21 · kn 24 · 400–600</td><td style="font-size:15px;line-height:21px">Chicken Pingara Special · Paneer Butter Masala</td><td lang="kn" style="font-size:15px;line-height:24px">ಚಿಕನ್ ಪಿಂಗಾರ ಸ್ಪೆಷಲ್ · ಪನೀರ್ ಬಟರ್ ಮಸಾಲ</td></tr>
+        <tr><td class="tk"><b>Small</b>14 / 20 · kn 22</td><td style="font-size:14px;line-height:20px">Delivery in about 40–50 min</td><td lang="kn" style="font-size:14px;line-height:22px">ಸುಮಾರು 40–50 ನಿಮಿಷದಲ್ಲಿ ಡೆಲಿವರಿ</td></tr>
+        <tr><td class="tk"><b>Caption</b>13 / 18 · kn 21</td><td style="font-size:13px;line-height:18px;color:var(--c-muted)">Restaurant · Near Sharavathi bridge · Updated 7:42 pm</td><td lang="kn" style="font-size:13px;line-height:21px;color:var(--c-muted)">ಹೋಟೆಲ್ · ಅಪ್‌ಡೇಟ್: ರಾತ್ರಿ 7:42</td></tr>
+        <tr><td class="tk"><b>Micro (minimum)</b>12 / 16 · kn 19 · 500–600</td><td style="font-size:12px;line-height:16px;font-weight:500">Home · Preparing · ₹590 · Account</td><td lang="kn" style="font-size:12px;line-height:19px;font-weight:500">ಮುಖಪುಟ · ತಯಾರಾಗುತ್ತಿದೆ · ₹590 · ಖಾತೆ</td></tr>
+      </table>
+      <div class="figs">
+        <div class="col"><h4>Tabular figures on (prices, totals, times)</h4><p class="num"><span>Nagvekar's Thali</span><b>₹250</b></p><p class="num"><span>Bangda Tawa Fry</span><b>₹180</b></p><p class="num"><span>Ginger Kokum Soda × 2</span><b>₹100</b></p><p class="num"><span>Grand total</span><b>₹560</b></p></div>
+        <div class="col"><h4>Rules</h4><p style="display:block;font-size:14px;line-height:22px;color:var(--c-ink-2)">Kannada is never set smaller than the Latin beside it; it gets more leading through <code>[lang="kn"]</code> tokens. No uppercase or letter-spacing on Kannada (eyebrows turn to sentence case at 13 px). Digits are Latin in both languages (en-IN / kn-IN formatting). The product self-hosts both families; Google Fonts is used only in these mockups.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk"><h2>Spacing · radii · elevation</h2>
+    <div class="three" style="grid-template-columns: 1.2fr 1fr 1.4fr">
+      <div class="panel"><p class="sub-h">Spacing (4-pt)</p>
+        <div class="sp-row">
+          <div class="sp"><i style="width:2px;height:2px"></i>2</div><div class="sp"><i style="width:4px;height:4px"></i>4</div><div class="sp"><i style="width:8px;height:8px"></i>8</div><div class="sp"><i style="width:12px;height:12px"></i>12</div><div class="sp"><i style="width:16px;height:16px"></i>16</div><div class="sp"><i style="width:20px;height:20px"></i>20</div><div class="sp"><i style="width:24px;height:24px"></i>24</div><div class="sp"><i style="width:32px;height:32px"></i>32</div><div class="sp"><i style="width:48px;height:48px"></i>48</div>
+        </div>
+        <p class="frame-note" style="margin-top:12px">16 px screen gutter; 12 px row padding; 48 px every tap target.</p>
+      </div>
+      <div class="panel"><p class="sub-h">Radii</p>
+        <div class="rad-row">
+          <div class="rad"><i style="border-radius:3px; width:40px; height:40px; margin:0 auto 6px"></i>3 · marks</div>
+          <div class="rad"><i style="border-radius:6px; width:56px; height:40px; margin:0 auto 6px"></i>6 · chips</div>
+          <div class="rad"><i style="border-radius:8px; width:56px; height:56px; margin:0 auto 6px"></i>8 · photos, buttons</div>
+          <div class="rad"><i style="border-radius:12px; width:72px; height:56px; margin:0 auto 6px"></i>12 · groups, sheets</div>
+          <div class="rad"><i style="border-radius:999px; width:72px; height:32px; margin:0 auto 6px"></i>pill · filters</div>
+        </div>
+      </div>
+      <div class="panel"><p class="sub-h">Elevation: flat, one shadow level</p>
+        <div class="el-bg el-row">
+          <div class="el" style="width:150px"><i style="box-shadow:var(--e0)"></i><b>e0 · border</b>rows, cards, inputs</div>
+          <div class="el" style="width:150px"><i style="box-shadow:var(--e1-up); margin-top:0"></i><b>e1 · bars</b>bottom tab / place-order bar</div>
+          <div class="el" style="width:150px"><i style="box-shadow:var(--e1-down)"></i><b>e1 · overlay</b>dropdowns, sheets</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk"><h2>Icons · marks · pins · empty state</h2>
+    <div class="panel">
+      <p class="sub-h">Lucide, 1.75 stroke at 20–22 px (2–2.2 at 14–16 px)</p>
+      <div class="icons">
+        <div><i data-lucide="house"></i>Home</div><div><i data-lucide="receipt-text"></i>Orders</div><div><i data-lucide="shopping-bag"></i>Cart</div><div><i data-lucide="user-round"></i>Account</div>
+        <div><i data-lucide="search"></i>Search</div><div><i data-lucide="phone"></i>Call</div><div><i data-lucide="map-pin"></i>Landmark</div><div><i data-lucide="clock-3"></i>ETA</div>
+        <div><i data-lucide="timer"></i>Time left / elapsed</div><div><i data-lucide="banknote"></i>Cash</div><div><i data-lucide="smartphone"></i>UPI (demo)</div><div><i data-lucide="navigation"></i>Open in maps</div>
+        <div><i data-lucide="volume-2"></i>Sounds on</div><div><i data-lucide="inbox"></i>Partner orders</div><div><i data-lucide="store"></i>My kitchen</div><div><i data-lucide="user-plus"></i>Needs agent</div>
+      </div>
+      <div class="three" style="margin-top:20px; grid-template-columns: 1fr 1fr 1.2fr 1fr">
+        <div><p class="sub-h">Veg / non-veg (custom SVG)</p>
+          <div class="marks">
+            <figure><svg class="vm veg" style="width:32px;height:32px"><use href="#i-veg"/></svg>Veg 32</figure>
+            <figure><svg class="vm nonveg" style="width:32px;height:32px"><use href="#i-nonveg"/></svg>Non-veg 32</figure>
+            <figure><span style="display:flex;gap:6px"><svg class="vm veg"><use href="#i-veg"/></svg><svg class="vm nonveg"><use href="#i-nonveg"/></svg></span>in-line 14</figure>
+          </div>
+        </div>
+        <div><p class="sub-h">Map pins (custom SVG)</p>
+          <div class="pins">
+            <figure class="marks" style="flex-direction:column;gap:8px;font-size:12px;color:var(--c-muted);display:flex;align-items:center"><svg width="48" height="60"><use href="#i-pin-kitchen"/></svg>Kitchen</figure>
+            <figure class="marks" style="flex-direction:column;gap:8px;font-size:12px;color:var(--c-muted);display:flex;align-items:center"><svg width="48" height="60"><use href="#i-pin-home"/></svg>Delivery</figure>
+          </div>
+        </div>
+        <div><p class="sub-h">Empty state</p>
+          <div style="border:1px solid var(--c-line);border-radius:12px" class="empty"><svg class="ill" aria-hidden="true"><use href="#i-empty"/></svg><h3>Your cart is empty</h3><p>Pick a kitchen and add a dish.</p><a class="btn btn-primary" href="home.html"><i data-lucide="search"></i>Find food</a></div>
+        </div>
+        <div><p class="sub-h">Mark (proposal)</p>
+          <div style="display:flex;gap:18px;align-items:center">
+            <svg class="appicon" viewBox="0 0 32 32"><use href="#i-mark"/></svg>
+            <p style="font-size:13px;line-height:20px;color:var(--c-ink-2)">A bowl under a turmeric tide line: food, plus the place where the Sharavathi meets the sea. Reads at 16 px; works as the later app icon.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blk"><h2>Motion</h2>
+    <div class="panel"><ul class="motion">
+      <li><b>Press / chip toggle</b>background and border colour, <code>120 ms</code>, ease <code>(.2, 0, 0, 1)</code></li>
+      <li><b>Expander, pill collapse</b>chevron turns and the prompt shrinks into the top-bar pill, <code>120 ms</code>; the space is reserved first, so nothing below moves</li>
+      <li><b>Sheet, dropdown, picker</b>fade and 8 px rise, <code>180 ms</code></li>
+      <li><b>Reduced motion</b>all durations become <code>0 ms</code> through the tokens; states still change instantly</li>
+    </ul></div>
+  </section>
+
+  <section class="blk"><h2>New strings drafted for this direction (Kannada pending native review)</h2>
+    <div class="panel">
+      <table class="draft">
+        <tr><th>Where</th><th>English</th><th>ಕನ್ನಡ (draft)</th></tr>
+        <tr><td>Customer tab: Orders</td><td>Orders <span style="color:var(--c-muted)">(shows the live status when there is one)</span></td><td lang="kn">ಆರ್ಡರ್‌ಗಳು (existing <code>nav.kitchenOrders</code>)</td></tr>
+        <tr><td>Customer tab: Account</td><td>Account</td><td lang="kn">ಖಾತೆ</td></tr>
+        <tr><td>Kitchen call button (short)</td><td>Call</td><td lang="kn">ಫೋನ್</td></tr>
+        <tr><td>Kitchen expander</td><td>Address and hours</td><td lang="kn">ವಿಳಾಸ ಮತ್ತು ಸಮಯ</td></tr>
+        <tr><td>Kitchen list meta</td><td>{count} open now</td><td lang="kn">{count} ಈಗ ತೆರೆದಿವೆ</td></tr>
+        <tr><td>Search suggestions footer</td><td>All results for “{q}”</td><td lang="kn">“{q}” ಎಲ್ಲಾ ಫಲಿತಾಂಶಗಳು</td></tr>
+        <tr><td>No suggestions</td><td>No kitchens or dishes start with “{q}”</td><td lang="kn">“{q}” ಎಂದು ಶುರುವಾಗುವ ಕಿಚನ್ ಅಥವಾ ಐಟಂ ಇಲ್ಲ</td></tr>
+        <tr><td>Sound pill: on / blocked</td><td>Sounds on · Tap for sound</td><td lang="kn">ಸದ್ದು ಆನ್ · ಸದ್ದಿಗೆ ಒತ್ತಿ</td></tr>
+        <tr><td>Waiting card tag</td><td>NEW</td><td lang="kn">ಹೊಸದು</td></tr>
+        <tr><td>Kitchen header (short ETA in rows)</td><td>{from}–{to} min</td><td lang="kn">{from}–{to} ನಿಮಿಷ</td></tr>
+      </table>
+    </div>
+  </section>
+</div>
+<script src="ledger.js"></script>
+</body>
+</html>

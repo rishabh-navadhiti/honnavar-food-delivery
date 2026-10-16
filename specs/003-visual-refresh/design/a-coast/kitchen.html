@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A · Coast — Kitchen</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="coast.css">
+<style>
+  .k-hero { height: 148px; }
+  .k-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgb(30 16 8 / 0.25), transparent 45%); }
+  .k-hero .icon-btn { position: absolute; top: 12px; left: 12px; z-index: 1; }
+
+  .k-head { position: relative; margin: -44px var(--gutter) 0; padding: 16px 16px 4px; z-index: 2; }
+  .k-title { display: flex; align-items: flex-start; gap: 12px; }
+  .k-title h1 {
+    flex: 1; min-width: 0;
+    font-size: var(--fs-title); font-weight: 760; font-stretch: var(--wdth-head);
+    line-height: var(--lh-tight); letter-spacing: -0.015em; padding-top: 4px;
+  }
+  .k-title h1:lang(kn) { line-height: var(--lh-tight-kn); padding-top: 2px; }
+  .call {
+    width: var(--tap); height: var(--tap); border-radius: 50%; flex: none;
+    display: grid; place-items: center; border: 0;
+    background: var(--sea-100); color: var(--sea-700);
+  }
+  .call .lucide { width: 21px; height: 21px; stroke-width: 2.2; }
+  .k-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .k-eta { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 15px; font-weight: 600; color: var(--ink); }
+  .k-eta .lucide { color: var(--sea-600); width: 20px; height: 20px; }
+  .k-more {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    min-height: var(--tap); margin-top: 10px; padding: 6px 0 4px;
+    background: transparent; border: 0; border-top: 1px solid var(--line); text-align: left;
+  }
+  .k-more .lucide { color: var(--ink-3); width: 18px; height: 18px; }
+  .k-more .tx { flex: 1; min-width: 0; font-size: 14px; color: var(--ink-2); line-height: 1.35; }
+  .k-more .tx:lang(kn) { line-height: 1.55; }
+  .k-more .tx b { color: var(--ink); font-weight: 680; display: block; font-size: 14.5px; }
+  .k-more .tx span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .k-more .chev { color: var(--tile-700); width: 20px; height: 20px; transition: transform var(--t-base) var(--ease); }
+
+  .k-filter { margin-top: 14px; }
+  .cat { margin-top: 18px; }
+  .cat-head { display: flex; align-items: baseline; justify-content: space-between; padding: 0 var(--gutter) 4px; }
+  .cat-head span { font-size: 13.5px; color: var(--ink-3); font-weight: 600; }
+  .dishes { margin: 6px var(--gutter) 0; padding: 0 14px; }
+  .dish {
+    display: flex; gap: 14px; padding: 16px 0 26px;
+    border-bottom: 1px solid var(--line);
+  }
+  .dish:last-child { border-bottom: 0; }
+  .dish-tx { flex: 1; min-width: 0; padding-top: 2px; }
+  .dish-tx h3 { font-size: 16.5px; font-weight: 650; line-height: 1.3; margin-top: 6px; }
+  .dish-tx h3:lang(kn) { line-height: 1.5; }
+  .dish-tx .price { margin-top: 6px; font-size: 16px; font-weight: 720; font-variant-numeric: tabular-nums; }
+  .dish-tx .vlabel { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 650; }
+  .dish-tx .vlabel.nv { color: var(--nonveg); }
+  .dish-tx .vlabel.v { color: var(--veg); }
+  .dish-media { position: relative; width: 118px; flex: none; }
+  .dish-media .photo { width: 118px; height: 104px; border-radius: var(--r-md); box-shadow: var(--e-1); }
+  .dish-media .add, .dish-media .stepper {
+    position: absolute; left: 50%; bottom: -22px; transform: translateX(-50%);
+  }
+  .add {
+    min-height: var(--tap); width: 104px; padding: 2px 0 0; gap: 4px;
+    background: var(--surface); color: var(--tile-700); border: 1.5px solid var(--tile-200);
+    border-radius: var(--r-md); font-weight: 760; font-size: 16px;
+    box-shadow: var(--e-2);
+  }
+  .add:lang(kn) { padding-top: 1px; }
+  .add .lucide { width: 17px; height: 17px; stroke-width: 2.8; }
+  .dish-media .stepper { width: 118px; justify-content: space-between; }
+</style>
+</head>
+<body>
+<div class="review">
+  <div class="review-head">
+    <div>
+      <div class="kicker">A · Coast</div>
+      <h1>Kitchen</h1>
+      <p>A short hero photo, then one compact header card: name, call, badges and the delivery estimate together; address and hours folded into one row. Dish photos sit on the right with Add overlapping their lower edge; the cart total lives in the Cart tab, so there is no in-page cart bar.</p>
+    </div>
+    <nav class="review-nav">
+      <a href="index.html">Overview</a><a href="home.html">Home</a><a href="kitchen.html" aria-current="page">Kitchen</a><a href="cart.html">Cart</a><a href="order.html">Order</a><a href="partner-orders.html">Partner orders</a><a href="admin-board.html">Admin board</a>
+    </nav>
+  </div>
+
+  <div class="frames">
+  <!-- ============================ ENGLISH ============================ -->
+  <div class="frame">
+    <div class="frame-cap"><b>Kitchen</b><span class="tag">390 × 844</span><span class="tag">English</span></div>
+    <div class="phone" lang="en">
+      <header class="topbar">
+        <a class="wordmark" href="home.html" aria-label="Honnavar Food, home">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#b8461a"/><path d="M6.5 15.5h19a9.5 9.5 0 0 1-19 0Z" fill="#fff6ea"/><path d="M7 10.5c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0" fill="none" stroke="#f8c97f" stroke-width="2" stroke-linecap="round"/><path d="M10.5 19.5c1.2.9 2.4.9 3.6 0s2.4-.9 3.6 0 2.4.9 3.6 0" stroke="#0e6e67" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+          <span>Honnavar <span class="food">Food</span></span>
+        </a>
+        <span class="spacer"></span>
+        <button class="lang-switch" aria-label="Switch to Kannada"><span><i data-lucide="languages"></i><span class="kn-label" lang="kn">ಕನ್ನಡ</span></span></button>
+      </header>
+
+      <main class="scroll">
+        <div class="photo k-hero">
+          <img src="../../../../seed/images/pingar-dhaba.jpg" alt="">
+          <a class="icon-btn on-photo" href="home.html" aria-label="All kitchens"><i data-lucide="arrow-left"></i></a>
+        </div>
+
+        <section class="card k-head">
+          <div class="k-title">
+            <h1>Udupi's Pingar Dhaba</h1>
+            <a class="call" href="tel:9000001003" aria-label="Call kitchen on 9000001003"><i data-lucide="phone"></i></a>
+          </div>
+          <div class="k-badges">
+            <span class="badge"><i data-lucide="store"></i>Restaurant</span>
+            <span class="badge open"><span class="dot"></span>Open now · Closes 12:00 am</span>
+          </div>
+          <div class="k-eta"><i data-lucide="bike"></i>Delivery in about 40–50 min</div>
+          <button class="k-more" aria-expanded="false" aria-controls="kmore-en">
+            <i data-lucide="map-pin"></i>
+            <span class="tx"><b>Address and hours</b><span>Karkinaka junction · 11:30 am – 12:00 am</span></span>
+            <i data-lucide="chevron-down" class="chev"></i>
+          </button>
+        </section>
+
+        <div class="dishfilter k-filter">
+          <span class="lbl" id="kdf-en">Show dishes</span>
+          <div class="seg" role="radiogroup" aria-labelledby="kdf-en">
+            <button role="radio" aria-checked="true">All</button>
+            <button role="radio" aria-checked="false"><span class="vmark veg" aria-hidden="true"></span>Veg only</button>
+            <button role="radio" aria-checked="false"><span class="vmark nonveg" aria-hidden="true"></span>Non-veg only</button>
+          </div>
+        </div>
+
+        <section class="cat">
+          <div class="cat-head"><h2 class="section-title">Non-veg Specials</h2><span>4 items</span></div>
+          <div class="card flat dishes">
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel nv"><span class="vmark nonveg" aria-hidden="true"></span>Non-veg</span>
+                <h3>Chicken Pingara Special</h3>
+                <div class="price">₹250</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--chicken-pingara-special.jpg" alt=""></div>
+                <div class="stepper" role="group" aria-label="Quantity">
+                  <button aria-label="One less"><i data-lucide="minus"></i></button><output>2</output><button aria-label="One more"><i data-lucide="plus"></i></button>
+                </div>
+              </div>
+            </article>
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel nv"><span class="vmark nonveg" aria-hidden="true"></span>Non-veg</span>
+                <h3>Mutton Ghee Roast</h3>
+                <div class="price">₹340</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--mutton-ghee-roast.jpg" alt=""></div>
+                <button class="btn add">Add<i data-lucide="plus"></i></button>
+              </div>
+            </article>
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel nv"><span class="vmark nonveg" aria-hidden="true"></span>Non-veg</span>
+                <h3>Tandoori Chicken (Half)</h3>
+                <div class="price">₹250</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--tandoori-chicken-half.jpg" alt=""></div>
+                <button class="btn add">Add<i data-lucide="plus"></i></button>
+              </div>
+            </article>
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel nv"><span class="vmark nonveg" aria-hidden="true"></span>Non-veg</span>
+                <h3>Chicken Biryani</h3>
+                <div class="price">₹200</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--chicken-biryani.jpg" alt=""></div>
+                <button class="btn add">Add<i data-lucide="plus"></i></button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="cat" style="padding-bottom:24px">
+          <div class="cat-head"><h2 class="section-title">Veg Specials</h2><span>4 items</span></div>
+          <div class="card flat dishes">
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel v"><span class="vmark veg" aria-hidden="true"></span>Veg</span>
+                <h3>Gobi Manchurian</h3>
+                <div class="price">₹120</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--gobi-manchurian.jpg" alt=""></div>
+                <div class="stepper" role="group" aria-label="Quantity"><button aria-label="One less"><i data-lucide="minus"></i></button><output>1</output><button aria-label="One more"><i data-lucide="plus"></i></button></div>
+              </div>
+            </article>
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel v"><span class="vmark veg" aria-hidden="true"></span>Veg</span>
+                <h3>Paneer Butter Masala</h3>
+                <div class="price">₹240</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--paneer-butter-masala.jpg" alt=""></div>
+                <button class="btn add">Add<i data-lucide="plus"></i></button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <nav class="tabbar" aria-label="Main navigation">
+        <a class="tab" href="home.html"><span class="pill"><i data-lucide="house"></i></span><span class="lbl">Home</span></a>
+        <a class="tab ongoing" href="order.html" aria-label="Orders. Current order #1042: Preparing"><span class="pill"><i data-lucide="chef-hat"></i></span><span class="lbl">Preparing</span></a>
+        <a class="tab cart-full" href="cart.html" aria-label="Cart, 3 items, ₹620"><span class="pill"><i data-lucide="shopping-bag"></i><span class="count">3</span></span><span class="lbl">₹620</span></a>
+        <a class="tab" href="#"><span class="pill"><i data-lucide="user-round"></i></span><span class="lbl">Account</span></a>
+      </nav>
+    </div>
+    <p class="frame-note"><b>Header</b> holds name, call, type + open state + closing time, and the delivery estimate in one block; the address and hours row expands in place (chevron turns 180° in 180 ms, content below does not jump because the panel pushes the list). <b>Add</b> turns into the stepper; the Cart tab total updates (₹620 = 2 × ₹250 + ₹120).</p>
+  </div>
+
+  <!-- ============================ KANNADA ============================ -->
+  <div class="frame">
+    <div class="frame-cap"><b>Kitchen</b><span class="tag">390 × 844</span><span class="tag">ಕನ್ನಡ</span></div>
+    <div class="phone" lang="kn">
+      <header class="topbar">
+        <a class="wordmark" href="home.html" aria-label="Honnavar Food, ಮುಖಪುಟ" lang="en">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#b8461a"/><path d="M6.5 15.5h19a9.5 9.5 0 0 1-19 0Z" fill="#fff6ea"/><path d="M7 10.5c1.5-1.6 3-1.6 4.5 0s3 1.6 4.5 0 3-1.6 4.5 0 3 1.6 4.5 0" fill="none" stroke="#f8c97f" stroke-width="2" stroke-linecap="round"/><path d="M10.5 19.5c1.2.9 2.4.9 3.6 0s2.4-.9 3.6 0 2.4.9 3.6 0" stroke="#0e6e67" stroke-width="1.7" fill="none" stroke-linecap="round"/></svg>
+          <span>Honnavar <span class="food">Food</span></span>
+        </a>
+        <span class="spacer"></span>
+        <button class="lang-switch" aria-label="ಇಂಗ್ಲಿಷ್‌ಗೆ ಬದಲಿಸಿ"><span><i data-lucide="languages"></i><span lang="en">English</span></span></button>
+      </header>
+
+      <main class="scroll">
+        <div class="photo k-hero">
+          <img src="../../../../seed/images/pingar-dhaba.jpg" alt="">
+          <a class="icon-btn on-photo" href="home.html" aria-label="ಎಲ್ಲಾ ಕಿಚನ್‌ಗಳು"><i data-lucide="arrow-left"></i></a>
+        </div>
+
+        <section class="card k-head">
+          <div class="k-title">
+            <h1>ಉಡುಪಿಯವರ ಪಿಂಗಾರ ಢಾಬಾ</h1>
+            <a class="call" href="tel:9000001003" aria-label="ಕಿಚನ್‌ಗೆ ಫೋನ್ ಮಾಡಿ: 9000001003"><i data-lucide="phone"></i></a>
+          </div>
+          <div class="k-badges">
+            <span class="badge"><i data-lucide="store"></i>ಹೋಟೆಲ್</span>
+            <span class="badge open"><span class="dot"></span>ಈಗ ತೆರೆದಿದೆ · ರಾತ್ರಿ 12:00ಕ್ಕೆ ಮುಚ್ಚುತ್ತದೆ</span>
+          </div>
+          <div class="k-eta"><i data-lucide="bike"></i>ಸುಮಾರು 40–50 ನಿಮಿಷದಲ್ಲಿ ಡೆಲಿವರಿ</div>
+          <button class="k-more" aria-expanded="false" aria-controls="kmore-kn">
+            <i data-lucide="map-pin"></i>
+            <span class="tx"><b>ವಿಳಾಸ ಮತ್ತು ಸಮಯ</b><span><span lang="en" style="display:inline">Karkinaka junction</span> · ಬೆಳಗ್ಗೆ 11:30 – ರಾತ್ರಿ 12:00</span></span>
+            <i data-lucide="chevron-down" class="chev"></i>
+          </button>
+        </section>
+
+        <div class="dishfilter k-filter">
+          <span class="lbl" id="kdf-kn">ಐಟಂಗಳನ್ನು ತೋರಿಸಿ</span>
+          <div class="seg" role="radiogroup" aria-labelledby="kdf-kn">
+            <button role="radio" aria-checked="true">ಎಲ್ಲಾ</button>
+            <button role="radio" aria-checked="false"><span class="vmark veg" aria-hidden="true"></span>ವೆಜ್ ಮಾತ್ರ</button>
+            <button role="radio" aria-checked="false"><span class="vmark nonveg" aria-hidden="true"></span>ನಾನ್ ವೆಜ್ ಮಾತ್ರ</button>
+          </div>
+        </div>
+
+        <section class="cat">
+          <div class="cat-head"><h2 class="section-title">ನಾನ್ ವೆಜ್ ಸ್ಪೆಷಲ್</h2><span>4 ಐಟಂಗಳು</span></div>
+          <div class="card flat dishes">
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel nv"><span class="vmark nonveg" aria-hidden="true"></span>ನಾನ್ ವೆಜ್</span>
+                <h3>ಚಿಕನ್ ಪಿಂಗಾರ ಸ್ಪೆಷಲ್</h3>
+                <div class="price">₹250</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--chicken-pingara-special.jpg" alt=""></div>
+                <div class="stepper" role="group" aria-label="ಎಷ್ಟು">
+                  <button aria-label="ಒಂದು ಕಡಿಮೆ"><i data-lucide="minus"></i></button><output>2</output><button aria-label="ಇನ್ನೊಂದು"><i data-lucide="plus"></i></button>
+                </div>
+              </div>
+            </article>
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel nv"><span class="vmark nonveg" aria-hidden="true"></span>ನಾನ್ ವೆಜ್</span>
+                <h3>ಮಟನ್ ಘೀ ರೋಸ್ಟ್</h3>
+                <div class="price">₹340</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--mutton-ghee-roast.jpg" alt=""></div>
+                <button class="btn add">ಸೇರಿಸಿ<i data-lucide="plus"></i></button>
+              </div>
+            </article>
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel nv"><span class="vmark nonveg" aria-hidden="true"></span>ನಾನ್ ವೆಜ್</span>
+                <h3>ತಂದೂರಿ ಚಿಕನ್ (ಅರ್ಧ)</h3>
+                <div class="price">₹250</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--tandoori-chicken-half.jpg" alt=""></div>
+                <button class="btn add">ಸೇರಿಸಿ<i data-lucide="plus"></i></button>
+              </div>
+            </article>
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel nv"><span class="vmark nonveg" aria-hidden="true"></span>ನಾನ್ ವೆಜ್</span>
+                <h3>ಚಿಕನ್ ಬಿರಿಯಾನಿ</h3>
+                <div class="price">₹200</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--chicken-biryani.jpg" alt=""></div>
+                <button class="btn add">ಸೇರಿಸಿ<i data-lucide="plus"></i></button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="cat" style="padding-bottom:24px">
+          <div class="cat-head"><h2 class="section-title">ವೆಜ್ ಸ್ಪೆಷಲ್</h2><span>4 ಐಟಂಗಳು</span></div>
+          <div class="card flat dishes">
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel v"><span class="vmark veg" aria-hidden="true"></span>ವೆಜ್</span>
+                <h3>ಗೋಬಿ ಮಂಚೂರಿ</h3>
+                <div class="price">₹120</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--gobi-manchurian.jpg" alt=""></div>
+                <div class="stepper" role="group" aria-label="ಎಷ್ಟು"><button aria-label="ಒಂದು ಕಡಿಮೆ"><i data-lucide="minus"></i></button><output>1</output><button aria-label="ಇನ್ನೊಂದು"><i data-lucide="plus"></i></button></div>
+              </div>
+            </article>
+            <article class="dish">
+              <div class="dish-tx">
+                <span class="vlabel v"><span class="vmark veg" aria-hidden="true"></span>ವೆಜ್</span>
+                <h3>ಪನೀರ್ ಬಟರ್ ಮಸಾಲ</h3>
+                <div class="price">₹240</div>
+              </div>
+              <div class="dish-media">
+                <div class="photo"><img src="../../../../seed/images/pingar-dhaba--paneer-butter-masala.jpg" alt=""></div>
+                <button class="btn add">ಸೇರಿಸಿ<i data-lucide="plus"></i></button>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <nav class="tabbar" aria-label="ಮುಖ್ಯ ಮೆನು">
+        <a class="tab" href="home.html"><span class="pill"><i data-lucide="house"></i></span><span class="lbl">ಮುಖಪುಟ</span></a>
+        <a class="tab ongoing" href="order.html" aria-label="ಆರ್ಡರ್. ನಿಮ್ಮ ಈಗಿನ ಆರ್ಡರ್ #1042: ತಯಾರಾಗುತ್ತಿದೆ"><span class="pill"><i data-lucide="chef-hat"></i></span><span class="lbl">ತಯಾರಾಗುತ್ತಿದೆ</span></a>
+        <a class="tab cart-full" href="cart.html" aria-label="ಕಾರ್ಟ್, 3 ಐಟಂಗಳು, ₹620"><span class="pill"><i data-lucide="shopping-bag"></i><span class="count">3</span></span><span class="lbl">₹620</span></a>
+        <a class="tab" href="#"><span class="pill"><i data-lucide="user-round"></i></span><span class="lbl">ಖಾತೆ</span></a>
+      </nav>
+    </div>
+    <p class="frame-note"><b>Kannada</b> uses the same sizes as English and taller line boxes (1.42 headings, 1.62 body) so vowel signs and ottaksharas (ಢಾ, ಸ್ಪೆ, ತ್ತಿ) are never clipped. The dish filter wraps onto its own row when the Kannada labels need the width. Landmark stays in English (data rule). Draft strings: “ವಿಳಾಸ ಮತ್ತು ಸಮಯ”, tab “ಖಾತೆ”.</p>
+  </div>
+  </div>
+</div>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>lucide.createIcons();</script>
+</body>
+</html>

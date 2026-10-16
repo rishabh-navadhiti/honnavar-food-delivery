@@ -15,7 +15,7 @@ export function PhotoForm({ kitchenId, hasPhoto }: { kitchenId: string; hasPhoto
   const errors = useErrorText(state.error);
   return (
     <Card className="flex flex-col gap-3">
-      <h2 className="text-lg font-bold">{t('admin.photoTitle')}</h2>
+      <h2 className="text-heading font-bold">{t('admin.photoTitle')}</h2>
       <form action={formAction} className="flex flex-col gap-2">
         <input type="hidden" name="kitchenId" value={kitchenId} />
         <TextField name="photo" type="file" accept="image/jpeg,image/png,image/webp" label={t('admin.photoUpload')} hint={t('dishForm.photoHint')} error={errors.field('photo')} />

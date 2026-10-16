@@ -37,11 +37,11 @@ export function PartnerTable({ rows, filters }: { rows: AdminKitchenRow[]; filte
         </button>
       </form>
       {rows.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-line p-6 text-center text-muted">{t('admin.noResults')}</p>
+        <p className="rounded-md border border-dashed border-line p-6 text-center text-muted">{t('admin.noResults')}</p>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-line bg-surface">
+        <div className="overflow-x-auto rounded-lg bg-surface shadow-1">
           <table className="w-full text-start text-base">
-            <thead className="bg-secondary text-sm">
+            <thead className="bg-surface-sunk text-small">
               <tr>
                 <th scope="col" className="px-3 py-2 text-start">{t('admin.colName')}</th>
                 <th scope="col" className="px-3 py-2 text-start">{t('admin.colType')}</th>
@@ -53,7 +53,7 @@ export function PartnerTable({ rows, filters }: { rows: AdminKitchenRow[]; filte
               {rows.map((k) => (
                 <tr key={k.id} className="border-t border-line" data-testid="partner-row" data-kitchen-id={k.id}>
                   <td className="px-3 py-2">
-                    <Link href={`/admin/partners/${k.id}`} className="font-semibold text-primary underline-offset-4 hover:underline">
+                    <Link href={`/admin/partners/${k.id}`} className="inline-flex min-h-touch items-center font-semibold text-primary-strong underline-offset-4 hover:underline">
                       <LocalizedText pair={{ en: k.nameEn, kn: k.nameKn }} />
                     </Link>
                   </td>

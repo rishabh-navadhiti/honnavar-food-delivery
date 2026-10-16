@@ -20,11 +20,11 @@ export function SigninList({ kitchenId, signins }: { kitchenId: string; signins:
   const removeErrors = useErrorText(removeState.error);
   return (
     <Card className="flex flex-col gap-3" data-testid="signin-list">
-      <h2 className="text-lg font-bold">{t('signinsTitle')}</h2>
-      <p className="text-sm text-muted">{t('signinsHelp')}</p>
+      <h2 className="text-heading font-bold">{t('signinsTitle')}</h2>
+      <p className="text-small text-muted">{t('signinsHelp')}</p>
       <ul className="flex flex-col gap-2">
         {signins.map((s) => (
-          <li key={s.id} className="flex items-center justify-between gap-2 rounded-xl border border-line px-3 py-2" data-phone={s.phone}>
+          <li key={s.id} className="flex items-center justify-between gap-2 rounded-md border border-line px-3 py-2" data-phone={s.phone}>
             <span>
               <span className="font-semibold">{formatPhone(s.phone)}</span>
               <span className="ms-2 text-muted">{s.personName}</span>

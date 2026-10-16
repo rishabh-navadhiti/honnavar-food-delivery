@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ledger · Kitchen</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="ui.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  .khead { background: var(--c-surface); border-bottom: 1px solid var(--c-line); }
+  .khead .top { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--s2); padding: var(--s3) var(--gutter) var(--s2); align-items: start; }
+  .khead h1 { font-size: 20px; line-height: 26px; font-weight: var(--fw-bold); letter-spacing: -.01em; }
+  [lang="kn"] .khead h1 { line-height: 30px; }
+  .khead .tagline { margin-top: 6px; }
+  .khead .tagline { column-gap: 8px; }
+  .khead .closes { font-size: var(--fs-cap); line-height: var(--lh-cap); color: var(--c-muted); font-feature-settings: var(--num); white-space: nowrap; }
+  .khead .act { display: flex; align-items: center; gap: var(--s2); padding: 0 var(--gutter) var(--s2); }
+  .khead .eta { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-ink); font-weight: var(--fw-medium); font-feature-settings: var(--num); }
+  .khead .eta .ib { width: 32px; height: 32px; border-radius: var(--r-md); background: var(--c-primary-tint); color: var(--c-primary); display: grid; place-items: center; flex: none; }
+  .khead .eta .ib svg.lucide { width: 18px; height: 18px; stroke-width: 2; }
+  .khead .act .btn { padding: 0 14px; }
+  .expander { display: grid; grid-template-columns: 20px minmax(0, 1fr) 24px; gap: var(--s2); align-items: center; width: 100%; min-height: 56px; padding: 8px var(--gutter); border: 0; border-top: 1px solid var(--c-line); background: none; text-align: left; }
+  .expander > svg.lucide { color: var(--c-muted); }
+  [lang="kn"] .expander .t { font-size: var(--fs-cap); }
+  .expander .t { display: block; font-size: var(--fs-micro); line-height: var(--lh-micro); color: var(--c-muted); font-weight: var(--fw-semi); }
+  .expander .v { display: block; font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-feature-settings: var(--num); }
+  .expander .chev { transition: transform var(--dur-1) var(--ease); }
+  .expander[aria-expanded="true"] .chev { transform: rotate(180deg); }
+  .exp-body { padding: 0 var(--gutter) var(--s3) calc(var(--gutter) + 32px); }
+  .exp-body h4 { font-size: var(--fs-micro); line-height: var(--lh-micro); color: var(--c-muted); font-weight: var(--fw-semi); margin: 4px 0 4px; }
+  .exp-body p { font-size: var(--fs-sm); line-height: var(--lh-sm); color: var(--c-ink); }
+  .exp-body .muted { color: var(--c-muted); }
+  .hours { margin-top: 10px; }
+  .hours li { display: flex; justify-content: space-between; font-size: var(--fs-sm); line-height: 26px; color: var(--c-ink-2); font-feature-settings: var(--num); }
+  .hours li.today { color: var(--c-ink); font-weight: var(--fw-bold); }
+  .today-tag { font-style: normal; font-size: var(--fs-micro); font-weight: var(--fw-semi); color: var(--c-primary-press); background: var(--c-primary-tint); border-radius: var(--r-xs); padding: 1px 6px; margin-left: 6px; }
+  .menu-head { display: flex; align-items: center; justify-content: space-between; padding: var(--s3) var(--gutter) 0; }
+  .menu-head h2 { font-size: var(--fs-title); line-height: var(--lh-title); font-weight: var(--fw-bold); }
+  .menu-tools { padding: 4px var(--gutter) 0; }
+  .cat-head { display: flex; align-items: baseline; justify-content: space-between; padding: var(--s3) var(--gutter) var(--s1); }
+  .cat-head h3 { font-size: var(--fs-head); line-height: var(--lh-head); font-weight: var(--fw-bold); }
+  .cat-head .meta { font-size: var(--fs-cap); color: var(--c-muted); font-feature-settings: var(--num); }
+  .frames { gap: 40px 28px; }
+</style>
+</head>
+<body class="canvas">
+<header class="canvas-head">
+  <div class="crumbs"><a href="index.html">B · Ledger</a> / Kitchen</div>
+  <h1>Kitchen</h1>
+  <p>The header is one compact block: photo, name, type and open-state badges, the delivery estimate and Call together; address and hours fold into a single expander row. Dishes are 96 px rows with a square photo, the veg mark before the name and a full-size Add or stepper on the right. The Cart tab carries the running total, so there is no in-page cart bar. The same template is rendered in English and Kannada; Kannada gets the same size and +3–6 px of leading.</p>
+</header>
+
+<div class="frames">
+  <figure class="frame">
+    <figcaption class="frame-cap">Kitchen <span class="tag">390 × 844</span><span class="tag">EN</span></figcaption>
+    <div class="device"><div class="screen" id="k-en" lang="en"></div></div>
+  </figure>
+  <figure class="frame">
+    <figcaption class="frame-cap">Kitchen <span class="tag">390 × 844</span><span class="tag">ಕನ್ನಡ</span></figcaption>
+    <div class="device"><div class="screen" id="k-kn" lang="kn"></div></div>
+  </figure>
+  <figure class="frame">
+    <figcaption class="frame-cap">Address and hours open <span class="tag">390 × 844</span><span class="tag">EN</span></figcaption>
+    <div class="device"><div class="screen" id="k-open" lang="en"></div></div>
+    <p class="frame-note">Expander open (chevron turns in 120 ms; no motion with reduced-motion). Today's row is bold and tagged. Collapsed by default every visit.</p>
+  </figure>
+  <figure class="frame">
+    <figcaption class="frame-cap">Fit check <span class="tag">360 × 780</span><span class="tag">ಕನ್ನಡ</span></figcaption>
+    <div class="device"><div class="screen w360" lang="kn" data-clone-of="k-kn"></div></div>
+    <p class="frame-note">Kannada at 360: name wraps, nothing clips; the tab labels keep their 48 px targets.</p>
+  </figure>
+</div>
+
+<script>
+/* Real strings from src/shared/i18n/messages/{en,kn}.json; keys marked NEW are drafts (Kannada pending review). */
+const T = {
+  en: {
+    lang: 'ಕನ್ನಡ', langAria: 'Switch to Kannada', back: 'All kitchens',
+    name: "Udupi's Pingar Dhaba", type: 'Restaurant', open: 'Open now', closes: 'Closes 12:00 am',
+    eta: 'Delivery in about <b>40–50 min</b>', call: 'Call' /* NEW kitchen.callShort */, callAria: 'Call kitchen on 90000 01003',
+    expT: 'Address and hours' /* NEW kitchen.addressAndHours */, expV: 'Karkinaka junction',
+    addrT: 'Address', addr: 'Karkinaka, NH-66, Honnavar 581334', landmark: 'Karkinaka junction',
+    hoursT: 'Opening hours', todayTag: 'Today',
+    days: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'], range: '11:30 am – 12:00 am',
+    menu: 'Menu', dfAll: 'All', dfVeg: 'Veg only', dfNon: 'Non-veg only', dfAria: 'Show dishes',
+    add: 'Add', less: 'One less', more: 'One more', veg: 'Veg', nonVeg: 'Non-veg',
+    tabs: ['Home', 'Preparing', 'Account'], ordersAria: 'Orders: #1042, Preparing', cartAria: 'Cart: 4 items, ₹590',
+    dishes: 'dishes'
+  },
+  kn: {
+    lang: 'English', langAria: 'ಇಂಗ್ಲಿಷ್‌ಗೆ ಬದಲಿಸಿ', back: 'ಎಲ್ಲಾ ಕಿಚನ್‌ಗಳು',
+    name: 'ಉಡುಪಿಯವರ ಪಿಂಗಾರ ಢಾಬಾ', type: 'ಹೋಟೆಲ್', open: 'ಈಗ ತೆರೆದಿದೆ', closes: 'ರಾತ್ರಿ 12:00ಕ್ಕೆ ಮುಚ್ಚುತ್ತದೆ',
+    eta: 'ಸುಮಾರು <b>40–50 ನಿಮಿಷ</b>ದಲ್ಲಿ ಡೆಲಿವರಿ', call: 'ಫೋನ್', callAria: 'ಕಿಚನ್‌ಗೆ ಫೋನ್ ಮಾಡಿ: 90000 01003',
+    expT: 'ವಿಳಾಸ ಮತ್ತು ಸಮಯ', expV: 'Karkinaka junction',
+    addrT: 'ವಿಳಾಸ', addr: 'Karkinaka, NH-66, Honnavar 581334', landmark: 'Karkinaka junction',
+    hoursT: 'ತೆರೆದಿರುವ ಸಮಯ', todayTag: 'ಇಂದು',
+    days: ['ಸೋಮವಾರ','ಮಂಗಳವಾರ','ಬುಧವಾರ','ಗುರುವಾರ','ಶುಕ್ರವಾರ','ಶನಿವಾರ','ಭಾನುವಾರ'], range: 'ಬೆಳಗ್ಗೆ 11:30 – ರಾತ್ರಿ 12:00',
+    menu: 'ಮೆನು', dfAll: 'ಎಲ್ಲಾ', dfVeg: 'ವೆಜ್ ಮಾತ್ರ', dfNon: 'ನಾನ್ ವೆಜ್ ಮಾತ್ರ', dfAria: 'ಐಟಂಗಳನ್ನು ತೋರಿಸಿ',
+    add: 'ಸೇರಿಸಿ', less: 'ಒಂದು ಕಡಿಮೆ', more: 'ಇನ್ನೊಂದು', veg: 'ವೆಜ್', nonVeg: 'ನಾನ್ ವೆಜ್',
+    tabs: ['ಮುಖಪುಟ', 'ತಯಾರಾಗುತ್ತಿದೆ', 'ಖಾತೆ'], ordersAria: 'ಆರ್ಡರ್‌ಗಳು: #1042, ತಯಾರಾಗುತ್ತಿದೆ', cartAria: 'ಕಾರ್ಟ್: 4 ಐಟಂಗಳು, ₹590',
+    dishes: 'ಐಟಂ'
+  }
+};
+const IMG = '../../../../seed/images/';
+const MENU = [
+  { en: 'Non-veg Specials', kn: 'ನಾನ್ ವೆಜ್ ಸ್ಪೆಷಲ್', dishes: [
+    { key: 'chicken-pingara-special', en: 'Chicken Pingara Special', kn: 'ಚಿಕನ್ ಪಿಂಗಾರ ಸ್ಪೆಷಲ್', p: 250, veg: false, q: 1 },
+    { key: 'mutton-ghee-roast', en: 'Mutton Ghee Roast', kn: 'ಮಟನ್ ಘೀ ರೋಸ್ಟ್', p: 340, veg: false },
+    { key: 'tandoori-chicken-half', en: 'Tandoori Chicken (Half)', kn: 'ತಂದೂರಿ ಚಿಕನ್ (ಅರ್ಧ)', p: 250, veg: false },
+    { key: 'chicken-biryani', en: 'Chicken Biryani', kn: 'ಚಿಕನ್ ಬಿರಿಯಾನಿ', p: 200, veg: false } ] },
+  { en: 'Veg Specials', kn: 'ವೆಜ್ ಸ್ಪೆಷಲ್', dishes: [
+    { key: 'veg-pingara-special', en: 'Veg Pingara Special', kn: 'ವೆಜ್ ಪಿಂಗಾರ ಸ್ಪೆಷಲ್', p: 410, veg: true },
+    { key: 'paneer-butter-masala', en: 'Paneer Butter Masala', kn: 'ಪನೀರ್ ಬಟರ್ ಮಸಾಲ', p: 240, veg: true, q: 1 },
+    { key: 'gobi-manchurian', en: 'Gobi Manchurian', kn: 'ಗೋಬಿ ಮಂಚೂರಿ', p: 120, veg: true },
+    { key: 'butter-naan', en: 'Butter Naan', kn: 'ಬಟರ್ ನಾನ್', p: 50, veg: true, q: 2 } ] }
+];
+
+function dishRow(d, L, lang, target) {
+  const mark = d.veg ? `<svg class="vm veg" role="img" aria-label="${L.veg}"><use href="#i-veg"/></svg>`
+                     : `<svg class="vm nonveg" role="img" aria-label="${L.nonVeg}"><use href="#i-nonveg"/></svg>`;
+  const act = d.q
+    ? `<div class="stepper" role="group" aria-label="${d[lang]}"><button aria-label="${L.less}"><i data-lucide="minus"></i></button><output class="num">${d.q}</output><button aria-label="${L.more}"><i data-lucide="plus"></i></button></div>`
+    : `<button class="btn-add" aria-label="${L.add}: ${d[lang]}">${L.add}</button>`;
+  return `<div class="drow${target ? ' is-target' : ''}">
+    <img class="thumb" src="${IMG}pingar-dhaba--${d.key}.jpg" alt="">
+    <div><div class="line1">${mark}<p class="name">${d[lang]}</p></div>
+    <div class="foot"><span class="price">₹${d.p}</span>${act}</div></div></div>`;
+}
+
+function kitchen(lang, opts = {}) {
+  const L = T[lang];
+  const hours = L.days.map((d, i) => `<li class="${i === 4 ? 'today' : ''}"><span>${d}${i === 4 ? ` <em class="today-tag">${L.todayTag}</em>` : ''}</span><span>${L.range}</span></li>`).join('');
+  const cats = (opts.from === 1 ? MENU.slice(1) : MENU).map(c => `
+    <div class="cat-head"><h3>${c[lang]}</h3><span class="meta">${c.dishes.length} ${L.dishes}</span></div>
+    <div class="group inset" style="--inset:96px">${c.dishes.map(d => dishRow(d, L, lang, opts.target === d.key)).join('')}</div>`).join('');
+  return `
+  <header class="topbar" style="padding-left:4px">
+    <a class="icon-btn" href="home.html" aria-label="${L.back}"><i data-lucide="arrow-left"></i></a>
+    <a class="brand" href="home.html"><svg class="mark" aria-hidden="true"><use href="#i-mark"/></svg><span class="wordmark">Honnavar Food</span></a>
+    <button class="lang-btn" aria-label="${L.langAria}"><span class="face" lang="${lang === 'en' ? 'kn' : 'en'}">${L.lang}</span></button>
+  </header>
+  <main class="content">
+    <section class="khead">
+      <div class="top">
+        <img class="thumb s64" src="${IMG}pingar-dhaba.jpg" alt="">
+        <div>
+          <h1>${L.name}</h1>
+          <div class="tagline"><span class="badge-k">${L.type}</span><span class="state open"><span class="dot"></span>${L.open}</span><span class="closes">${L.closes}</span></div>
+        </div>
+      </div>
+      <div class="act">
+        <p class="eta"><span class="ib"><i data-lucide="clock-3"></i></span><span>${L.eta}</span></p>
+        <a class="btn btn-secondary" href="#" aria-label="${L.callAria}"><i data-lucide="phone"></i>${L.call}</a>
+      </div>
+      <button class="expander" aria-expanded="${opts.expanded ? 'true' : 'false'}">
+        <i data-lucide="map-pin"></i>
+        <span style="min-width:0"><span class="t">${L.expT}</span><span class="v">${L.expV}</span></span>
+        <i class="chev" data-lucide="chevron-down"></i>
+      </button>
+      ${opts.expanded ? `<div class="exp-body">
+        <h4>${L.addrT}</h4><p>${L.landmark}</p><p class="muted">${L.addr}</p>
+        <h4 style="margin-top:12px">${L.hoursT}</h4><ul class="hours">${hours}</ul></div>` : ''}
+    </section>
+    ${opts.expanded ? '' : `<div class="menu-head"><h2>${L.menu}</h2></div>
+    <div class="menu-tools"><div class="seg" role="group" aria-label="${L.dfAria}">
+      <button aria-pressed="true"><span class="face">${L.dfAll}</span></button>
+      <button aria-pressed="false"><span class="face"><svg class="vm veg"><use href="#i-veg"/></svg>${L.dfVeg}</span></button>
+      <button aria-pressed="false"><span class="face"><svg class="vm nonveg"><use href="#i-nonveg"/></svg>${L.dfNon}</span></button>
+    </div></div>`}
+    ${cats}
+    <div style="height:24px"></div>
+  </main>
+  <nav class="tabbar" aria-label="Main navigation">
+    <a class="tab active" href="home.html"><span class="icw"><i data-lucide="house"></i></span><span class="lbl">${L.tabs[0]}</span></a>
+    <a class="tab" href="order.html" aria-label="${L.ordersAria}"><span class="icw"><i data-lucide="receipt-text"></i><span class="live"></span></span><span class="lbl status">${L.tabs[1]}</span></a>
+    <a class="tab" href="cart.html" aria-label="${L.cartAria}"><span class="icw"><i data-lucide="shopping-bag"></i><span class="badge">4</span></span><span class="lbl total">₹590</span></a>
+    <a class="tab" href="#"><span class="icw"><i data-lucide="user-round"></i></span><span class="lbl">${L.tabs[2]}</span></a>
+  </nav>`;
+}
+document.getElementById('k-en').innerHTML = kitchen('en');
+document.getElementById('k-kn').innerHTML = kitchen('kn');
+document.getElementById('k-open').innerHTML = kitchen('en', { expanded: true });
+</script>
+<script src="ledger.js"></script>
+</body>
+</html>
