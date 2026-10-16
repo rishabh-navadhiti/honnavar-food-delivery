@@ -36,7 +36,7 @@ export function SearchResults({ results, now }: { results: Results; now: Date })
           <ul className="flex flex-col gap-2">
             {results.dishes.map(({ dish, kitchen }) => (
               <li key={dish.id} data-testid="dish-result" className="rounded-lg bg-surface px-3 shadow-1">
-                <Link href={`/kitchens/${kitchen.id}`} className="flex min-h-touch items-center gap-1.5 text-small font-semibold text-primary-strong">
+                <Link href={`/kitchens/${kitchen.id}`} className="tap flex items-center gap-1.5 py-1.5 text-small font-semibold text-primary-strong">
                   <Store aria-hidden="true" className="size-4 shrink-0" />
                   <LocalizedText pair={kitchen.name} />
                 </Link>

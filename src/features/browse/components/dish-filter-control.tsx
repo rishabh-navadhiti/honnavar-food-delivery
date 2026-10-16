@@ -12,7 +12,7 @@ export function DishFilterControl({ current, returnTo }: { current: DishFilter; 
     <form action={setDishFilter} className="flex items-center gap-2" data-testid="dish-filter" data-current={current}>
       <input type="hidden" name="returnTo" value={returnTo} />
       <span className="sr-only">{t('label')}</span>
-      <div role="group" aria-label={t('label')} className="grid flex-1 grid-cols-3 gap-0.5 rounded-full bg-line/70 p-0.5">
+      <div role="group" aria-label={t('label')} className="grid h-10 flex-1 grid-cols-3 gap-0.5 rounded-full bg-line/70 p-0.5">
         {DISH_FILTERS.map((filter) => {
           const active = filter === current;
           return (
@@ -22,7 +22,7 @@ export function DishFilterControl({ current, returnTo }: { current: DishFilter; 
               name="filter"
               value={filter}
               aria-pressed={active}
-              className={`inline-flex min-h-touch items-center justify-center gap-1.5 rounded-full px-2 text-small transition-colors duration-(--duration-fast) ${
+              className={`tap stretch-dense inline-flex h-9 min-w-0 items-center justify-center gap-1 whitespace-nowrap rounded-full px-1.5 text-sm transition-colors duration-(--duration-fast) ${
                 active ? 'bg-surface font-bold text-ink shadow-1' : 'font-semibold text-muted'
               }`}
             >

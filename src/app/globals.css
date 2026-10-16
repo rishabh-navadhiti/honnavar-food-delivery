@@ -68,26 +68,38 @@
   --color-status-cancelled: #5f5550;
   --color-status-cancelled-soft: #efebe7;
 
-  /* Type scale: the same sizes for both scripts; Kannada gets taller lines (see :lang(kn) below) */
-  --text-caption: 0.8125rem;
+  /*
+   * Type scale (003 density): body 15, meta 14, secondary 13, card titles 17, h2 18, h1 24; the same
+   * sizes for both scripts, Kannada gets taller lines (see :lang(kn) below). Text inputs stay 16 px
+   * so phone browsers do not zoom into them.
+   */
+  --text-caption: 0.75rem;
   --text-caption--line-height: var(--lh-snug);
-  --text-small: 0.875rem;
+  --text-small: 0.8125rem;
   --text-small--line-height: var(--lh-body);
-  --text-body: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: var(--lh-body);
+  --text-base: 0.9375rem;
+  --text-base--line-height: var(--lh-body);
+  --text-body: 0.9375rem;
   --text-body--line-height: var(--lh-body);
+  --text-input: 1rem;
+  --text-input--line-height: var(--lh-snug);
+  --text-card: 1.0625rem;
+  --text-card--line-height: var(--lh-snug);
   --text-heading: 1.125rem;
   --text-heading--line-height: var(--lh-snug);
-  --text-title: 1.375rem;
+  --text-title: 1.5rem;
   --text-title--line-height: var(--lh-tight);
   --text-display: 1.75rem;
   --text-display--line-height: var(--lh-tight);
 
-  /* Radii: 6 / 10 / 14 / 18 / 24 px; pills use rounded-full */
+  /* Radii (003 density): 6 / 8 / 12 buttons and fields / 14 cards / 20 sheets; chips use rounded-full */
   --radius-xs: 0.375rem;
-  --radius-sm: 0.625rem;
-  --radius-md: 0.875rem;
-  --radius-lg: 1.125rem;
-  --radius-xl: 1.5rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
 
   /* Elevation: warm, layered */
   --shadow-1: 0 1px 2px rgb(92 52 24 / 0.06), 0 1px 1px rgb(92 52 24 / 0.04);
@@ -95,11 +107,17 @@
   --shadow-3: 0 2px 6px rgb(92 52 24 / 0.08), 0 16px 40px -8px rgb(92 40 12 / 0.24);
   --shadow-bar: 0 -1px 0 #ece2d5, 0 -8px 24px -12px rgb(92 52 24 / 0.18);
 
-  /* Sizes: minimum touch target and the fixed bars */
+  /*
+   * Sizes (003 density). Touch targets stay 48 px, but controls that look smaller get their 48 px
+   * through the `tap` hit area below, never by growing the visual. Top bar 52; the customer tab bar
+   * 64 (two-line "Orders · status" labels need it in Kannada); partner and agent bars 60; the cart
+   * and place-order bars hold a 52 px button with 8 px around it.
+   */
   --spacing-touch: 3rem;
-  --spacing-topbar: 3.5rem;
-  --spacing-tabbar: 4.5rem;
-  --spacing-placebar: 4.75rem;
+  --spacing-topbar: 3.25rem;
+  --spacing-tabbar: 4rem;
+  --spacing-navbar: 3.75rem;
+  --spacing-placebar: 4.25rem;
 
   --ease-out-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
 
@@ -162,6 +180,23 @@ body {
   background: var(--color-page);
   color: var(--color-ink);
   line-height: var(--lh-body);
+}
+
+/*
+ * A 48 px hit area for a control that looks smaller (003 density): an invisible box centred on the
+ * control, at least 48 × 48, so the visual stays compact and the target stays large (FR-011).
+ */
+@utility tap {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 48px);
+    height: max(100%, 48px);
+    transform: translate(-50%, -50%);
+  }
 }
 
 /* Width axis of Anek Kannada as a hierarchy tool: reading, headings and prices, dense labels. */

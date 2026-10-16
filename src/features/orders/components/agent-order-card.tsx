@@ -21,7 +21,7 @@ export function AgentOrderCard({ order }: { order: Card }) {
       href={`/agent/orders/${order.id}`}
       data-testid="agent-order"
       data-order-no={order.orderNo}
-      className="flex flex-col gap-2 rounded-lg bg-surface p-3.5 shadow-1 transition-shadow duration-(--duration-fast) hover:shadow-2"
+      className="flex flex-col gap-2 rounded-lg bg-surface p-3 shadow-1 transition-shadow duration-(--duration-fast) hover:shadow-2"
     >
       <span className="flex items-center gap-2">
         <OrderNumber orderNo={order.orderNo} className="text-heading font-bold" />

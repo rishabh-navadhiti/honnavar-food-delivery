@@ -21,11 +21,11 @@ export async function LoginScreen({ surface, next, below }: { surface: Surface; 
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-4 pt-2">
       <div className="flex flex-col items-start gap-3">
-        <CoastMark className="size-12" />
-        <h1 className="stretch-head text-display font-bold leading-[var(--lh-tight)]">{t(titles[surface])}</h1>
+        <CoastMark className="size-10" />
+        <h1 className="stretch-head text-title font-bold leading-[var(--lh-tight)]">{t(titles[surface])}</h1>
         <p className="text-base text-muted">{surface === 'customer' ? t('customerIntro') : t('staffIntro')}</p>
       </div>
-      <div className="rounded-lg bg-surface p-4 shadow-2">
+      <div className="rounded-lg bg-surface p-3 shadow-2">
         <SignInForm surface={surface} next={next} />
       </div>
       <DemoPanel surface={surface} />

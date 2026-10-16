@@ -58,7 +58,7 @@ export function CheckoutForm({
           setSheetOpen(true);
         }
       }}
-      className="flex flex-col gap-5"
+      className="flex flex-col gap-4"
     >
       <input type="hidden" name="placeKey" value={placeKey} />
       <input type="hidden" name="seenPrices" value={JSON.stringify(seenPrices)} />
@@ -78,7 +78,7 @@ export function CheckoutForm({
             </span>
           </label>
         ))}
-        <Link href="/addresses/new?next=/cart" className="inline-flex min-h-touch items-center gap-1.5 self-start text-base font-semibold text-primary-strong">
+        <Link href="/addresses/new?next=/cart" className="tap inline-flex items-center gap-1.5 self-start text-base font-semibold text-primary-strong">
           <Plus aria-hidden="true" className="size-5" />
           {t('checkout.addAddress')}
         </Link>
@@ -121,7 +121,7 @@ export function CheckoutForm({
       <FormError message={errors.form ?? errors.field('addressId', 'paymentMethod', 'placeKey', 'seenPrices', 'upiConfirmed')} />
 
       <PlaceOrderBar>
-        <button type="submit" disabled={pending} className={buttonClasses('primary', 'min-h-[54px] w-full text-[1.06rem]')}>
+        <button type="submit" disabled={pending} className={buttonClasses('primary', 'min-h-13 w-full text-card')}>
           {pending ? t('checkout.placing') : t('checkout.placeOrder', { amount: price(grandTotal) })}
         </button>
       </PlaceOrderBar>

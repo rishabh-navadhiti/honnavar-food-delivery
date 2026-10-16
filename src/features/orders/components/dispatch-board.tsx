@@ -34,7 +34,7 @@ export function DispatchBoard({ board, now }: { board: Board; now: Date }) {
     return (
       <li key={order.id} data-testid="board-order" data-order-no={order.orderNo} className="flex flex-col gap-1.5 rounded-md bg-surface p-3 shadow-1">
         <span className="flex items-center justify-between gap-2">
-          <Link href={`/admin/orders/${order.id}`} className="inline-flex min-h-touch items-center text-heading text-ink underline-offset-4 hover:underline">
+          <Link href={`/admin/orders/${order.id}`} className="tap inline-flex items-center text-heading text-ink underline-offset-4 hover:underline">
             <OrderNumber orderNo={order.orderNo} className="font-bold" />
           </Link>
           <span className="inline-flex items-center gap-1 text-small text-muted">

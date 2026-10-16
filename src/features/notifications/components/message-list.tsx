@@ -21,7 +21,7 @@ export function MessageList({ messages, orderHref }: { messages: MessageView[]; 
   return (
     <ul className="flex flex-col gap-2" data-testid="message-list">
       {messages.map((m) => (
-        <li key={m.id} data-kind={m.kind} className="flex flex-col gap-1 rounded-lg bg-surface p-3.5 shadow-1">
+        <li key={m.id} data-kind={m.kind} className="flex flex-col gap-1 rounded-lg bg-surface p-3 shadow-1">
           <span className="flex flex-wrap items-center justify-between gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-warn-soft px-2 py-0.5 text-caption font-semibold text-warn">
               <MessageSquareText aria-hidden="true" className="size-3.5" />
@@ -29,7 +29,7 @@ export function MessageList({ messages, orderHref }: { messages: MessageView[]; 
             </span>
             <span className="text-small text-muted">{formatDayTime(m.createdAt, locale)}</span>
           </span>
-          <Link href={orderHref(m.orderId)} className="flex min-h-touch items-center text-base font-semibold text-ink underline-offset-4 hover:underline">
+          <Link href={orderHref(m.orderId)} className="tap flex items-center py-0.5 text-base font-semibold text-ink underline-offset-4 hover:underline">
             {t(`notifications.${m.kind}`, {
               orderNo: String(m.params.orderNo),
               amount: m.params.amount !== undefined ? formatPrice(m.params.amount, locale) : '',

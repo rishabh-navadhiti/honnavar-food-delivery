@@ -36,20 +36,20 @@ export function KitchenStateLabel({ state, now }: { state: KitchenState; now: Da
       break;
     case 'closed':
       text = t('closedOpens', { when: when(state.nextOpening) });
-      mark = <MoonStar aria-hidden="true" className="size-4 shrink-0" />;
+      mark = <MoonStar aria-hidden="true" className="size-3.5 shrink-0" />;
       break;
     case 'temporarilyClosed':
       tone = 'text-warn';
       text = state.reopensAt ? t('temporarilyClosedUntil', { when: when(state.reopensAt) }) : t('temporarilyClosed');
-      mark = <PauseCircle aria-hidden="true" className="size-4 shrink-0" />;
+      mark = <PauseCircle aria-hidden="true" className="size-3.5 shrink-0" />;
       break;
     case 'hoursNotSet':
       text = t('hoursNotSet');
-      mark = <Clock aria-hidden="true" className="size-4 shrink-0" />;
+      mark = <Clock aria-hidden="true" className="size-3.5 shrink-0" />;
       break;
   }
   return (
-    <span data-testid="kitchen-state" data-state={state.kind} className={`inline-flex items-center gap-1.5 text-small font-semibold ${tone}`}>
+    <span data-testid="kitchen-state" data-state={state.kind} className={`inline-flex items-center gap-1 font-semibold ${tone}`}>
       {mark}
       {text}
     </span>

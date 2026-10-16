@@ -12,11 +12,11 @@ export function SkeletonBox({ className = '' }: { className?: string }) {
   return <div aria-hidden="true" className={`animate-pulse rounded-md bg-line/70 ${className}`} />;
 }
 
-/** The height of a kitchen row: 96 px photo plus padding (research R12). */
+/** The height of a kitchen row: 88 px photo plus 12 px padding (003 density). */
 export function SkeletonRow() {
   return (
-    <div aria-hidden="true" className="flex h-[120px] items-center gap-3 border-b border-line py-3">
-      <SkeletonBox className="size-24 shrink-0" />
+    <div aria-hidden="true" className="flex h-[112px] items-center gap-3 border-b border-line py-3">
+      <SkeletonBox className="size-22 shrink-0" />
       <div className="flex flex-1 flex-col gap-2">
         <SkeletonBox className="h-5 w-3/4" />
         <SkeletonBox className="h-4 w-1/2" />

@@ -11,7 +11,7 @@ export default async function AgentProtectedLayout({ children }: { children: Rea
   const t = await getTranslations('nav');
   return (
     <>
-      <main className="mx-auto w-full max-w-[752px] px-4 pb-28 pt-4">
+      <main className="mx-auto w-full max-w-[512px] md:has-[[data-wide]]:max-w-[752px] px-4 pb-28 pt-4">
         {children}
         <div className="mt-8 flex justify-end">
           <SignOutButton surface="agent" />

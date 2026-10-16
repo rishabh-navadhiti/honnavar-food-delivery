@@ -29,7 +29,7 @@ export default async function AgentOrderPage({ params }: Props) {
       {view.state === 'mine' ? (
         <AgentOrderDetail order={view.order} />
       ) : (
-        <div className="flex flex-col gap-2 rounded-lg border border-line bg-surface p-4" data-testid="agent-order-gone">
+        <div className="flex flex-col gap-2 rounded-lg border border-line bg-surface p-3" data-testid="agent-order-gone">
           <h1 className="text-heading font-bold">
             <OrderNumber orderNo={view.orderNo} />
           </h1>

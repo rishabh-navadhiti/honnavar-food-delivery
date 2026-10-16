@@ -22,7 +22,7 @@ export function OrderTimeline({ order }: { order: CustomerOrderView }) {
   const steps = ended ? STEPS.filter((s) => firstAt(s)) : STEPS;
 
   return (
-    <section aria-labelledby="timeline-title" className="flex flex-col gap-2 rounded-lg bg-surface p-4 shadow-1">
+    <section aria-labelledby="timeline-title" className="flex flex-col gap-2 rounded-lg bg-surface p-3 shadow-1">
       <h2 id="timeline-title" className="text-heading font-bold">
         {t('timeline.title')}
       </h2>

@@ -12,10 +12,15 @@ const variants: Record<ButtonVariant, string> = {
   ghost: 'bg-transparent text-primary-strong px-2 hover:underline underline-offset-4 focus-visible:outline-ink',
 };
 
-/** Coast buttons (003): 48 px minimum, 14 px radius, a 120 ms press (none under reduced motion). */
-export function buttonClasses(variant: ButtonVariant = 'primary', extra = ''): string {
+/**
+ * Coast buttons (003 density): primary 48 px tall, the others 40 px with a 48 px hit area (`tap`);
+ * 12 px radius; a 120 ms press (none under reduced motion).
+ */
+export function buttonClasses(variant: ButtonVariant = 'primary', extra = '', size: 'default' | 'compact' = 'default'): string {
   return [
-    'inline-flex min-h-touch items-center justify-center gap-2 rounded-md px-[18px] py-2 text-base font-semibold',
+    'inline-flex items-center justify-center gap-2 rounded-md px-4 text-base font-semibold',
+    // Compact: actions inside list cards are 40 px whatever their variant; page actions keep 48.
+    variant === 'primary' && size === 'default' ? 'min-h-12 py-2' : 'tap min-h-10 py-1.5',
     'transition-[background-color,transform] duration-(--duration-fast) ease-out-soft active:scale-[0.98]',
     'focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
     '[&_svg]:size-5 [&_svg]:shrink-0',

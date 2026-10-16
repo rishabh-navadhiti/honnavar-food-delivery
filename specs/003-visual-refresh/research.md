@@ -359,3 +359,43 @@ one-sided change.
 - `lucide-react`: tree-shaken icon components for the Lucide set the design uses (R3).
 
 No other dependency. Anek Kannada replaces Noto through the existing `next/font` mechanism.
+
+## R17. Density follow-up (owner, 2026-10-16; branch `003-density`)
+
+**Decision**: The live look was oversized because controls were drawn at the 48 px minimum and then
+padded again. Controls now use a compact visual scale, and the 48 px target comes from an invisible
+hit area (`tap` utility: a centred `::after` at least 48 × 48) instead of a bigger visual (FR-011
+unchanged). The layout checks measure that hit area (or the label wrapping a field).
+
+| Element | Size (CSS px) |
+|---|---|
+| Top bar | 52, mark 28, wordmark 18 |
+| Search field | 44, radius 12; submit 36 square inside; the input itself 48 tall and borderless |
+| Filter chips | 36, 12 px padding, 14 px text |
+| Segmented controls | 40 (segments 36, condensed width so "Non-veg only" stays on one line) |
+| Buttons | primary 48; secondary, tonal, sea, danger, ghost 40; actions inside list cards 40 (compact) |
+| Add and stepper | 36, 96 wide, directly under the 96 px dish photo |
+| Customer tab bar | **64** (+ safe area), icons 22, labels 12, active pill 28 |
+| Partner and agent bars | 60, same icon, label and pill scale |
+| Kitchen cart bar, place-order bar | 52 px button with 8 px around it (bar 68) |
+| Floating cart button | 52 |
+| Type | body 15, meta 14, secondary 13, caption 12, card titles 17, h2 18, h1 24; text inputs 16 |
+| Spacing | 4/8/12/16/24; gutter 16; between sections 16; card padding 12 |
+| Radii | cards 14, buttons and fields 12, sheets 20, chips full |
+| Kitchen rows | photo 88, name 17, meta 14, row padding 12, one badge line (wraps on narrow phones) |
+| Content width | phone screens 480 centred; list pages widen to 720 from 768 px |
+
+**Where this differs from the prescribed numbers, and why**:
+
+- Customer tab bar 64, not 60: two-line "Orders · status" labels (owner edit 4) at a legible 12 px
+  need 64 px in Kannada (vowel signs and conjuncts); at 60 px the second line clips or must drop to
+  11 px.
+- Cart and place-order bars: "52" is applied to the button, with 8 px around it, so the button does
+  not touch the bar's edges.
+- Text inputs stay 16 px while body text is 15 px: phone browsers zoom into fields under 16 px.
+- Form fields and choice tiles (address, payment, reject reasons) stay 48 px: they are the screen's
+  main targets, and a 44 px field would need a wrapping label for its hit area.
+- Actions inside list cards (partner order card, board card) are 40 px even when primary, so cards
+  stay compact; page-level primary actions stay 48.
+- The fixed-bar check is tightened from 18% to 16% of 360×780 (top bar plus tab bar is 116 px;
+  the kitchen page with its cart bar is 121 px).

@@ -39,7 +39,7 @@ export default async function AdminOrderPage({ params }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <LiveRefresh enabled={!order.finished} />
-      <Link href="/admin/orders" className="inline-flex min-h-touch items-center gap-1 self-start text-base font-semibold text-primary-strong">
+      <Link href="/admin/orders" className="tap inline-flex items-center gap-1 self-start text-base font-semibold text-primary-strong">
         <span aria-hidden="true">← </span>
         {t('dispatch.title')}
       </Link>

@@ -17,13 +17,24 @@ export async function horizontalOverflow(page: Page): Promise<number> {
 }
 
 /**
- * Visible interactive elements smaller than 48×48. Links inside running text (`p`) are exempt, as
- * WCAG exempts inline targets. Hidden inputs and inputs styled away behind a label are skipped.
+ * Visible interactive elements whose hit area is smaller than 48×48 (FR-011). The hit area is the
+ * larger of the element's box and its `tap` pseudo-element (003 density: a compact visual with an
+ * invisible 48 px target), or, for a field, the label that wraps it. Links inside running text
+ * (`p`) are exempt, as WCAG exempts inline targets.
  */
 export async function smallTargets(page: Page): Promise<string[]> {
   return page.evaluate(() => {
     const selector = 'a[href], button, summary, select, input:not([type=hidden]), [role=button]';
     const out: string[] = [];
+    const hitSize = (el: Element) => {
+      const box = el.getBoundingClientRect();
+      const after = getComputedStyle(el, '::after');
+      const pseudo = after.content !== 'none' && after.position === 'absolute';
+      return {
+        width: Math.max(box.width, pseudo ? parseFloat(after.width) || 0 : 0),
+        height: Math.max(box.height, pseudo ? parseFloat(after.height) || 0 : 0),
+      };
+    };
     for (const el of Array.from(document.querySelectorAll<HTMLElement>(selector))) {
       const box = el.getBoundingClientRect();
       const style = getComputedStyle(el);
@@ -33,9 +44,15 @@ export async function smallTargets(page: Page): Promise<string[]> {
       // Radio buttons and checkboxes are covered by their (measured) label.
       if (el instanceof HTMLInputElement && (el.type === 'radio' || el.type === 'checkbox') && el.closest('label')) continue;
       if (el.classList.contains('sr-only')) continue;
-      if (box.width < 47.5 || box.height < 47.5) {
-        const label = (el.getAttribute('aria-label') ?? el.textContent ?? '').trim().slice(0, 40);
-        out.push(`${el.tagName.toLowerCase()} "${label}" ${Math.round(box.width)}×${Math.round(box.height)}`);
+      let hit = hitSize(el);
+      const label = el.matches('input, select') ? el.closest('label') : null;
+      if (label) {
+        const outer = hitSize(label);
+        hit = { width: Math.max(hit.width, outer.width), height: Math.max(hit.height, outer.height) };
+      }
+      if (hit.width < 47.5 || hit.height < 47.5) {
+        const name = (el.getAttribute('aria-label') ?? el.textContent ?? '').trim().slice(0, 40);
+        out.push(`${el.tagName.toLowerCase()} "${name}" ${Math.round(hit.width)}×${Math.round(hit.height)}`);
       }
     }
     return out;

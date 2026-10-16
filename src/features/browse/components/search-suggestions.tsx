@@ -22,8 +22,8 @@ export function SearchSuggestions({ suggestions, q }: { suggestions: Suggestions
   const name = (pair: LocalizedPair) => pickLocalized(pair, locale)?.text ?? '';
   const status = suggestions ? t('search.suggestionsCount', { kitchens: suggestions.total.kitchens, dishes: suggestions.total.dishes }) : '';
   const empty = suggestions && suggestions.kitchens.length === 0 && suggestions.dishes.length === 0;
-  const heading = 'px-4 pb-1 pt-3 text-caption font-bold uppercase tracking-wide text-subtle';
-  const row = 'flex min-h-touch items-center gap-3 px-4 py-2 hover:bg-surface-sunk focus-visible:bg-surface-sunk focus-visible:outline-none';
+  const heading = 'px-3 pb-1 pt-2.5 text-caption font-bold uppercase tracking-wide text-subtle';
+  const row = 'flex min-h-12 items-center gap-3 px-3 py-1.5 hover:bg-surface-sunk focus-visible:bg-surface-sunk focus-visible:outline-none';
   return (
     <>
       <p id="search-suggestions-status" role="status" aria-live="polite" className="sr-only">
@@ -47,7 +47,7 @@ export function SearchSuggestions({ suggestions, q }: { suggestions: Suggestions
                     {suggestions.kitchens.map((k) => (
                       <li key={k.id}>
                         <Link href={`/kitchens/${k.id}`} className={row}>
-                          <Photo imageId={k.photoImageId} alt="" placeholder={k.type} sizes="40px" className="size-10 shrink-0 rounded-sm" />
+                          <Photo imageId={k.photoImageId} alt="" placeholder={k.type} sizes="40px" className="size-9 shrink-0 rounded-sm" />
                           <span className="flex min-w-0 flex-col">
                             <span className="truncate text-base font-bold" data-truncate title={name(k.name)}>
                               <LocalizedText pair={k.name} />
@@ -70,7 +70,7 @@ export function SearchSuggestions({ suggestions, q }: { suggestions: Suggestions
                     {suggestions.dishes.map((d) => (
                       <li key={d.id}>
                         <Link href={`/kitchens/${d.kitchen.id}#dish-${d.id}`} className={row}>
-                          <Photo imageId={d.photoImageId} alt="" placeholder={d.isVeg ? 'veg' : 'nonveg'} sizes="40px" className="size-10 shrink-0 rounded-sm" />
+                          <Photo imageId={d.photoImageId} alt="" placeholder={d.isVeg ? 'veg' : 'nonveg'} sizes="40px" className="size-9 shrink-0 rounded-sm" />
                           <span className="flex min-w-0 flex-1 flex-col">
                             <span className="flex items-center gap-1.5 text-base font-bold">
                               <VegMark isVeg={d.isVeg} showLabel={false} />

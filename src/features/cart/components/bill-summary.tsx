@@ -8,7 +8,7 @@ export function BillSummary({ bill }: { bill: { itemTotal: number; deliveryFee: 
   const current = useLocale();
   const price = (n: number) => formatPrice(n, isLocale(current) ? current : 'en');
   return (
-    <dl className="flex flex-col gap-1.5 rounded-lg bg-surface p-4 text-base shadow-1" data-testid="bill">
+    <dl className="flex flex-col gap-1.5 rounded-lg bg-surface p-3 text-base shadow-1" data-testid="bill">
       <div className="flex justify-between text-muted">
         <dt>{t('itemTotal')}</dt>
         <dd data-testid="bill-item-total">{price(bill.itemTotal)}</dd>

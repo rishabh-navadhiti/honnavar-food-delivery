@@ -27,7 +27,7 @@ export function PartnerActions({ orderId, status }: { orderId: string; status: O
     <form action={stepAction} onSubmit={() => acknowledge(orderId)} className={className}>
       <input type="hidden" name="orderId" value={orderId} />
       <input type="hidden" name="step" value={name} />
-      <button type="submit" disabled={busy} className={buttonClasses(name === 'accept' ? 'primary' : 'tonal', 'w-full')}>
+      <button type="submit" disabled={busy} className={buttonClasses(name === 'accept' ? 'primary' : 'tonal', 'w-full', 'compact')}>
         {icon}
         {label}
       </button>

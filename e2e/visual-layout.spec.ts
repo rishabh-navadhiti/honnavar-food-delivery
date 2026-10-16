@@ -41,7 +41,8 @@ async function expectLayoutRules(page: Page, where: string, options: { customer?
   expect(chrome.bottom, `${where}: fixed bars at the bottom`).toBeLessThanOrEqual(1);
   const size = page.viewportSize()!;
   if (options.customer && size.width === 360 && size.height === 780) {
-    expect(chrome.totalHeight, `${where}: fixed bars over 18% of 360×780`).toBeLessThanOrEqual(0.18 * 780);
+    // 003 density: top bar 52 + tab bar 64 = 116 px (kitchen: 52 + cart bar 68), under 16% of 360×780 (spec: 18%).
+    expect(chrome.totalHeight, `${where}: fixed bars over 16% of 360×780`).toBeLessThanOrEqual(0.16 * 780);
   }
 }
 
@@ -230,4 +231,45 @@ test('agent home and order page keep the layout rules with one primary next step
       expect(primaries, `one primary action on the agent order page (${size.width} ${locale})`).toBe(1);
     }
   }
+});
+
+/** Height of the first match, in CSS px. */
+async function height(page: Page, selector: string): Promise<number> {
+  return Math.round((await page.locator(selector).first().boundingBox())!.height);
+}
+
+test('the density scale holds on the customer screens (003 density follow-up)', async ({ page }) => {
+  const kitchen = orderableKitchen();
+  const dish = availableDishesIn(kitchen.key)[0]!;
+  await page.setViewportSize({ width: 390, height: 844 });
+  await setLocale(page, 'en');
+  await signIn(page, '/login', demoCustomer().phone);
+  await page.goto('/');
+  await page.waitForLoadState('networkidle');
+  await expect(page.getByTestId('kitchen-card').first()).toBeVisible();
+  expect(await height(page, 'header > div'), 'top bar').toBe(52);
+  expect(await height(page, 'nav[aria-label] ul.h-tabbar'), 'tab bar').toBe(64);
+  expect(await height(page, 'form[role="search"] > div'), 'search field').toBe(44);
+  expect(await height(page, 'form[role="search"] button[type="submit"]'), 'search submit').toBe(36);
+  expect(await height(page, '[data-testid="filter-open-now"] > span'), 'filter chip').toBe(36);
+  expect(await height(page, '[data-testid="dish-filter"] [role="group"]'), 'segmented control').toBe(40);
+  const photo = page.getByTestId('kitchen-card').first().locator('img').first();
+  expect(Math.round((await photo.boundingBox())!.width), 'kitchen photo').toBe(88);
+
+  await page.goto(`/kitchens/${kitchen.id}`);
+  const row = page.locator(`[data-dish-id="${dish.id}"]`);
+  await expect(row).toBeVisible();
+  const dishPhoto = (await row.locator('img').first().boundingBox())!;
+  const add = (await row.getByRole('button', { name: 'Add', exact: true }).boundingBox())!;
+  expect(Math.round(dishPhoto.width), 'dish photo').toBe(96);
+  expect(Math.round(add.height), 'Add button').toBe(36);
+  expect(add.y, 'Add sits under the photo, not over it').toBeGreaterThanOrEqual(dishPhoto.y + dishPhoto.height);
+  await row.getByRole('button', { name: 'Add', exact: true }).click();
+  await expect(page.getByTestId('cart-bar')).toBeVisible();
+  expect(await height(page, '[data-testid="header-cart"]'), 'kitchen cart bar button').toBe(52);
+
+  await page.getByTestId('header-cart').click();
+  await expect(page).toHaveURL('/cart');
+  await expect(page.getByTestId('place-order-bar')).toBeVisible();
+  expect(await height(page, '[data-testid="place-order-bar"] button[type="submit"]'), 'place-order button').toBe(52);
 });

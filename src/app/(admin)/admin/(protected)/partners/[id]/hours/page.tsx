@@ -11,7 +11,7 @@ export default async function AdminHoursPage({ params }: Props) {
   const basePath = `/admin/partners/${kitchen.id}`;
   return (
     <div className="flex max-w-3xl flex-col gap-4">
-      <Link href={basePath} className="inline-flex min-h-touch items-center gap-1 self-start text-base font-semibold text-primary-strong">
+      <Link href={basePath} className="tap inline-flex items-center gap-1 self-start text-base font-semibold text-primary-strong">
         <span aria-hidden="true">← </span>
         {t('backToPartner')}
       </Link>

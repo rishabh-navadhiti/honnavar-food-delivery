@@ -32,7 +32,7 @@ export default async function AddressesPage() {
                   <p className="text-base">{a.house}</p>
                   <p className="text-small text-muted">{a.landmark}</p>
                 </div>
-                <Link href={`/addresses/${a.id}`} className="inline-flex min-h-touch shrink-0 items-center gap-1.5 px-1 text-base font-semibold text-primary-strong">
+                <Link href={`/addresses/${a.id}`} className="tap inline-flex shrink-0 items-center gap-1.5 px-1 text-base font-semibold text-primary-strong">
                   <Pencil aria-hidden="true" className="size-4" />
                   {t('common.edit')}
                 </Link>

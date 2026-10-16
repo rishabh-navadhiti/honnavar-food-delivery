@@ -10,9 +10,9 @@ export function BackLink({ href, label }: { href: string; label: string }) {
     <Link
       href={href}
       data-testid="back-link"
-      className="inline-flex min-h-touch items-center gap-1.5 self-start pe-2 text-base font-semibold text-primary-strong hover:underline underline-offset-4"
+      className="tap inline-flex items-center gap-1.5 self-start py-1 text-base font-semibold text-primary-strong hover:underline underline-offset-4"
     >
-      <ArrowLeft aria-hidden="true" className="size-5" />
+      <ArrowLeft aria-hidden="true" className="size-[18px]" />
       {label}
     </Link>
   );

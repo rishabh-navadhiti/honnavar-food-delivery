@@ -26,7 +26,7 @@ export default async function OrdersPage() {
     <li key={order.id} className="flex flex-col gap-2">
       <Link
         href={`/orders/${order.id}`}
-        className="flex min-h-touch flex-col gap-1.5 rounded-lg bg-surface p-4 shadow-1 transition-shadow duration-(--duration-fast) hover:shadow-2"
+        className="flex min-h-touch flex-col gap-1.5 rounded-lg bg-surface p-3 shadow-1 transition-shadow duration-(--duration-fast) hover:shadow-2"
         data-testid="order-card"
       >
         <span className="flex items-center justify-between gap-2">
@@ -47,7 +47,7 @@ export default async function OrdersPage() {
   );
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-4" data-wide>
       <BackLink href="/" label={t('backLinks.home')} />
       <h1 className="text-title font-bold">{t('orders.title')}</h1>
       {orders.length === 0 ? (

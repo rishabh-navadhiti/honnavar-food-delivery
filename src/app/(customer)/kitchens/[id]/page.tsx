@@ -73,7 +73,7 @@ export default async function KitchenPage({ params }: Props) {
         priority
         className="-mx-4 aspect-[16/9] rounded-none sm:mx-0 sm:rounded-lg"
       />
-      <header className="relative -mt-14 mx-1 flex flex-col gap-2.5 rounded-lg bg-surface p-4 shadow-2">
+      <header className="relative -mt-14 mx-1 flex flex-col gap-2.5 rounded-lg bg-surface p-3 shadow-2">
         <div className="flex items-start justify-between gap-3">
           <h1 className="stretch-head text-title font-bold leading-[var(--lh-tight)]">
             <LocalizedText pair={kitchen.name} />
@@ -135,7 +135,7 @@ export default async function KitchenPage({ params }: Props) {
           </p>
         )}
         {kitchen.noMatchingDishes ? (
-          <div className="flex flex-col items-start gap-3 rounded-lg bg-surface p-4 shadow-1" data-testid="no-matching-dishes">
+          <div className="flex flex-col items-start gap-3 rounded-lg bg-surface p-3 shadow-1" data-testid="no-matching-dishes">
             <p className="text-base font-semibold">{dishFilter === 'veg' ? t('dishFilter.noVegHere') : t('dishFilter.noNonvegHere')}</p>
             <form action={setDishFilter}>
               <input type="hidden" name="filter" value="all" />

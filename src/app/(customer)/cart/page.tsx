@@ -74,7 +74,7 @@ export default async function CartPage({ searchParams }: Props) {
       <Link
         href={`/kitchens/${view.kitchen.id}`}
         data-testid="add-more"
-        className="inline-flex min-h-touch items-center gap-2 self-start rounded-md px-1 text-base font-semibold text-primary-strong"
+        className="tap inline-flex items-center gap-2 self-start rounded-md px-1 text-base font-semibold text-primary-strong"
       >
         <Plus aria-hidden="true" className="size-5 shrink-0" />
         {t('cart.addMoreFrom', { kitchen: pickLocalized(view.kitchen.name, locale)?.text ?? '' })}
@@ -87,7 +87,7 @@ export default async function CartPage({ searchParams }: Props) {
       </p>
 
       {!view.kitchen.active ? (
-        <div className="flex flex-col gap-3 rounded-lg bg-closed-soft p-4">
+        <div className="flex flex-col gap-3 rounded-lg bg-closed-soft p-3">
           <p className="text-base font-semibold">{t('errors.kitchenUnavailable')}</p>
           <form action={clearCartAction}>
             <button type="submit" className={buttonClasses('secondary')}>
@@ -96,17 +96,17 @@ export default async function CartPage({ searchParams }: Props) {
           </form>
         </div>
       ) : !open ? (
-        <p className="rounded-lg bg-closed-soft p-4 text-base font-semibold" data-testid="ordering-closed">
+        <p className="rounded-lg bg-closed-soft p-3 text-base font-semibold" data-testid="ordering-closed">
           {t('cart.orderWhenOpen')}
         </p>
       ) : !session ? (
         <PlaceOrderBar>
-          <ButtonLink href="/login?next=/cart" className="min-h-[54px] w-full text-[1.06rem]">
+          <ButtonLink href="/login?next=/cart" className="min-h-13 w-full text-card">
             {t('cart.signInToCheckOut')}
           </ButtonLink>
         </PlaceOrderBar>
       ) : view.addresses.length === 0 ? (
-        <div className="flex flex-col gap-3 rounded-lg bg-surface p-4 shadow-1">
+        <div className="flex flex-col gap-3 rounded-lg bg-surface p-3 shadow-1">
           <p className="text-base font-semibold">{t('checkout.needAddress')}</p>
           <ButtonLink href="/addresses/new?next=/cart">{t('checkout.addFirstAddress')}</ButtonLink>
         </div>

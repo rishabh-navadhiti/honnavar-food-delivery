@@ -42,8 +42,8 @@ export default async function HomePage({ searchParams }: Props) {
   const anyFilter = Boolean(filters.type || filters.pureVeg || filters.openNow || dishFilter !== 'all');
 
   return (
-    <div className="flex flex-col gap-3">
-      <h1 className="stretch-head text-display font-bold leading-[var(--lh-tight)]">{t('home.title')}</h1>
+    <div className="flex flex-col gap-3" data-wide>
+      <h1 className="stretch-head text-title font-bold leading-[var(--lh-tight)]">{t('home.title')}</h1>
       <SearchBox key={filters.q ?? ''} filters={filters} />
       {filters.q ? null : <FilterBar filters={filters} />}
       <DishFilterControl current={dishFilter} returnTo={filtersToQuery(filters)} />
