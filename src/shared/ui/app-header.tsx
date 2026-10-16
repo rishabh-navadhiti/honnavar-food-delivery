@@ -16,7 +16,9 @@ export function AppHeader({ homeHref, surfaceLabel, actions }: { homeHref: strin
         <Link href={homeHref} className="flex min-h-touch min-w-0 items-center gap-2.5">
           <CoastMark className="size-[30px] shrink-0" />
           <span className="flex min-w-0 flex-col">
-            <span className="stretch-head truncate text-[1.19rem] font-bold leading-none text-ink">{t('appName')}</span>
+            <span className="stretch-head truncate text-[1.19rem] font-bold leading-tight text-ink" data-truncate title={t('appName')}>
+              {t('appName')}
+            </span>
             {surfaceLabel ? <span className="mt-1 text-caption font-semibold leading-none text-subtle">{surfaceLabel}</span> : null}
           </span>
         </Link>

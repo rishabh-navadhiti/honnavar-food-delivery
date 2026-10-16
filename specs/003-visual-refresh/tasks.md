@@ -306,7 +306,7 @@ three kitchens (four at 430 px) are visible (spec US1, SC-002, SC-004, SC-007a, 
   - `search.{suggestionsKitchens,suggestionsDishes,noSuggestions,allResultsFor,suggestionsCount}`;
   - `checkout.placeOrderWithTotal`.
   Remove keys left unused by the removed cart bar and strip (for example `cart.viewCart`, `ongoing.label` if unused) from both files. Run the parity test.
-- [ ] T053 [US1] Run `npm test`, `npm run test:e2e` (all existing specs plus T026–T029) and `npm run screens`. Compare the customer screens with `design/a-coast/` home, kitchen, cart and order, and fix differences in the files above. Commit with task ids, naming E1 and any locator edits
+- [X] T053 [US1] Run `npm test`, `npm run test:e2e` (all existing specs plus T026–T029) and `npm run screens`. Compare the customer screens with `design/a-coast/` home, kitchen, cart and order, and fix differences in the files above. Commit with task ids, naming E1 and any locator edits
 
 **Checkpoint**: The customer surface is refreshed and its layout checks pass in both languages.
 
