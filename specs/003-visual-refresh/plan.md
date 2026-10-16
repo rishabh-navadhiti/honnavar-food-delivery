@@ -139,9 +139,16 @@ edits are raised for the owner rather than made silently: E1 and E2 approved 202
    CSS `:target` tint (R8).
 8. The sound pill is remembered per device in `localStorage`; the sound unlock itself stays per tab,
    because browsers need a fresh tap after a reload (R9).
-9. The mockup's countdown bar on the waiting partner order is kept as a functional time-left
-   indicator, with the time also in words. Every other decorative colour rule is removed (owner
-   edit 2).
+9. The waiting partner order counts down in words only; the mockup's countdown bar was dropped
+   during implementation so three cards fit at 390×844 (SC-007). Every decorative colour rule is
+   removed (owner edit 2).
+15. On the partner orders list itself the new-order banner is not repeated: the waiting order is
+    first, outlined and counting down there, and the sound still plays (FR-029 stays met; SC-007).
+    Every other partner screen shows the banner as before.
+16. The partner card's middle block (items, dishes, customer) is the link to the order, and the
+    customer's landmark and rider note share one line (full text in its title and on the order page).
+17. Partner orders' "Today" and "Messages" links are 48 px icon buttons with their names for screen
+    readers.
 10. Admin navigation moves from a side column to a top bar; the board keeps a 200 px column minimum
     and scrolls sideways between 1024 and 1280 px (R11).
 11. Shaped skeletons cover the six reference routes plus agent home and the partner order page;

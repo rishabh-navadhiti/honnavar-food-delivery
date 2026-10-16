@@ -5,7 +5,7 @@ export function StatusNotice({ status, reason }: { status: 'pending' | 'active' 
   const t = useTranslations('partner');
   if (status === 'active') return null;
   return (
-    <div role="status" data-testid="status-notice" className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-base text-ink">
+    <div role="status" data-testid="status-notice" className="rounded-lg border border-amber-300 bg-warn-soft p-4 text-base text-ink">
       {status === 'pending' ? t('pendingNotice') : t('suspendedNotice', { reason: reason ?? '' })}
     </div>
   );

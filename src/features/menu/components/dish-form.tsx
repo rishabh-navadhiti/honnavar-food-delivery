@@ -75,7 +75,7 @@ export function DishForm({ surface, kitchenId, pureVeg, categories, defaultCateg
           ))}
         </SelectField>
 
-        <p className="text-sm text-muted">{t('categoryForm.nameHint')}</p>
+        <p className="text-small text-muted">{t('categoryForm.nameHint')}</p>
         <TextField name="nameEn" lang="en" label={t('dishForm.nameEn')} defaultValue={values.nameEn} maxLength={80} error={fieldError('name', 'name.en')} />
         <TextField name="nameKn" lang="kn" label={t('dishForm.nameKn')} defaultValue={values.nameKn} maxLength={80} error={fieldError('name.kn')} />
         <TextAreaField name="descriptionEn" lang="en" label={t('dishForm.descriptionEn')} hint={t('common.optional')} defaultValue={values.descriptionEn} maxLength={300} error={fieldError('description.en')} />
@@ -90,7 +90,7 @@ export function DishForm({ surface, kitchenId, pureVeg, categories, defaultCateg
         />
 
         <fieldset className="flex flex-col gap-2">
-          <legend className="text-sm font-semibold">{t('dishForm.vegQuestion')}</legend>
+          <legend className="text-small font-semibold">{t('dishForm.vegQuestion')}</legend>
           {pureVeg ? (
             <>
               <input type="hidden" name="isVeg" value="true" />
@@ -101,7 +101,7 @@ export function DishForm({ surface, kitchenId, pureVeg, categories, defaultCateg
           ) : (
             <div className="flex gap-3">
               {(['true', 'false'] as const).map((v) => (
-                <label key={v} className="flex min-h-touch flex-1 cursor-pointer items-center gap-2 rounded-xl border border-line bg-surface px-3">
+                <label key={v} className="flex min-h-touch flex-1 cursor-pointer items-center gap-2 rounded-md bg-surface shadow-1 px-3">
                   <input type="radio" name="isVeg" value={v} defaultChecked={String(isVeg) === v} className="size-5 accent-primary" />
                   <span>{v === 'true' ? t('veg.veg') : t('veg.nonVeg')}</span>
                 </label>

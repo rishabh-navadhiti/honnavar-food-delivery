@@ -8,7 +8,7 @@ export function LastChanged({ role, phone, at }: { role: 'admin' | 'partner' | n
   const current = useLocale();
   if (!role || !phone || !at) return null;
   return (
-    <p data-testid="last-changed" className="text-xs text-muted">
+    <p data-testid="last-changed" className="text-caption text-muted">
       {t('by', { role: t(role), phone: formatPhone(phone), when: formatDayTime(at, isLocale(current) ? current : 'en') })}
     </p>
   );

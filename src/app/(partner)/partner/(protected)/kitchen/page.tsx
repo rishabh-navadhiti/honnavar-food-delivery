@@ -12,7 +12,7 @@ export default async function PartnerKitchenPage() {
   if (!kitchen) notFound();
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{t('title')}</h1>
+      <h1 className="text-title font-bold">{t('title')}</h1>
       <p className="text-base text-muted">{t('managedByTeam')}</p>
       <KitchenProfile kitchen={kitchen} contacts={contacts} signins={signins} />
     </div>

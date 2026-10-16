@@ -632,7 +632,9 @@
   },
   "alert": {
     "turnOnSound": "ಆರ್ಡರ್ ಸದ್ದು ಆನ್ ಮಾಡಲು ಒತ್ತಿ",
-    "newOrder": "ಹೊಸ ಆರ್ಡರ್ #{orderNo}{count, plural, one {} other { (ಇನ್ನೂ # ಕಾಯುತ್ತಿವೆ)}}. ತೆರೆಯಲು ಒತ್ತಿ."
+    "newOrder": "ಹೊಸ ಆರ್ಡರ್ #{orderNo}{count, plural, one {} other { (ಇನ್ನೂ # ಕಾಯುತ್ತಿವೆ)}}. ತೆರೆಯಲು ಒತ್ತಿ.",
+    "soundOnPill": "ಸದ್ದು ಆನ್",
+    "tapForSoundPill": "ಸದ್ದಿಗೆ ಒತ್ತಿ"
   },
   "dayView": {
     "title": "ಇಂದು",

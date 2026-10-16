@@ -228,9 +228,9 @@ motion.
 - **Partner order card** (owner edits 3 and 5): number, status chip (icon and word), time left
   (waiting) or age, item count, **item total** (as today), payment label, customer display name,
   landmark and rider note (as today), dishes, then the one next action. The waiting order keeps
-  its countdown as words; the countdown bar from the mockup stays only as a time-left indicator
-  inside the card (functional, not decorative), with the time also in text. The waiting card is
-  marked by a neutral ink outline and its position first, not by an amber ring, rail or tint.
+  its countdown in words (the mockup's bar was dropped so three cards fit, SC-007). The waiting card
+  is marked by a neutral ink outline and its position first, not by an amber ring, rail or tint. On
+  the orders list the new-order banner is not repeated above the waiting card (plan choice 15).
 - **Reject step**: a bottom sheet with reasons as a 2×2 grid of 48 px choices, the optional note,
   and Back and Reject side by side; same form, fields and validation as today.
 - **Agent**: today's deliveries and cash as two figures; order cards reuse the partner card
@@ -316,6 +316,8 @@ With that, one edit is expected:
 | E1 | `e2e/ordering-ongoing-strip.spec.ts` | 25–29 | Asserts the ongoing strip sits **above** the cart bar | Asserts both are visible and do **not overlap** | The old assertion encodes the stacked layout this feature removes (spec FR-013); "both reachable, neither hiding the other" is the spec's edge case. This changes an assertion, not only a locator, so it needs the owner's agreement under FR-002 |
 
 | E2 | `e2e/ordering-ongoing-strip.spec.ts` | 37–39 | Clicking the ongoing strip opens `/orders/<id>` | Clicking the Orders tab's ongoing state opens `/orders`, whose first order card is that order with its status; clicking it opens `/orders/<id>`, where the state is not shown | Follows from the owner's plan-review edit (the Orders tab always opens the list). Approved by the owner 2026-10-16 |
+
+| L1 | `e2e/ordering-us6-messages.spec.ts` | 12 | `getByTestId('message-list')` | `getByRole('main').getByTestId('message-list')` | Locator only. After the language switch (a full page load), React briefly keeps a hidden streamed copy of the page outside `main` before revealing it; the strict locator could catch both copies |
 
 E1 and E2 were approved by the owner on 2026-10-16.
 

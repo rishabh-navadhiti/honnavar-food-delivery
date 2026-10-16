@@ -1,6 +1,7 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { ArrowLeft, Bike, Check, ChefHat, CircleX, PackageCheck, X } from 'lucide-react';
+import { useActionState, useState, type ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import { buttonClasses } from '@/shared/ui/button';
 import { TextAreaField } from '@/shared/ui/field';
@@ -22,11 +23,12 @@ export function PartnerActions({ orderId, status }: { orderId: string; status: O
   const rejectErrors = useErrorText(rejectState.error);
   const busy = stepping || rejecting;
 
-  const step = (name: 'accept' | 'preparing' | 'ready', label: string) => (
-    <form action={stepAction} onSubmit={() => acknowledge(orderId)}>
+  const step = (name: 'accept' | 'preparing' | 'ready', label: string, icon: ReactNode, className = 'w-full') => (
+    <form action={stepAction} onSubmit={() => acknowledge(orderId)} className={className}>
       <input type="hidden" name="orderId" value={orderId} />
       <input type="hidden" name="step" value={name} />
-      <button type="submit" disabled={busy} className={buttonClasses('primary', 'w-full')}>
+      <button type="submit" disabled={busy} className={buttonClasses(name === 'accept' ? 'primary' : 'tonal', 'w-full')}>
+        {icon}
         {label}
       </button>
     </form>
@@ -35,46 +37,69 @@ export function PartnerActions({ orderId, status }: { orderId: string; status: O
   return (
     <div className="flex flex-col gap-2">
       {status === 'placed' ? (
-        <>
-          {step('accept', t('partnerOrders.accept'))}
-          {rejectOpen ? null : (
-            <button type="button" onClick={() => setRejectOpen(true)} className={buttonClasses('secondary', 'w-full')}>
-              {t('partnerOrders.reject')}
-            </button>
-          )}
-        </>
+        <div className="grid grid-cols-[auto_1fr] gap-2">
+          <button type="button" onClick={() => setRejectOpen(true)} className={buttonClasses('secondary', 'text-danger')}>
+            <X aria-hidden="true" />
+            {t('partnerOrders.reject')}
+          </button>
+          {step('accept', t('partnerOrders.accept'), <Check aria-hidden="true" />)}
+        </div>
       ) : null}
-      {status === 'accepted' ? step('preparing', t('partnerOrders.startPreparing')) : null}
-      {status === 'preparing' ? step('ready', t('partnerOrders.markReady')) : null}
-      {status === 'ready' ? <p className="text-base font-semibold text-open">{t('partnerOrders.waitingPickup')}</p> : null}
+      {status === 'accepted' ? step('preparing', t('partnerOrders.startPreparing'), <ChefHat aria-hidden="true" />) : null}
+      {status === 'preparing' ? step('ready', t('partnerOrders.markReady'), <PackageCheck aria-hidden="true" />) : null}
+      {status === 'ready' ? (
+        <p className="inline-flex items-center gap-2 text-base font-semibold text-open">
+          <Bike aria-hidden="true" className="size-5" />
+          {t('partnerOrders.waitingPickup')}
+        </p>
+      ) : null}
       <FormError message={stepErrors.form} />
 
       {status === 'placed' && rejectOpen ? (
-        <form action={rejectAction} onSubmit={() => acknowledge(orderId)} className="flex flex-col gap-3 rounded-xl border border-line p-3">
-          <input type="hidden" name="orderId" value={orderId} />
-          <fieldset className="flex flex-col gap-2">
-            <legend className="mb-1 text-base font-bold">{t('partnerOrders.rejectReason')}</legend>
-            {PARTNER_REASONS.map((r) => (
-              <label
-                key={r}
-                className="flex min-h-touch cursor-pointer items-center gap-3 rounded-xl border border-line px-3 has-[:checked]:border-primary has-[:checked]:bg-orange-50"
-              >
-                <input type="radio" name="reason" value={r} onChange={() => setReason(r)} className="size-5 accent-primary" />
-                <span className="text-base">{t(`orderReason.${r}`)}</span>
-              </label>
-            ))}
-          </fieldset>
-          {reason === 'other' ? (
-            <TextAreaField name="note" label={t('partnerOrders.rejectNote')} maxLength={200} required error={rejectErrors.field('note')} />
-          ) : null}
-          <FormError message={rejectErrors.form ?? rejectErrors.field('reason')} />
-          <button type="submit" disabled={busy || !reason} className={buttonClasses('danger', 'w-full')}>
-            {t('partnerOrders.confirmReject')}
-          </button>
-          <button type="button" onClick={() => setRejectOpen(false)} className={buttonClasses('ghost', 'w-full')}>
-            {t('common.cancel')}
-          </button>
-        </form>
+        <div className="fixed inset-0 z-[1000] flex animate-fade-in items-end justify-center bg-scrim">
+          <form
+            action={rejectAction}
+            onSubmit={() => acknowledge(orderId)}
+            data-testid="reject-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={`reject-${orderId}`}
+            className="flex w-full max-w-md animate-sheet-up flex-col gap-3 rounded-t-xl bg-surface p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-3"
+          >
+            <input type="hidden" name="orderId" value={orderId} />
+            <span aria-hidden="true" className="mx-auto h-1 w-10 rounded-full bg-line-strong/50" />
+            <fieldset className="flex flex-col gap-2">
+              <legend id={`reject-${orderId}`} className="mb-1 text-heading font-bold">
+                {t('partnerOrders.rejectReason')}
+              </legend>
+              <div className="grid grid-cols-2 gap-2">
+                {PARTNER_REASONS.map((r) => (
+                  <label
+                    key={r}
+                    className="flex min-h-touch cursor-pointer items-center gap-2 rounded-md border border-line-strong/45 px-3 py-2 text-small font-semibold has-[:checked]:border-danger has-[:checked]:bg-danger-soft has-[:checked]:text-danger"
+                  >
+                    <input type="radio" name="reason" value={r} onChange={() => setReason(r)} className="size-4 shrink-0 accent-danger" />
+                    <span>{t(`orderReason.${r}`)}</span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            {reason === 'other' ? (
+              <TextAreaField name="note" label={t('partnerOrders.rejectNote')} maxLength={200} required error={rejectErrors.field('note')} />
+            ) : null}
+            <FormError message={rejectErrors.form ?? rejectErrors.field('reason')} />
+            <div className="grid grid-cols-[auto_1fr] gap-2">
+              <button type="button" onClick={() => setRejectOpen(false)} className={buttonClasses('secondary')}>
+                <ArrowLeft aria-hidden="true" />
+                {t('common.cancel')}
+              </button>
+              <button type="submit" disabled={busy || !reason} className={buttonClasses('danger', 'w-full')}>
+                <CircleX aria-hidden="true" />
+                {t('partnerOrders.confirmReject')}
+              </button>
+            </div>
+          </form>
+        </div>
       ) : null}
     </div>
   );

@@ -324,11 +324,11 @@ languages (spec US2, SC-007).
 
 ### Tests for User Story 2 ⚠️
 
-- [ ] T054 [US2] Partner layout checks in `e2e/visual-layout.spec.ts`. Signed in as the kitchen of `placedOrder()` on `/partner/orders`, at 360×780 and 390×844 in `en` and `kn`, assert:
+- [X] T054 [US2] Partner layout checks in `e2e/visual-layout.spec.ts`. Signed in as the kitchen of `placedOrder()` on `/partner/orders`, at 360×780 and 390×844 in `en` and `kn`, assert:
   - no horizontal overflow, small targets or clipped text;
   - at least 3 fully visible order cards at 390×844 (SC-007);
   - with the reject step open on the waiting order at 390×844, the reasons, note, Back and Reject are all inside the viewport without scrolling.
-- [ ] T055 [P] [US2] End-to-end sound pill test in `e2e/visual-partner-sound.spec.ts` (390×844):
+- [X] T055 [P] [US2] End-to-end sound pill test in `e2e/visual-partner-sound.spec.ts` (390×844):
   - on first visit `sound-prompt` is visible;
   - after tapping it, `sound-prompt` is hidden and `sound-pill` shows the "on" state;
   - after a reload, `sound-pill` shows (the "tap for sound" or "on" state) and `sound-prompt` stays hidden;
@@ -336,31 +336,31 @@ languages (spec US2, SC-007).
 
 ### Implementation for User Story 2
 
-- [ ] T056 [US2] Add `promptSeen()` and `rememberPromptSeen()` to `src/features/orders/components/alert-storage.ts` using `localStorage` key `hfd_alert_prompt_seen` (`'1'` or absent), guarded like the existing functions (research R9; data-model "Device preferences")
-- [ ] T057 [US2] Split `src/features/orders/components/new-order-alert.tsx` into the full `SoundPrompt` (keeps `data-testid="sound-prompt"`, shown until the prompt has been seen on this device) and `SoundPill` (`data-testid="sound-pill"`), which shows "Sounds on" or "Tap for sound" (a button doing the same unlock). The pill sits beside the page title. Keep the new-order banner (`new-order-banner`), the tone and the acknowledgement logic unchanged. The collapse animates opacity and transform only, inside reserved space
-- [ ] T058 [US2] Restyle `src/app/(partner)/partner/(protected)/layout.tsx`:
+- [X] T056 [US2] Add `promptSeen()` and `rememberPromptSeen()` to `src/features/orders/components/alert-storage.ts` using `localStorage` key `hfd_alert_prompt_seen` (`'1'` or absent), guarded like the existing functions (research R9; data-model "Device preferences")
+- [X] T057 [US2] Split `src/features/orders/components/new-order-alert.tsx` into the full `SoundPrompt` (keeps `data-testid="sound-prompt"`, shown until the prompt has been seen on this device) and `SoundPill` (`data-testid="sound-pill"`), which shows "Sounds on" or "Tap for sound" (a button doing the same unlock). The pill sits beside the page title. Keep the new-order banner (`new-order-banner`), the tone and the acknowledgement logic unchanged. The collapse animates opacity and transform only, inside reserved space
+- [X] T058 [US2] Restyle `src/app/(partner)/partner/(protected)/layout.tsx`:
   - slim top bar with mark, wordmark, "Partner app" and the language switch;
   - the sound prompt or pill;
   - bottom `NavLinks` with icons, labels unchanged;
   - sign-out kept.
-- [ ] T059 [US2] Restyle `src/features/orders/components/partner-order-card.tsx` (FR-018, owner edits 3 and 5):
+- [X] T059 [US2] Restyle `src/features/orders/components/partner-order-card.tsx` (FR-018, owner edits 3 and 5):
   - row 1: number, `StatusChip`, then time left (waiting) or age;
   - row 2: item count, **item total** (labelled for screen readers) and payment label with icon;
   - then customer display name, landmark and rider note, as today;
   - then dishes;
   - then the one next action.
   The waiting order gets `Card tone="attention"` and the countdown bar showing time left (time also in words). No rails or tints.
-- [ ] T060 [US2] Restyle `src/features/orders/components/partner-actions.tsx` and `acknowledge-order.tsx`:
+- [X] T060 [US2] Restyle `src/features/orders/components/partner-actions.tsx` and `acknowledge-order.tsx`:
   - reject opens a bottom sheet (`duration-base` entrance) with the four reasons as a 2×2 grid of `Chip`-style radio choices, the optional note, then Back and Reject side by side;
   - same form fields, names, validation and action calls;
   - accept, preparing and ready buttons with icons.
-- [ ] T061 [P] [US2] Restyle `src/app/(partner)/partner/(protected)/orders/page.tsx` (title with "Updated" time, Messages link, waiting orders first, empty state) and `orders/[id]/page.tsx` (detail in the same card language)
-- [ ] T062 [P] [US2] Restyle `src/app/(partner)/partner/(protected)/day/page.tsx` (totals as figures, order rows with `StatusChip`) and `page.tsx` (partner home)
-- [ ] T063 [P] [US2] Restyle the partner menu screens: `src/app/(partner)/partner/(protected)/menu/**` with `src/features/menu/components/menu-editor.tsx`, `category-form.tsx`, `dish-form.tsx`, `editor-pages.tsx` and `last-changed.tsx`. Use list rows with thumbnails and availability toggles; fields and actions are unchanged
-- [ ] T064 [P] [US2] Restyle `src/app/(partner)/partner/(protected)/hours/page.tsx` and `kitchen/page.tsx` with `src/features/kitchens/components/hours-editor.tsx`, `closure-control.tsx`, `status-notice.tsx` and `scope-fields.tsx`, and restyle `messages/page.tsx`
-- [ ] T065 [US2] Add skeletons `src/app/(partner)/partner/(protected)/orders/loading.tsx` (three order-card skeletons) and `orders/[id]/loading.tsx`. Restyle `src/app/(partner)/partner/error.tsx`, `not-found.tsx` and `loading.tsx`
-- [ ] T066 [US2] Add the US2 message keys (`alert.soundOnPill`, `alert.tapForSoundPill`, and any reworded partner labels) to `en.json`, `kn.json` and `machine-drafted.json`, removing unused keys from both files. Run the parity test
-- [ ] T067 [US2] Run `npm test`, `npm run test:e2e` and `npm run screens`. Compare the partner screens with `design/a-coast/partner-orders.html`, fix differences, and commit with task ids
+- [X] T061 [P] [US2] Restyle `src/app/(partner)/partner/(protected)/orders/page.tsx` (title with "Updated" time, Messages link, waiting orders first, empty state) and `orders/[id]/page.tsx` (detail in the same card language)
+- [X] T062 [P] [US2] Restyle `src/app/(partner)/partner/(protected)/day/page.tsx` (totals as figures, order rows with `StatusChip`) and `page.tsx` (partner home)
+- [X] T063 [P] [US2] Restyle the partner menu screens: `src/app/(partner)/partner/(protected)/menu/**` with `src/features/menu/components/menu-editor.tsx`, `category-form.tsx`, `dish-form.tsx`, `editor-pages.tsx` and `last-changed.tsx`. Use list rows with thumbnails and availability toggles; fields and actions are unchanged
+- [X] T064 [P] [US2] Restyle `src/app/(partner)/partner/(protected)/hours/page.tsx` and `kitchen/page.tsx` with `src/features/kitchens/components/hours-editor.tsx`, `closure-control.tsx`, `status-notice.tsx` and `scope-fields.tsx`, and restyle `messages/page.tsx`
+- [X] T065 [US2] Add skeletons `src/app/(partner)/partner/(protected)/orders/loading.tsx` (three order-card skeletons) and `orders/[id]/loading.tsx`. Restyle `src/app/(partner)/partner/error.tsx`, `not-found.tsx` and `loading.tsx`
+- [X] T066 [US2] Add the US2 message keys (`alert.soundOnPill`, `alert.tapForSoundPill`, and any reworded partner labels) to `en.json`, `kn.json` and `machine-drafted.json`, removing unused keys from both files. Run the parity test
+- [X] T067 [US2] Run `npm test`, `npm run test:e2e` and `npm run screens`. Compare the partner screens with `design/a-coast/partner-orders.html`, fix differences, and commit with task ids
 
 **Checkpoint**: The partner surface is refreshed; the sound pill and reject sheet work in both
 languages.

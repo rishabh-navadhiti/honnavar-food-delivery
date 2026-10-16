@@ -39,7 +39,7 @@ function MoveButtons({ scope, id, name, action, first, last }: { scope: Scope; i
             type="submit"
             disabled={direction === 'up' ? first : last}
             aria-label={direction === 'up' ? t('moveUp', { name }) : t('moveDown', { name })}
-            className="flex size-touch items-center justify-center rounded-xl border border-line bg-surface text-lg disabled:opacity-30"
+            className="flex size-touch items-center justify-center rounded-md bg-surface shadow-1 text-lg disabled:opacity-30"
           >
             <span aria-hidden="true">{direction === 'up' ? '↑' : '↓'}</span>
           </button>
@@ -91,7 +91,7 @@ export function MenuEditor({
         <section key={category.id} aria-labelledby={`cat-${category.id}`} className="flex flex-col gap-2" data-testid="editor-category">
           <div className="flex items-start justify-between gap-2 border-b border-line pb-2">
             <div className="flex flex-col gap-1">
-              <h2 id={`cat-${category.id}`} className="text-lg font-bold">
+              <h2 id={`cat-${category.id}`} className="text-heading font-bold">
                 <LocalizedText pair={{ en: category.nameEn, kn: category.nameKn }} />
               </h2>
               <div className="flex flex-wrap gap-1">
@@ -115,7 +115,7 @@ export function MenuEditor({
                   key={dish.id}
                   data-testid="editor-dish"
                   data-dish-id={dish.id}
-                  className={`flex flex-col gap-2 rounded-2xl border border-line bg-surface p-3 ${dish.available ? '' : 'opacity-70'}`}
+                  className={`flex flex-col gap-2 rounded-lg bg-surface shadow-1 p-3 ${dish.available ? '' : 'opacity-70'}`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex min-w-0 flex-col gap-1">

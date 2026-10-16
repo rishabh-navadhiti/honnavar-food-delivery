@@ -20,14 +20,14 @@ export default async function PartnerDashboardPage() {
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <p className="text-sm font-semibold text-muted">{t('yourKitchen')}</p>
-        <h1 className="text-2xl font-bold">
+        <p className="text-small font-semibold text-muted">{t('yourKitchen')}</p>
+        <h1 className="text-title font-bold">
           <LocalizedText pair={{ en: kitchen.nameEn, kn: kitchen.nameKn }} />
         </h1>
       </div>
       <StatusNotice status={kitchen.status} reason={kitchen.suspensionReason} />
       <Card className="flex flex-col gap-2">
-        <p className="text-sm font-semibold text-muted">{t('customersSee')}</p>
+        <p className="text-small font-semibold text-muted">{t('customersSee')}</p>
         <KitchenStateLabel state={state} now={now} />
       </Card>
       <ClosureControl surface="partner" kitchenId={kitchen.id} state={state} now={now} />

@@ -632,7 +632,9 @@
   },
   "alert": {
     "turnOnSound": "Tap to turn on order sounds",
-    "newOrder": "New order #{orderNo}{count, plural, one {} other { (+# more waiting)}}. Tap to open."
+    "newOrder": "New order #{orderNo}{count, plural, one {} other { (+# more waiting)}}. Tap to open.",
+    "soundOnPill": "Sounds on",
+    "tapForSoundPill": "Tap for sound"
   },
   "dayView": {
     "title": "Today",

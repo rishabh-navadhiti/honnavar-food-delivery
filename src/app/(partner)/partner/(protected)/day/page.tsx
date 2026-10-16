@@ -16,16 +16,16 @@ export default async function PartnerDayPage() {
   const locale = isLocale(current) ? current : 'en';
   const { orders, totals } = await getPartnerDay(session.kitchenId!, new Date());
   const stat = (label: string, value: string | number, testId: string) => (
-    <div className="flex flex-col rounded-xl border border-line bg-surface p-3">
-      <dt className="text-sm text-muted">{label}</dt>
-      <dd className="text-2xl font-bold" data-testid={testId}>
+    <div className="flex flex-col rounded-md bg-surface shadow-1 p-3">
+      <dt className="text-small text-muted">{label}</dt>
+      <dd className="stretch-head text-display font-bold" data-testid={testId}>
         {value}
       </dd>
     </div>
   );
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{t('title')}</h1>
+      <h1 className="text-title font-bold">{t('title')}</h1>
       <dl className="grid grid-cols-2 gap-2">
         {stat(t('received'), totals.received, 'day-received')}
         {stat(t('accepted'), totals.accepted, 'day-accepted')}
@@ -34,19 +34,19 @@ export default async function PartnerDayPage() {
         <div className="col-span-2">{stat(t('deliveredValue'), formatPrice(totals.deliveredValue, locale), 'day-value')}</div>
       </dl>
       {orders.length === 0 ? (
-        <EmptyState title={t('empty')} />
+        <EmptyState illustration="NoOrders" title={t('empty')} />
       ) : (
-        <ul className="flex flex-col divide-y divide-line rounded-2xl border border-line bg-surface">
+        <ul className="flex flex-col divide-y divide-line rounded-lg bg-surface shadow-1">
           {orders.map((order) => (
             <li key={order.id}>
               <Link href={`/partner/orders/${order.id}`} className="flex min-h-touch items-center justify-between gap-2 px-4 py-3">
                 <span className="flex flex-col">
                   <OrderNumber orderNo={order.orderNo} />
-                  <span className="text-sm text-muted">{formatTime(order.placedAt, locale)}</span>
+                  <span className="text-small text-muted">{formatTime(order.placedAt, locale)}</span>
                 </span>
                 <span className="flex flex-col items-end gap-1">
                   <StatusBadge status={order.status} />
-                  <span className="text-sm font-semibold">{formatPrice(order.itemTotal, locale)}</span>
+                  <span className="text-small font-semibold">{formatPrice(order.itemTotal, locale)}</span>
                 </span>
               </Link>
             </li>

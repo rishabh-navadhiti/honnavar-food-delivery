@@ -24,9 +24,9 @@ export async function MenuEditorPage({ surface, kitchenId, basePath, saved, miss
   const categories = await getMenuForEditor(kitchenId);
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{t('title')}</h1>
+      <h1 className="text-title font-bold">{t('title')}</h1>
       {saved ? (
-        <div role="status" data-testid="saved-notice" className="rounded-2xl border border-green-200 bg-green-50 p-3 text-base">
+        <div role="status" data-testid="saved-notice" className="rounded-lg border border-green-200 bg-open-soft p-3 text-base">
           <p className="font-semibold">{t('savedNotice')}</p>
           {missing === 'kn' ? <p>{t('missingKnReminder')}</p> : null}
           {missing === 'en' ? <p>{t('missingEnReminder')}</p> : null}
@@ -43,7 +43,7 @@ export async function CategoryEditorPage({ surface, kitchenId, categoryId }: Sco
   if (categoryId && !category) notFound();
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{category ? t('editTitle') : t('newTitle')}</h1>
+      <h1 className="text-title font-bold">{category ? t('editTitle') : t('newTitle')}</h1>
       {category && surface === 'admin' ? <LastChanged role={category.updatedByRole} phone={category.updatedByPhone} at={category.updatedAt} /> : null}
       <CategoryForm surface={surface} kitchenId={kitchenId} category={category ?? undefined} />
     </div>
@@ -65,7 +65,7 @@ export async function DishEditorPage({
   if (!kitchen || (dishId && !dish) || categories.length === 0) notFound();
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{dish ? t('editTitle') : t('newTitle')}</h1>
+      <h1 className="text-title font-bold">{dish ? t('editTitle') : t('newTitle')}</h1>
       {dish && surface === 'admin' ? <LastChanged role={dish.updatedByRole} phone={dish.updatedByPhone} at={dish.updatedAt} /> : null}
       <DishForm
         surface={surface}
@@ -86,7 +86,7 @@ export async function HoursEditorPage({ surface, kitchenId }: Scope) {
   const week = (await loadWeekHours([kitchenId])).get(kitchenId)!;
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{t('title')}</h1>
+      <h1 className="text-title font-bold">{t('title')}</h1>
       {surface === 'admin' ? <LastChanged role={kitchen.hoursUpdatedByRole} phone={kitchen.hoursUpdatedByPhone} at={kitchen.hoursUpdatedAt} /> : null}
       <HoursEditor surface={surface} kitchenId={kitchenId} week={week} />
     </div>
