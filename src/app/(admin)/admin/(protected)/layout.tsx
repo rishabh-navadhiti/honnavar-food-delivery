@@ -12,7 +12,7 @@ export default async function AdminProtectedLayout({ children }: { children: Rea
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 md:flex-row">
       <aside className="md:w-56 md:shrink-0">
         <NavLinks
-          layout="side"
+          layout="top"
           ariaLabel={t('mainNavigation')}
           items={[
             { href: '/admin/orders', label: t('kitchenOrders') },

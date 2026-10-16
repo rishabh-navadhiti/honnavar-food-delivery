@@ -9,7 +9,7 @@ export function FallbackMarker({ lang }: { lang: Locale }) {
     <span
       title={t('title', { language })}
       data-testid="fallback-marker"
-      className="ms-1.5 inline-flex items-center rounded border border-line bg-secondary px-1.5 align-middle text-xs font-medium text-muted"
+      className="ms-1.5 inline-flex items-center rounded-xs border border-line bg-surface-sunk px-1.5 align-middle text-caption font-semibold text-muted"
     >
       {language}
     </span>

@@ -39,7 +39,7 @@ export function OrderMap({
       });
       L.tileLayer(tiles.url, { attribution: tiles.attribution, maxZoom: 19 }).addTo(map);
       const icon = (svg: string, label: string) =>
-        L.divIcon({ html: `<span role="img" aria-label="${label.replace(/"/g, '&quot;')}">${svg}</span>`, className: '', iconSize: [40, 40], iconAnchor: [20, 20] });
+        L.divIcon({ html: `<span role="img" aria-label="${label.replace(/"/g, '&quot;')}">${svg}</span>`, className: '', iconSize: [40, 52], iconAnchor: [20, 48] });
       const points: [number, number][] = [[delivery.lat, delivery.lng]];
       L.marker([delivery.lat, delivery.lng], { icon: icon(HOME_SVG, labels.delivery), keyboard: false }).addTo(map);
       if (kitchen) {

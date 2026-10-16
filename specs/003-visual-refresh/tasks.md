@@ -120,39 +120,39 @@ surface uses.
 
 ### Shared icons and illustrations (research R3)
 
-- [ ] T010 [P] Create the custom SVG components in `src/shared/ui/icons/`, drawn from `design/a-coast/` and each `aria-hidden` unless given a `label` prop:
+- [X] T010 [P] Create the custom SVG components in `src/shared/ui/icons/`, drawn from `design/a-coast/` and each `aria-hidden` unless given a `label` prop:
   - `veg-marks.tsx`: `VegMarkIcon` (square outline, filled circle) and `NonVegMarkIcon` (square outline, filled triangle), in `--color-veg` and `--color-nonveg`;
   - `coast-mark.tsx`: the Coast mark;
   - `empty-illustrations.tsx`: `EmptyCart`, `NoOrders`, `NoMessages`, `NoKitchens`, `NotFound`.
-- [ ] T011 [P] Redraw the kitchen and delivery map pins in `src/shared/maps/icons.ts` to the Coast pins (kitchen in primary, delivery in `sea`), keeping the existing exports and marker labels
-- [ ] T012 [P] Restyle `src/shared/ui/veg-mark.tsx` to use the new mark icons, keeping its props and accessible name
+- [X] T011 [P] Redraw the kitchen and delivery map pins in `src/shared/maps/icons.ts` to the Coast pins (kitchen in primary, delivery in `sea`), keeping the existing exports and marker labels
+- [X] T012 [P] Restyle `src/shared/ui/veg-mark.tsx` to use the new mark icons, keeping its props and accessible name
 
 ### Shared primitives (contracts/ui.md)
 
-- [ ] T013 [P] Restyle `src/shared/ui/button.tsx`:
+- [X] T013 [P] Restyle `src/shared/ui/button.tsx`:
   - variants `primary`, `secondary`, `ghost`, `danger`, plus a new `sea`;
   - an optional `icon` slot;
   - minimum height `min-h-touch` and `rounded-md`;
   - press feedback with `duration-fast`.
   Keep the `buttonClasses(variant, extra)` signature used across the app.
-- [ ] T014 [P] Create `src/shared/ui/chip.tsx` (`Chip`: a button or link, `pressed` rendered as `aria-pressed`, optional icon, `rounded-full`, min 48 px high)
-- [ ] T015 [P] Create `src/features/orders/components/status-chip.tsx` (`StatusChip`, with the Lucide icon and word per status, using `status-*` and `-soft` tokens; icons as in `design/a-coast/index.html`). Make `src/features/orders/components/status-badge.tsx` render `StatusChip`, keeping its props and any test ids
-- [ ] T016 [P] Restyle `src/shared/ui/card.tsx` with a `tone: 'default' | 'attention'` prop. Attention is a neutral 2 px ink outline: no coloured ring, rail or tint (owner edit 2)
-- [ ] T017 [P] Restyle `src/shared/ui/badge.tsx`, `field.tsx`, `form-message.tsx`, `phone-link.tsx`, `fallback-marker.tsx` and `photo.tsx` to the tokens: inputs `rounded-md` and 48 px, icons for phone links, fallback marker unchanged in meaning
-- [ ] T018 [P] Update `src/shared/ui/empty-state.tsx` to take an `illustration` prop (one of T010's illustrations), keeping `title`, `body` and `action`
-- [ ] T019 [P] Rework `src/shared/ui/route-states.tsx`:
+- [X] T014 [P] Create `src/shared/ui/chip.tsx` (`Chip`: a button or link, `pressed` rendered as `aria-pressed`, optional icon, `rounded-full`, min 48 px high)
+- [X] T015 [P] Create `src/features/orders/components/status-chip.tsx` (`StatusChip`, with the Lucide icon and word per status, using `status-*` and `-soft` tokens; icons as in `design/a-coast/index.html`). Make `src/features/orders/components/status-badge.tsx` render `StatusChip`, keeping its props and any test ids
+- [X] T016 [P] Restyle `src/shared/ui/card.tsx` with a `tone: 'default' | 'attention'` prop. Attention is a neutral 2 px ink outline: no coloured ring, rail or tint (owner edit 2)
+- [X] T017 [P] Restyle `src/shared/ui/badge.tsx`, `field.tsx`, `form-message.tsx`, `phone-link.tsx`, `fallback-marker.tsx` and `photo.tsx` to the tokens: inputs `rounded-md` and 48 px, icons for phone links, fallback marker unchanged in meaning
+- [X] T018 [P] Update `src/shared/ui/empty-state.tsx` to take an `illustration` prop (one of T010's illustrations), keeping `title`, `body` and `action`
+- [X] T019 [P] Rework `src/shared/ui/route-states.tsx`:
   - `RouteLoading` becomes a restyled generic skeleton;
   - add the named skeleton building blocks `SkeletonBox`, `SkeletonRow` (kitchen-row height) and `SkeletonCard` (order-card height);
   - keep `role="status"` and the `common.loading` text;
   - restyle `RouteError` and `RouteNotFound` with an illustration (T010) and their existing actions.
-- [ ] T020 Restyle `src/shared/ui/app-header.tsx` as the slim top bar: `h-topbar`, mark plus wordmark (`common.appName`), an optional `back` link keeping `data-testid="back-link"`, and the `actions` slot for the language switch. Restyle `src/shared/ui/language-switch.tsx` as a pill with a languages icon, keeping its accessible names
-- [ ] T021 Extend `src/shared/ui/nav-links.tsx`:
+- [X] T020 Restyle `src/shared/ui/app-header.tsx` as the slim top bar: `h-topbar`, mark plus wordmark (`common.appName`), an optional `back` link keeping `data-testid="back-link"`, and the `actions` slot for the language switch. Restyle `src/shared/ui/language-switch.tsx` as a pill with a languages icon, keeping its accessible names
+- [X] T021 Extend `src/shared/ui/nav-links.tsx`:
   - items take a Lucide `icon`;
   - `layout` becomes `'bottom' | 'top'`, where `top` replaces `side`;
   - the active item gets `aria-current`, bold weight and a filled icon tile;
   - link names stay unchanged.
   Switch the admin layout's call to `top` in T071.
-- [ ] T022 Add the foundational message keys to `src/shared/i18n/messages/en.json`, `kn.json` and `machine-drafted.json`: `common.mark`, `common.back` (if missing), and the empty-state illustration alt texts under `empty.*` (research R16). Run the messages parity test
+- [X] T022 Add the foundational message keys to `src/shared/i18n/messages/en.json`, `kn.json` and `machine-drafted.json`: `common.mark`, `common.back` (if missing), and the empty-state illustration alt texts under `empty.*` (research R16). Run the messages parity test
 
 **Checkpoint**: Tokens, font, icons, primitives and test tools are in place; existing tests still
 pass (`npm test`, `npm run test:e2e`); `npm run screens` shows the new base styles.
