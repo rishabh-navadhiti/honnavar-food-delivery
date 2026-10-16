@@ -472,21 +472,21 @@ Force an empty list and a not-found order on each surface (spec US6, SC-009).
 
 ### Tests for User Story 6 ⚠️
 
-- [ ] T086 [US6] States test in `e2e/visual-states.spec.ts`:
+- [X] T086 [US6] States test in `e2e/visual-states.spec.ts`:
   - a not-found URL on each surface (`/kitchens/<random uuid>`, `/partner/orders/<random uuid>`, `/agent/orders/<random uuid>`, `/admin/orders/<random uuid>`) shows the `NotFound` illustration, the surface's navigation and a way back;
   - the empty cart shows the `EmptyCart` illustration with the tab bar (not the place-order bar);
   - on home, kitchen, partner orders and the board, a `PerformanceObserver` for `layout-shift` records a cumulative score below 0.1 after load with a 3G-like `page.route` delay on images (SC-009).
 
 ### Implementation for User Story 6
 
-- [ ] T087 [US6] Put an illustrated `EmptyState` (T018) on every empty list not already done in US1–US4, each with one next step where one exists:
+- [X] T087 [US6] Put an illustrated `EmptyState` (T018) on every empty list not already done in US1–US4, each with one next step where one exists:
   - partner orders with none;
   - partner day with none;
   - agent with no orders;
   - board groups with none (a short muted line, not an illustration);
   - customer addresses with none;
   - search with no results.
-- [ ] T088 [US6] Fix every layout-shift and state finding from T086: reserve image boxes, fix skeleton sizes, give fonts size-adjusted fallbacks. Run `npm run test:e2e` and commit with task ids
+- [X] T088 [US6] Fix every layout-shift and state finding from T086: reserve image boxes, fix skeleton sizes, give fonts size-adjusted fallbacks. Run `npm run test:e2e` and commit with task ids
 
 ---
 

@@ -59,7 +59,7 @@ export function RouteError({ reset }: { reset: () => void }) {
 export function RouteNotFound({ homeHref }: { homeHref: string }) {
   const t = useTranslations('common');
   return (
-    <div className="flex flex-col items-center gap-3 px-4 py-12 text-center">
+    <div className="flex flex-col items-center gap-3 px-4 py-12 text-center" data-testid="not-found">
       <NotFound />
       <p className="text-heading font-bold">{t('notFoundTitle')}</p>
       <p className="max-w-prose text-base text-muted">{t('notFoundBody')}</p>
