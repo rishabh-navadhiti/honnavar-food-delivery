@@ -9,11 +9,11 @@ type AgentRow = { id: string; name: string; phone: string; vehicleType: 'bicycle
 
 export function AgentTable({ agents }: { agents: AgentRow[] }) {
   const t = useTranslations();
-  if (agents.length === 0) return <p className="rounded-xl border border-dashed border-line p-6 text-center text-muted">{t('agentAdmin.empty')}</p>;
+  if (agents.length === 0) return <p className="rounded-md border border-dashed border-line p-6 text-center text-muted">{t('agentAdmin.empty')}</p>;
   return (
-    <div className="overflow-x-auto rounded-2xl border border-line bg-surface">
+    <div className="overflow-x-auto rounded-lg bg-surface shadow-1">
       <table className="w-full text-base">
-        <thead className="bg-secondary text-sm">
+        <thead className="bg-surface-sunk text-small">
           <tr>
             <th scope="col" className="px-3 py-2 text-start">{t('agentAdmin.name')}</th>
             <th scope="col" className="px-3 py-2 text-start">{t('agentAdmin.phone')}</th>
@@ -29,7 +29,7 @@ export function AgentTable({ agents }: { agents: AgentRow[] }) {
               <td className="px-3 py-2">{formatPhone(a.phone)}</td>
               <td className="px-3 py-2">
                 {t(`vehicleType.${a.vehicleType}`)}
-                {a.vehicleReg ? <span className="ms-2 text-sm text-muted">{a.vehicleReg}</span> : null}
+                {a.vehicleReg ? <span className="ms-2 text-small text-muted">{a.vehicleReg}</span> : null}
               </td>
               <td className="px-3 py-2">
                 <Badge tone={a.active ? 'open' : 'closed'}>{a.active ? t('agentAdmin.active') : t('agentAdmin.inactive')}</Badge>

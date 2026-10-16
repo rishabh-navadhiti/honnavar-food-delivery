@@ -21,6 +21,8 @@ export type BoardOrder = {
   grandTotal: number;
   paymentMethod: 'cod' | 'upi_demo';
   placedAt: Date;
+  /** When the order entered its current status: the board shows time in status (003, FR-021). */
+  statusChangedAt: Date;
   agentId: string | null;
   agentName: string | null;
 };
@@ -60,6 +62,7 @@ export async function getDispatchBoard(now: Date): Promise<DispatchBoard> {
       grandTotal: row.order.grandTotal,
       paymentMethod: row.order.paymentMethod,
       placedAt: row.order.placedAt,
+      statusChangedAt: row.order.statusChangedAt,
       agentId: row.order.agentId,
       agentName: row.agentName,
     });

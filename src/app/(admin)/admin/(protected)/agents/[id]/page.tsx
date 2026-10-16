@@ -16,7 +16,7 @@ export default async function AdminEditAgentPage({ params }: Props) {
   const t = await getTranslations('agentAdmin');
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-bold">{t('editTitle')}</h1>
+      <h1 className="text-title font-bold">{t('editTitle')}</h1>
       <AgentForm agent={agent} />
     </div>
   );

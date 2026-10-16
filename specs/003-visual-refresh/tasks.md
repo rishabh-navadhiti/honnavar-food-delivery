@@ -377,7 +377,7 @@ scrolling, and an agent is assigned to `needsAgentOrder()` from its card (spec U
 
 ### Tests for User Story 3 ⚠️
 
-- [ ] T068 [US3] Admin layout checks in `e2e/visual-layout.spec.ts`. Signed in as the admin on `/admin/orders`, at 1280×800 in `en` and `kn`, assert:
+- [X] T068 [US3] Admin layout checks in `e2e/visual-layout.spec.ts`. Signed in as the admin on `/admin/orders`, at 1280×800 in `en` and `kn`, assert:
   - no horizontal overflow;
   - all five `group-*` columns are fully inside the viewport width;
   - no small targets or clipped text.
@@ -385,20 +385,20 @@ scrolling, and an agent is assigned to `needsAgentOrder()` from its card (spec U
 
 ### Implementation for User Story 3
 
-- [ ] T069 [US3] Restyle `src/features/orders/components/dispatch-board.tsx` (FR-020, FR-021, research R11):
+- [X] T069 [US3] Restyle `src/features/orders/components/dispatch-board.tsx` (FR-020, FR-021, research R11):
   - five equal columns at ≥ 1280 px, each headed by group icon, word and count; no coloured rules or tints;
   - cards show number (link), `StatusChip` with minutes in status, kitchen, landmark, grand total, payment label, and the agent or "Needs agent" with the assign or reassign control on the card;
   - keep `group-*`, `board-order` and `data-order-no`;
   - columns keep a 200 px minimum below 1280 px.
-- [ ] T070 [P] [US3] Restyle `src/features/orders/components/assign-agent-form.tsx` (select showing each agent's undelivered count, then Assign or Reassign with icons) and `admin-cancel-form.tsx`; fields and actions are unchanged
-- [ ] T071 [US3] Restyle `src/app/(admin)/admin/(protected)/layout.tsx`:
+- [X] T070 [P] [US3] Restyle `src/features/orders/components/assign-agent-form.tsx` (select showing each agent's undelivered count, then Assign or Reassign with icons) and `admin-cancel-form.tsx`; fields and actions are unchanged
+- [X] T071 [US3] Restyle `src/app/(admin)/admin/(protected)/layout.tsx`:
   - top bar with mark, wordmark, "Admin panel", `NavLinks layout="top"` with icons, language switch and sign-out;
   - full-width `main`.
   Restyle `src/app/(admin)/admin/(protected)/orders/page.tsx` (title, "Updated" time, find-by-number field) and `orders/[id]/page.tsx` with `src/features/orders/components/order-history.tsx`.
-- [ ] T072 [P] [US3] Restyle the admin partner screens: `src/app/(admin)/admin/(protected)/partners/**` with `src/features/kitchens/components/admin/partner-table.tsx`, `kitchen-profile-form.tsx`, `photo-form.tsx`, `signin-list.tsx`, `status-panel.tsx` and `verification-panel.tsx`. Use tables with hairlines, status chips and the shared form styles
-- [ ] T073 [P] [US3] Restyle the admin agent screens (`src/app/(admin)/admin/(protected)/agents/**`, `src/features/agents/components/agent-table.tsx`, `agent-form.tsx`), `src/app/(admin)/admin/login/page.tsx` and `src/app/(admin)/admin/(protected)/page.tsx`
-- [ ] T074 [US3] Add the skeleton `src/app/(admin)/admin/(protected)/orders/loading.tsx` (five columns of card skeletons) and restyle `src/app/(admin)/admin/error.tsx`, `not-found.tsx` and `loading.tsx`
-- [ ] T075 [US3] Add any US3 message keys (for example the board's "Needs agent" label if not already a key) to `en.json`, `kn.json` and `machine-drafted.json`. Run the parity test, `npm test`, `npm run test:e2e` and `npm run screens`; compare with `design/a-coast/admin-board.html`; commit with task ids
+- [X] T072 [P] [US3] Restyle the admin partner screens: `src/app/(admin)/admin/(protected)/partners/**` with `src/features/kitchens/components/admin/partner-table.tsx`, `kitchen-profile-form.tsx`, `photo-form.tsx`, `signin-list.tsx`, `status-panel.tsx` and `verification-panel.tsx`. Use tables with hairlines, status chips and the shared form styles
+- [X] T073 [P] [US3] Restyle the admin agent screens (`src/app/(admin)/admin/(protected)/agents/**`, `src/features/agents/components/agent-table.tsx`, `agent-form.tsx`), `src/app/(admin)/admin/login/page.tsx` and `src/app/(admin)/admin/(protected)/page.tsx`
+- [X] T074 [US3] Add the skeleton `src/app/(admin)/admin/(protected)/orders/loading.tsx` (five columns of card skeletons) and restyle `src/app/(admin)/admin/error.tsx`, `not-found.tsx` and `loading.tsx`
+- [X] T075 [US3] Add any US3 message keys (for example the board's "Needs agent" label if not already a key) to `en.json`, `kn.json` and `machine-drafted.json`. Run the parity test, `npm test`, `npm run test:e2e` and `npm run screens`; compare with `design/a-coast/admin-board.html`; commit with task ids
 
 **Checkpoint**: The admin surface is refreshed and the board uses the width.
 

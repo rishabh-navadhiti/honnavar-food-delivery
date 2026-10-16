@@ -4,7 +4,7 @@
  * and the four-tap cash order. Subjects come from catalogue flags.
  */
 import { expect, test, type Page } from '@playwright/test';
-import { availableDishesIn, demoCustomer, orderableKitchen, placedOrder, type KitchenRef } from './catalogue';
+import { admin, availableDishesIn, demoCustomer, orderableKitchen, placedOrder, type KitchenRef } from './catalogue';
 import { blockMapTiles, openAllDay } from './fixtures';
 import {
   clippedText,
@@ -162,5 +162,27 @@ test('partner orders keep the layout rules, show three cards and fit the reject 
         await expect(sheet.getByRole('button', { name: msg(locale, 'partnerOrders.confirmReject') })).toBeInViewport();
       }
     }
+  }
+});
+
+test('the admin board shows every group side by side at 1280 px, in both languages (FR-020, SC-003)', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await setLocale(page, 'en');
+  await signIn(page, '/admin/login', admin().phone);
+  for (const locale of LOCALES) {
+    await setLocale(page, locale);
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/admin/orders');
+    await page.waitForLoadState('networkidle');
+    await expectLayoutRules(page, `/admin/orders 1280 ${locale}`);
+    for (const group of ['waiting_kitchen', 'needs_agent', 'assigned', 'out_for_delivery', 'finished']) {
+      const box = (await page.getByTestId(`group-${group}`).boundingBox())!;
+      expect(box.x, `${group} starts on screen (${locale})`).toBeGreaterThanOrEqual(0);
+      expect(box.x + box.width, `${group} ends on screen (${locale})`).toBeLessThanOrEqual(1280);
+    }
+    // Between 1024 and 1280 px the columns keep 200 px and the board, not the page, scrolls.
+    await page.setViewportSize({ width: 1024, height: 768 });
+    expect(await horizontalOverflow(page), `page scrolls sideways at 1024 (${locale})`).toBeLessThanOrEqual(0);
+    expect((await page.getByTestId('group-finished').boundingBox())!.width).toBeGreaterThanOrEqual(199);
   }
 });

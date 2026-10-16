@@ -1,3 +1,4 @@
+import { Search } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { requireSession } from '@/features/auth/session';
@@ -27,21 +28,22 @@ export default async function DispatchPage({ searchParams }: Props) {
       <LiveRefresh />
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">{t('title')}</h1>
+          <h1 className="text-title font-bold">{t('title')}</h1>
           <UpdatedAt at={now} />
         </div>
         <form method="get" className="flex items-end gap-2" role="search">
-          <label className="flex flex-col gap-1 text-sm font-semibold">
+          <label className="flex flex-col gap-1 text-small font-semibold">
             {t('findLabel')}
-            <input name="no" inputMode="numeric" placeholder="1042" className="min-h-touch w-32 rounded-xl border border-line bg-surface px-3 text-base font-normal" />
+            <input name="no" inputMode="numeric" placeholder="1042" className="min-h-touch w-36 rounded-md border border-line-strong bg-surface px-3 text-base font-normal" />
           </label>
           <button type="submit" className={buttonClasses('secondary')}>
+            <Search aria-hidden="true" />
             {t('find')}
           </button>
         </form>
       </div>
       {notFoundNo ? (
-        <p role="alert" className="text-base font-medium text-danger">
+        <p role="alert" className="rounded-md bg-danger-soft px-3 py-2 text-base font-semibold text-danger">
           {t('notFound', { no: notFoundNo })}
         </p>
       ) : null}

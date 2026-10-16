@@ -44,7 +44,7 @@ export default async function AdminOrderPage({ params }: Props) {
         {t('dispatch.title')}
       </Link>
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-title font-bold">
           <OrderNumber orderNo={order.orderNo} />
         </h1>
         <StatusBadge status={order.status} />
@@ -54,7 +54,7 @@ export default async function AdminOrderPage({ params }: Props) {
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card className="flex flex-col gap-2">
-          <h2 className="text-lg font-bold">{t('adminOrder.customer')}</h2>
+          <h2 className="text-heading font-bold">{t('adminOrder.customer')}</h2>
           <p>{order.customer.name ?? t('partnerOrders.customer')}</p>
           <p>{formatPhone(order.customer.phone)}</p>
           <h3 className="mt-2 font-bold">{t('orderPage.deliverTo')}</h3>
@@ -63,11 +63,11 @@ export default async function AdminOrderPage({ params }: Props) {
           </p>
           {order.address.street ? <p>{order.address.street}</p> : null}
           <p className="text-muted">{order.address.landmark}</p>
-          {order.address.riderNote ? <p className="text-sm text-muted">{order.address.riderNote}</p> : null}
+          {order.address.riderNote ? <p className="text-small text-muted">{order.address.riderNote}</p> : null}
           {order.address.voiceNoteId ? <VoiceNotePlayer voiceNoteId={order.address.voiceNoteId} /> : null}
         </Card>
         <Card className="flex flex-col gap-2">
-          <h2 className="text-lg font-bold">
+          <h2 className="text-heading font-bold">
             <LocalizedText pair={order.kitchen.name} />
           </h2>
           {order.kitchen.phone ? <p>{formatPhone(order.kitchen.phone)}</p> : null}
@@ -87,12 +87,12 @@ export default async function AdminOrderPage({ params }: Props) {
           <p>
             <PaymentLabel method={order.paymentMethod} />
           </p>
-          <p className="text-sm text-muted">{t('orderPage.expectedBy', { time: formatTime(order.expectedAt, locale) })}</p>
+          <p className="text-small text-muted">{t('orderPage.expectedBy', { time: formatTime(order.expectedAt, locale) })}</p>
         </Card>
       </div>
 
       <Card className="flex flex-col gap-3">
-        <h2 className="text-lg font-bold">{t('adminOrder.agentTitle')}</h2>
+        <h2 className="text-heading font-bold">{t('adminOrder.agentTitle')}</h2>
         <p data-testid="admin-order-agent">{order.agent ? `${order.agent.name} · ${formatPhone(order.agent.phone)}` : t('adminOrder.noAgent')}</p>
         {assignable ? (
           <div className="max-w-sm">
@@ -104,7 +104,7 @@ export default async function AdminOrderPage({ params }: Props) {
       {order.finished ? null : <AdminCancelForm orderId={order.id} />}
 
       <section aria-labelledby="history-title" className="flex flex-col gap-2">
-        <h2 id="history-title" className="text-lg font-bold">
+        <h2 id="history-title" className="text-heading font-bold">
           {t('adminOrder.history')}
         </h2>
         <OrderHistory events={order.events} />

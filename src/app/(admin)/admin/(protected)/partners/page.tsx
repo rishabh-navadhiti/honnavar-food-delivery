@@ -27,7 +27,7 @@ export default async function AdminPartnersPage({ searchParams }: Props) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-2">
-        <h1 className="text-2xl font-bold">{t('partnersTitle')}</h1>
+        <h1 className="text-title font-bold">{t('partnersTitle')}</h1>
         <Link href="/admin/partners/new" className={buttonClasses('primary')}>
           {t('addPartner')}
         </Link>

@@ -27,11 +27,11 @@ export function VerificationPanel({
   const errors = useErrorText(state.error);
   return (
     <Card className="flex flex-col gap-3" data-testid="verification-panel">
-      <h2 className="text-lg font-bold">{t('verificationTitle')}</h2>
+      <h2 className="text-heading font-bold">{t('verificationTitle')}</h2>
       {recorded ? (
         <div>
           <p className="text-base font-semibold">{t('verifiedOn', recorded)}</p>
-          <p className="text-sm text-warn">{t('standInLabel')}</p>
+          <p className="text-small text-warn">{t('standInLabel')}</p>
         </div>
       ) : (
         <p className="text-base text-muted">{t('notVerified')}</p>

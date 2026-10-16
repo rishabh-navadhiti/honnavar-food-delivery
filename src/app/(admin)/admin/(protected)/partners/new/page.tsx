@@ -13,7 +13,7 @@ export default async function AdminNewPartnerPage() {
         <span aria-hidden="true">← </span>
         {t('backToPartners')}
       </Link>
-      <h1 className="text-2xl font-bold">{t('newPartnerTitle')}</h1>
+      <h1 className="text-title font-bold">{t('newPartnerTitle')}</h1>
       <KitchenProfileForm mode="create" tiles={mapTiles()} />
     </div>
   );
