@@ -26,8 +26,8 @@ export default async function AccountPage() {
             ] as const
           ).map(([page, Icon]) => (
             <li key={page}>
-              <Link href={`/${page}`} className="flex min-h-[56px] items-center gap-3 px-4 py-2 text-base font-semibold">
-                <span className="grid size-9 place-items-center rounded-full bg-primary-soft text-primary-strong">
+              <Link href={`/${page}`} className="flex min-h-12 items-center gap-3 px-3 py-1.5 text-base font-semibold">
+                <span className="grid size-8 place-items-center rounded-full bg-primary-soft text-primary-strong">
                   <Icon aria-hidden="true" className="size-5" />
                 </span>
                 <span className="flex-1">{t(`links.${page}`)}</span>

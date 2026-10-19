@@ -6,7 +6,7 @@ export default function KitchenLoading() {
     <LoadingFrame>
       <SkeletonBox className="h-6 w-32" />
       <SkeletonBox className="-mx-4 aspect-[16/9] rounded-none" />
-      <div className="relative -mt-14 mx-1 flex flex-col gap-2.5 rounded-lg bg-surface p-4 shadow-2">
+      <div className="relative -mt-14 mx-1 flex flex-col gap-2.5 rounded-lg bg-surface p-3 shadow-2">
         <SkeletonBox className="h-7 w-2/3" />
         <SkeletonBox className="h-6 w-1/2" />
         <SkeletonBox className="h-6 w-3/5" />

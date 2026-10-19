@@ -97,9 +97,9 @@ export function NewOrderAlert() {
           type="button"
           onClick={turnSoundOn}
           data-testid="sound-prompt"
-          className="flex min-h-touch w-full animate-fade-in items-center gap-3 rounded-lg bg-sea p-4 text-start text-surface shadow-2"
+          className="flex min-h-touch w-full animate-fade-in items-center gap-3 rounded-lg bg-sea p-3 text-start text-surface shadow-2"
         >
-          <span className="grid size-10 shrink-0 place-items-center rounded-full bg-surface/15">
+          <span className="grid size-9 shrink-0 place-items-center rounded-full bg-surface/15">
             <Volume2 aria-hidden="true" className="size-5" />
           </span>
           <span className="flex-1 text-base font-bold">{t('turnOnSound')}</span>
@@ -111,7 +111,7 @@ export function NewOrderAlert() {
           href={`/partner/orders/${waiting[0]!.id}`}
           role="alert"
           data-testid="new-order-banner"
-          className="flex min-h-touch animate-sheet-up items-center gap-3 rounded-lg bg-surface px-4 py-3 text-base font-bold text-ink shadow-[0_0_0_2px_var(--color-ink),var(--shadow-2)]"
+          className="flex min-h-touch animate-sheet-up items-center gap-3 rounded-lg bg-surface px-3 py-2.5 text-base font-bold text-ink shadow-[0_0_0_2px_var(--color-ink),var(--shadow-2)]"
         >
           <BellRing aria-hidden="true" className="size-5 shrink-0 text-status-placed" />
           <span className="flex-1">{t('newOrder', { orderNo: String(waiting[0]!.orderNo), count: waiting.length })}</span>

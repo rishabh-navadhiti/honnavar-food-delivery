@@ -26,7 +26,7 @@ export function NavLinks({ items, layout, ariaLabel }: { items: Item[]; layout: 
                   href={item.href}
                   aria-current={active ? 'page' : undefined}
                   className={[
-                    'inline-flex min-h-touch items-center gap-2 rounded-md px-3.5 text-base [&_svg]:size-5',
+                    'tap inline-flex min-h-10 items-center gap-2 rounded-md px-3 text-base [&_svg]:size-5',
                     active ? 'bg-primary-soft font-bold text-primary-strong' : 'font-semibold text-muted hover:bg-surface-sunk',
                   ].join(' ')}
                 >
@@ -43,7 +43,7 @@ export function NavLinks({ items, layout, ariaLabel }: { items: Item[]; layout: 
 
   return (
     <nav aria-label={ariaLabel} className="fixed inset-x-0 bottom-0 z-20 bg-surface pb-[env(safe-area-inset-bottom)] shadow-bar">
-      <ul className="mx-auto grid h-[66px] max-w-3xl auto-cols-fr grid-flow-col px-1">
+      <ul className="mx-auto grid h-navbar max-w-[512px] auto-cols-fr grid-flow-col px-1">
         {items.map((item) => {
           const active = isActive(item);
           return (
@@ -53,13 +53,13 @@ export function NavLinks({ items, layout, ariaLabel }: { items: Item[]; layout: 
                 aria-current={active ? 'page' : undefined}
                 className={[
                   'flex h-full min-h-touch flex-col items-center justify-center gap-0.5 text-caption',
-                  active ? 'font-bold text-primary-strong' : 'font-semibold text-muted',
+                  active ? 'font-bold text-primary-strong' : 'font-medium text-muted',
                 ].join(' ')}
               >
                 {item.icon ? (
                   <span
                     className={[
-                      'grid h-[30px] w-14 place-items-center rounded-full transition-colors duration-(--duration-fast) [&_svg]:size-[22px]',
+                      'grid h-7 w-12 place-items-center rounded-full transition-colors duration-(--duration-fast) [&_svg]:size-[22px]',
                       active ? 'bg-primary-tint' : '',
                     ].join(' ')}
                   >

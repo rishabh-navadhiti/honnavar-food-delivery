@@ -45,7 +45,7 @@ export default async function OrderPage({ params }: Props) {
     <article className="flex flex-col gap-4">
       <LiveRefresh enabled={!order.finished} />
       <BackLink href="/orders" label={t('backLinks.orders')} />
-      <header className="flex flex-col gap-2 rounded-lg bg-surface p-4 shadow-2">
+      <header className="flex flex-col gap-2 rounded-lg bg-surface p-3 shadow-2">
         <h1 className="flex flex-wrap items-center gap-2 text-heading font-bold text-muted">
           {t('orderPage.title')} <OrderNumber orderNo={order.orderNo} className="text-ink" />
         </h1>
@@ -65,7 +65,7 @@ export default async function OrderPage({ params }: Props) {
       <OrderTimeline order={order} />
 
       {order.agent ? (
-        <section aria-labelledby="agent-title" className="flex flex-col gap-2 rounded-lg bg-surface p-4 shadow-1">
+        <section aria-labelledby="agent-title" className="flex flex-col gap-2 rounded-lg bg-surface p-3 shadow-1">
           <h2 id="agent-title" className="flex items-center gap-2 text-heading font-bold">
             <Bike aria-hidden="true" className="size-5 text-sea" />
             {t('orderPage.agentTitle')}
@@ -85,7 +85,7 @@ export default async function OrderPage({ params }: Props) {
       />
       {order.kitchen.location ? null : <p className="text-small text-muted">{t('orderMap.noKitchenLocation')}</p>}
 
-      <section aria-labelledby="kitchen-title" className="flex items-center justify-between gap-3 rounded-lg bg-surface p-4 shadow-1">
+      <section aria-labelledby="kitchen-title" className="flex items-center justify-between gap-3 rounded-lg bg-surface p-3 shadow-1">
         <h2 id="kitchen-title" className="flex min-w-0 items-center gap-2 text-heading font-bold">
           <Store aria-hidden="true" className="size-5 shrink-0 text-muted" />
           <LocalizedText pair={order.kitchen.name} />
@@ -120,7 +120,7 @@ export default async function OrderPage({ params }: Props) {
         </p>
       </section>
 
-      <section aria-labelledby="address-title" className="flex flex-col gap-1 rounded-lg bg-surface p-4 shadow-1">
+      <section aria-labelledby="address-title" className="flex flex-col gap-1 rounded-lg bg-surface p-3 shadow-1">
         <h2 id="address-title" className="flex items-center gap-2 text-heading font-bold">
           <MapPin aria-hidden="true" className="size-5 text-sea" />
           {t('orderPage.deliverTo')}

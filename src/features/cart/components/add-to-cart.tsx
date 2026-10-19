@@ -28,21 +28,25 @@ export function AddToCart({ dishId, qty }: { dishId: string; qty: number }) {
       {qty === 0 ? (
         <form action={addAction}>
           <input type="hidden" name="dishId" value={dishId} />
-          <button type="submit" disabled={busy} className={buttonClasses('secondary', 'min-w-24 border-primary/30 text-primary-strong shadow-2')}>
+          <button
+            type="submit"
+            disabled={busy}
+            className="tap inline-flex h-9 w-24 items-center justify-center gap-1.5 rounded-md border border-primary/30 bg-surface text-base font-bold text-primary-strong shadow-1 transition-transform duration-(--duration-fast) active:scale-[0.98] disabled:opacity-50"
+          >
             {t('add')}
             <Plus aria-hidden="true" />
           </button>
         </form>
       ) : (
-        <div className="flex h-12 items-center rounded-md bg-primary text-on-primary shadow-2" role="group" aria-label={t('quantity')}>
+        <div className="flex h-9 w-24 items-center justify-between rounded-md bg-primary text-on-primary shadow-1" role="group" aria-label={t('quantity')}>
           <form action={qtyAction}>
             <input type="hidden" name="dishId" value={dishId} />
             <input type="hidden" name="qty" value={qty - 1} />
-            <button type="submit" disabled={busy} aria-label={t('oneLess')} className="grid size-12 place-items-center rounded-md active:scale-95 disabled:opacity-50">
-              <Minus aria-hidden="true" className="size-5" />
+            <button type="submit" disabled={busy} aria-label={t('oneLess')} className="tap grid size-9 place-items-center rounded-md active:scale-95 disabled:opacity-50">
+              <Minus aria-hidden="true" className="size-4" />
             </button>
           </form>
-          <span className="min-w-6 text-center text-heading font-bold" aria-live="polite" data-testid="cart-qty">
+          <span className="min-w-6 text-center text-base font-bold" aria-live="polite" data-testid="cart-qty">
             {qty}
           </span>
           <form action={qtyAction}>
@@ -52,9 +56,9 @@ export function AddToCart({ dishId, qty }: { dishId: string; qty: number }) {
               type="submit"
               disabled={busy || qty >= MAX_QUANTITY}
               aria-label={t('oneMore')}
-              className="grid size-12 place-items-center rounded-md active:scale-95 disabled:opacity-50"
+              className="tap grid size-9 place-items-center rounded-md active:scale-95 disabled:opacity-50"
             >
-              <Plus aria-hidden="true" className="size-5" />
+              <Plus aria-hidden="true" className="size-4" />
             </button>
           </form>
         </div>

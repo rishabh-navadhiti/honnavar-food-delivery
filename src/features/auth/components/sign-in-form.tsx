@@ -45,7 +45,7 @@ export function SignInForm({ surface, next }: { surface: Surface; next?: string 
               {formError}
             </p>
           ) : null}
-          <Button type="submit" disabled={pending} className="min-h-[54px] w-full text-[1.06rem]">
+          <Button type="submit" disabled={pending} className="w-full text-card">
             {pending ? t('common.loading') : t('auth.getCode')}
           </Button>
         </form>
@@ -71,7 +71,7 @@ export function SignInForm({ surface, next }: { surface: Surface; next?: string 
               {formError}
             </p>
           ) : null}
-          <Button type="submit" disabled={pending} className="min-h-[54px] w-full text-[1.06rem]">
+          <Button type="submit" disabled={pending} className="w-full text-card">
             {pending ? t('common.loading') : t('auth.signIn')}
           </Button>
           <Button

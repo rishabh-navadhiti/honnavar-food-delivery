@@ -10,8 +10,8 @@ export function LanguageSwitch() {
   return (
     <form action={setLocale}>
       <input type="hidden" name="locale" value={target} />
-      <button type="submit" aria-label={t('ariaLabel')} lang={target} className="inline-flex min-h-touch min-w-touch items-center justify-center">
-        <span className="inline-flex h-9 items-center gap-1.5 rounded-full border border-line-strong/45 bg-surface px-3 text-[0.94rem] font-semibold text-ink shadow-1 hover:bg-surface-sunk">
+      <button type="submit" aria-label={t('ariaLabel')} lang={target} className="tap inline-flex items-center justify-center">
+        <span className="inline-flex h-8 items-center gap-1.5 rounded-full border border-line-strong/45 bg-surface px-2.5 text-sm font-semibold text-ink shadow-1 hover:bg-surface-sunk">
           <Languages aria-hidden="true" className="size-4 text-primary" />
           {t('label')}
         </span>

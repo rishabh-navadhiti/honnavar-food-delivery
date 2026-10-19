@@ -59,8 +59,9 @@ export function SearchBox({ filters }: { filters: KitchenFilters }) {
       <label htmlFor="search-q" className="sr-only">
         {t('label')}
       </label>
-      <div className="flex min-h-[52px] items-center rounded-md border border-line-strong/60 bg-surface shadow-1 focus-within:border-sea focus-within:shadow-[0_0_0_3px_var(--color-sea-soft)]">
-        <Search aria-hidden="true" className="ms-3.5 size-5 shrink-0 text-muted" />
+      {/* A 44 px field; the input inside is 48 px tall (borderless), so the tap target stays 48 px. */}
+      <div className="flex h-11 items-center rounded-md border border-line-strong/60 bg-surface shadow-1 focus-within:border-sea focus-within:shadow-[0_0_0_3px_var(--color-sea-soft)]">
+        <Search aria-hidden="true" className="ms-3 size-[18px] shrink-0 text-muted" />
         <input
           id="search-q"
           name="q"
@@ -71,17 +72,15 @@ export function SearchBox({ filters }: { filters: KitchenFilters }) {
           autoComplete="off"
           placeholder={t('placeholder')}
           aria-describedby="search-suggestions-status"
-          className="min-h-touch min-w-0 flex-1 bg-transparent px-2.5 text-base text-ink placeholder:text-subtle focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+          className="-my-0.5 h-12 min-w-0 flex-1 bg-transparent px-2 text-input text-ink placeholder:text-subtle focus:outline-none [&::-webkit-search-cancel-button]:hidden"
         />
         {query ? (
-          <Link href={filtersToQuery({ ...filters, q: undefined })} aria-label={t('clear')} className="grid size-12 shrink-0 place-items-center text-muted">
-            <X aria-hidden="true" className="size-5" />
+          <Link href={filtersToQuery({ ...filters, q: undefined })} aria-label={t('clear')} className="tap grid size-9 shrink-0 place-items-center text-muted">
+            <X aria-hidden="true" className="size-[18px]" />
           </Link>
         ) : null}
-        <button type="submit" aria-label={t('submit')} className="me-1 grid size-12 shrink-0 place-items-center">
-          <span className="grid size-10 place-items-center rounded-sm bg-primary text-on-primary">
-            <ArrowRight aria-hidden="true" className="size-5" />
-          </span>
+        <button type="submit" aria-label={t('submit')} className="tap me-1 grid size-9 shrink-0 place-items-center rounded-sm bg-primary text-on-primary">
+          <ArrowRight aria-hidden="true" className="size-[18px]" />
         </button>
       </div>
       <SearchSuggestions suggestions={value.trim().length >= 2 ? suggestions : null} q={value.trim()} />

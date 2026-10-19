@@ -27,7 +27,7 @@ export function TabBarView({ state, signedIn }: { state: TabBarState; signedIn: 
   const t = useTranslations();
   return (
     <nav aria-label={t('nav.mainNavigation')} className="fixed inset-x-0 bottom-0 z-20 bg-surface pb-[env(safe-area-inset-bottom)] shadow-bar">
-      <ul className="mx-auto grid h-tabbar max-w-3xl grid-cols-3 px-1">
+      <ul className="mx-auto grid h-tabbar max-w-[512px] grid-cols-3 px-1">
         <Tab href="/" tab="home" active={state.active} icon={<House />} word={t('tabs.home')} />
         <Tab
           href={state.orders.href}
@@ -82,16 +82,16 @@ function Tab({
       <Link
         href={href}
         aria-current={isActive ? 'page' : undefined}
-        className={`flex h-full min-h-touch flex-col items-center pt-1.5 text-caption ${isActive ? 'font-bold text-primary-strong' : 'font-semibold text-muted'}`}
+        className={`flex h-full min-h-touch flex-col items-center pt-1.5 text-caption ${isActive ? 'font-bold text-primary-strong' : 'font-medium text-muted'}`}
       >
         <span
-          className={`relative grid h-[26px] w-14 shrink-0 place-items-center rounded-full transition-colors duration-(--duration-fast) [&_svg]:size-[22px] [&_svg]:stroke-[1.9] ${isActive ? 'bg-primary-tint' : ''}`}
+          className={`relative grid h-7 w-12 shrink-0 place-items-center rounded-full transition-colors duration-(--duration-fast) [&_svg]:size-[22px] [&_svg]:stroke-[1.9] ${isActive ? 'bg-primary-tint' : ''}`}
           aria-hidden="true"
         >
           {icon}
           {dot ? <span className={`absolute end-2.5 top-0.5 size-2 rounded-full bg-current shadow-[0_0_0_2px_var(--color-surface)] ${dot}`} /> : null}
         </span>
-        <span className="stretch-dense flex max-w-full flex-col items-center leading-[var(--lh-snug)]">
+        <span className="stretch-dense mt-0.5 flex max-w-full flex-col items-center leading-[1.25] [&:lang(kn)]:leading-[1.38]">
           <span className="max-w-full whitespace-nowrap">{word}</span>
           {state ? <span className="max-w-full whitespace-nowrap">{state}</span> : null}
         </span>
@@ -124,8 +124,8 @@ export function FloatingCartButton({ count, itemTotal }: { count: number; itemTo
       aria-label={`${t('tabs.cart')}: ${t('cart.itemCount', { count })}, ${formatPrice(itemTotal, isLocale(current) ? current : 'en')}`}
       className="fixed bottom-[calc(var(--spacing-tabbar)+0.75rem+env(safe-area-inset-bottom))] end-4 z-20 animate-sheet-up rounded-full bg-primary text-on-primary shadow-3 transition-transform duration-(--duration-fast) active:scale-95"
     >
-      <span data-testid="cart-bar" className="flex h-14 min-w-14 items-center justify-center gap-2 px-4 text-heading font-bold">
-        <ShoppingBag aria-hidden="true" className="size-6" />
+      <span data-testid="cart-bar" className="flex h-13 min-w-13 items-center justify-center gap-2 px-4 text-card font-bold">
+        <ShoppingBag aria-hidden="true" className="size-[22px]" />
         <span aria-hidden="true">{count}</span>
         <span className="sr-only">
           {t('cart.itemCount', { count })} {formatPrice(itemTotal, isLocale(current) ? current : 'en')}
@@ -140,11 +140,11 @@ export function KitchenCartBar({ count, itemTotal }: { count: number; itemTotal:
   const t = useTranslations();
   const current = useLocale();
   return (
-    <div className="fixed inset-x-0 bottom-0 z-20 bg-surface px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 shadow-bar">
+    <div className="fixed inset-x-0 bottom-0 z-20 bg-surface px-4 pb-[calc(0.5rem+env(safe-area-inset-bottom))] pt-2 shadow-bar">
       <Link
         href="/cart"
         data-testid="header-cart"
-        className="mx-auto flex min-h-[54px] max-w-[720px] animate-sheet-up items-center justify-between gap-3 rounded-md bg-primary px-4 text-on-primary shadow-2"
+        className="mx-auto flex min-h-13 max-w-[480px] animate-sheet-up items-center justify-between gap-3 rounded-md bg-primary px-4 text-on-primary shadow-2"
       >
         <span data-testid="cart-bar" className="flex items-center gap-2 text-base font-semibold">
           <ShoppingBag aria-hidden="true" className="size-5 shrink-0" />

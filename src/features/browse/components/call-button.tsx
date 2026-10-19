@@ -10,7 +10,7 @@ export function CallButton({ phone }: { phone: string }) {
       href={`tel:+91${phone}`}
       aria-label={t('callLabel', { phone: formatPhone(phone) })}
       title={t('call')}
-      className="grid size-12 shrink-0 place-items-center rounded-full bg-sea-soft text-sea transition-colors duration-(--duration-fast) hover:bg-sea hover:text-surface"
+      className="tap grid size-10 shrink-0 place-items-center rounded-full bg-sea-soft text-sea transition-colors duration-(--duration-fast) hover:bg-sea hover:text-surface"
     >
       <Phone aria-hidden="true" className="size-5" />
     </a>

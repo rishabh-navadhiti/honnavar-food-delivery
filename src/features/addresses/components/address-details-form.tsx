@@ -49,7 +49,7 @@ export function AddressDetailsForm({
 
       <div className="flex items-start justify-between gap-3 rounded-md bg-surface-sunk p-3">
         <p className="text-base">{location.geocodedText ?? t('pinPicker.pinPlaced')}</p>
-        <button type="button" onClick={onChangeLocation} className="min-h-touch shrink-0 text-base font-semibold text-primary">
+        <button type="button" onClick={onChangeLocation} className="tap shrink-0 text-base font-semibold text-primary">
           {t('addresses.changeLocation')}
         </button>
       </div>

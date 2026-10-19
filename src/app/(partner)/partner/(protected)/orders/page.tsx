@@ -15,20 +15,20 @@ export default async function PartnerOrdersPage() {
   const now = new Date();
   const orders = await listPartnerOrders(session.kitchenId!, now);
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2" data-wide>
       <LiveRefresh />
       <div className="flex items-center gap-1">
         <div className="flex min-w-0 flex-1 flex-col">
           <h1 className="text-title font-bold leading-[var(--lh-tight)]">{t('title')}</h1>
           <UpdatedAt at={now} />
         </div>
-        <Link href="/partner/day" aria-label={t('dayLink')} className="grid size-12 shrink-0 place-items-center text-primary-strong">
+        <Link href="/partner/day" aria-label={t('dayLink')} className="tap grid size-10 shrink-0 place-items-center text-primary-strong">
           <CalendarDays aria-hidden="true" className="size-5" />
         </Link>
         <Link
           href="/partner/messages"
           aria-label={t('messagesLink')}
-          className="grid size-12 shrink-0 place-items-center text-primary-strong"
+          className="tap grid size-10 shrink-0 place-items-center text-primary-strong"
         >
           <MessageSquareText aria-hidden="true" className="size-5" />
         </Link>

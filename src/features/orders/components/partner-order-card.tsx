@@ -63,7 +63,7 @@ export function PartnerOrderCard({ order, link = true }: { order: PartnerOrderVi
     </>
   );
   return (
-    <Card tone={placed ? 'attention' : 'default'} className="flex flex-col gap-1.5 p-2.5" data-testid="partner-order" data-order-no={order.orderNo}>
+    <Card tone={placed ? 'attention' : 'default'} className="flex flex-col gap-1.5 p-3" data-testid="partner-order" data-order-no={order.orderNo}>
       <header className="flex items-center gap-2">
         <OrderNumber orderNo={order.orderNo} className="text-heading font-bold" />
         <StatusBadge status={order.status} />

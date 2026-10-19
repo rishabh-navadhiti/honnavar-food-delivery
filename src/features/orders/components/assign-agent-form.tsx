@@ -21,7 +21,7 @@ export function AssignAgentForm({ orderId, currentAgentId, agents }: { orderId: 
       <input type="hidden" name="orderId" value={orderId} />
       <label className="flex flex-col gap-1 text-caption font-semibold text-muted">
         {currentAgentId ? t('reassignTo') : t('assignTo')}
-        <select name="agentId" required className="min-h-touch rounded-md border border-line-strong bg-surface px-2 text-small font-semibold text-ink">
+        <select name="agentId" required className="h-10 rounded-md border border-line-strong bg-surface px-2 text-small font-semibold text-ink">
           {choices.map((a) => (
             <option key={a.id} value={a.id}>
               {t('agentOption', { name: a.name, count: a.undelivered })}
@@ -29,7 +29,7 @@ export function AssignAgentForm({ orderId, currentAgentId, agents }: { orderId: 
           ))}
         </select>
       </label>
-      <button type="submit" disabled={pending} className={buttonClasses(currentAgentId ? 'secondary' : 'primary')}>
+      <button type="submit" disabled={pending} className={buttonClasses(currentAgentId ? 'secondary' : 'primary', '', 'compact')}>
         {currentAgentId ? <ArrowLeftRight aria-hidden="true" /> : <UserPlus aria-hidden="true" />}
         {currentAgentId ? t('reassign') : t('assign')}
       </button>

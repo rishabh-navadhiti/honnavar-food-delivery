@@ -23,11 +23,11 @@ export default async function AgentHomePage() {
     getAgentToday(session.subjectId, now),
   ]);
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" data-wide>
       <LiveRefresh />
       <h1 className="stretch-head text-title font-bold">{t('agent.greeting', { name: agent?.name ?? '' })}</h1>
       <dl className="grid grid-cols-2 gap-2">
-        <div className="flex flex-col gap-1 rounded-lg bg-surface p-3.5 shadow-1">
+        <div className="flex flex-col gap-1 rounded-lg bg-surface p-3 shadow-1">
           <dt className="inline-flex items-center gap-1.5 text-small text-muted">
             <PackageCheck aria-hidden="true" className="size-4" />
             {t('agentHome.deliveriesToday')}
@@ -36,7 +36,7 @@ export default async function AgentHomePage() {
             {today.deliveries}
           </dd>
         </div>
-        <div className="flex flex-col gap-1 rounded-lg bg-surface p-3.5 shadow-1">
+        <div className="flex flex-col gap-1 rounded-lg bg-surface p-3 shadow-1">
           <dt className="inline-flex items-center gap-1.5 text-small text-muted">
             <Banknote aria-hidden="true" className="size-4" />
             {t('agentHome.cashToday')}

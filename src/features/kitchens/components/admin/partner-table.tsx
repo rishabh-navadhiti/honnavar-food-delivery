@@ -53,7 +53,7 @@ export function PartnerTable({ rows, filters }: { rows: AdminKitchenRow[]; filte
               {rows.map((k) => (
                 <tr key={k.id} className="border-t border-line" data-testid="partner-row" data-kitchen-id={k.id}>
                   <td className="px-3 py-2">
-                    <Link href={`/admin/partners/${k.id}`} className="inline-flex min-h-touch items-center font-semibold text-primary-strong underline-offset-4 hover:underline">
+                    <Link href={`/admin/partners/${k.id}`} className="tap inline-flex items-center font-semibold text-primary-strong underline-offset-4 hover:underline">
                       <LocalizedText pair={{ en: k.nameEn, kn: k.nameKn }} />
                     </Link>
                   </td>

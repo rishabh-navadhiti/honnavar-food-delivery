@@ -26,11 +26,11 @@ export function DishRow({ dish, action }: { dish: DishView; action?: ReactNode }
       data-dish-id={dish.id}
       data-available={dish.available}
       data-veg={dish.isVeg}
-      className={`-mx-3 flex scroll-mt-[calc(var(--spacing-topbar)+1rem)] gap-3 rounded-md px-3 py-4 target:animate-target-tint ${dish.available ? '' : 'opacity-60'}`}
+      className={`-mx-3 flex scroll-mt-[calc(var(--spacing-topbar)+1rem)] items-start gap-3 rounded-md px-3 py-3 target:animate-target-tint ${dish.available ? '' : 'opacity-60'}`}
     >
       <div className="flex min-w-0 flex-1 flex-col gap-1">
         <VegMark isVeg={dish.isVeg} />
-        <p className="stretch-head text-heading font-bold leading-[var(--lh-snug)] text-ink">
+        <p className="stretch-head text-card font-bold leading-[var(--lh-snug)] text-ink">
           <LocalizedText pair={dish.name} />
         </p>
         <span className="text-base font-bold text-ink">{formatPrice(dish.priceRupees, locale)}</span>
@@ -40,15 +40,14 @@ export function DishRow({ dish, action }: { dish: DishView; action?: ReactNode }
           </p>
         ) : null}
       </div>
-      <div className="relative flex w-28 shrink-0 flex-col items-center">
-        <Photo imageId={dish.photoImageId} alt={name} placeholder={dish.isVeg ? 'veg' : 'nonveg'} sizes="112px" className="size-28 rounded-md" />
-        <div className="-mt-6 flex justify-center">
-          {dish.available ? (action ?? null) : (
-            <span data-testid="not-available" className="rounded-full bg-closed-soft px-2.5 py-1 text-caption font-semibold text-closed shadow-1">
-              {t('notAvailable')}
-            </span>
-          )}
-        </div>
+      {/* Photo top-right, the add control directly under it (003 density): no overlap, no empty band. */}
+      <div className="flex w-24 shrink-0 flex-col items-center gap-2">
+        <Photo imageId={dish.photoImageId} alt={name} placeholder={dish.isVeg ? 'veg' : 'nonveg'} sizes="96px" className="size-24 rounded-md" />
+        {dish.available ? (action ?? null) : (
+          <span data-testid="not-available" className="rounded-full bg-closed-soft px-2.5 py-1 text-caption font-semibold text-closed">
+            {t('notAvailable')}
+          </span>
+        )}
       </div>
     </li>
   );

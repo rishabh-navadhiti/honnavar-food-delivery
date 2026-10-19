@@ -7,7 +7,7 @@ import type { ReactNode } from 'react';
 export function PlaceOrderBar({ children }: { children: ReactNode }) {
   return (
     <div className="fixed inset-x-0 bottom-0 z-20 bg-surface pb-[env(safe-area-inset-bottom)] shadow-bar" data-testid="place-order-bar">
-      <div className="mx-auto flex h-placebar max-w-3xl items-center px-4">{children}</div>
+      <div className="mx-auto flex h-placebar max-w-[512px] items-center px-4">{children}</div>
     </div>
   );
 }

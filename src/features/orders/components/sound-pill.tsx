@@ -22,7 +22,7 @@ export function SoundPill() {
       data-testid="sound-pill"
       data-state={on ? 'on' : 'off'}
       onClick={() => window.dispatchEvent(new Event(SOUND_UNLOCK_EVENT))}
-      className="inline-flex min-h-touch shrink-0 items-center"
+      className="tap inline-flex shrink-0 items-center"
     >
       <span
         className={`inline-flex h-9 animate-fade-in items-center gap-1.5 rounded-full px-3 text-small font-bold ${

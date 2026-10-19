@@ -30,7 +30,7 @@ export function FieldShell({ id, label, hint, error, children }: FieldShellProps
 }
 
 const control =
-  'min-h-touch w-full rounded-md border border-line-strong bg-surface px-3.5 py-2 text-base text-ink placeholder:text-subtle ' +
+  'min-h-12 w-full rounded-md border border-line-strong bg-surface px-3 py-2 text-input text-ink placeholder:text-subtle ' +
   'focus:border-sea focus:outline-2 focus:outline-offset-1 focus:outline-sea aria-invalid:border-danger';
 
 type CommonProps = { name: string; label: ReactNode; hint?: ReactNode; error?: string; id?: string };

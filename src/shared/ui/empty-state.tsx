@@ -15,7 +15,7 @@ export function EmptyState({
 }) {
   const Illustration = illustration ? illustrations[illustration] : null;
   return (
-    <div className="flex flex-col items-center gap-2 rounded-lg bg-surface px-4 py-8 text-center shadow-1">
+    <div className="flex flex-col items-center gap-2 rounded-lg bg-surface px-4 py-6 text-center shadow-1">
       {Illustration ? <Illustration /> : null}
       <p className="text-heading font-bold text-ink">{title}</p>
       {body ? <p className="max-w-prose text-base text-muted">{body}</p> : null}
